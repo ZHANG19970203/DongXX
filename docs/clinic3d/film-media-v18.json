@@ -1,0 +1,73 @@
+{
+  "schema": "dxx-film-media-v19",
+  "clips": {
+    "01A": {
+      "normal": {
+        "approved": true,
+        "reviewStatus": "accepted",
+        "sha256": "6a32aaf0014d5307a2638060686ed7896273338feafe78ef39223b5c4c0c6209",
+        "src": "../soap/media/intro-patient62.mp4",
+        "clinicalValidated": false,
+        "reviewScope": "communication edit and technical review; not clinical action approval",
+        "sourceOriginal": "../soap/media/intro-playback.mp4",
+        "sourceSHA256": "4c0edf0f88a706ba9284e5b4a316f69079ec50e8cf2b718e397e2e77191e4e5f",
+        "seconds": 41.94,
+        "audioEdition": "patient-role-62"
+      }
+    },
+    "04A": {
+      "normal": {
+        "approved": true,
+        "reviewStatus": "accepted",
+        "sha256": "ebcf1add3d6dccc60de2329984eb74c2e6d71175e99021d3a0e82c29470ab79b",
+        "src": "../soap/media/arch-patient62.mp4",
+        "clinicalValidated": false,
+        "reviewScope": "communication edit and technical review; not clinical action approval",
+        "sourceOriginal": "../soap/media/arch.mp4",
+        "sourceSHA256": "536485f1a0ef67d4def86055895899ffbd4a78d8f469d30d76473453dfc74f0e",
+        "seconds": 18.21,
+        "audioEdition": "patient-role-62"
+      }
+    },
+    "05A": {
+      "normal": {
+        "approved": true,
+        "reviewStatus": "accepted",
+        "sha256": "2ce77757c706a6dc23daa174711d8001d22b325978b988073f0f50b52a420bd1",
+        "src": "../soap/media/gait-patient62.mp4",
+        "clinicalValidated": false,
+        "reviewScope": "communication edit and technical review; not clinical action approval",
+        "sourceOriginal": "../soap/media/gait.mp4",
+        "sourceSHA256": "d464c8e412c131d22017b7fbe44ef6c51513229aaa6d4a15b7f9eb16282ef151",
+        "seconds": 22.74,
+        "audioEdition": "patient-role-62"
+      }
+    },
+    "06A": {
+      "normal": {
+        "approved": true,
+        "reviewStatus": "accepted",
+        "sha256": "5ea614dd16a6d7896038597136e2361524ef073ddc8aa5c8e2cc2acdf89608b3",
+        "src": "../soap/media/scan-voiced.mp4",
+        "clinicalValidated": false,
+        "reviewScope": "communication edit and technical review; not clinical action approval",
+        "sourceOriginal": "../soap/media/scan.mp4",
+        "sourceSHA256": "c1126985bdefd0a73c34b30239cc205b411ba1c8b0742e46613cbcbeb2006cb7"
+      }
+    },
+    "08A": {
+      "normal": {
+        "approved": true,
+        "reviewStatus": "accepted",
+        "sha256": "8100539808fb1a7030ed1752adf624082d1e55e848c33fb718713f1ae27498aa",
+        "src": "../soap/media/plan-patient62.mp4",
+        "clinicalValidated": false,
+        "reviewScope": "communication edit and technical review; not clinical action approval",
+        "sourceOriginal": "../soap/media/plan.mp4",
+        "sourceSHA256": "5452f94182ccc80d712ee65136e656f709e4e8661e847ddf454078ecde6e1bce",
+        "seconds": 15.31,
+        "audioEdition": "patient-role-62"
+      }
+    }
+  }
+}

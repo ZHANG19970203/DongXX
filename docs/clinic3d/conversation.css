@@ -1,0 +1,108 @@
+/* Keep spoken turns and learner choices in one readable card. */
+#clinic #conversation:not([hidden]) {
+  --gutter: clamp(18px, 2.2vw, 30px);
+  position: fixed;
+  inset: 50% auto auto 50%;
+  left: 50% !important;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: min(640px, calc(100vw - 32px));
+  max-width: none !important;
+  max-height: min(720px, calc(100dvh - 96px));
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #92b2aa;
+  border-radius: 19px;
+  background: #fffefa;
+  color: #193c35;
+  box-shadow: 0 15px 60px #162e3440, 0 2px 9px #12232520;
+}
+#conversation::before { display: none; }
+#conversation .conversation-head {
+  flex: none;
+  position: static;
+  margin: 0;
+  padding: 13px var(--gutter);
+  gap: 12px;
+  background: #f0f6f2;
+  border-bottom: 1px solid #dae6df;
+}
+#conversation .speaker-avatar { width: 35px; height: 35px; font-size: 16px; }
+#conversation .speaker-portrait { width: 44px; height: 50px; flex-basis: 44px; border-radius: 9px; }
+#conversation #speaker { color: #19544b; font-size: 17px; line-height: 1.4; }
+#conversation #pause { width: 40px; min-height: 36px; color: #214b40; background: white; }
+#conversationBody { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 15px var(--gutter); scrollbar-gutter: auto; }
+#conversation #line {
+  margin: 0;
+  color: #173d34;
+  font-size: clamp(20px, 1.7vw, 25px);
+  font-weight: 600;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+#conversation .learning-guide { margin: 10px 0 0; }
+#conversation .learning-guide summary { font-size: 14px; }
+#conversation #options:not(:empty) { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+#conversation #options button {
+  min-height: 47px;
+  padding: 9px 13px;
+  gap: 12px;
+  font-size: clamp(16px, 1.15vw, 18px);
+  line-height: 1.5;
+  color: #24443e;
+  border: 1px solid #c6d7d0;
+  border-radius: 10px;
+  background: #fafcf9;
+}
+#conversation #options button::before { min-width: 26px; height: 26px; font-size: 12px; color: #46685e; }
+#conversation #options button:enabled:hover, #conversation #options button.selected { background: #eaf5ef; border-color: #558d7d; }
+#conversation #options button.selected::before { background: #195e50; color: white; }
+#conversation :focus-visible { outline: 3px solid #236f86; outline-offset: 2px; }
+#conversation .conversation-foot {
+  position: static;
+  display: flex;
+  flex-wrap: wrap;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  padding: 9px var(--gutter);
+  margin: 0;
+  border-top: 1px solid #dce6df;
+  background: #fffefa;
+}
+#conversation .conversation-foot button { min-height: 36px; padding: 5px 10px; font-size: 14px; }
+#conversation .line-controls { flex-wrap: wrap; }
+#conversation .line-controls:empty { display: none; }
+
+/* When a task owns the side panel, leave its model and controls in view. */
+body:not([data-dialogue-pending="true"]) #clinic:has(#taskDock:not([hidden])) #conversation:not([hidden]) {
+  inset: auto auto 16px 16px;
+  left: 16px !important;
+  transform: none;
+  width: min(480px, calc(100vw - 430px));
+  max-height: min(320px, 40dvh);
+  --gutter: 16px;
+}
+body:not([data-dialogue-pending="true"]) #clinic:has(#taskDock:not([hidden])) #conversation #line { font-size: 18px; }
+@media (max-width: 700px) {
+  #clinic #conversation:not([hidden]) { width: calc(100vw - 24px); max-height: calc(100dvh - 116px); border-radius: 15px; }
+  #conversation .conversation-head { padding: 10px var(--gutter); }
+  #conversationBody { padding-block: 12px; }
+  #conversation .conversation-foot { gap: 5px; }
+  body:not([data-dialogue-pending="true"]) #clinic:has(#taskDock:not([hidden])) #conversation:not([hidden]) {
+    inset: auto 8px 8px;
+    left: 8px !important;
+    width: calc(100vw - 16px);
+    max-height: 24dvh;
+    --gutter: 12px;
+  }
+  body:not([data-dialogue-pending="true"]):not([data-split-practice]) #clinic:has(#conversation:not([hidden])) #taskDock:not([hidden]) { bottom: calc(24dvh + 16px); max-height: calc(74dvh - 88px); }
+}
+@media (max-height: 540px) {
+  #clinic #conversation:not([hidden]) { max-height: calc(100dvh - 24px); width: min(600px, calc(100vw - 32px)); }
+  #conversation .conversation-head, #conversation .conversation-foot { padding-block: 5px; }
+  #conversation .speaker-portrait { width: 32px; height: 36px; flex-basis: 32px; }
+  #conversationBody { padding-block: 8px; }
+}
