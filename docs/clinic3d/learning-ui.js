@@ -1,5 +1,5 @@
 import {archCaseText,archOutlines} from './arch-bones.js';
-import {mountPlantarScan,plantarFigure,pressureLegend} from './plantar-scan.js';
+import {mountPlantarScan,plantarFigure,pressureLegend} from './plantar-scan.js?v=67';
 import {renderSOAPTask} from './soap-tasks-v20.js';
 import { createLessonCoach } from './lesson-coach.js';
 import { createArchComparison } from './arch-comparison.js';
@@ -109,7 +109,7 @@ export function createLearningUI(ctx) {
   function presentTask(task){
     const wrap=$('taskSurface');wrap.replaceChildren();wrap.hidden=false;
     const exam={wrap,book:stepBook,record,anatomyButton,changed:()=>{ctx.saveTask();paintTask();},pose:ctx.strengthPose,projectMuscle:ctx.projectMuscle,coachVoice:ctx.strengthVoice};
-    if(task.type==='plantarScan'){mountPlantarScan({...exam,button,changed:()=>{ctx.saveTask();paintTask();}});return;}
+    if(task.type==='plantarScan'){mountPlantarScan({...exam,button,scanReady:ctx.scanReady});return;}
     if(renderSOAPTask(task,{wrap,nodeEl,button,stepBook,record,refresh:()=>{ctx.saveTask();coach.update();}}))return;
     if(task.type==='history'){wrap.hidden=true;return;}
     if(task.type==='evidence'){
@@ -130,7 +130,7 @@ export function createLearningUI(ctx) {
       wrap.append(nodeEl('h3','task-card-title','哪一次触墙可以记数？'));
       const compare=nodeEl('div','trial-comparison');
       for(const [label,textValue]of [['同条件记录','面墙站立，足跟着地，膝盖沿第二脚趾方向轻触墙。逐步调节脚与墙的距离，记录仍能完成动作时大脚趾尖到墙的最远距离（厘米）。'],['条件已改变','脚跟抬起或脚向外转，这次不记。左右脚用同一方法；疼痛加重时停止，记下原因。']]){const card=nodeEl('div','task-card');card.append(nodeEl('b','',label),nodeEl('p','',textValue));compare.append(card);}
-      wrap.append(compare);anatomyButton(wrap,'ankle');addSource(wrap,'本例在相同条件下各测 3 次，取有效记录的均值：右 6.0 cm，左 9.0 cm。右侧负重背屈距离较短。');
+      wrap.append(compare);anatomyButton(wrap,'ankle');addSource(wrap,'双侧使用同一把软尺、相同站位，各取三次有效测量的均值。');
     } else if(task.type==='muscle'){
       showStrength(exam);
     } else if(task.type==='arch'){

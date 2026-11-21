@@ -59,7 +59,9 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     if(trigger==='entry'||active?.clip.anchorNode!==node.id)clear();
     const clip=FILM_CLIPS.find(item=>item.anchorNode===node.id&&item.trigger===trigger);
     if(!clip)return false;
-    const branch=selectFilmBranch(clip,state),key=clip.id+':'+branch.condition+(clip.id==='05B'?':protective-gait':'');
+    const branch=selectFilmBranch(clip,state);
+    if(branch.condition==='arch_comparison_skipped')return false;
+    const key=clip.id+':'+branch.condition+(clip.id==='05B'?':protective-gait':'');
     const chosen=state.choiceLock;
     const spoken=trigger==='choice'&&branch.normal&&chosen?.nodeId===node.id&&replies[chosen.optionId];
     if(spoken&&branch.lines.at(-1)?.speaker==='therapist')branch.lines=[...branch.lines.slice(0,-1),{speaker:'therapist',text:spoken}];

@@ -89,7 +89,6 @@ export const scenes={
  refused_or_stopped:'P今天先别测力气了。|T行。'},
  '04A':{
  normal:'T先坐着，我看一下脚弓。|P我站久了，这脚内侧就酸。|T那您扶着站起来，我看看站着时有什么变化。',
- arch_comparison_skipped:'P能先给我做一遍吗？|T行，我做给您看。',
  declined_or_unsafe_to_stand:'P现在不太想站。|T那就坐着，不勉强。',
  stopped:'P站着有点难受，我想坐下。|T来，椅子在这儿。'},
  '04B':{

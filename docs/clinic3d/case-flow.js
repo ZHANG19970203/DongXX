@@ -414,7 +414,10 @@ for(const [id,speaker,next] of [['trial','林治疗师','local_record'],['local_
  const node=FLOW[id];Object.assign(node,{kind:'dialogue',speaker,next,visualMode:'wall',options:[]});
  delete node.task;delete node.record;delete node.patientCue;
 }
-FLOW.local_explain.text='先停一下，刚才脚跟抬起来了，这一次不算。把脚往墙边挪一点，脚跟贴地，再试一次。两边用同样的方法测，右脚是六厘米，左脚是九厘米。您右脚踝负重时，往上弯的幅度小一些。';
+FLOW.local_record.next='wall_adjust';
+FLOW.wall_adjust={...FLOW.local_record,id:'wall_adjust',speaker:'林治疗师',text:'先停一下，刚才脚跟抬起来了，这一次不算。把脚往墙边挪一点，脚跟贴地，再试一次。',next:'wall_measure'};
+FLOW.wall_measure={id:'wall_measure',act:'act2',kind:'task',speaker:'操作指导',visualMode:'wall',text:'观察治疗师用软尺测量两脚大脚趾尖到墙面的距离。',next:'local_explain'};
+FLOW.local_explain.text='两边用同样的方法测，右脚是六厘米，左脚是九厘米。您右脚踝负重时，往上弯的幅度小一些。';
 FLOW.local_explain.evidence=['local_record'];
 FLOW.local_explain.purpose='观察脚跟离地后怎样调整距离，比较同条件下的负重背屈。';
 FLOW.local_explain.education=FLOW.trial.education;

@@ -1,12 +1,13 @@
+import {wallTapeStudy} from './wall-tape.js?v=67';
 import {installTaskDesk} from './task-desk.js';
 import {createStrengthBed} from './strength-bed.js';
 import {addPractice} from '../learning/case-items.js';
-import {openArchObservation} from './arch-observation.js';
+import {openArchObservation} from './arch-observation.js?v=67';
 import {openArchBones} from './arch-bones.js';
-import {voiceRole,replies,spokenCommunicationChoices,archHistory} from './clinic-dialogue.js';
+import {voiceRole,replies,spokenCommunicationChoices,archHistory} from './clinic-dialogue.js?v=67';
 import {renderPracticeEvidence} from './learning-evidence33.js';
 import {ankleExamPanel} from '../soap/ankle-exam.js';
-import {openInversionStudy} from './inversion-study.js';
+import {openInversionStudy} from './inversion-study.js?v=67';
 import {startBedside} from './bedside-player.js';
 import {differentialPanel} from './differential.js';
 import {reactionFor,repairLabel,repairSpoken} from './communication-v26.js';
@@ -18,18 +19,18 @@ import { createDialogueAudio } from './dialogue-audio.js';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createClinicRoom } from './scene-room.js';
-import { createActors } from './actors.js';
+import { createActors } from './actors.js?v=67';
 import { samplePlantarScan, sampleStanding, sampleWalking, renderPressureDiagram } from './pressure-engine.js';
 import { createPressureStage } from './pressure-stage.js';
 import {gaitExcerpt,gaitPhasesComplete} from './gait-phase-task.js';
-import { createLearningUI } from './learning-ui.js';
+import { createLearningUI } from './learning-ui.js?v=67';
 import { createDialoguePlayer } from './dialogue-player.js';
-import { createFilmSequence } from './film-sequence.js';
+import { createFilmSequence } from './film-sequence.js?v=67';
 import { createLearningHub } from '../learning/learning-hub.js';
 import {strengthComplete,motionComplete} from './clinical-exams.js';
 import { migrateProgress, recoverSkippedBedside, legacyBedsideCheckpoint } from './progress-migration.js';
 import { GAIT_CASE, sampleGait } from './gait-lesson.js';
-import { CASE_DATA, FLOW, START_NODE, TEACHER_LIMITATIONS, EVIDENCE_CATALOG } from './case-flow.js';
+import { CASE_DATA, FLOW, START_NODE, TEACHER_LIMITATIONS, EVIDENCE_CATALOG } from './case-flow.js?v=67';
 
 const $=id=>document.getElementById(id), profile=window.DXXHub?.profile?.()||null;
 const uid=()=>crypto.randomUUID(), now=()=>new Date().toISOString();
@@ -99,20 +100,23 @@ function leaveFootArches(){
  footArches.close();footArches=null;paintTask();
  $('taskSurface').querySelector('[data-open-arch-bones]')?.focus();
 }
-let archObservation=null;
+let archObservation=null,wallTape=null;
 function showArchObservation(){
  if(activeNode?.id!=='arch_view'||archObservation||state.exitLock||state.paused||dialoguePlayer.getState().pending)return;
  if(!ensurePreparation())return;
- const subject=contactReady()?'case':'therapist-demo',sample=subject==='case';
- const actor=sample?actors.patient:actors.therapist,seat=room.anchors.examSeat;
- if(sample){actorPose(actors.therapist,'examine',room.anchors.examTherapist,-Math.PI/2);}
- else {actorPose(actors.patient,'seated',room.anchors.patientSeat,-1.1,true);}
+ if(!contactReady()){
+  $('taskDock').hidden=false;$('taskSurface').hidden=false;$('dockTitle').textContent='坐站足弓观察';
+  $('taskSurface').replaceChildren(nodeEl('p','','观察患者站立前，请先确认站立安全并取得同意。'),button('补做检查前问诊',returnToIntake));
+  return;
+ }
+ const subject='case',actor=actors.patient,seat=room.anchors.examSeat;
+ actorPose(actors.therapist,'examine',room.anchors.examTherapist,-Math.PI/2);
  actorPose(actor,'seated',seat,Math.PI/2);
  setView('third',true);
- $('taskDock').hidden=false;$('taskSurface').hidden=false;$('dockTitle').textContent=sample?'坐位与站位足弓比较':'治疗师体位示范';
+ $('taskDock').hidden=false;$('taskSurface').hidden=false;$('dockTitle').textContent='坐位与站位足弓比较';
  $('taskStatus').hidden=true;$('next').hidden=true;$('filmCue').hidden=true;$('filmHandoff').hidden=true;
  document.body.dataset.dockCollapsed='false';$('dockToggle').setAttribute('aria-expanded','true');$('dockToggle').textContent='收起操作';
- dialoguePlayer.showPrompt(sample?'观察陈女士的右足内侧，比较坐位和站位。':'观察治疗师怎样从坐位换到站位。','arch_view');
+ dialoguePlayer.showPrompt('观察陈女士的右足内侧，比较坐位和站位。','arch_view');
  $('speaker').textContent='观察提示';$('speakerAvatar').textContent='看';
  $('conversation').dataset.speaker='student';$('dialogueKind').textContent='坐站观察';
  const prior=state.archPosturesDraft;
@@ -121,10 +125,10 @@ function showArchObservation(){
   onStanding(){state.archPosturesDraft={subject,phase:'standing'};record('clinic3d_arch_seated_observed',{subject});},
   onFinish(){
    if(activeNode?.id!=='arch_view'||state.archPosturesDraft?.phase!=='standing')return;
-   if(!state.taskReceipts.arch_view){
+   if(state.taskReceipts.arch_view?.subject!=='case'){
     const receipt={at:now(),scope:'arch-posture-comparison',subject,positions:['seated','standing']};
     state.taskReceipts.arch_view=receipt;
-    if(sample)addEvidence(['arch_record']);
+    addEvidence(['arch_record']);
     record('clinic3d_task_completed',{nodeId:'arch_view',...receipt});
    }
    if(state.skippedSteps)delete state.skippedSteps.arch_view;
@@ -236,7 +240,7 @@ function setVisual(node){
  if(zone==='posturography'&&node.id==='static_cop'){
   platformEntry=null;actorPose(actors.patient,'standing',room.anchors.forcePlate,Math.PI,true);
  }
- const wallPose=({trial:'wall-ready',local_record:'wall-heel',local_explain:'wall-heel'})[node.id];
+ const wallPose=({trial:'wall-ready',local_record:'wall-heel',wall_adjust:'wall-heel',wall_measure:'wall-retry',local_explain:'wall-retry'})[node.id];
  actors.patient.setClinicalPose(zone==='posturography'&&node.id==='balance_intro'&&!platformEntry?'rail-hold':zone==='posturography'?'plate-stand':zone==='wall'?wallPose:null);
  actors.therapist.setClinicalPose(zone==='posturography'||zone==='wall'?'guard':null);
  document.body.dataset.instrument=zone==='posturography'?'static-force-platform':zone==='pressure'?'plantar-scanner':'';
@@ -244,6 +248,7 @@ function setVisual(node){
  actors.setTalking(null);
  actors.therapist.setFootwear?.('shoes');actors.therapist.setDocumentation?.(['consult','balance','posturography','exam','wall'].includes(zone)?'desk':'carry');
  if(!actors.patient.getState().footwearRemoval?.active){actors.patient.setFootwear?.(state.barefootPrepared?'barefoot':'shoes');}
+ if(node.task?.type==='plantarScan'&&!state.exitLock&&!state.barefootPrepared&&!actors.patient.getState().footwearRemoval.active){startPreparation(false);return;}
  if(['act2','act3','act4','act5','act6','act7'].includes(act)&&node.id!=='__preparation'&&node.id!=='arch_intro'&&!state.barefootPrepared&&state.evidence.includes('screening')&&state.evidence.includes('consent')&&!actors.patient.getState().footwearRemoval?.active&&(typeof filmSequence==='undefined'||!filmSequence.needsBriefing(node)))startPreparation(false);
 }
 function drawRail(){ $('chapterRail').replaceChildren();for(const [id,label] of chapters){const b=button(String(chapters.findIndex(x=>x[0]===id)+1),()=>{});b.append(nodeEl('span','',label));const current=id===currentAct();b.classList.toggle('active',current);b.setAttribute('aria-label',label+' · 进度指示');if(current)b.setAttribute('aria-current','step');b.disabled=true;$('chapterRail').append(b);}}
@@ -293,9 +298,11 @@ function jumpToAct(act){
 }
 function goto(id,{restoring=false,navigation=false}={}) {
  if(id==='pressure_conditions')id='pressure_compare';
+ if(id==='local_explain'&&!state.taskReceipts?.wall_measure&&!state.exitLock)id='wall_measure';
  if(!REVIEW_NODE&&!state.completedAt&&!state.exitLock){
   if(id==='exam_reasoning'||(id==='ankle_stress'&&(state.taskReceipts?.ankle_stress||state.skippedSteps?.ankle_stress)))id=nextAfterBedside();
   else if(id==='arch_intro'&&activeNode?.id==='ankle_stress'&&state.afterBedside)id=nextAfterBedside();
+  if(state.taskReceipts?.arch_view?.subject==='therapist-demo')delete state.taskReceipts.arch_view;
   const finishedBones=state.taskReceipts?.arch_compare?.scope==='foot-arch-bone-selection';
   if(['arch_intro','arch_view','arch_compare'].includes(id)&&!finishedBones&&!state.taskReceipts?.ankle_stress&&!state.skippedSteps?.ankle_stress){
    id='ankle_stress';
@@ -328,6 +335,7 @@ function goto(id,{restoring=false,navigation=false}={}) {
  if(state.exitLock&&!safetyNodes.includes(id)&&!restoringSafetyChoice){toast('本轮体能任务已结束，请保留停止原因并复盘。');return;}
  if(['medical_stop','symptom_stop','decline_stop','safe_finish'].includes(id)){state.exitLock=true;state.preparationReturnNode=null;if(!state.exitReason)state.exitReason=id;}
  bedsideRequested=false;learningBubbles?.hide();
+ if(wallTape){wallTape.close();wallTape=null;visualZone='';}
  if(archObservation){archObservation.close();archObservation=null;visualZone='';}
  if(bedside)leaveBedside();
  if(activeNode?.id==='ankle_stress'&&state.skippedSteps?.ankle_stress)state.bedsideCheckpoint=null;
@@ -387,6 +395,10 @@ function goto(id,{restoring=false,navigation=false}={}) {
  if(state.communicationRepairs?.[id]?.pending){state.choiceLock=null;selectedNext=null;playPatientReaction(state.communicationRepairs[id],true);persist();return;}
  if(id==='ankle_stress'){$('next').hidden=true;dialoguePlayer.showPrompt(!REVIEW_NODE&&!contactReady()?'床旁操作前需完成问诊并取得同意。也可以跳过，继续观察足弓。':'前抽屉试验和内翻加压试验各做一次。',id);persist();return;}
  if(historyLead){filmSequence.clear();dialoguePlayer.loadSequence(historyLead,id);persist();return;}
+ if(id==='wall_measure'){
+  filmSequence.clear();dialoguePlayer.showPrompt(node.text,id);$('next').hidden=true;
+  beginWallMeasurement();persist();return;
+ }
  if(id==='arch_view'){
   $('next').hidden=true;
   if(!filmSequence.present(node,{restoring})){dialoguePlayer.showPrompt(node.text,id);showArchObservation();}
@@ -480,7 +492,7 @@ function taskComplete() {
  if(task.type==='arch')return state.taskReceipts?.arch_compare?.scope==='foot-arch-bone-selection';
  if(task.type==='gait')valid=gaitPhasesComplete(stepBook);
  if(task.type==='pressure')valid=task.stage==='conditions'?stepBook.has('mode'):stepBook.has('region')&&Number(stepBook.get('dynamicMax')||0)-Number(stepBook.get('dynamicMin')||0)>=.15;
- if(task.type==='plantarScan')valid=stepBook.get('plantarScan')===true;
+ if(task.type==='plantarScan')valid=scanReady()&&stepBook.get('plantarScan')===true;
  if(task.type==='staticCOP')valid=stepBook.get('cop54_interpreted')===true&&stepBook.get('cop54_full')===true;
  if(task.type==='balance')valid=(task.checklist||[]).every((_,i)=>stepBook.get('check'+i));
  if(valid){state.taskReceipts[activeNode.id]={at:now(),values:Object.fromEntries(stepBook),scope:({gait:'gait-cycle-phases',plantarScan:'case-plantar-scan',muscle:'simulated-ankle-strength',goniometer:'ankle-motion-knowledge',staticCOP:'static-balance-interpretation'})[task.type]||'teaching-operation-only'};record('clinic3d_task_completed',{nodeId:activeNode.id,...state.taskReceipts[activeNode.id]});}
@@ -526,11 +538,12 @@ function animate(t){requestAnimationFrame(animate);if(mechanism||footArches){las
  document.body.dataset.strengthPosture=info.posture;document.body.dataset.strengthContact=[info.fixedGap,info.contactGap].map(n=>n.toFixed(3)).join(',');document.body.dataset.strengthMuscles=info.projection.join(',');
  if(!lessonUI.anatomyIsOpen()&&!learningHub.isOpen())renderer.render(scene,camera);return;
  }if(bedside){bedside.tick(Math.min(realDelta,.5));renderer.render(scene,camera);return;}if(!state.paused){elapsed+=dt;if(actors&&elapsed>talkUntil)actors.setTalking(null);if(movement){movement.time+=dt;const travel=Math.min(movement.time/5.2,1);if(!movement.done){walkRoute(actors.patient,movement.patientPath,travel);walkRoute(actors.therapist,movement.doctorPath,travel);}if(travel>=1&&!movement.done){movement.done=true;actorPose(actors.patient,'seated',room.anchors.patientSeat,Math.PI);actorPose(actors.therapist,'seated',room.anchors.therapistSeat,0);}if(movement.time>=movement.duration)finishIntro();}approachPlatform(Math.min(realDelta,.12));actors?.update(dt,Math.min(realDelta,.5));archObservation?.tick();
+ if(wallTape){wallTape.tick(Math.min(realDelta,.15));}
  if(gaitDemo){advanceGaitPhase(Math.min(realDelta,.18));}
  if(taskRunning){const rate=pressureMode==='static'?1/8:.25/(2*GAIT_CASE.cycleSeconds);taskPhase=Math.min(1,taskPhase+dt*rate);if(taskPhase>=1)taskRunning=false;stepBook.set('observed',true);const slider=$('taskPhase');if(slider)slider.value=String(taskPhase);if(t-lastPressurePaint>100||!taskRunning){paintTask();lastPressurePaint=t;}}syncGaitVisual();updatePreparation();
  }
- if(cameraMove){const v=cameraMove.duration?Math.min((t-cameraMove.at)/cameraMove.duration,1):1,k=v*v*(3-2*v);camera.position.lerpVectors(cameraMove.from,cameraMove.to,k);controls.target.lerpVectors(cameraMove.look,cameraMove.target,k);camera.lookAt(controls.target);if(v>=1){cameraMove=null;controls.enabled=state.view==='third';controls.enableDamping=state.view==='third';}}
- if(actors)actors.therapist.root.visible=(state.view==='third'||!!archObservation)&&!actors.patient.getState().footwearRemoval?.active;controls?.update();if(activeNode?.task?.type==='gait')positionGaitLabel();if(!lessonUI.anatomyIsOpen()&&!learningHub.isOpen())renderer?.render(scene,camera);}
+ if(cameraMove&&!wallTape){const v=cameraMove.duration?Math.min((t-cameraMove.at)/cameraMove.duration,1):1,k=v*v*(3-2*v);camera.position.lerpVectors(cameraMove.from,cameraMove.to,k);controls.target.lerpVectors(cameraMove.look,cameraMove.target,k);camera.lookAt(controls.target);if(v>=1){cameraMove=null;controls.enabled=state.view==='third';controls.enableDamping=state.view==='third';}}
+ if(actors)actors.therapist.root.visible=(state.view==='third'||!!archObservation||!!wallTape)&&!actors.patient.getState().footwearRemoval?.active;if(!wallTape)controls?.update();if(activeNode?.task?.type==='gait')positionGaitLabel();if(!lessonUI.anatomyIsOpen()&&!learningHub.isOpen())renderer?.render(scene,camera);}
 
 function startPreparation(replay=false){
  if(!actors||actors.patient.getState().footwearRemoval?.active)return;
@@ -557,7 +570,9 @@ function updatePreparation(){
   const previous=removalReturn;removalReturn=null;state.barefootPrepared=true;document.body.dataset.footwearPreparation='false';$('next').disabled=false;
   if(bedsideRequested&&activeNode?.id==='ankle_stress')queueMicrotask(()=>{if(bedsideRequested)enterBedside();});
   setVisual(activeNode||{act:'act1',visualMode:'consult'});
+  if(activeNode?.task?.type==='plantarScan')renderTask(activeNode.task);
   setView(previous.preview?previous.view:'third');
+  if(activeNode?.id==='wall_measure')beginWallMeasurement();
   if(activeNode?.id==='arch_view'&&!dialoguePlayer.getState().pending)showArchObservation();
   record('clinic3d_barefoot_prepared',{animationCompleted:true,clinicalSkillAssessed:false});lessonUI.refreshCoach();if(state.autoDialogueNext===activeNode?.id&&!dialoguePlayer.getState().pending){state.autoDialogueNext=null;continueEncounter();}
  }
@@ -606,9 +621,26 @@ function advanceGaitPhase(delta){
   paintTask();
  }
 }
+function scanReady(){
+ const patient=actors?.patient.getState();
+ return activeNode?.task?.type==='plantarScan'&&!state.exitLock&&state.barefootPrepared&&patient?.footwear==='barefoot'&&!patient.footwearRemoval.active;
+}
+function beginWallMeasurement(){
+ if(wallTape||activeNode?.id!=='wall_measure'||state.exitLock||actors.patient.getState().footwearRemoval.active)return;
+ if(!state.barefootPrepared){startPreparation(false);return;}
+ cameraMove=null;setView('third',true);cameraMove=null;camera.clearViewOffset();
+ wallTape=wallTapeStudy({scene,room,actors,camera,controls,onPhase:(side,n,reading)=>{
+  $('line').textContent=(side==='R'?'右脚':'左脚')+' · 第 '+n+' 次测量。'+(reading===undefined?'软尺从墙边沿地面展开。':'零刻度贴墙，大脚趾尖对齐 '+reading.toFixed(1)+' 厘米。');
+ },onDone:results=>{
+  state.taskReceipts.wall_measure={at:now(),scope:'wblt-tape',...results};
+  record('clinic3d_wall_distances_measured',state.taskReceipts.wall_measure);
+  goto('local_explain');
+ }});
+}
 function syncGaitVisual(){
  if(!actors||actors.patient.getState().footwearRemoval?.active){pressureStage?.update(null,false);return;}
  if(activeNode?.task?.type==='plantarScan'||activeNode?.id==='cop_explain'){
+  if(activeNode.task?.type==='plantarScan'&&!scanReady()){pressureStage?.update(null,false);return;}
   actors.patient.setLocomotion(false);
   actors.patient.setPosition(room.anchors.pressureStand);
   const acquired=activeNode.id==='cop_explain'?state.taskReceipts.pressure_compare?.scope==='case-plantar-scan':stepBook.get('plantarScan')===true;
@@ -655,7 +687,7 @@ const filmSequence=createFilmSequence({$,state,player:dialoguePlayer,record,pers
  refreshCoach:()=>lessonUI.refreshCoach(),
  pauseScene:pauseSceneForFilm,resumeScene:resumeSceneFromFilm
 });
-const lessonUI=createLearningUI({$ ,state,catalog,stepBook,nodeEl,button,record,enterFootArches,
+const lessonUI=createLearningUI({scanReady,$ ,state,catalog,stepBook,nodeEl,button,record,enterFootArches,
  getCurrent:()=>({node:activeNode,phase:taskPhase,running:taskRunning,pressureMode,gaitDemo}),playGaitPhase,
  saveTask:persist,strengthVoice(text){if(strengthBed)speak('林治疗师',text);},
  projectMuscle(value){strengthBed?.project(value);},
@@ -734,6 +766,7 @@ function ensurePreparation(){
  return false;
 }
 function continueEncounter(){
+ if(activeNode?.id==='wall_measure'&&!state.taskReceipts?.wall_measure)return;
  if(activeNode?.id==='arch_view'){showArchObservation();return;}
  if(activeNode?.id==='arch_compare'&&!taskComplete()){enterFootArches();return;}
  if(activeNode?.id==='injury_mechanism'&&!state.taskReceipts?.injury_mechanism){enterMechanism();return;}
@@ -753,7 +786,7 @@ function continueEncounter(){
 const skipBranches={
  gait_events:'plan_intro',history:'injury_question',safety:'goal',goal:'fear_check',fear_check:'consent',
  consent:'ankle_stress',consent_reply:'ankle_stress',acute_differential:'medical_stop',
- alignment:'trial',trial:'local_explain',local_explain:'muscle_intro',exam_reasoning:'arch_intro',
+ alignment:'trial',trial:'wall_adjust',wall_adjust:'wall_measure',wall_measure:'muscle_intro',local_explain:'muscle_intro',exam_reasoning:'arch_intro',
  plan:'teachback',synthesis:'plan',medical_stop:'safe_finish'
 };
 function skipCurrentStep(){

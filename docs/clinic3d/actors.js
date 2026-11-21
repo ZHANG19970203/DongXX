@@ -434,7 +434,8 @@ export async function createActor(scene, role, url) {
       const foot=gaitSample?.[side==='R'?'right':'left'].foot;
       if(foot)footTarget.lerp(position(-foot.lateral,restFoot.y+foot.height,foot.forward),walkWeight);
       if(wall){
-        footTarget.z+=side==='R'?(clinicalPose==='wall-retry'?.26:.22):-.20;
+        const lead=clinicalPose==='wall-measure-left'?'L':'R';
+        footTarget.z+=side===lead?(clinicalPose==='wall-retry'?.26:.22):-.20;
         if(heelRaised&&side==='R')footTarget.y+=.031*lungeLoad;
       }
       if(eversionSide===side)footTarget.y+=.055;

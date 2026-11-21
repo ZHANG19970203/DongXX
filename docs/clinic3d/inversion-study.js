@@ -1,4 +1,4 @@
-import {makeAnkleModel} from './inversion-model.js';
+import {makeAnkleModel} from './inversion-model.js?v=67';
 
 const stations=[
   {title:'距骨怎样进入踝穴？',prompt:'从上方看距骨滑车，再切换两种足位，观察哪一段转入胫腓骨之间。',
@@ -15,9 +15,9 @@ const stations=[
    answers:['内踝较低，对内翻的骨性限制更多','两踝等高，向两侧翻转的限制相同','外踝较低，对外翻的骨性限制更多'],correct:2,
    retry:'在正面视图中，沿腓骨向下找到外踝，将它的水平线与内踝比较。',
    conclusion:'外踝向下延伸得更远，对外翻的骨性限制较多。内翻损伤的机制还要结合足位和韧带来解释。'},
-  {title:'外侧哪条韧带容易受牵拉？',prompt:'先辨认外侧的两条韧带，再把右脚从中立位摆到跖屈伴内翻的位置。',
+  {title:'外侧哪条韧带容易受牵拉？',prompt:'辨认外踝周围的三条韧带。可从后方看距腓后韧带，再比较中立位与跖屈伴内翻。',
    actions:[['rest','看中立位'],['strain','做跖屈伴内翻']],
-   caption:{neutral:'橙色示意距腓前韧带，紫色示意跟腓韧带。',rest:'观察外踝前方和下方的两条韧带走向。',strain:'小腿保持固定，足尖下移，右足底转向身体中线。'},
+   caption:{neutral:'橙色为距腓前韧带，紫色为跟腓韧带，蓝色为距腓后韧带。',rest:'从外踝辨认连向前方距骨、下方跟骨和后方距骨的三条韧带。',strain:'小腿保持固定，足尖下移，右足底转向身体中线。'},
    question:'在这个足位，哪条外侧韧带更应重点考虑？',
    answers:['距腓前韧带','跟腓韧带','距腓后韧带'],correct:0,
    retry:'找从外踝前缘连向距骨的橙色带，再看跖屈伴内翻的姿势。',
@@ -38,12 +38,14 @@ export function openInversionStudy({host,draft,onSave,onDone,onContinue,onClose,
   dialog.setAttribute('aria-label','右踝扭伤机制模型练习');header.append(title,button('返回接诊',onClose));if(onSkip){const skip=button('跳过此步骤',onSkip);skip.className='skip-step';header.insertBefore(skip,header.lastChild);}
   const body=el('div','study-body'),viewer=el('div','study-view'),stage=el('div','study-canvas'),cap=el('p','study-cap'),nav=el('div','study-view-nav');
   let model=null,closed=false,current='neutral',ready=false,busy=false,generation=0;
-  nav.setAttribute('aria-label','观察视角');nav.append(button('向左转',()=>model?.rotate(-.28)),button('向右转',()=>model?.rotate(.28)),button('复位视角',()=>model?.resetView()));
+  nav.setAttribute('aria-label','观察视角');nav.append(button('向左转',()=>model?.rotate(-.28)),button('向右转',()=>model?.rotate(.28)),button('复位视角',()=>{model?.resetView();if(book.step===2)cap.textContent=stations[2].caption[current];}));
+  const posterior=button('看后方',()=>{model?.posteriorView();cap.textContent='蓝色为距腓后韧带，从外踝内面的外踝窝连至距骨后外侧。';});
+  nav.append(posterior);posterior.hidden=true;
   const side=el('section','study-side');viewer.append(stage,nav,cap);body.append(viewer,side);
   dialog.append(header,body);host.append(dialog);dialog.showModal();dialog.addEventListener('cancel',e=>{e.preventDefault();onClose();});
   const credit=()=>{const d=el('details','study-source'),s=el('summary','','模型与依据');d.append(s);
     const p=el('p','','解剖模型取自 BodyParts3D（DBCLS），经 Somakine 整理。此处截取右侧骨肌，添加教学色、韧带走向及简化运动。');d.append(p);
-    for(const [name,url] of [['模型来源','https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html'],['CC BY 4.0','https://creativecommons.org/licenses/by/4.0/'],['距骨形态研究','https://pubmed.ncbi.nlm.nih.gov/32320447/'],['韧带应变实验','https://pubmed.ncbi.nlm.nih.gov/34144675/']]){
+    for(const [name,url] of [['模型来源','https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html'],['CC BY 4.0','https://creativecommons.org/licenses/by/4.0/'],['距骨形态研究','https://pubmed.ncbi.nlm.nih.gov/32320447/'],['距腓后韧带解剖研究','https://pubmed.ncbi.nlm.nih.gov/39818474/'],['韧带应变实验','https://pubmed.ncbi.nlm.nih.gov/34144675/']]){
       const a=el('a','',name);a.href=url;a.target='_blank';a.rel='noopener';d.append(a,'　');}return d;};
   function save(){onSave(structuredClone(book));}
   function summary(){
@@ -90,7 +92,7 @@ export function openInversionStudy({host,draft,onSave,onDone,onContinue,onClose,
     });next.className='study-primary';side.append(next);}
     side.append(credit());
   }
-  function beginStep(){busy=false;side.scrollTop=0;if(book.step>=stations.length){summary();return;}
+  function beginStep(){posterior.hidden=book.step!==2;busy=false;side.scrollTop=0;if(book.step>=stations.length){summary();return;}
     current='neutral';model.select(book.step,current,()=>{},true);cap.textContent=stations[book.step].caption[current];paint();}
   async function load(){
     const id=++generation;side.replaceChildren(el('p','','正在载入右踝骨肌模型…'));

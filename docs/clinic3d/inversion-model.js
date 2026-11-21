@@ -9,6 +9,7 @@ const views={
   dome:[[-.07,-.009,.075],[.025,1,.035],.081],
   front:[[-.077,.005,.085],[0,.015,1],.129],
   ligament:[[-.085,-.011,.078],[-1,.11,.32],.128],
+  posterior:[[-.082,-.019,.059],[-.28,.12,-1],.095],
   muscles:[[-.087,.075,.078],[-1,.10,.48],.338],
   eversion:[[-.082,-.009,.103],[.06,.09,1],.167]
 };
@@ -72,7 +73,11 @@ export async function makeAnkleModel(stage,signal){
   const anchor=v(-.096,-.012,.069), attachment=v(-.088,-.014,.084);
   const cflStart=v(-.097,-.019,.061),cflEnd=v(-.095,-.044,.055);
   const atfl=rod(ligaments,anchor,attachment,.0022,0xc65c35),cfl=rod(ligaments,cflStart,cflEnd,.0018,0x775775);
-  for(const m of [atfl,cfl]){m.material.depthTest=false;m.renderOrder=5;}
+  // Approximate insertion centres on the medial fibular fossa and posterolateral talus (atlas metres).
+  const ptOrigin=v(-.0921,-.0191,.0524),ptInsertion=v(-.0706,-.0189,.0504);
+  const ptfl=rod(ligaments,ptOrigin,ptInsertion,.0023,0x2663b7);
+  const lp=v(0,0,0);pin(ligaments,lp,'距腓后韧带');
+  for(const m of [atfl,cfl,ptfl]){m.material.depthTest=false;m.renderOrder=5;}
   const lt=v(0,0,0);pin(ligaments,lt,'距腓前韧带');const lc=v(0,0,0);pin(ligaments,lc,'跟腓韧带');
   let span=.17,currentView='ankle',anim=0,dead=false;
   const size=()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;const ratio=w/h;
@@ -84,6 +89,8 @@ export async function makeAnkleModel(stage,signal){
     const moved=p=>p.clone().sub(hinge).applyQuaternion(foot.quaternion).add(hinge);
     const a=moved(attachment),b=rear.localToWorld(cflEnd.clone().sub(hindPivot));
     setEnds(atfl,anchor,a);setEnds(cfl,cflStart,b);
+    const post=moved(ptInsertion);setEnds(ptfl,ptOrigin,post);
+    lp.copy(ptOrigin).lerp(post,.5).add(v(.001,.010,-.014));
     lt.copy(a).add(v(-.005,.009,.017));lc.copy(b).add(v(-.005,-.004,-.016));
     gl.render(scene,camera);
     for(const {group,point,n} of pins){
@@ -101,7 +108,7 @@ export async function makeAnkleModel(stage,signal){
   function select(step,action,done=()=>{},instant=false){
     cancelAnimationFrame(anim);
     const top=action==='dome',tipsOn=action==='tips',muscle=action==='muscles',stress=action==='strain',ev=action==='evert';
-    const view=top?'dome':step===1?'front':step===2?'ligament':step===3?(ev?'eversion':'muscles'):'ankle';
+    const view=top?'dome':step===1?'front':step===2?(action==='posterior'?'posterior':'ligament'):step===3?(ev?'eversion':'muscles'):'ankle';
     malleoli.visible=tipsOn;widths.visible=top;ligaments.visible=step===2;
     clip.constant=muscle ? .24 : .105;
     for(const [key,m] of bones){
@@ -123,7 +130,7 @@ export async function makeAnkleModel(stage,signal){
   }
   malleoli.traverse(n=>{if(n.material){n.material.depthTest=false;n.renderOrder=6;}});
   const ro=new ResizeObserver(size);ro.observe(stage);controls.addEventListener('change',draw);
-  return {select,resetView:()=>frame(currentView), rotate:angle=>{const pos=camera.position.clone().sub(controls.target);
+  return {select,posteriorView:()=>frame('posterior'),resetView:()=>frame(currentView), rotate:angle=>{const pos=camera.position.clone().sub(controls.target);
     pos.applyAxisAngle(v(0,1,0),angle);camera.position.copy(controls.target).add(pos);controls.update();draw();},
     dispose(){dead=true;cancelAnimationFrame(anim);ro.disconnect();controls.dispose();
       scene.traverse(obj=>{obj.geometry?.dispose();obj.material?.dispose();});gl.dispose();gl.forceContextLoss();canvas.remove();pins.forEach(p=>p.n.remove());}};

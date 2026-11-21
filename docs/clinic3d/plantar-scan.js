@@ -23,25 +23,27 @@ export function plantarFigure(){
   return figure;
 }
 
-export function mountPlantarScan({wrap,book,button,record,changed}){
+export function mountPlantarScan({wrap,book,button,record,changed,scanReady}){
   const figure=plantarFigure(), completed=book.get('plantarScan')===true;
   const masks=figure.querySelectorAll('.scan-reveal');
   figure.dataset.state=completed?'ready':'waiting';
   const status=document.createElement('p');status.setAttribute('role','status');
   function finish(){
-    if(!figure.isConnected||!wrap.contains(figure))return;
+    if(!figure.isConnected||!wrap.contains(figure)||!scanReady())return;
     book.set('plantarScan',true);
     record('clinic3d_plantar_scan',{left:'typical',right:'low',condition:'bilateral-standing',source:'synthetic'});
     figure.dataset.state='ready';status.textContent='扫描完成。比较两脚内侧中足的接触宽度。';
     start.hidden=true;changed();
   }
   const start=button('开始足底扫描',()=>{
+    if(!scanReady())return;
     start.disabled=true;figure.dataset.state='scanning';status.textContent='正在采集双足足印…';
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){finish();return;}
     const animations=Array.from(masks,mask=>mask.animate([{clipPath:'inset(0 0 100% 0)'},{clipPath:'inset(0 0 0% 0)'}],{duration:1400,easing:'linear'}));
     animations[0].onfinish=finish;
   });
+  start.disabled=!scanReady();
   start.dataset.startScan='true';start.hidden=completed;
-  status.textContent=completed?'扫描完成。比较两脚内侧中足的接触宽度。':'请患者双脚自然站在扫描板上。';
+  status.textContent=completed?'扫描完成。比较两脚内侧中足的接触宽度。':scanReady()?'请患者双脚赤足，自然站在扫描板上。':'请先坐稳，脱掉双脚的鞋袜。';
   wrap.append(figure,status,start);
 }

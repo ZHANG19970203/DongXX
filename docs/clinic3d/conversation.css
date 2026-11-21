@@ -106,3 +106,14 @@ body:not([data-dialogue-pending="true"]) #clinic:has(#taskDock:not([hidden])) #c
   #conversation .speaker-portrait { width: 32px; height: 36px; flex-basis: 32px; }
   #conversationBody { padding-block: 8px; }
 }
+
+/* Keep both tutor controls in the upper-right toolbar, clear of the task panel. */
+body #clinic #coach.lesson-coach{left:auto!important;right:16px!important;top:72px!important;width:min(265px,80vw)!important}
+body #clinic #coach.lesson-coach[data-collapsed=true]{width:auto!important;padding:3px 8px}
+body #clinic #coach.lesson-coach[data-collapsed=true] .coach-face{display:none}
+body:has(#clinic) .dxx-assistant-launch{inset:16px 84px auto auto!important;height:43px;padding:3px 12px 3px 4px}
+body:has(#clinic) .dxx-assistant-launch img{width:34px;height:34px}
+body:has(#clinic) .learning-bubble-v25{bottom:auto;top:128px;right:16px}
+@media(max-width:700px){body:has(#clinic) .dxx-assistant-launch{top:9px!important;right:64px!important;width:39px;height:39px;padding:2px}body:has(#clinic) .dxx-assistant-launch span{display:none}body #clinic #coach.lesson-coach{top:56px!important;right:8px!important}}
+
+body[data-node=wall_measure] #clinic #conversation:not([hidden]){inset:auto auto 14px 14px!important;transform:none!important;width:min(350px,75vw)!important;max-height:28dvh;overflow:auto}

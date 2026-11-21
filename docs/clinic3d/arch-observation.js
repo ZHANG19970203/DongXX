@@ -1,9 +1,8 @@
 import {archOutlines} from './arch-bones.js';
 
-// The student's two confirmations follow the rendered poses. Only case observations
-// can become patient evidence; a therapist demonstration is recorded separately.
+// Confirm each observation after the patient reaches the corresponding pose.
 export function openArchObservation({host,subject,standingSeenNext,actor,seat,onStanding,onFinish,paused}){
- const sample=subject==='case',person=sample?'陈女士':'治疗师';
+ const person='陈女士';
  let phase=standingSeenNext?'standing':'seated',ready=false;
  const panel=document.createElement('section'),heading=document.createElement('h3'),hint=document.createElement('p');
  panel.className='arch-postures';panel.dataset.subject=subject;hint.setAttribute('aria-live','polite');
@@ -15,9 +14,9 @@ export function openArchObservation({host,subject,standingSeenNext,actor,seat,on
   const standing=phase==='standing';
   heading.textContent=person+' · '+(standing?'站位':'坐位');
   const outlines=archOutlines(),fig=outlines.children[standing?1:0];
-  fig.querySelector('figcaption').textContent=(sample?'病例示意':'观察位置示意')+' · 右足内侧';
+  fig.querySelector('figcaption').textContent='病例示意 · 右足内侧';
   diagram.replaceChildren(fig);
-  hint.textContent=sample?(standing?'比较同一位置，右脚负重后内侧纵弓比坐位时低。':'先看坐位时右脚内侧的弧度。'):(standing?'站起来，双脚自然承重，再看同一段足弓。':'先坐稳，沿脚跟到大脚趾根部观察内侧足弓。');
+  hint.textContent=standing?'比较同一位置，右脚负重后内侧纵弓比坐位时低。':'先看坐位时右脚内侧的弧度。';
   action.textContent=standing?'完成比较，进入足弓识别':'已看坐位，观察站位';
   actor.setPose(standing?'standing':'seated');
  }
