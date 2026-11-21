@@ -60,7 +60,9 @@ try{
 }catch{}
 const stepBook=new Map(), catalog=Array.isArray(EVIDENCE_CATALOG)?Object.fromEntries(EVIDENCE_CATALOG.map(e=>[e.id,e])):EVIDENCE_CATALOG||{};
 function toast(text){clearTimeout(toastTimer);$('toast').textContent=text;$('toast').hidden=false;toastTimer=setTimeout(()=>$('toast').hidden=true,3300);}
-function record(type,payload={}){if(!hasStarted)return null;const e={id:'v14.'+uid(),sessionId:state.sessionId,type,at:now(),payload:{source:'clinic3d-v14',...payload}};state.events.push(e);queue.push(e);persist();flush();return e;}
+function record(type,payload={}){if(type==='clinic3d_task_completed')window.dispatchEvent(new CustomEvent('dxx:clinic-task-completed',{detail:{nodeId:payload.nodeId}}));
+ if(!hasStarted)return null;const e={id:'v14.'+uid(),sessionId:state.sessionId,type,at:now(),payload:{source:'clinic3d-v14',...payload}};state.events.push(e);queue.push(e);persist();flush();
+  return e;}
 function persist(){if(!hasStarted)return;if(activeNode?.task)state.taskState={nodeId:activeNode.id,values:Object.fromEntries(stepBook),phase:taskPhase,pressureMode};try{localStorage.setItem(STORE,JSON.stringify(state));$('saveStatus').textContent='进度已在本机保存';}catch{$('saveStatus').textContent='请及时导出学习记录';}}
 async function flush(){if(flushRunning||!queue.length)return;flushRunning=true;const batch=queue.slice(0,50);let sent=false;try{const r=await fetch('/api/learning/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session:{id:state.sessionId,caseId:'cai',startedAt:state.startedAt,student:profile},events:batch}),signal:AbortSignal.timeout(5000)});if(!r.ok)throw Error('offline');const receipt=await r.json();if(receipt.sessionId!==state.sessionId||receipt.accepted+receipt.duplicates!==batch.length)throw Error('receipt');queue=queue.filter(e=>!batch.includes(e));sent=true;$('saveStatus').textContent='本机保存 · 已同步课堂记录';}catch{$('saveStatus').textContent='本机保存 · 可导出记录';}finally{flushRunning=false;if(sent&&queue.length)setTimeout(flush,0);}}
 function nodeEl(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!=null)el.textContent=text;return el;}
@@ -136,7 +138,7 @@ function enterFootArches(){
   onSave:draft=>{state.archBoneDraft=draft;if(!REVIEW_NODE)persist();},
   onComplete:draft=>{if(state.taskReceipts?.arch_compare?.scope==='foot-arch-bone-selection')return;
    const receipt={at:now(),scope:'foot-arch-bone-selection',...draft};state.taskReceipts.arch_compare=receipt;
-   if(!REVIEW_NODE){record('clinic3d_task_completed',{nodeId:'arch_compare',...receipt});persist();}
+   record('clinic3d_task_completed',{nodeId:'arch_compare',...receipt});
   },
   onSkip:skipCurrentStep,onClose:leaveFootArches,onContinue:()=>{leaveFootArches();if(REVIEW_NODE)location.assign(reviewExit);else continueEncounter();}});
 }
@@ -150,7 +152,7 @@ function enterMechanism(){
  state.autoDialogueNext=null;dialogueAudio.cancel();
  mechanism=openInversionStudy({host:$('clinic'),review:!!REVIEW_NODE,draft:state.mechanismDraft,
   onSave:draft=>{state.mechanismDraft=draft;if(!REVIEW_NODE)persist();},
-  onDone:result=>{if(REVIEW_NODE)return;const receipt={at:now(),...result,scope:'anatomical-model-reasoning'};
+  onDone:result=>{const receipt={at:now(),...result,scope:'anatomical-model-reasoning'};
    state.taskReceipts.injury_mechanism=receipt;record('clinic3d_task_completed',{nodeId:'injury_mechanism',...receipt});},
   onSkip:skipCurrentStep,onClose:leaveMechanism,onContinue:()=>{leaveMechanism();if(REVIEW_NODE)location.assign(reviewExit);else goto('safety');}});
 }
@@ -807,7 +809,7 @@ async function init(){renderer=new THREE.WebGLRenderer({canvas:$('scene'),stenci
 function startReview(){
  if(!REVIEW_NODE)return;
  state.barefootPrepared=true;hasStarted=false;visualZone='';goto(REVIEW_NODE==='injury_mechanism'?'injury_question':REVIEW_NODE);setView(practice==='gait_events'?'first':'third',true);
- const badge=nodeEl('div','teacher-preview-badge',practice?'自由练习　':'教师预览 · 不保存学习结果　');
+ const badge=nodeEl('div','teacher-preview-badge',practice?(new URLSearchParams(location.search).get('assessment')==='clinic'?'模块测试　':'自由练习　'):'教师预览 · 不保存学习结果　');
  const back=nodeEl('a','',practice?'返回选项':'返回主线');back.href=reviewExit;badge.append(back);if(splitPractice)badge.append(button('跳过此步骤',skipCurrentStep));$('clinic').append(badge);
  for(const id of ['save','export','prepReplay','notesOpen','learningOpen'])$(id).hidden=true;
  $('saveStatus').textContent='教师预览 · 原接诊记录保持不变';

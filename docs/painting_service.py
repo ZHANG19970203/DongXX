@@ -69,7 +69,7 @@ class PaintingService:
   return {'result':result,'attempts':self.detail(sid)},200
  def certificate(self,data):
   check_object(data,('sessions','scope','action'))
-  if data['scope'] not in ('painting','clinic','lab','all','exam') or data['action'] not in ('status','issue'):raise ServiceError(422,'证书请求无效。')
+  if data['scope'] not in ('painting','clinic','lab','all','exam','exam-legacy') or data['action'] not in ('status','issue'):raise ServiceError(422,'证书请求无效。')
   credentials=data['sessions']
   if not isinstance(credentials,list) or not 1<=len(credentials)<=80:raise ServiceError(422,'请先登录并完成学习，记录同步后再查看。')
   ids=[];owner=None
@@ -79,7 +79,7 @@ class PaintingService:
    if owner is not None and student!=owner:raise ServiceError(403,'只能合并本人同一登记信息的记录。')
    owner=student;ids.append(item['id'])
   ids=sorted(set(ids));events=[];attempts=[]
-  if data['scope']=='exam':return exam_progress(self.l,ids,owner,data['action'])
+  if data['scope'] in ('exam','exam-legacy'):return exam_progress(self.l,ids,owner,data['action'],data['scope']=='exam-legacy')
   for sid in ids:events.extend(self.l.store.detail(sid)['events']);attempts.extend(self.detail(sid))
   done={r['muscle'] for r in attempts if r['kind']=='function' and r['result'].get('passed')};muscles=self.catalog['muscles'];painting=[{'id':k,'label':m['name'],'done':k in done,'kind':'彩绘与功能' if m['geometryAvailable'] else '知识辨认（模型缺项）'} for k,m in muscles.items()]
   tasks={e['payload'].get('nodeId') for e in events if e['type']=='clinic3d_task_completed'};choices={e['payload'].get('nodeId') or e['payload'].get('node') for e in events if e['type']=='clinic3d_choice'}

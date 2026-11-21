@@ -213,8 +213,8 @@
     },
     {
       "path": "assembly/index.html",
-      "bytes": 10378,
-      "sha256": "8377a91b519395622aaf83e875695e959520dbb349702b18990a19492c03be36"
+      "bytes": 10447,
+      "sha256": "725d0371fffc5bc9c6b61c212f57b5a75fd99df5d766060f662fc8a7c6183912"
     },
     {
       "path": "assembly/licenses/ASSET_PROVENANCE.json",
@@ -408,8 +408,8 @@
     },
     {
       "path": "assets/learner-feedback.js",
-      "bytes": 8296,
-      "sha256": "a66332f7099b15d3e270232213aaed15cde27a26b422e0b8aa187f2d762c3a7b"
+      "bytes": 8967,
+      "sha256": "4ea1b2d33d8aaa80383c36a24670db943e4799dd9d708cf87642bbe1d3376680"
     },
     {
       "path": "assets/login-welcome.js",
@@ -483,13 +483,13 @@
     },
     {
       "path": "certificate/certificate.js",
-      "bytes": 8129,
-      "sha256": "269b8155a761904ddb76b4bb1b05980bb43dbfc64156748d8e75e403da01688a"
+      "bytes": 8500,
+      "sha256": "b25b44d6aa8d957c93ed36415faf81d0dac75645f2600bded7abe1e17f6e087a"
     },
     {
       "path": "certificate/index.html",
-      "bytes": 3442,
-      "sha256": "a219d87feec8861fa291c82780db13828d5deb13d3e81652db2bd63c305e1eff"
+      "bytes": 3509,
+      "sha256": "1e53928f06b6df101894be75761c4ab79ed06999f591ff09b62b06a6b4c07087"
     },
     {
       "path": "clinic/ASSET_INVENTORY.csv",
@@ -574,7 +574,7 @@
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
       "bytes": 55805,
-      "sha256": "470c4277577c43911dc877b70d5afd812d9429ae27bfead2d21f8ebfe5404365"
+      "sha256": "a0defe7df4151ae7915fd1645973b3e629c044c106470bce4fb9811c6e2d7a4e"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -598,8 +598,8 @@
     },
     {
       "path": "clinic3d/app.js",
-      "bytes": 81728,
-      "sha256": "cc194d95c1163bd23139970a4b096697f2c973a3ad2240c7f0b9b3f8d5bdc70b"
+      "bytes": 81905,
+      "sha256": "e9100f99082e76305c70cafb0cfb5df21857746a3b76a9962ee54de58e10957e"
     },
     {
       "path": "clinic3d/appearance.js",
@@ -7558,8 +7558,8 @@
     },
     {
       "path": "clinic3d/index.html",
-      "bytes": 14162,
-      "sha256": "94fc25fe97d585e80be702b6b4e67750e6c6840cbe8dc2fbd0771dcefdc890d8"
+      "bytes": 14231,
+      "sha256": "f7f12f2c97598206f6b6a2de7f22c5cef49221068f2b45181ff354076d071e87"
     },
     {
       "path": "clinic3d/inversion-lesson.js",
@@ -7963,8 +7963,8 @@
     },
     {
       "path": "excel_export.py",
-      "bytes": 10232,
-      "sha256": "9bf89f2d0e75191becada0e8a413a0636267f120c8578b14c0f88751f5c49ed0"
+      "bytes": 10304,
+      "sha256": "6dbc5e7f459ef8ed02613fbf85d84284cc6a019c0f1117f41cf0a4740ec0ca34"
     },
     {
       "path": "favicon.svg",
@@ -7993,13 +7993,13 @@
     },
     {
       "path": "index.html",
-      "bytes": 15127,
-      "sha256": "6918f9e336ff801c2043f77ceea29ae0c4ecdc9517512147e1e5d06321a99b57"
+      "bytes": 15189,
+      "sha256": "d8d34aa343b7300ac5179c61e5846a47cb6bfb999abb6874504acda53b6f29b7"
     },
     {
       "path": "knowledge_exam.py",
-      "bytes": 4085,
-      "sha256": "b14b8a114066caf998e08ce2d25fe8aabad3fa2e54c02b4d7f40d87e29b98e54"
+      "bytes": 4719,
+      "sha256": "1f913bb1d7b70c24d43877484d4563eeb761583a2c46db4c9ad62a9891c0936d"
     },
     {
       "path": "lab/assets/app-data.json",
@@ -8053,8 +8053,8 @@
     },
     {
       "path": "lab/index.html",
-      "bytes": 62177,
-      "sha256": "8643c744c40a8b3d62a2eb41ed667ed5944b0ba3d9e33464d03bf082459ba9e9"
+      "bytes": 62246,
+      "sha256": "a4ee1cb031f000c0b5530d96e0063ab2bcea64a6d15f27a0475a744e1aab1c36"
     },
     {
       "path": "lab/lab.css",
@@ -8088,13 +8088,13 @@
     },
     {
       "path": "learning/case-modes.js",
-      "bytes": 7348,
-      "sha256": "a18f71fc5bbc38910588104349d06a4d46e9b3b059e18e74fb7fe7a353ad4da8"
+      "bytes": 6203,
+      "sha256": "8a20480ffaa9e26cc216eec73dc4d09ef85b627e649c5d628bcd2bcbc7c92f61"
     },
     {
       "path": "learning/exam-records.js",
-      "bytes": 3160,
-      "sha256": "8e524fc5ac7cddb66304d5664f82777f3148f5b9a6e3b49f939979271d33d33d"
+      "bytes": 3467,
+      "sha256": "ad22e84681365c0e6910ffdffc56918bc4c4d2a3eb804af78dfaadd0978268a1"
     },
     {
       "path": "learning/index.html",
@@ -8110,6 +8110,26 @@
       "path": "learning/learning.css",
       "bytes": 5165,
       "sha256": "ffb0e5027852e2ad3ecbd2116604d3233390ceed6e0006937253b5e3578c81fc"
+    },
+    {
+      "path": "learning/module-attempt.js",
+      "bytes": 2909,
+      "sha256": "13cc9569c6c0fb11425b07713f6ff82e7762efd5d36bc7ecb19f3d31909ec206"
+    },
+    {
+      "path": "learning/module-exam.json",
+      "bytes": 17566,
+      "sha256": "376e07574c04bda0107f886f82b913cfd9e4c649eb2cf721a01a1dfa012bf2f7"
+    },
+    {
+      "path": "learning/module-test.css",
+      "bytes": 2668,
+      "sha256": "213eafcb3fa3e476b38efe86fd26e362287b7a12980489029c47c3d4e377d262"
+    },
+    {
+      "path": "learning/module-test.js",
+      "bytes": 5540,
+      "sha256": "2871e296043575b9a7dcb1a79875b925b2e418990511f603e8aacd0b6bcf7c8a"
     },
     {
       "path": "learning/objectives-v15.json",
@@ -8223,8 +8243,8 @@
     },
     {
       "path": "painting/index.html",
-      "bytes": 4492,
-      "sha256": "a8568f501141b5dd19dcb2a049c601086ef060c434b6c3d2373ff485c7ec9b36"
+      "bytes": 4566,
+      "sha256": "bf9a8563f198b865f2ea14d6c30722d025d0e8c43c56ecd0f60b82e7b2364c26"
     },
     {
       "path": "painting/model.js",
@@ -8238,8 +8258,8 @@
     },
     {
       "path": "painting/painting.js",
-      "bytes": 16853,
-      "sha256": "be01c4ab109cdf5cd93055b05a1035b49accc3709166333ef880c682a2d7a048"
+      "bytes": 18299,
+      "sha256": "493501ba1c913e10fa7686b6375b7e623f8c33e90cf5d6d575083508752e6cce"
     },
     {
       "path": "painting/review.html",
@@ -8248,8 +8268,8 @@
     },
     {
       "path": "painting_service.py",
-      "bytes": 12162,
-      "sha256": "3b30cd8ef8fb616a204246fbca27a0bfa7b7b45c3a73714e99899841efc7def1"
+      "bytes": 12223,
+      "sha256": "eb2f4259c839a822bd6e7555ec027b5597e2405bdef20f4fa2bf677ce9045cff"
     },
     {
       "path": "posture/TEACHER_GUIDE.html",

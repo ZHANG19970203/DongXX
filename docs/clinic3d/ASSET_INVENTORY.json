@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 81728,
-      "sha256": "cc194d95c1163bd23139970a4b096697f2c973a3ad2240c7f0b9b3f8d5bdc70b"
+      "bytes": 81905,
+      "sha256": "e9100f99082e76305c70cafb0cfb5df21857746a3b76a9962ee54de58e10957e"
     },
     {
       "id": "walking-pose-v27",

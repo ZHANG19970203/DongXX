@@ -16,7 +16,9 @@ window.DXXFeedback=(()=>{
   const attempts=read(localStorage,'dxx_case_test_v1_'+JSON.stringify([p.teacher,p.studentId,p.name])+'_history');
   if(Array.isArray(attempts)){
    const passed=attempts.filter(r=>r.version==='ankle30-v1'&&r.passed&&r.correct>=25);
-   if(passed.length)progress.set('test:case','人体运动学知识测试 · 已完成学习 · 最高 '+Math.max(...passed.map(r=>r.correct))+' / 30 分 · 已获证');
+   const current=attempts.filter(r=>r.version==='module100-v1');
+   if(current.some(r=>r.passed))progress.set('test:modules','实验综合测试 · 最高 '+Math.max(...current.map(r=>r.score))+' / 100 分 · 及格，已获证');
+   if(passed.length)progress.set('test:legacy','旧版人体运动学知识测试 · 已完成学习 · 最高 '+Math.max(...passed.map(r=>r.correct))+' / 30 分 · 已获证');
   }
   const lab=r.virtualLaboratory;
   if(same(lab.profile,p)){
@@ -44,7 +46,8 @@ window.DXXFeedback=(()=>{
     for(const e of raw.events||[])if(e.type==='learning_active_interval'){const t=e.payload||{},a=Date.parse(t.from)/1000,b=Date.parse(t.to)/1000;if(t.method==='visible_recent_input_120s_v23'&&b>a&&b-a<=30)ranges.push([a,b]);}
    }
   }
-  return {sessions,progress,ranges,questions};
+  const scores=(Array.isArray(attempts)?attempts:[]).filter(r=>r.version==='module100-v1').map(({at,score,passed})=>({at,score,passed}));
+  return {sessions,progress,ranges,questions,scores};
  }
  function absorb(data,cached){
   if(!cached)return;
@@ -53,7 +56,7 @@ window.DXXFeedback=(()=>{
   data.ranges.push(...cached.ranges||[]);
  }
  function report(data){
-  const ranges=merged(data.ranges);return {projects:[...data.progress.values()],activeSeconds:Math.floor(ranges.reduce((n,r)=>n+r[1]-r[0],0)),hasTime:ranges.length>0,
+  const ranges=merged(data.ranges);return {scores:data.scores,projects:[...data.progress.values()],activeSeconds:Math.floor(ranges.reduce((n,r)=>n+r[1]-r[0],0)),hasTime:ranges.length>0,
    questions:[...data.questions.values()].sort((a,b)=>String(b.at).localeCompare(String(a.at)))};
  }
  async function json(url,options){const resp=await fetch(url,{...options,cache:'no-store',signal:AbortSignal.timeout(6500)});if(!resp.ok)throw Error(String(resp.status));return resp.json();}
@@ -95,7 +98,8 @@ window.DXXFeedback=(()=>{
   const projects=x.projects.length?'<details open><summary>已完成 '+x.projects.length+' 项</summary><ul>'+x.projects.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul></details>':'<p>暂无已完成项目。</p>';
   const time=x.hasTime?'<strong>'+labelTime(x.activeSeconds)+'</strong>':'<p>暂无有效时长记录。</p>';
   const replies=x.questions.length?'<p>共 '+x.questions.length+' 条提问</p>'+x.questions.map(q=>'<details><summary>'+esc(q.question)+'</summary><small>'+esc(q.at?new Date(q.at).toLocaleString('zh-CN'):'')+'</small><p>'+esc(q.answer||'尚无已保存的回答。')+'</p></details>').join(''):'<p>暂无学习答疑记录。</p>';
-  return '<section><h2>学习进度</h2>'+projects+'</section><section><h2>学习时间</h2>'+time+'<p><small>按页面可见且近期有操作的时段累计，多个页面重叠的时间只计一次。</small></p></section><section><h2>学习答疑记录</h2>'+replies+'</section>';
+  const scores=(x.scores||[]).map(r=>'<li>'+esc(new Date(r.at).toLocaleDateString('zh-CN'))+'　'+esc(r.score)+' / 100 分　'+(r.passed?'及格':'未及格')+'</li>').join('');
+  return '<section><h2>学习进度</h2>'+projects+(scores?'<details><summary>综合测试成绩</summary><ul>'+scores+'</ul></details>':'')+'</section><section><h2>学习时间</h2>'+time+'<p><small>按页面可见且近期有操作的时段累计，多个页面重叠的时间只计一次。</small></p></section><section><h2>学习答疑记录</h2>'+replies+'</section>';
  }
  return {update,html};
 })();

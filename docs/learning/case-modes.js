@@ -1,101 +1,67 @@
-import {items as previousItems,el,supportFigure} from './case-items.js';
-import {sampleGait} from '../clinic3d/gait-lesson.js';
-import {bank,grade,ownerKey} from './exam-records.js';
-
-const items=bank.items, free=document.querySelector('#freeMode'),test=document.querySelector('#testMode');
-const exam=document.querySelector('#caseExam'),projects=document.querySelector('#freeProjects');
-let profileKey='',draft=null,history=[],storageOK=true,submitting=false;
-function save(which,value){try{localStorage.setItem(profileKey+which,JSON.stringify(value));}catch{storageOK=false;}}
-function get(which,fallback){try{return JSON.parse(localStorage.getItem(profileKey+which))??fallback;}catch{return fallback;}}
-function initialize(){
-  const p=window.DXXHub?.profile(), key=p?'dxx_case_test_v1_'+ownerKey(p):'';
-  if(key===profileKey)return;
-  profileKey=key;draft=key?get('_draft',null):null;history=key?get('_history',[]):[];storageOK=true;
-  if(!Array.isArray(history))history=[];
-  if(draft&&!draft.version&&draft.answers?.length===previousItems.length){
-    draft.answers=[...draft.answers,...Array(items.length-previousItems.length).fill(null)];
-    draft.version=bank.version;save('_draft',draft);
+import {bank,forModule,credits,current,records,begin,finish,moduleLink,dialog,make,btn} from './module-attempt.js?v=66';
+const free=document.getElementById('freeMode'),test=document.getElementById('testMode'),exam=document.getElementById('caseExam'),projects=document.getElementById('freeProjects');
+const cards=[...projects.querySelectorAll('[data-module-art]')];
+const route={lab:'lab/index.html',myology:'lab/index.html?topic=muscles',bone:'assembly/index.html?task=bone',muscle:'assembly/index.html?task=muscle',clinic:'clinic3d/index.html'};
+let p,mode='free',identity='';
+const preferred=()=> 'dxx_study_mode_'+identity;
+function message(err){let e=exam.querySelector('[role=alert]');if(!e){e=make('p');e.setAttribute('role','alert');exam.append(e);}e.textContent=err.message;}
+function cert(legacy=false){const a=make('a',legacy?'查看旧版证书':'查看学习完成证书');a.href='certificate/index.html?scope='+(legacy?'exam-legacy':'exam');return a;}
+function result(r){
+  const {body}=dialog('测试成绩');const old=r.version!==bank.version;
+  body.append(make('h3',(r.score??r.correct)+' / '+r.total+' 分'),make('p',old?'旧版测试记录':r.passed?'已及格，平台已签发学习完成证书。':'本次未达 60 分。'));
+  if(r.passed&&(!old||r.version==='ankle30-v1'))body.append(cert(old));if(old)return;
+  for(const m of bank.modules){
+    const group=make('details'),qs=forModule(m.id);group.append(make('summary',m.name+'　'+credits(r.answers,qs)+' / 20 分'));
+    for(const q of qs){const a=r.answers[bank.items.indexOf(q)],ok=a===q.key;
+      group.append(make('h4',q.title+'　'+(ok?q.points:0)+' 分'),make('p',q.prompt),make('p',q.type==='operation'?(ok?'已完成操作':a==='skip'?'已跳过操作':'未完成操作'):'你的答案：'+(q.choices[a]??(a==='skip'?'已跳过':'未答'))+'。正确答案：'+q.choices[q.key]+'。'+q.why));}
+    body.append(group);
   }
-  if(draft&&(draft.version!==bank.version||!Array.isArray(draft.answers)||draft.answers.length!==items.length||
-    !Number.isInteger(draft.index)||draft.index<0||draft.index>items.length||history.some(r=>r.id===draft.id)))draft=null;
-  toggle('free');
 }
-function toggle(mode){
+function confirmSubmit(attempt){
+  const {d,body}=dialog('核对并交卷');const blank=attempt.answers.filter(x=>x===null).length,skipped=attempt.answers.filter(x=>x==='skip').length;
+  body.append(make('p','已记录 '+(35-blank-skipped)+' 项，已跳过 '+skipped+' 项，未完成 '+blank+' 项。交卷时跳过和未完成均为 0 分。'));
+  for(const m of bank.modules)body.append(make('p',m.name+'　'+credits(attempt.answers,forModule(m.id))+' / 20 分'));
+  const submit=btn('确认交卷',async()=>{submit.disabled=true;try{const r=await finish(p,attempt.id);d.close();render();result(r);}catch(e){submit.disabled=false;error.textContent=e.message;render();}},'primary');
+  const error=make('p');error.setAttribute('role','alert');body.append(btn('返回实验',()=>d.close()),submit,error);
+}
+function render(){
+  projects.hidden=false;
+  const shortcutLabel=mode==='test'?'单项测试入口':'单项自由练习';
+  projects.querySelector('.clinic-practice-menu summary').textContent=shortcutLabel;
+  projects.querySelector('.free-shortcuts').setAttribute('aria-label',shortcutLabel);exam.hidden=mode!=='test'||!p;document.body.dataset.studyMode=mode;
   free.setAttribute('aria-pressed',String(mode==='free'));test.setAttribute('aria-pressed',String(mode==='test'));
-  projects.hidden=mode==='test';exam.hidden=mode==='free';document.body.dataset.studyMode=mode;
-  if(mode==='test')render();
-}
-function button(text,fn,main=false){const b=el('button',text,main?'primary':'');b.type='button';b.onclick=fn;return b;}
-function start(){draft={id:crypto.randomUUID(),version:bank.version,index:0,answers:Array(items.length).fill(null)};save('_draft',draft);render(true);}
-function move(index){draft.index=index;save('_draft',draft);render(true);}
-function heading(text){const h=el('h3',text);h.tabIndex=-1;exam.append(h);return h;}
-function notice(){if(!storageOK)exam.append(el('p','浏览器未能保存这次记录，请在离开前保存成绩和证书。'));}
-function certificateLink(){
-  const a=el('a','查看学习完成证书','exam-certificate');a.href='certificate/index.html?scope=exam';return a;
-}
-function counts(answers){
-  return {answered:answers.filter(Number.isInteger).length,skipped:answers.filter(a=>a==='skip').length,blank:answers.filter(a=>a==null).length};
-}
-async function finish(b){
-  if(submitting||!draft)return;
-  const current=profileKey, attempt=draft, p=window.DXXHub.profile();
-  if(!p||current!=='dxx_case_test_v1_'+ownerKey(p)){initialize();return;}
-  submitting=true;exam.querySelectorAll('button').forEach(control=>control.disabled=true);b.textContent='正在评分…';
-  try{
-    const result=await grade(p,attempt);
-    if(profileKey!==current)return;
-    const saved=get('_history',history);
-    history=[result,...saved.filter(x=>x.id!==result.id)];
-    save('_history',history);
-    if(get('_draft',null)?.id===attempt.id)save('_draft',null);
-    draft=null;showResult(result,true);
-  }catch(e){
-    if(profileKey===current){render();const error=el('p',e.message||'评分服务暂时不可用，作答已保留，请再次交卷。');error.setAttribute('role','alert');exam.prepend(error);}
-  }finally{submitting=false;}
-}
-function render(focus=false){
-  exam.replaceChildren();
-  if(!draft){
-    heading('人体运动学知识测试');
-    exam.append(el('p','共 30 题，每题 1 分。答错、跳过和交卷时漏答均得 0 分。达到 25 分即完成学习，获得平台证书。'),button(history.length?'重新测试':'开始测试',start,true));
-    if(history.length)exam.append(button('查看上次结果',()=>showResult(history[0],true)));
-    if(history.some(r=>r.version===bank.version&&r.passed))exam.append(certificateLink());
-    notice();return;
+  cards.forEach(card=>card.querySelector('.module-exam-status')?.remove());exam.replaceChildren();
+  if(exam.hidden)return;
+  const d=current(p),history=records(p),last=history.find(r=>r.version===bank.version);
+  const head=make('div',null,'assessment-overview');head.append(make('h3','实验综合测试'),make('strong',d?'当前 '+credits(d.answers)+' / 100 分':last?'上次 '+last.score+' / 100 分':'满分 100 分'));
+  exam.append(head,make('p','五个实验各 20 分：操作 8 分，知识题 6 道、每题 2 分。60 分及格，交卷后可领取达标证书。'));
+  const controls=make('div',null,'assessment-actions');
+  if(d)controls.append(btn(d.sealed?'重试交卷':'核对并交卷',()=>confirmSubmit(d)));
+  else if(last)controls.append(btn('重新测试',async()=>{try{await begin(p);render();}catch(e){message(e);}}));
+  if(last)controls.append(btn('查看上次成绩',()=>result(last)));
+  if(history.length>1||(!last&&history.length))controls.append(btn('历次成绩',()=>{
+    const {body,d}=dialog('历次成绩');
+    for(const r of history)body.append(btn(new Date(r.at).toLocaleDateString('zh-CN')+'　'+(r.score??r.correct)+' / '+r.total+' 分',()=>{d.close();result(r);}));
+  }));
+  if(history.some(r=>r.version===bank.version&&r.passed))controls.append(cert());
+  if(history.some(r=>r.version==='ankle30-v1'&&r.passed))controls.append(cert(true));
+  if(controls.childElementCount)exam.append(controls);
+  for(const card of cards){
+    const qs=forModule(card.dataset.moduleArt),a=d?.answers||last?.answers;
+    const status=make('p',a?'操作 '+(a[bank.items.indexOf(qs[0])]===0?'已完成':'未完成')+' · 知识题已处理 '+qs.slice(1).filter(q=>a[bank.items.indexOf(q)]!=null).length+'/6 · '+credits(a,qs)+'/20 分':'操作 8 分　知识题 12 分','module-exam-status');
+    card.querySelector('.primary').before(status);
   }
-  const i=draft.index,q=items[i];let h;
-  if(!q){
-    const c=counts(draft.answers);
-    h=heading('核对作答');exam.append(el('p',`已答 ${c.answered} 题，已跳过 ${c.skipped} 题，漏答 ${c.blank} 题。交卷前可以返回任一题修改。`));
-    const submit=button('交卷并评分',e=>finish(e.currentTarget),true);exam.append(submit);
-    const listing=el('div',null,'exam-list');items.forEach((item,n)=>listing.append(button((n+1)+' · '+item.title+'　'+(draft.answers[n]==='skip'?'已跳过':draft.answers[n]==null?'未作答':'已作答'),()=>move(n))));exam.append(listing);
-  }else{
-    exam.append(el('small',`第 ${i+1} / ${items.length} 题　·　${q.title}　·　1 分`));h=heading(q.prompt);
-    if(q.id==='support')exam.append(supportFigure(sampleGait));
-    const choices=el('fieldset',null,'exam-options');choices.setAttribute('aria-label',q.prompt);
-    const controls=el('div',null,'exam-actions');
-    const next=button(i===items.length-1?'核对作答':'下一题',()=>move(i+1),true);
-    q.choices.forEach((c,n)=>{const label=el('label'),radio=el('input');radio.type='radio';radio.name='caseAnswer';radio.value=String(n);radio.checked=draft.answers[i]===n;
-      radio.onchange=()=>{draft.answers[i]=n;save('_draft',draft);next.disabled=false;};label.append(radio,el('span',c));choices.append(label);});
-    next.disabled=!Number.isInteger(draft.answers[i]);
-    if(i>0)controls.append(button('上一题',()=>move(i-1)));
-    controls.append(button('跳过此步骤',()=>{draft.answers[i]='skip';move(i+1);}),button('提前交卷',()=>move(items.length)),next);exam.append(choices,controls);
-  }
-  notice();if(focus)h.focus({preventScroll:true});
 }
-function showResult(r,focus){
-  exam.replaceChildren();const legacy=!r.version&&r.total===previousItems.length, questions=legacy?previousItems:items;
-  const h=heading(legacy?'旧版 5 题测试记录':`测试成绩　${r.correct} / ${r.total} 分`);
-  const c=counts(r.answers);
-  exam.append(el('p',`答对 ${r.correct} 题，答错 ${c.answered-r.correct} 题，跳过 ${c.skipped} 题，未答 ${c.blank} 题。`));
-  if(legacy)exam.append(el('p','本次为原 5 题练习。完成新版 30 题测试并达到 25 分即可获证。'));
-  else if(r.passed)exam.append(el('p','已完成学习，平台学习完成证书已签发。'),certificateLink());
-  else exam.append(el('p',`本次距达标还差 ${bank.passScore-r.correct} 分。可查看逐题解析后重新测试。`));
-  exam.append(button('返回自由模式',()=>toggle('free')),button('重新测试',start));
-  questions.forEach((q,i)=>{const a=r.answers[i],ok=a===q.key,row=el('details');
-    row.append(el('summary',`${i+1}. ${q.title}　${ok?'正确 · 1 分':a==='skip'?'已跳过 · 0 分':a==null?'未作答 · 0 分':'答错 · 0 分'}`),el('p',q.prompt));
-    if(q.id==='support')row.append(supportFigure(sampleGait));
-    row.append(el('p','你的选择：'+(q.choices[a]||(a==='skip'?'已跳过':'未作答'))),el('p','正确答案：'+q.choices[q.key]),el('p',q.why));exam.append(row);});
-  notice();if(focus)h.focus({preventScroll:true});
-}
-free.onclick=()=>toggle('free');test.onclick=()=>toggle('test');
-window.addEventListener('dxx:hubview',initialize);window.addEventListener('pageshow',initialize);initialize();test.disabled=false;
+function toggle(value){mode=value;if(p)sessionStorage.setItem(preferred(),mode);render();}
+function initialize(){p=window.DXXHub?.profile();identity=p?JSON.stringify([p.teacher,p.studentId,p.name]):'';mode=p&&sessionStorage.getItem(preferred())==='test'?'test':'free';render();}
+projects.addEventListener('click',async e=>{
+  if(mode!=='test'||!p)return;
+  const target=e.target.closest('[data-open],a[href]'),card=target?.closest('[data-module-art]');if(!card)return;
+  const href=target.getAttribute('href')||route[target.dataset.open];if(!href)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  try{const d=await begin(p);if(d.sealed){confirmSubmit(d);return;}location.assign(moduleLink(href,card.dataset.moduleArt,d.id));}
+  catch(err){message(err);}
+},true);
+free.onclick=()=>toggle('free');test.onclick=()=>toggle('test');test.disabled=false;
+window.addEventListener('dxx:hubview',initialize);window.addEventListener('pageshow',initialize);
+window.addEventListener('storage',event=>{if(p&&mode==='test'&&(!event.key||event.key.startsWith('dxx_module_exam_')||event.key.endsWith('_history')))render();});initialize();

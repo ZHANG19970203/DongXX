@@ -1,4 +1,4 @@
-export const bank = await fetch(new URL('ankle-exam.json', import.meta.url)).then(r=>{
+export const bank = await fetch(new URL('module-exam.json', import.meta.url)).then(r=>{
   if(!r.ok)throw Error('测试题库暂未加载，请刷新页面。');
   return r.json();
 });
@@ -18,8 +18,9 @@ async function post(path,body,token) {
 }
 export function localGrade(draft){
   const correct=bank.items.filter((q,i)=>q.key===draft.answers[i]).length;
+  const score=bank.items.reduce((n,q,i)=>n+(q.key===draft.answers[i]?q.points:0),0);
   return {id:draft.id,at:new Date().toISOString(),version:bank.version,answers:[...draft.answers],
-    correct,total:bank.items.length,passed:correct>=bank.passScore};
+    correct,score,total:bank.total,passed:score>=bank.passScore};
 }
 async function submit(p,draft) {
   let auth=examCredential(p);
@@ -36,17 +37,20 @@ export function grade(p,draft) {
   if(staticSite)return Promise.resolve(localGrade(draft));
   return navigator.locks?navigator.locks.request(sessionKey(p),()=>submit(p,draft)):submit(p,draft);
 }
-export async function staticProgress(p){
+export async function staticProgress(p,legacy=false){
   const history=JSON.parse(localStorage.getItem('dxx_case_test_v1_'+ownerKey(p)+'_history')||'[]');
-  const valid=history.filter(r=>r.version===bank.version&&r.answers?.length===bank.items.length)
-    .map(r=>({...r,...localGrade(r),at:r.at})).sort((a,b)=>a.at.localeCompare(b.at));
+  const rubric=legacy?await fetch(new URL('ankle-exam.json',import.meta.url)).then(r=>r.json()):bank;
+  const total=rubric.total||rubric.items.length;
+  const valid=history.filter(r=>r.version===rubric.version&&r.answers?.length===rubric.items.length)
+    .map(r=>{const score=rubric.items.reduce((n,q,i)=>n+(q.key===r.answers[i]?(q.points||1):0),0);
+      return {...r,score,passed:score>=rubric.passScore};}).sort((a,b)=>a.at.localeCompare(b.at));
   const first=valid.find(r=>r.passed);
-  const report={owner:p,scope:'exam',eligible:!!first,attempted:valid.length>0,done:Math.max(0,...valid.map(r=>r.correct)),total:bank.items.length,passScore:bank.passScore};
+  const report={owner:p,scope:'exam',eligible:!!first,attempted:valid.length>0,done:Math.max(0,...valid.map(r=>r.score)),total,passScore:rubric.passScore};
   if(first){
-    const proof=JSON.stringify({owner:ownerKey(p),attempt:first.id,version:bank.version,answers:first.answers,score:first.correct,total:bank.items.length});
+    const proof=JSON.stringify({owner:ownerKey(p),attempt:first.id,version:rubric.version,answers:first.answers,score:first.score,total});
     const bytes=new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(proof)));
     const hash=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
-    report.certificate={scope:'exam',id:'DXX-L-'+hash.slice(0,16).toUpperCase(),issued_at:first.at,evidence_hash:hash,evidence_json:JSON.stringify({score:first.correct,total:bank.items.length})};
+    report.certificate={scope:'exam',id:'DXX-L-'+hash.slice(0,16).toUpperCase(),issued_at:first.at,evidence_hash:hash,evidence_json:JSON.stringify({score:first.score,total})};
   }
   return report;
 }
