@@ -189,7 +189,7 @@ export async function createActor(scene, role, url) {
   let documentation=null,documentationMode='desk',documentationCarryWeight=0,documentationWriteWeight=0,documentationTipGap=null;
   const mixer = new THREE.AnimationMixer(model);
   const heelClip = gltf.animations.find(clip => clip.name === 'heel_raise');
-  let clinicalPose=null, lungeLoad=0, railWeight=0;
+  let clinicalPose=null, lungeLoad=0, kneeling=0, railWeight=0;
   let strengthMotion='eversion', eversionSide=null, eversionMode=null, eversionElapsed=0, eversionAngle=0;
   let pose = 'standing', sitting = 0, sitFrom = 0, sitTo = 0, sitElapsed = 0;
   let walking = false, walkWeight = 0, talking = false, halted = false, time = 0;
@@ -199,6 +199,7 @@ export async function createActor(scene, role, url) {
   let heelAction = null, heelElapsed = 0, heelStart = null;
   const face=role==='patient'?root.getObjectByName('Reference_face_patient'):null;
   let scratchTime=null;
+  let plateX=0,plateY=0;
   const faceWeights=face?.morphTargetInfluences;
   function updateFace(dt){
     if(!faceWeights)return;
@@ -454,13 +455,15 @@ export async function createActor(scene, role, url) {
     }
     const wall=clinicalPose?.startsWith('wall-')&&role==='patient';
     const heelRaised=clinicalPose==='wall-heel';
-    const lungeTarget=wall?(clinicalPose==='wall-ready'?.25:clinicalPose==='wall-retry'?1:.92):0;
+    const lower=wall&&!['wall-ready','wall-position'].includes(clinicalPose);
+    kneeling=THREE.MathUtils.damp(kneeling,lower?1:0,4.5,dt);
+    const lungeTarget=lower&&clinicalPose!=='wall-kneel'?1:0;
     lungeLoad=THREE.MathUtils.damp(lungeLoad,lungeTarget,4,dt);
     railWeight=THREE.MathUtils.damp(railWeight,clinicalPose==='rail-hold'?1:0,8,dt);
     const onPlate=['plate-stand','rail-hold'].includes(clinicalPose);
-    const quietStand=onPlate?0:(1-sitting)*(1-walkWeight);
-    setRootShift(-.365 * sitting - .125*lungeLoad + walkShift * walkWeight + (role==='patient'?.013:.007)*quietStand,
-      gaitSample ? -gaitSample.reference.lateral*walkWeight : 0,.235*lungeLoad);
+    const quietStand=onPlate||wall?0:(1-sitting)*(1-walkWeight);
+    setRootShift(-.365 * sitting - .462*kneeling + walkShift * walkWeight + (role==='patient'?.013:.007)*quietStand,
+      gaitSample ? -gaitSample.reference.lateral*walkWeight : 0,.03*kneeling+.125*lungeLoad);
     const removing=removal.active?removalFrame():null;
     documentationCarryWeight=THREE.MathUtils.damp(documentationCarryWeight,documentationMode==='desk'?0:1,8,dt);
     documentationWriteWeight=THREE.MathUtils.damp(documentationWriteWeight,documentationMode==='write'?1:0,8,dt);
@@ -471,6 +474,9 @@ export async function createActor(scene, role, url) {
       setWorldQuaternion('spine03',torso.multiply(rest.get('spine03').world));
     } else {
       offset('spine03',X,lean);
+    }
+    if(onPlate&&role==='patient'){
+      const spine=bones.get('spine03');spine.rotation.z+=plateX*.005;spine.rotation.x+=plateY*.003;
     }
     updateFace(dt);
     emotionWeight=THREE.MathUtils.damp(emotionWeight,emotion==='neutral'?0:1,5,dt);
@@ -486,10 +492,20 @@ export async function createActor(scene, role, url) {
       footTarget.z+=.36*sitting;
       const foot=gaitSample?.[side==='R'?'right':'left'].foot;
       if(foot)footTarget.lerp(position(-foot.lateral,restFoot.y+foot.height,foot.forward),walkWeight);
-      if(wall){
-        const lead=clinicalPose==='wall-measure-left'?'L':'R';
-        footTarget.z+=side===lead?(clinicalPose==='wall-retry'?.26:.22):-.20;
-        if(heelRaised&&side==='R')footTarget.y+=.031*lungeLoad;
+      const lead=clinicalPose==='wall-measure-left'?'L':'R';
+      let kneeGuide=position(sign*.17,.46,.65);
+      if(wall&&side===lead){
+        footTarget.z+=clinicalPose==='wall-ready'?0:.24;
+        if(heelRaised)footTarget.y+=.031*lungeLoad;
+      }else if(wall&&kneeling>.001){
+        // Place the back knee on the floor and the shin behind it using the patient's own segment lengths.
+        const hip=getPoint('upperleg01'+suffix),k=rest.get('lowerleg01'+suffix).point;
+        const thigh=rest.get('upperleg01'+suffix).point.distanceTo(k),shin=k.distanceTo(restFoot);
+        const down=Math.min(thigh-.003,Math.max(0,hip.y-.043));
+        const knee=position(hip.x,hip.y-down,hip.z-Math.sqrt(Math.max(0,thigh*thigh-down*down)));
+        const rearAnkleY=.07,deltaY=rearAnkleY-knee.y;
+        const ankle=position(knee.x,rearAnkleY,knee.z-Math.sqrt(Math.max(.001,shin*shin-deltaY*deltaY)));
+        footTarget.lerp(ankle,kneeling);kneeGuide.lerp(knee,kneeling);
       }
       if(eversionSide===side)footTarget.y+=.055;
       if(removing?.side===side) {
@@ -498,8 +514,8 @@ export async function createActor(scene, role, url) {
         footTarget.x+=sign*.025*removing.lift;
       }
       solveTwoLinks(`upperleg01${suffix}`, `lowerleg01${suffix}`, `foot${suffix}`,
-        footTarget, position(sign * .17, .46, .65));
-      offset(`foot${suffix}`, X, foot ? -foot.pitch*walkWeight : heelRaised&&side==='R'?.19*lungeLoad:0);
+        footTarget, kneeGuide);
+      offset(`foot${suffix}`, X, foot ? -foot.pitch*walkWeight : wall&&side!==lead?2.86*kneeling:heelRaised&&side===lead?.19*lungeLoad:0);
       if(eversionSide===side){
         if(strengthMotion==='dorsiflexion')offset('foot'+suffix,X,-eversionAngle);
         else offset('foot'+suffix,position(0,0,1),sign*eversionAngle);
@@ -530,7 +546,7 @@ export async function createActor(scene, role, url) {
         reach=smooth(scratchTime/.70)*(1-smooth((scratchTime-1.42)/.68));
         scratchRotation=scratchHand(wristTarget,elbowPole,reach,scratchTime);
       }
-      if(wall)wristTarget=position(sign*.20,1.20,.485);
+      if(wall)wristTarget=position(sign*.20,1.20-.38*kneeling,.485);
       if(clinicalPose==='guard'&&side==='L')wristTarget=position(.16,1.03,.38);
       if(railWeight>.001)wristTarget.lerp(position(sign*.447,.85,.045),railWeight);
       if(removing)wristTarget=removalHand(removing,side,wristTarget,footTarget);
@@ -591,6 +607,7 @@ export async function createActor(scene, role, url) {
     bedsideRig: { rest, reset: restore, offset, orient: setWorldQuaternion, reach: solveTwoLinks },
     updateFace,
     setEmotion(value){emotion=['questioning','concerned','upset','pain','sore'].includes(value)?value:'neutral';return actor;},
+    setPlateFrame(vision,sample){plateX=sample?.[1]||0;plateY=sample?.[2]||0;if(face?.userData.lids)face.userData.lids.value=vision==='closed'?1:0;},
     scratchTemple(){if(face&&pose==='seated'&&!clinicalPose&&scratchTime===null)scratchTime=0;},
     endGesture(){scratchTime=null;},
     setPose,

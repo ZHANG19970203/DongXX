@@ -3,9 +3,10 @@ import {firstInjury,laterInjuries} from './inversion-lesson.js';
 import {currentCase} from './differential.js';
 export const SOAP_STAGES=[
  {act:'act1',entry:'welcome',title:'S · 病史与目标',goal:'听清困扰与活动目标',task:'问受伤、症状、既往处理与意愿'},
- {act:'act4',entry:'ankle_stress',title:'O · 床旁查体与足弓',goal:'检查踝关节稳定性，再观察足弓',task:'在床旁完成两项手法检查，再比较坐站足弓、辨认组成骨并核对足印'},
+ {act:'act4',entry:'ankle_stress',title:'O · 床旁查体与足弓',goal:'检查踝关节稳定性，再观察足弓',task:'在床旁完成两项手法检查，再比较坐站足弓、辨认组成骨'},
  {act:'act2',entry:'local_intro',title:'O · 活动与轴面',goal:'认识运动方向与测量',task:'了解量角器摆法，辨认主要关节与开链复合运动'},
  {act:'act3',entry:'muscle_intro',title:'O · 踝足肌群',goal:'比较踝足四个方向的抗阻表现',task:'先检查肌力，可选做肌肉解剖测试和彩绘'},
+ {act:'act6',entry:'arch_concern',title:'O · 足底压力',goal:'比较双足站立时的足底负荷',task:'双足赤足站立，采集足印后解释压力色标和左右差异'},
  {act:'act7',entry:'balance_intro',title:'O · 静态COP',goal:'解读扭伤后站立时的姿势控制',task:'比较同条件的压力中心路径与平均速度'},
  {act:'act5',entry:'gait_intro',title:'O · 步态周期',goal:'看支撑、摆动与双侧差异',task:'回答步态周期的定义，展示三个时相'},
  {act:'act8',entry:'plan_intro',title:'A / P · 解释与计划',goal:'证据对应功能目标',task:'提出解释、选训练靶点与复评'}
@@ -33,9 +34,9 @@ export function applySOAPRoute(flow,data,evidence){
  flow.pressure_intro.text='比较同条件的足印与负荷。';
  flow.balance_intro.speaker='林治疗师';flow.balance_intro.text='双脚自然站稳、睁眼，看静态压力中心的小幅变化。';flow.balance_intro.next='static_cop';flow.balance_intro.visualMode='pressure';
  const node=(id,act,text,type,next)=>({id,act,kind:'task',speaker:'动小助',text,visualMode:'pressure',task:{type,instructions:text},options:[{id:id+'_done',label:'完成记录，继续',next,good:true,safe:true,requiresTask:true,evidence:[id]}]});
- flow.static_cop=node('static_cop','act7','同样双脚睁眼、30秒，比较轨迹，再计算路径长度 ÷ 时间。','staticCOP','gait_intro');
+ flow.static_cop=node('static_cop','act7','双足站稳，分别观察睁眼与闭眼各 30 秒的轨迹，比较路径长度和平均速度。','staticCOP','gait_intro');
  evidence.arch_index={label:'足弓指数计算练习',status:'synthetic_teaching_data',text:'原创足印面积：后足30、中足40、前足50平方厘米，AI=0.333；不代表该患者实测或扁平足严重程度。'};
- evidence.static_cop={label:'静态COP同条件计算',status:'synthetic_teaching_data',text:'原创30秒50Hz双足睁眼数据，对照路径169.299毫米、平均速度5.643毫米/秒；不是正常参考阈值或患者实测。'};
+ evidence.static_cop={label:'静态COP同条件计算',status:'synthetic_teaching_data',text:'教学模拟，双足站立每次 30 秒、50 Hz。睁眼路径 151.3 mm、平均速度 5.04 mm/s；闭眼路径 230.2 mm、平均速度 7.67 mm/s。'};
  // Remove obsolete clinical challenge nodes, redirect historical bookmarks safely.
  for(const id of ['balance_choice','balance_trial','balance_stop','balance_explain','muscle_method','muscle_explain','tool']){
   const target=id.startsWith('balance')?'static_cop':id==='tool'?'alignment':'muscle_match';
@@ -67,7 +68,7 @@ export function applySOAPRoute(flow,data,evidence){
    {id:'continue_consent',label:'先说明检查，稍后再了解顾虑。',next:'consent',good:true,safe:true}
  ]};
  flow.fear_reply={id:'fear_reply',act:'act1',kind:'dialogue',speaker:'陈女士',text:'两种都有。有时转弯，右脚会突然一软。也有时候它还没发软，我一看前面的路不平，就先慢下来了。',next:'consent'};
- flow.arch_concern={id:'arch_concern',act:'act4',kind:'dialogue',speaker:'林治疗师',text:'站立时内侧足弓较低。再看看负重时的足印。',visualMode:'exam',next:'pressure_intro'};
+ flow.arch_concern={id:'arch_concern',act:'act6',kind:'dialogue',speaker:'林治疗师',text:'接下来我们用足底压力测试系统，看看您站立时双脚是怎么受力的。',visualMode:'pressure',next:'pressure_compare'};
  flow.ankle_stress={id:'ankle_stress',act:'act4',kind:'dialogue',speaker:'林治疗师',visualMode:'exam',text:'陈女士，请先坐到床边，再慢慢躺好。我会托住您的脚跟，检查一下右脚踝。您放松就好，如果疼，请告诉我。',next:'muscle_intro'};
  flow.ankle_stress.next='arch_intro';
  flow.exam_reasoning={id:'exam_reasoning',act:'act4',kind:'choice',speaker:'动小助',visualMode:'exam',text:currentCase.prompt,options:currentCase.actions.map((label,i)=>({
@@ -83,7 +84,7 @@ export function applySOAPRoute(flow,data,evidence){
    {id:'acute_load',label:'先让患者单脚跳，再决定是否需要转诊。',good:false,safe:false,retry:true,next:'acute_differential',feedback:'骨折风险尚待评估，跳跃会增加负荷。请重新选择。'}
  ]};
  for(const n of Object.values(flow)){
-  if(n.act==='act6'){n.act='act4';n.pressureStation=true;}
+  if(n.act==='act6')n.pressureStation=true;
   const stage=SOAP_STAGES.find(s=>s.act===n.act);
   if(stage){n.purpose=stage.goal;n.education={...(n.education||{}),why:stage.goal,steps:[stage.task]};if(n.task)n.task.education=n.education;}
  }
@@ -105,7 +106,7 @@ export function updateFilmDialogue(sequence){
   // Obsolete post-MMT and single-leg challenge scenes are no longer part of this course.
   if(['03B','07B'].includes(clip.id))clip.anchorNode='__archived_'+clip.anchorNode;
   if(clip.id==='06A'){clip.evidenceRequirement={all:[]};clip.alternative=clip.alternative.filter(a=>a.condition!=='gait_skipped');}
-  if(clip.id==='07A')clip.actionLabel='比较双脚睁眼站立的静态COP';
+  if(clip.id==='07A')clip.actionLabel='比较双足睁眼与闭眼的静态 COP';
   for(const branch of [clip.normal,...clip.alternative.map(a=>a.lines)])for(const turn of branch){
    turn.text=turn.text.replaceAll('背伸','背伸');
   }

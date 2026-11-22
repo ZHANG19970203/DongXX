@@ -10325,6 +10325,177 @@
       "duration": 1.301375,
       "source": "Local synthesis using the existing Fei 1508 role reference",
       "transcriptCheck": "现在可以继续吗？"
+    },
+    "therapist|先把半圆量角器的轴心，对准外踝的中心。": {
+      "role": "therapist",
+      "text": "先把半圆量角器的轴心，对准外踝的中心。",
+      "src": "./assets/dialogue-v20/clinical71-lat-axis.mp3",
+      "sha256": "7e83e3574bab56e07010475b1c357fb454f4648a736b0edc9e47db8bdbe9dacd",
+      "duration": 3.125375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "先把半圆两角器的轴心对准外踝的中心。"
+    },
+    "therapist|固定臂与腓骨外侧长轴平行，朝向腓骨头。": {
+      "role": "therapist",
+      "text": "固定臂与腓骨外侧长轴平行，朝向腓骨头。",
+      "src": "./assets/dialogue-v20/clinical71-lat-fixed.mp3",
+      "sha256": "d6b64f58f630fcb0e403e25fa9d8bbeed3df58ba4c246d8f0615399a0194dc1c",
+      "duration": 3.1146875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "固定臂与腓骨外侧掌轴平朝向腓骨头。"
+    },
+    "therapist|移动臂与第五跖骨平行。勾脚或绷脚时，小腿固定，移动臂跟着足外侧一起转动。": {
+      "role": "therapist",
+      "text": "移动臂与第五跖骨平行。勾脚或绷脚时，小腿固定，移动臂跟着足外侧一起转动。",
+      "src": "./assets/dialogue-v20/clinical71-lat-mobile.mp3",
+      "sha256": "5ee9bfb22d3abd2bd2203689260bf26c86c01c3cd3438a107b50b33375955a68",
+      "duration": 5.4843125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "移动臂与第五只骨平行勾脚或绷脚时，小腿固定移动臂，跟着足外侧一起转动。"
+    },
+    "therapist|请俯卧，脚伸出床沿。从后方看，把轴心放在内外踝之间的中点。": {
+      "role": "therapist",
+      "text": "请俯卧，脚伸出床沿。从后方看，把轴心放在内外踝之间的中点。",
+      "src": "./assets/dialogue-v20/clinical71-rear-axis.mp3",
+      "sha256": "8b4c92b5b8a7a911d4554bb56ba006efdfd65051a840009539ebcab75237b36a",
+      "duration": 4.22125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "请俯卧脚伸出床沿，从后方看，把轴心放在内外踝之间的终点。"
+    },
+    "therapist|固定臂与小腿后侧中线平行。扶稳小腿，保持脚踝在背伸和跖屈的中立位。": {
+      "role": "therapist",
+      "text": "固定臂与小腿后侧中线平行。扶稳小腿，保持脚踝在背伸和跖屈的中立位。",
+      "src": "./assets/dialogue-v20/clinical71-rear-fixed.mp3",
+      "sha256": "7bb4c3ee327fe873a094c9c79f4a5c95e2d545fa375239e3d4b55c00a4d5af6a",
+      "duration": 5.274875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "固定臂于小腿后侧中线平行，符文小腿保持脚踝在背身和直区的中立位。"
+    },
+    "therapist|移动臂顺着足跟后方的中线。脚跟向内或向外倾斜时，移动臂跟着跟骨一起转动。": {
+      "role": "therapist",
+      "text": "移动臂顺着足跟后方的中线。脚跟向内或向外倾斜时，移动臂跟着跟骨一起转动。",
+      "src": "./assets/dialogue-v20/clinical71-rear-mobile.mp3",
+      "sha256": "0cc3c9f7718c2c5601b60d8930c5055066536e6c234388a869ddc8917c3ff2fe",
+      "duration": 5.554125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "移动臂顺着足跟后方的中线，脚跟向内或向外倾斜时，移动臂跟着跟骨一起转动。"
+    },
+    "therapist|脚跟往里翻，您自己动是左脚十八度，右脚十四度。我帮您动是左脚二十一度，右脚十八度。": {
+      "role": "therapist",
+      "text": "脚跟往里翻，您自己动是左脚十八度，右脚十四度。我帮您动是左脚二十一度，右脚十八度。",
+      "src": "./assets/dialogue-v20/clinical71-report-in.mp3",
+      "sha256": "172fd99f32be4aff72da8324a227d6c75e85cdaf905f8dfae85c5ec3dfef1c2e",
+      "duration": 6.0213125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "脚跟往里翻，您自己动视左脚18度，右脚14度，我帮您动视左脚21度，右脚18度。"
+    },
+    "therapist|脚跟往外翻，您自己动是左脚八度，右脚四度。我帮您动是左脚十度，右脚七度。": {
+      "role": "therapist",
+      "text": "脚跟往外翻，您自己动是左脚八度，右脚四度。我帮您动是左脚十度，右脚七度。",
+      "src": "./assets/dialogue-v20/clinical71-report-out.mp3",
+      "sha256": "eb60c9592d2d2f017dcbf14d6e7579b7726c50357eaef0936676e28bb9763ec8",
+      "duration": 5.4355,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "脚跟往外翻，您自己动视左脚8度，右脚4度，我帮您动视左脚十0度，右脚7度。"
+    },
+    "therapist|往下绷脚，您自己动是左脚 45°、右脚 40°。我帮您动是左脚 50°、右脚 45°。": {
+      "role": "therapist",
+      "text": "往下绷脚，您自己动是左脚 45°、右脚 40°。我帮您动是左脚 50°、右脚 45°。",
+      "src": "./assets/dialogue-v20/clinical68-rom-down.mp3",
+      "sha256": "a06dce635844ceb8c424d7b3488c86760338722ebbcf0e481724953b8f09df00",
+      "duration": 6.2835,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "往下绷脚，您自己动视左脚45度，右脚40度，我帮您动视左脚50度，右脚45度。"
+    },
+    "therapist|脚跟往里翻，您自己动是左脚 18°、右脚 14°。我帮您动是左脚 21°、右脚 18°。": {
+      "role": "therapist",
+      "text": "脚跟往里翻，您自己动是左脚 18°、右脚 14°。我帮您动是左脚 21°、右脚 18°。",
+      "src": "./assets/dialogue-v20/clinical71-report-in.mp3",
+      "sha256": "172fd99f32be4aff72da8324a227d6c75e85cdaf905f8dfae85c5ec3dfef1c2e",
+      "duration": 6.0213125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "脚跟往里翻，您自己动视左脚18度，右脚14度，我帮您动视左脚21度，右脚18度。"
+    },
+    "therapist|脚跟往外翻，您自己动是左脚 8°、右脚 4°。我帮您动是左脚 10°、右脚 7°。": {
+      "role": "therapist",
+      "text": "脚跟往外翻，您自己动是左脚 8°、右脚 4°。我帮您动是左脚 10°、右脚 7°。",
+      "src": "./assets/dialogue-v20/clinical71-report-out.mp3",
+      "sha256": "eb60c9592d2d2f017dcbf14d6e7579b7726c50357eaef0936676e28bb9763ec8",
+      "duration": 5.4355,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "脚跟往外翻，您自己动视左脚8度，右脚4度，我帮您动视左脚十0度，右脚7度。"
+    },
+    "therapist|陈女士，您这是右侧慢性踝关节不稳。检查时，右脚踝比左边松一些。您走不平路时还会发软。这说明关节的稳定性和活动时的控制能力都受到了影响。": {
+      "role": "therapist",
+      "text": "陈女士，您这是右侧慢性踝关节不稳。检查时，右脚踝比左边松一些。您走不平路时还会发软。这说明关节的稳定性和活动时的控制能力都受到了影响。",
+      "src": "./assets/dialogue-v20/clinical71-mixed.mp3",
+      "sha256": "d2d6d903c07fa2ceb2d202470f8dd1918e4a2972fd355a40ed1ada795dedc066",
+      "duration": 10.122125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "陈女士，您这是右侧慢性踝关节不稳，检查时右脚踝比左边松一些，您走不平路时还会发软，这说明关节的稳定性和活动时的控制能力都受到了影响。"
+    },
+    "therapist|接下来看一下您的踝关节灵活度怎么样。这个检查叫负重弓箭步测试（WBLT）。": {
+      "role": "therapist",
+      "text": "接下来看一下您的踝关节灵活度怎么样。这个检查叫负重弓箭步测试（WBLT）。",
+      "src": "./assets/dialogue-v20/clinical71-wall-intro.mp3",
+      "sha256": "66a1593af81ec308d8ae8d1264d7fdaa2d5a20e1527b96efa29d181d872753ed",
+      "duration": 4.5714375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "接下来看一下您的踝关节灵活度怎么样。这个检查叫负重弓箭不测试。"
+    },
+    "therapist|请面对墙，双手扶稳，我在您身边。把要测的脚放在前面，脚尖先离墙约10 cm。": {
+      "role": "therapist",
+      "text": "请面对墙，双手扶稳，我在您身边。把要测的脚放在前面，脚尖先离墙约10 cm。",
+      "src": "./assets/dialogue-v20/clinical71-wall-place.mp3",
+      "sha256": "c094c6d9bb63067b29a8987e1634f3ab8d3fefaf5852bd625d62fbd94315df60",
+      "duration": 5.323875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "请面对墙，双手扶稳，我在您身边把要侧的脚放在前面，脚尖先离墙约10厘米。"
+    },
+    "therapist|后腿膝盖慢慢落地，骨盆摆正。前面的膝盖对着第二个脚趾，慢慢向前轻触墙面，前脚的脚跟始终贴地。": {
+      "role": "therapist",
+      "text": "后腿膝盖慢慢落地，骨盆摆正。前面的膝盖对着第二个脚趾，慢慢向前轻触墙面，前脚的脚跟始终贴地。",
+      "src": "./assets/dialogue-v20/clinical71-wall-kneel.mp3",
+      "sha256": "c1ced85ea13cc90dcada98fadd43ff9c0873b5d1d811f49d870c778bf87d26ac",
+      "duration": 7.1540625,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "后腿膝盖慢慢落地，骨盆摆正，前面的膝盖对着第二个脚趾，慢慢向前倾触墙面，前脚的脚跟始终贴地。"
+    },
+    "therapist|我们会调整脚和墙的距离。我用软尺记下脚跟贴地、膝盖还能碰到墙时，脚尖到墙的最远距离。疼了就告诉我，我们随时停。": {
+      "role": "therapist",
+      "text": "我们会调整脚和墙的距离。我用软尺记下脚跟贴地、膝盖还能碰到墙时，脚尖到墙的最远距离。疼了就告诉我，我们随时停。",
+      "src": "./assets/dialogue-v20/clinical71-wall-distance.mp3",
+      "sha256": "d7018b2e42e8e24ba1bf4de8543e9bde59b81d8df75af64e73a62eb24961eae4",
+      "duration": 8.402,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "我们会调整脚和墙的距离，我用软尺记下脚跟贴地，膝盖还能碰到墙时，脚尖到墙的最远距离疼了就告诉我，我们随时停。"
+    },
+    "therapist|接下来请闭上眼睛，尽量站稳。我就在旁边保护您，觉得不稳就睁眼，扶住扶手。": {
+      "role": "therapist",
+      "text": "接下来请闭上眼睛，尽量站稳。我就在旁边保护您，觉得不稳就睁眼，扶住扶手。",
+      "src": "./assets/dialogue-v20/clinical71-balance-closed.mp3",
+      "sha256": "7324d81fe0926a5461c3a78e5fcc70e5ad5e78d46dec762cf4153f04ba56f25f",
+      "duration": 5.1321875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "接下来请闭上眼睛，尽量站稳，我就在旁边保护您，觉得不稳就睁眼，扶住扶手。"
+    },
+    "therapist|这次闭眼以后，您站着的时候晃动更多。我们会结合肌力和走路的情况一起判断。": {
+      "role": "therapist",
+      "text": "这次闭眼以后，您站着的时候晃动更多。我们会结合肌力和走路的情况一起判断。",
+      "src": "./assets/dialogue-v20/clinical71-balance-result.mp3",
+      "sha256": "7ad31972b4bf89fe4237980dea08c2dc4780fddcf9455c70819784b6a9104a51",
+      "duration": 5.4950625,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "这次闭眼以后，您站着的时候晃动更多，我们会结合激励和走路的情况一起判断。"
+    },
+    "therapist|先说勾脚。您自己勾，左脚 18°、右脚 10°。我帮您活动时，左脚 22°、右脚 14°。": {
+      "role": "therapist",
+      "text": "先说勾脚。您自己勾，左脚 18°、右脚 10°。我帮您活动时，左脚 22°、右脚 14°。",
+      "src": "./assets/dialogue-v20/clinical68-rom-up.mp3",
+      "sha256": "29b4a98026da628ee48b0a188d7cd856c4f8700faca5605698780da88c7f6205",
+      "duration": 5.8618125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "先说勾脚，您自己勾左脚18度，右脚10度，我帮您活动是左脚22度，右脚14度。"
     }
   },
   "revision": "v26 respectful dialogue and patient reactions"

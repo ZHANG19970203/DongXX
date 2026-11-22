@@ -6,7 +6,7 @@ import { createArchComparison } from './arch-comparison.js';
 import { createAnatomyViewer } from './anatomy-viewer.js';
 import {sampleWalking,renderPlantarScan} from "./pressure-engine.js";
 import { GAIT_CASE } from './gait-lesson.js';
-import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js?v=68';
+import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js?v=71';
 
 import {mountGaitQuestion,paintGaitQuestion} from './gait-phase-task.js';
 
@@ -110,7 +110,7 @@ export function createLearningUI(ctx) {
     const wrap=$('taskSurface');wrap.replaceChildren();wrap.hidden=false;
     const exam={wrap,book:stepBook,record,anatomyButton,changed:()=>{ctx.saveTask();paintTask();},pose:ctx.strengthPose,projectMuscle:ctx.projectMuscle,coachVoice:ctx.strengthVoice};
     if(task.type==='plantarScan'){mountPlantarScan({...exam,button,scanReady:ctx.scanReady});return;}
-    if(renderSOAPTask(task,{wrap,nodeEl,button,stepBook,record,refresh:()=>{ctx.saveTask();coach.update();}}))return;
+    if(renderSOAPTask(task,{wrap,nodeEl,button,stepBook,record,onCue:ctx.balanceVoice,refresh:()=>{ctx.saveTask();coach.update();}}))return;
     if(task.type==='history'){wrap.hidden=true;return;}
     if(task.type==='evidence'){
       wrap.append(nodeEl('p','task-description','本次实际留下的资料与判断'));
@@ -129,7 +129,7 @@ export function createLearningUI(ctx) {
     } else if(task.type==='trial'){
       wrap.append(nodeEl('h3','task-card-title','哪一次触墙可以记数？'));
       const compare=nodeEl('div','trial-comparison');
-      for(const [label,textValue]of [['同条件记录','面墙站立，足跟着地，膝盖沿第二脚趾方向轻触墙。逐步调节脚与墙的距离，记录仍能完成动作时大脚趾尖到墙的最远距离（厘米）。'],['条件已改变','脚跟抬起或脚向外转，这次不记。左右脚用同一方法；疼痛加重时停止，记下原因。']]){const card=nodeEl('div','task-card');card.append(nodeEl('b','',label),nodeEl('p','',textValue));compare.append(card);}
+      for(const [label,textValue]of [['同条件记录','面墙扶稳，被测足在前，先距墙约 10 cm。后膝落地、骨盆摆正，前足跟贴地，膝盖朝第二脚趾方向轻触墙。逐步调节脚与墙的距离，记录仍能完成动作时大脚趾尖到墙的最远距离（厘米）。'],['条件已改变','脚跟抬起或脚向外转，这次不记。左右脚用同一方法；疼痛加重时停止，记下原因。']]){const card=nodeEl('div','task-card');card.append(nodeEl('b','',label),nodeEl('p','',textValue));compare.append(card);}
       wrap.append(compare);anatomyButton(wrap,'ankle');addSource(wrap,'双侧使用同一把软尺、相同站位，各取三次有效测量的均值。');
     } else if(task.type==='muscle'){
       showStrength(exam);

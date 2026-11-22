@@ -443,6 +443,11 @@ class LabHandler(BaseHTTPRequestHandler):
             elif path == '/api/teacher/comment':
                 self.require_teacher()
                 self.json_response(self.server.private.comment(self.read_json(10000)))
+            elif path == '/api/learning/plan-review':
+                self.check_origin()
+                from plan_review import review_plan
+                value,status=review_plan(self.server.learning,self.read_json(24000),self.headers.get('X-Learner-Token',''))
+                self.json_response(value,status)
             elif path == '/api/learning/painting':
                 result,status=self.server.painting.run(self.read_json(180000),self.headers.get('X-Learner-Token',''))
                 self.json_response(result,status)

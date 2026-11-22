@@ -238,7 +238,7 @@ Object.assign(FLOW,{
   O('muscle_scope','这是需要检查的线索；先记录感受，不能直接定位损伤或反应延迟。','arch_intro','徒手肌力为分级评定；不能代替定量力矩或肌电时序测量。',{evidence:['muscle_scope']}),
   retry('infer_emg','能直接算出外翻力矩，并证明肌肉激活延迟。','muscle_explain','没有测力或肌电资料，不能从配对、外观或发软感算出这些结果。')
  ]}),
- arch_compare:N('arch_compare','act4','task','足弓结构','坐位和站立时的足弓外观已有说明。在右足模型上逐一选出三种足弓的组成骨。',{visualMode:'exam',next:'arch_concern',task:{type:'arch',instructions:'在足骨模型上辨认内侧纵弓、外侧纵弓和横弓。'}}),
+ arch_compare:N('arch_compare','act4','task','足弓结构','坐位和站立时的足弓外观已有说明。在右足模型上逐一选出三种足弓的组成骨。',{visualMode:'exam',next:'local_intro',task:{type:'arch',instructions:'在足骨模型上辨认内侧纵弓、外侧纵弓和横弓。'}}),
  pressure_intro:N('pressure_intro','act6','dialogue','林治疗师','刚才看了怎么走，现在看负荷怎样经过足底。先看站立，再看行走；读图要核对条件。',{next:'pressure_conditions',visualMode:'pressure'})
 });
 Object.assign(EVIDENCE_CATALOG,{
@@ -378,7 +378,7 @@ medical_evaluation:'先安全休息，安排进一步医学评估。'
 for(const node of Object.values(FLOW))for(const option of node.options||[])if(choiceLabels[option.id])option.shortLabel=choiceLabels[option.id];
 
 // v20 applied at import for all consumers, including tests and audio inventory.
-import {applySOAPRoute} from "./soap-route-v20.js?v=69";
+import {applySOAPRoute} from "./soap-route-v20.js?v=71";
 applySOAPRoute(FLOW,CASE_DATA,EVIDENCE_CATALOG);
 
 import {normalizeFlow} from './communication-v26.js';
@@ -393,7 +393,7 @@ FLOW.arch_view={id:'arch_view',act:'act4',kind:'task',speaker:'足弓坐站观�
 FLOW.arch_intro.next='arch_view';
 FLOW.arch_compare.text='在右足模型上选出内侧纵弓、外侧纵弓和横弓的组成骨。';
 
-Object.assign(FLOW.muscle_match,{speaker:'踝足肌力检查',text:'在模型上比较双侧抗阻外翻和抗阻背伸。',options:[{id:'muscle_match_done',label:'记录肌力比较，继续',shortLabel:'记录肌力比较，继续',good:true,safe:true,requiresTask:true,evidence:['ankle_strength54'],next:'balance_intro'}]});
+Object.assign(FLOW.muscle_match,{speaker:'踝足肌力检查',text:'在模型上比较双侧抗阻外翻和抗阻背伸。',options:[{id:'muscle_match_done',label:'记录肌力比较，继续',shortLabel:'记录肌力比较，继续',good:true,safe:true,requiresTask:true,evidence:['ankle_strength54'],next:'arch_concern'}]});
 FLOW.muscle_match.task.stage='resisted';
 FLOW.muscle_match.task.instructions='比较两侧抗阻外翻，再比较抗阻背伸。';
 Object.assign(FLOW.alignment,{speaker:'踝足运动辨认',text:'先看两组右足骨骼动画，再辨认关节运动。',options:[{id:'alignment_checked',label:'保存判断，进入膝触墙测试',good:true,safe:true,requiresTask:true,evidence:['ankle_motion54'],next:'trial'}]});
@@ -414,6 +414,25 @@ for(const [id,speaker,next] of [['trial','林治疗师','local_record'],['local_
  const node=FLOW[id];Object.assign(node,{kind:'dialogue',speaker,next,visualMode:'wall',options:[]});
  delete node.task;delete node.record;delete node.patientCue;
 }
+FLOW.trial.turns=[
+ {
+  "speaker": "therapist",
+  "text": "接下来看一下您的踝关节灵活度怎么样。这个检查叫负重弓箭步测试（WBLT）。"
+ },
+ {
+  "speaker": "therapist",
+  "text": "请面对墙，双手扶稳，我在您身边。把要测的脚放在前面，脚尖先离墙约10 cm。"
+ },
+ {
+  "speaker": "therapist",
+  "text": "后腿膝盖慢慢落地，骨盆摆正。前面的膝盖对着第二个脚趾，慢慢向前轻触墙面，前脚的脚跟始终贴地。"
+ },
+ {
+  "speaker": "therapist",
+  "text": "我们会调整脚和墙的距离。我用软尺记下脚跟贴地、膝盖还能碰到墙时，脚尖到墙的最远距离。疼了就告诉我，我们随时停。"
+ }
+];
+FLOW.trial.text=FLOW.trial.turns[0].text;
 FLOW.local_record.next='wall_adjust';
 FLOW.wall_adjust={...FLOW.local_record,id:'wall_adjust',speaker:'林治疗师',text:'先停一下，刚才脚跟抬起来了，这一次不算。把脚往墙边挪一点，脚跟贴地，再试一次。',next:'wall_measure'};
 FLOW.wall_measure={id:'wall_measure',act:'act2',kind:'task',speaker:'操作指导',visualMode:'wall',text:'观察治疗师用软尺测量两脚大脚趾尖到墙面的距离。',next:'local_explain'};
@@ -424,16 +443,16 @@ FLOW.local_explain.education=FLOW.trial.education;
 
 import {scanColourExplanation} from './clinic-dialogue.js';
 
-FLOW.pressure_intro.next='pressure_compare';
+FLOW.pressure_intro.next='cop_explain';
 FLOW.pressure_intro.text='您看这张脚印图。';
 Object.assign(FLOW.pressure_compare,{
  speaker:'足底扫描',text:'请采集双足站立时的足底压力，比较两脚的足印。',
  pressureStation:true,task:{type:'plantarScan'},education:{},
  purpose:'比较左右足内侧中足的接触范围。',
- options:[{id:'scan_reading',label:'查看颜色说明',good:true,safe:true,requiresTask:true,next:'cop_explain',evidence:['pressure_record']}]
+ options:[{id:'scan_reading',label:'查看扫描结果',good:true,safe:true,requiresTask:true,next:'pressure_intro',evidence:['pressure_record']}]
 });
 Object.assign(FLOW.cop_explain,{
- kind:'task',speaker:'林治疗师',text:scanColourExplanation,options:[],next:'local_intro',
+ kind:'task',speaker:'林治疗师',text:scanColourExplanation,options:[],next:'balance_intro',
  pressureStation:true,purpose:'',education:{}
 });
 delete FLOW.cop_explain.task;
@@ -468,4 +487,4 @@ FLOW.rom_measure=N('rom_measure','act2','task','林治疗师','陈女士，请�
 FLOW.rom_report=N('rom_report','act2','dialogue','林治疗师','双侧踝关节活动度结果',{visualMode:'exam',next:'trial'});
 
 FLOW.plan_discussion=N('plan_discussion','act8','dialogue','陈女士','那我回去先练什么？',{visualMode:'consult',next:'debrief'});
-for(const option of FLOW.plan.options)if(option.planDomain)option.next='plan_discussion';
+FLOW.plan=N('plan','act8','task','你','根据陈女士本轮检查结果，你会如何制定近期计划和远期计划？',{visualMode:'consult',next:'plan_discussion'});

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {copSeries} from '../soap/teaching-data.js';
+import {balanceTrials} from './balance-conditions.js';
 
 // Inset fixed force plate, side-entry protection rails and a forward-facing console.
 export function createBalanceStation(parent){
@@ -56,17 +56,18 @@ export function createBalanceStation(parent){
  rod('Monitor hinge',[-.12,1.57,1.03],[0,1.57,.98],.021,black);
  const display=new THREE.Group();display.name='Patient display';display.position.set(0,1.55,.93);display.rotation.y=Math.PI;display.rotation.x=-.07;station.add(display);
  part('Black monitor housing',new THREE.BoxGeometry(.51,.33,.043),black,0,0,0,display);
- const series=copSeries(1.6);let ctx,lastCount=-1;
+ let ctx,lastCount=-1,lastCondition=null;
  const screen=texture(480,300,g=>ctx=g);
  const face=part('Balance display',new THREE.PlaneGeometry(.474,.291),new THREE.MeshBasicMaterial({map:screen,toneMapped:false}),0,.001,.0225,display);face.castShadow=false;
  const cablePath=new THREE.CatmullRomCurve3([[.13,1.51,.965],[.24,1.41,1.05],[.13,1.29,1.07],[-.22,1.40,.99],[-.31,1.35,.95],[-.32,.95,.81]].map(p=>new THREE.Vector3(...p)));
  part('Monitor cable',new THREE.TubeGeometry(cablePath,40,.005,8,false),black,0,0,0);
- function sample(fraction=null){
-  const count=fraction===null?0:1+Math.round(1500*THREE.MathUtils.clamp(fraction,0,1));if(lastCount===count)return;lastCount=count;
+ function sample(fraction=null,condition='open'){
+  const series=balanceTrials[condition];
+  const count=fraction===null?0:1+Math.round(1500*THREE.MathUtils.clamp(fraction,0,1));if(lastCount===count&&lastCondition===condition)return;lastCount=count;lastCondition=condition;
   ctx.fillStyle='#183137';ctx.fillRect(0,0,480,300);ctx.fillStyle='#e2f4ec';ctx.font='bold 24px "Microsoft YaHei", sans-serif';ctx.fillText('静态平衡',22,42);
   ctx.font='18px sans-serif';ctx.fillText(count?((count-1)/50).toFixed(1)+' s':'准备',372,40);
   ctx.strokeStyle='#416568';ctx.lineWidth=1;ctx.beginPath();for(let x=40;x<470;x+=40){ctx.moveTo(x,62);ctx.lineTo(x,280);}for(let y=70;y<285;y+=30){ctx.moveTo(16,y);ctx.lineTo(464,y);}ctx.stroke();
-  ctx.strokeStyle='#78dcc5';ctx.lineWidth=3;ctx.beginPath();for(let i=0;i<count;i++){const q=series[i],x=240+q[1]*10,y=169-q[2]*10;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.stroke();
+  ctx.strokeStyle=condition==='open'?'#78dcc5':'#ffac79';ctx.lineWidth=3;ctx.beginPath();for(let i=0;i<count;i++){const q=series[i],x=240+q[1]*10,y=169-q[2]*10;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.stroke();
   ctx.fillStyle='#fff4c6';const q=count?series[count-1]:[0,0,0];ctx.beginPath();ctx.arc(240+q[1]*10,169-q[2]*10,4,0,2*Math.PI);ctx.fill();screen.needsUpdate=true;
  }
  sample();

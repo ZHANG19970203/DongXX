@@ -86,6 +86,7 @@ export function showMotion(ctx){
  if(pending===-1)questions();else watch(pending);
 }
 
+import {toeDirection} from './toe-direction.js';
 export function showStrength(ctx){
  const {wrap,book,record,changed,pose,coachVoice}=ctx;
  const tabs=el('div'),help=el('p'),trials=el('section'),finding=el('p'),question=el('section'),links=el('div');
@@ -117,7 +118,14 @@ export function showStrength(ctx){
   const menu=el('select');menu.setAttribute('aria-label','选择检查动作');menu.disabled=loading;
   for(const id of passes){const o=el('option',(book.get(recordKey(side,id))?'✓ ':'')+(id==='soleus'?'跖屈 · 屈膝':id==='plantarflexion'?'跖屈 · 伸膝':strengthActions[id].name));o.value=id;menu.append(o);}menu.value=pass;menu.onchange=()=>select(side,menu.value);
   trials.append(menu);
-  if(mode==='rest'||mode==='result'){
+  const key='toeDirection_'+motion();
+  if(mode==='rest'&&['dorsiflexion','plantarflexion'].includes(motion())&&!book.has(key)){
+   trials.append(toeDirection(motion(),side,(outcome,drag={})=>{
+    if(outcome!=='retry')book.set(key,outcome);
+    record('clinic3d_strength_direction',{side,motion:motion(),outcome,...drag});changed();
+    if(outcome!=='retry'){finding.textContent=outcome==='correct'?'方向正确，可以开始抗阻检查。':'方向题已跳过。';controls();}
+   }));
+  }else if(mode==='rest'||mode==='result'){
    const start=action(book.get(recordKey(side,pass))?'再查一次':'固定小腿，患者用力',()=>{mode='active';poseNow();coachVoice(pass==='soleus'?'现在把膝盖弯起来，再往下踩一次。':trial.cue);finding.textContent='观察治疗师双手接触的位置。';controls();});start.dataset.mmt='contact';trials.append(start);
   }
   if(mode==='active')trials.append(action('施加反向阻力',()=>{

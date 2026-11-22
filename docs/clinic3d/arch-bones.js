@@ -23,7 +23,7 @@ export function archOutlines(){
   }
   return pair;
 }
-export function openArchBones({host,draft,onSave,onComplete,onContinue,onClose,onSkip,review,showCase=true}){
+export function openArchBones({host,draft,onSave,onComplete,onContinue,onClose,onSkip,onBack,review,showCase=true}){
   const saved=draft?.version===1?draft:{};
   const selected=Object.fromEntries(arches.map(a=>[a.id,a.bones.filter(k=>saved.selected?.[a.id]?.includes(k))]));
   let arch=arches.find(a=>a.id===saved.active)||arches[0],model=null,closed=false,view=arch.view,busy=false;
@@ -56,7 +56,8 @@ export function openArchBones({host,draft,onSave,onComplete,onContinue,onClose,o
     const link=el('a','',label);link.href=url;link.target='_blank';link.rel='noopener';source.append(link,'　');
   }
   const caseLine=el('p','arch-case-line',archCaseText);if(showCase)side.append(caseLine);side.append(tabs,title,desc,progress,missing,feedback,next,keyboard);if(showCase)side.append(intro);side.append(source);
-  layout.append(viewer,side);dlg.append(header,layout);host.append(dlg);dlg.showModal();dlg.addEventListener('cancel',e=>{e.preventDefault();onClose();});
+  layout.append(viewer,side);dlg.append(header,layout);
+  const prev=button('← 返回上一步',()=>{const index=arches.indexOf(arch);if(index>0)tabButtons.get(arches[index-1].id).click();else if(!review&&onBack)onBack();else onClose();});prev.className='model-previous';dlg.append(prev);host.append(dlg);dlg.showModal();dlg.addEventListener('cancel',e=>{e.preventDefault();onClose();});
   const name=k=>model.names.get(k)+(arch.id==='transverse'&&/^mt[1-5]$/.test(k)?'基底':'');
   function update(){
     const ready=!!model;

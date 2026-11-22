@@ -134,3 +134,34 @@ export function updateClinicalOrder(prior){
  saved.routeVersion=54;
  return saved;
 }
+
+// Preserve scan data collected under the earlier, pressure-first curriculum.
+export function updatePressureOrder(prior){
+ const saved=recoverSkippedBedside(prior);
+ if(!saved||saved.routeVersion>=71||saved.completedAt||saved.exitLock)return saved;
+ const scanNodes=['arch_concern','pressure_compare','pressure_intro','cop_explain'];
+ const marks=saved.navigationBookmarks||{};
+ if(scanNodes.includes(marks.act4?.nodeId)){
+  marks.act6=marks.act4;delete marks.act4;
+ }
+ const next={arch_compare:'local_intro',muscle_match:'arch_concern',pressure_compare:'pressure_intro',cop_explain:'balance_intro'};
+ for(const entry of [saved,...Object.values(marks)]){
+  const lock=entry.choiceLock;
+  if(lock&&next[lock.nodeId]&&lock.nextId!==lock.nodeId)lock.nextId=next[lock.nodeId];
+ }
+ const scanDone=saved.taskReceipts?.pressure_compare?.scope==='case-plantar-scan'||saved.skippedSteps?.pressure_compare;
+ const explained=saved.learningSteps?.cop_explain||saved.skippedSteps?.cop_explain;
+ const motionNodes=['local_intro','alignment','rom_measure','rom_report','trial','local_record','wall_adjust','wall_measure','local_explain','muscle_intro','muscle_match'];
+ if(scanNodes.includes(saved.node)&&!saved.taskReceipts?.muscle_match&&!saved.skippedSteps?.muscle_match){
+  const resume=saved.node==='pressure_intro'&&!scanDone?'pressure_compare':saved.node;
+  saved.pressureResume={nodeId:resume,taskState:saved.taskState?.nodeId===resume?saved.taskState:null};
+  saved.node=saved.clinicalResume||'local_intro';
+  saved.taskState=saved.clinicalResumeBookmark?.nodeId===saved.node?saved.clinicalResumeBookmark:null;
+  delete saved.clinicalResume;delete saved.clinicalResumeBookmark;
+  saved.choiceLock=null;saved.autoDialogueNext=null;
+ }else if(motionNodes.includes(saved.node)&&(explained||scanDone)){
+  saved.pressureResume={nodeId:explained?'balance_intro':'cop_explain'};
+ }
+ if(['arch_concern','pressure_intro'].includes(saved.afterBedside))saved.afterBedside='local_intro';
+ saved.routeVersion=71;return saved;
+}

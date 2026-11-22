@@ -111,7 +111,20 @@ export async function replaceHead(root,bone,skin,role){
  vec4 hair=texture2D(napeAtlas,vec2(.5-.5*sin(a),vMapUv.y));
  float back=max(smoothstep(2.12,2.65,aa),rearView*smoothstep(1.02,1.63,aa));
  diffuseColor*=mix(mix(texture2D(map,uvF),texture2D(sideAtlas,uvS),weight),hair,back);`);};
- const face=new THREE.Mesh(g,m),eye=new THREE.Vector3(),center=new THREE.Vector3(0,1.64,.055);
+ const lids={value:0};
+ if(role==='patient')m.onBeforeCompile=shader=>{
+  shader.uniforms.lidClosure=lids;
+  shader.fragmentShader='uniform float lidClosure;\n'+shader.fragmentShader.replace('#include <map_fragment>',`vec2 uv=vMapUv;
+  float centre=uv.x<.5?.433:.565;
+  vec2 eye=(uv-vec2(centre,.442))/vec2(.040,.070);
+  float region=(1.-smoothstep(.88,1.14,length(eye)))*lidClosure;
+  vec4 orig=texture2D(map,uv);
+  vec4 skin=texture2D(map,vec2(uv.x,.355+.007*eye.y));
+  float arc=.08+.28*eye.x*eye.x;
+  float lash=(1.-smoothstep(.018,.085,abs(eye.y-arc)))*(1.-smoothstep(.72,1.,abs(eye.x)));
+  diffuseColor*=mix(orig,vec4(mix(skin.rgb,vec3(.12,.073,.061),lash),orig.a),region);`);
+ };
+ const face=new THREE.Mesh(g,m);face.userData.lids=lids;const eye=new THREE.Vector3(),center=new THREE.Vector3(0,1.64,.055);
  if(profile)face.onBeforeRender=(renderer,scene,camera)=>{camera.getWorldPosition(eye);face.worldToLocal(eye).sub(center);
  const a=Math.abs(Math.atan2(eye.x,eye.z));rearView.value=THREE.MathUtils.smoothstep(a,1.71,2.73);angle.value=THREE.MathUtils.smoothstep(a,.76,1.46)*(1-THREE.MathUtils.smoothstep(a,1.96,2.88));};face.name='Reference_face_'+role;face.castShadow=true;group.add(face);if(role==='patient')pony(group,tail);
  fitHeadObject(group,role);root.add(group);root.updateMatrixWorld(true);bone.attach(group);

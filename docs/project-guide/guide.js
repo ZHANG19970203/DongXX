@@ -1,8 +1,8 @@
-import {ACT_GUIDE,groupCourses} from './guide-data.js';
+import {ACT_GUIDE,groupCourses} from './guide-data.js?v=71';
 const $=id=>document.getElementById(id);
 const element=(tag,text,cls)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;};
 function showAct(id){
-  const act=ACT_GUIDE.find(a=>a.id===(id==='act6'?'act4':id))||ACT_GUIDE[0];
+  const act=ACT_GUIDE.find(a=>a.id===id)||ACT_GUIDE[0];
   for(const button of $('act-list').querySelectorAll('button'))button.setAttribute('aria-pressed',String(button.dataset.act===act.id));
   $('act-objective').textContent='知识目标 '+act.objectiveId;
   for(const [field,target] of [['question','act-title'],['why','act-why'],['observe','act-observe'],['task','act-task'],['concept','act-concept']])$(target).textContent=act[field];

@@ -1475,7 +1475,7 @@ export const FILM_SEQUENCE = {
   ]
 };
 
-import {updateFilmDialogue} from "./soap-route-v20.js";
+import {updateFilmDialogue} from "./soap-route-v20.js?v=71";
 updateFilmDialogue(FILM_SEQUENCE);
 
 import {normalizeFilm} from './communication-v26.js';
@@ -1493,13 +1493,14 @@ archIntro.actionLabel='坐位与站位观察';
 archIntro.handoff.studentAction='观察坐位与站位，完成比较后进入足弓识别。';
 const archSummary=FILM_SEQUENCE.clips.find(clip=>clip.id==='04B');
 archSummary.normal=archSummary.normal.filter(turn=>turn.speaker==='therapist');
-archSummary.actionLabel='查看足印与负荷';
-archSummary.handoff.nextNodeId='pressure_intro';
-archSummary.handoff.studentAction='比较同条件足底负荷。';
+archSummary.actionLabel='开始足底扫描';
+archSummary.handoff.nextNodeId='pressure_compare';
+archSummary.handoff.studentAction='双足赤足站稳后采集足印。';
 const scanIntro=FILM_SEQUENCE.clips.find(clip=>clip.id==='06A');
-scanIntro.actionLabel='开始足底扫描';
-scanIntro.handoff.nextNodeId='pressure_compare';
-scanIntro.handoff.studentAction='采集双足足印并比较中足接触。';
+scanIntro.evidenceRequirement.all=['pressure_record'];
+scanIntro.actionLabel='解释足印颜色';
+scanIntro.handoff.nextNodeId='cop_explain';
+scanIntro.handoff.studentAction='对照刚采集的足印解释颜色。';
 const scanResult=FILM_SEQUENCE.clips.find(clip=>clip.id==='06B');
 scanResult.title='足底压力色标';
 scanResult.evidenceRequirement.all=['pressure_record'];
@@ -1510,10 +1511,10 @@ agreement.handoff.studentAction='确认患者意愿后，先做床旁稳定性�
 
 for(const [id,label,next,prompt] of [
  ['03A','开始肌力检查','muscle_match','先左后右比较背伸、跖屈、内翻与外翻。'],
- ['06B','查看踝关节活动度','local_intro','完成足底负荷观察后，检查踝关节活动度。'],
+ ['06B','检查静态平衡','balance_intro','站到平衡测试仪上，观察压力中心轨迹。'],
  ['05B','进入评估与计划','plan_intro','综合本次检查，讨论下一步。'],
  ['02A','辨认踝足运动','alignment','先看两组关节运动，再学习量角器的摆法。'],
- ['07A','检查静态平衡','static_cop','双足睁眼站立，比较完整轨迹后判断结果。']
+ ['07A','检查静态平衡','static_cop','双足站立，比较睁眼和闭眼各 30 秒的轨迹。']
 ]){
  const clip=FILM_SEQUENCE.clips.find(c=>c.id===id);
  clip.actionLabel=label;clip.handoff.nextNodeId=next;clip.handoff.studentAction=prompt;clip.learningPoint=prompt;

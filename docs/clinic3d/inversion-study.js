@@ -32,7 +32,7 @@ const stations=[
 ];
 const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text)n.textContent=text;return n;};
 function button(text,run){const n=el('button','',text);n.type='button';n.addEventListener('click',run);return n;}
-export function openInversionStudy({host,draft,onSave,onDone,onContinue,onClose,onSkip,review}){
+export function openInversionStudy({host,draft,onSave,onDone,onContinue,onClose,onSkip,onBack,review}){
   const book=structuredClone(draft?.version===1?draft:{version:1,step:0,observations:{},attempts:{},solved:{}});
   const abort=new AbortController(),dialog=el('dialog','ankle-study'),header=el('header','study-head'),title=el('h2','','下楼踩空，右脚为什么容易向内崴？');
   dialog.setAttribute('aria-label','右踝扭伤机制模型练习');header.append(title,button('返回接诊',onClose));if(onSkip){const skip=button('跳过此步骤',onSkip);skip.className='skip-step';header.insertBefore(skip,header.lastChild);}
@@ -42,7 +42,8 @@ export function openInversionStudy({host,draft,onSave,onDone,onContinue,onClose,
   const posterior=button('看后方',()=>{model?.posteriorView();cap.textContent='蓝色为距腓后韧带，从外踝内面的外踝窝连至距骨后外侧。';});
   nav.append(posterior);posterior.hidden=true;
   const side=el('section','study-side');viewer.append(stage,nav,cap);body.append(viewer,side);
-  dialog.append(header,body);host.append(dialog);dialog.showModal();dialog.addEventListener('cancel',e=>{e.preventDefault();onClose();});
+  dialog.append(header,body);
+  const prev=button('← 返回上一步',()=>{if(book.step>0){if(!ready)return;book.step--;save();beginStep();}else if(!review&&onBack)onBack();else onClose();});prev.className='model-previous';dialog.append(prev);host.append(dialog);dialog.showModal();dialog.addEventListener('cancel',e=>{e.preventDefault();onClose();});
   const credit=()=>{const d=el('details','study-source'),s=el('summary','','模型与依据');d.append(s);
     const p=el('p','','解剖模型取自 BodyParts3D（DBCLS），经 Somakine 整理。此处截取右侧骨肌，添加教学色、韧带走向及简化运动。');d.append(p);
     for(const [name,url] of [['模型来源','https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html'],['CC BY 4.0','https://creativecommons.org/licenses/by/4.0/'],['距骨形态研究','https://pubmed.ncbi.nlm.nih.gov/32320447/'],['距腓后韧带解剖研究','https://pubmed.ncbi.nlm.nih.gov/39818474/'],['韧带应变实验','https://pubmed.ncbi.nlm.nih.gov/34144675/']]){

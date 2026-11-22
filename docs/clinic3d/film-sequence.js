@@ -1,6 +1,6 @@
 import {filmFallback,replies} from './clinic-dialogue.js';
 const fallback=kind=>filmFallback[kind].map(([speaker,text])=>({speaker,text}));
-import { FILM_SEQUENCE } from './film-sequence-data.js?v=68';
+import { FILM_SEQUENCE } from './film-sequence-data.js?v=71';
 
 export const FILM_CLIPS=FILM_SEQUENCE.clips;
 const roles={therapist:'林治疗师',patient:'陈女士'};
@@ -27,7 +27,7 @@ export function selectFilmBranch(clip,state){
   const missing={
     '01B':'screening_or_goal_missing','02A':'consent_missing','02B':'local_check_not_performed',
     '03B':'muscle_learning_incomplete','04A':'arch_comparison_skipped','04B':'arch_check_not_performed','05B':has(state,'gait_events')?'events_not_marked':'gait_task_not_performed',
-    '06B':has(state,'pressure_conditions')?'pressure_not_performed':'conditions_not_checked',
+    '06A':'pressure_data_missing','06B':has(state,'pressure_conditions')?'pressure_not_performed':'conditions_not_checked',
     '07B':'balance_not_performed','08A':'goal_not_obtained','08B':'plan_not_selected'
   };
   const item=alternative(clip,missing[clip.id]);

@@ -8,7 +8,7 @@ export function selectedPlan(state){
   return (state.records||[]).filter(r=>Object.hasOwn(explanations,r.planDomain)).at(-1)?.planDomain;
 }
 export function planTurns(state){
-  const domain=selectedPlan(state)||'assessment';
+  const domain=selectedPlan(state)||(state.taskReceipts?.muscle_match||state.taskReceipts?.gait_events?'control':state.taskReceipts?.rom_measure?'mobility':'assessment');
   const reply=domain==='assessment'?'好，那就先查清楚，再决定怎么练。':domain==='load'?'明白了。':'明白了，我先从简单的练起。';
   return [{speaker:'patient',text:'那我回去先练什么？'},
           {speaker:'therapist',text:explanations[domain]},
