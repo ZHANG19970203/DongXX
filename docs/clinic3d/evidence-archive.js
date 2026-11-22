@@ -1,4 +1,4 @@
-import {caseFindings,assessInstability} from './case-evidence.js?v=71';
+import {caseFindings,assessInstability} from './case-evidence.js?v=72';
 
 export function installEvidenceArchive(state){
   const mount=document.createElement('aside');mount.id='clinicalArchive';mount.hidden=true;

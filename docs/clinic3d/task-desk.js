@@ -1,4 +1,4 @@
-import {encounterProgress} from './encounter-progress.js?v=71';
+import {encounterProgress} from './encounter-progress.js?v=72';
 export function installTaskDesk(snapshot){
   const desk=document.getElementById('taskDesk'), content=desk.querySelector('[data-content]');
   const buttons=[...desk.querySelectorAll('[data-section]')];

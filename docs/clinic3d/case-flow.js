@@ -35,7 +35,7 @@ export const EVIDENCE_CATALOG = {
   consent: {label: '已解释并获本轮同意', status: 'communication', text: '同意可随时撤回；每次新增接触或任务仍需说明。'},
   alignment: {label: '量角器对线教学', status: 'authored_demonstration', text: '识别本教学图标示的轴心和两条参考线，不是患者实测角度。'},
   valid_trial: {label: '识别同方法有效试次', status: 'authored_demonstration', text: '足跟落地、足与膝方向符合设定、同一方法的试次可用于比较。'},
-  local_record: {label: '虚构病例的活动表现记录', status: 'fictional_case_record', text: '本例膝触墙三次有效距离的均值：右 6.0 cm，左 9.0 cm。右侧负重背伸较小，仍需结合症状判断原因。'},
+  local_record: {label: '虚构病例的活动表现记录', status: 'fictional_case_record', text: '本例膝触墙三次有效距离的均值：右 6.0 cm，左 8.0 cm。右侧负重背伸较小，仍需结合症状判断原因。'},
   gait_events: {label: '步态周期与三个步行时相', status: 'authored_demonstration', text: '通过教学模型观察两脚同时着地、右脚单独支撑和右脚摆动。'},
   gait_observation: {label: '将步态观察与机制推断分开', status: 'reasoning', text: '记录可见事件和患者感受；动画不提供力矩、肌力、韧带状态或病理诊断。'},
   arch_record: {label: '虚构病例的负重低足弓特征', status: 'fictional_case_record', text: '病例设定坐站时足弓外观不同；不能单凭两幅示意确诊柔韧性扁平足或证明因果。'},
@@ -378,7 +378,7 @@ medical_evaluation:'先安全休息，安排进一步医学评估。'
 for(const node of Object.values(FLOW))for(const option of node.options||[])if(choiceLabels[option.id])option.shortLabel=choiceLabels[option.id];
 
 // v20 applied at import for all consumers, including tests and audio inventory.
-import {applySOAPRoute} from "./soap-route-v20.js?v=71";
+import {applySOAPRoute} from "./soap-route-v20.js?v=72";
 applySOAPRoute(FLOW,CASE_DATA,EVIDENCE_CATALOG);
 
 import {normalizeFlow} from './communication-v26.js';
@@ -436,7 +436,7 @@ FLOW.trial.text=FLOW.trial.turns[0].text;
 FLOW.local_record.next='wall_adjust';
 FLOW.wall_adjust={...FLOW.local_record,id:'wall_adjust',speaker:'林治疗师',text:'先停一下，刚才脚跟抬起来了，这一次不算。把脚往墙边挪一点，脚跟贴地，再试一次。',next:'wall_measure'};
 FLOW.wall_measure={id:'wall_measure',act:'act2',kind:'task',speaker:'操作指导',visualMode:'wall',text:'观察治疗师用软尺测量两脚大脚趾尖到墙面的距离。',next:'local_explain'};
-FLOW.local_explain.text='两边用同样的方法测，右脚是六厘米，左脚是九厘米。您右脚踝负重时，往上弯的幅度小一些。';
+FLOW.local_explain.text='两边用同样的方法测，右脚是六厘米，左脚是八厘米，相差两厘米。右脚踝在承重时向前活动的范围小一些。';
 FLOW.local_explain.evidence=['local_record'];
 FLOW.local_explain.purpose='观察脚跟离地后怎样调整距离，比较同条件下的负重背伸。';
 FLOW.local_explain.education=FLOW.trial.education;
@@ -488,3 +488,13 @@ FLOW.rom_report=N('rom_report','act2','dialogue','林治疗师','双侧踝关节
 
 FLOW.plan_discussion=N('plan_discussion','act8','dialogue','陈女士','那我回去先练什么？',{visualMode:'consult',next:'debrief'});
 FLOW.plan=N('plan','act8','task','你','根据陈女士本轮检查结果，你会如何制定近期计划和远期计划？',{visualMode:'consult',next:'plan_discussion'});
+
+// Core objective tests precede the follow-up investigation of foot posture.
+FLOW.injury_question.turns[1].text='骨科已经确认，您的右脚踝有慢性不稳。我用模型给您解释一下，脚向内崴时发生了什么。';
+FLOW.ankle_stress.next='local_intro';
+FLOW.muscle_match.options[0].next='arch_intro';
+Object.assign(FLOW.arch_intro,{act:'act6',text:'刚才右脚往外用力时，没能像左脚那样稳住。我们再看看承重有没有影响，先认一认足弓的位置，再比较您坐着和站着时的变化。',next:'arch_compare'});
+Object.assign(FLOW.arch_compare,{act:'act6',next:'arch_view'});
+Object.assign(FLOW.arch_view,{act:'act6',next:'arch_concern'});
+Object.assign(FLOW.synthesis,{kind:'task',speaker:'你',text:'根据骨科转诊和本轮证据，写出陈女士的功能评定。',options:[],next:'plan'});
+delete FLOW.synthesis.task;

@@ -4,7 +4,7 @@ import {handRest,placeHand} from './bedside-motion.js';
 const v=(x=0,y=0,z=0)=>new T.Vector3(x,y,z);
 const at=(actor,name)=>actor.bones.get(name).getWorldPosition(v());
 // Three valid teaching trials for each side, in centimetres.
-const trials=[5.8,6.2,6,8.8,9.2,9];
+const trials=[5.8,6.2,6,7.8,8.2,8];
 function tapeMaterial(){
  const c=document.createElement('canvas');c.width=720;c.height=96;const g=c.getContext('2d');
  g.fillStyle='#ffe087';g.fillRect(0,0,c.width,c.height);g.fillStyle='#342b20';g.font='bold 32px sans-serif';

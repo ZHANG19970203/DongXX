@@ -1,4 +1,4 @@
-import {caseFindings} from './case-evidence.js?v=71';
+import {caseFindings} from './case-evidence.js?v=72';
 import {review} from './plan-client.js';
 export function presentPlan({state,host,save,record,next}){
  const d=state.writtenPlan||=( {short:'',long:''} );

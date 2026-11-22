@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { sampleGait } from './gait-lesson.js';
 import { walkingVisualSample, WALKING_DEMO, WALKING_PROFILE } from './walking-principles-v26.js';
-import { applyWalkingPose } from './walking-pose-v27.js';
+import { applyWalkingPose } from './walking-pose-v27.js?v=72';
 import { applyActorAppearance } from './appearance.js?v=69';
 import {dressFromDrawings} from './illustrated-clothing.js';
 import {smoothSurface,clipped} from './reference-wardrobe.js';

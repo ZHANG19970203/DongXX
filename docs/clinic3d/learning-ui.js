@@ -1,6 +1,6 @@
 import {archCaseText,archOutlines} from './arch-bones.js';
-import {mountPlantarScan,plantarFigure,pressureLegend} from './plantar-scan.js?v=68';
-import {renderSOAPTask} from './soap-tasks-v20.js';
+import {mountPlantarScan,plantarFigure,pressureLegend} from './plantar-scan.js?v=72';
+import {renderSOAPTask} from './soap-tasks-v20.js?v=72';
 import { createLessonCoach } from './lesson-coach.js';
 import { createArchComparison } from './arch-comparison.js';
 import { createAnatomyViewer } from './anatomy-viewer.js';
@@ -8,7 +8,7 @@ import {sampleWalking,renderPlantarScan} from "./pressure-engine.js";
 import { GAIT_CASE } from './gait-lesson.js';
 import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js?v=71';
 
-import {mountGaitQuestion,paintGaitQuestion} from './gait-phase-task.js';
+import {mountGaitQuestion,paintGaitQuestion} from './gait-phase-task.js?v=72';
 
 // Teaching presentation only. Operation receipts are owned by app.js.
 export function createLearningUI(ctx) {
@@ -118,7 +118,7 @@ export function createLearningUI(ctx) {
       wrap.append(list,button('查看 SOAP 病历',()=>ctx.openDrawer('notes')));return;
     }
     if(task.type==='gait'){
-      mountGaitQuestion({wrap,button,nodeEl,play:ctx.playGaitPhase,chooseAnswer(id){
+      mountGaitQuestion({wrap,button,nodeEl,book:stepBook,seek:ctx.setPhase,onMark(){paintTask();ctx.saveTask();},play:ctx.playGaitPhase,chooseAnswer(id){
         stepBook.set('cycleAnswer',id);
         record('clinic3d_gait_definition',{answer:id,correct:id==='cycle'});
         paintTask();

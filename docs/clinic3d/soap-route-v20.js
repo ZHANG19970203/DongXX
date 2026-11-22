@@ -3,10 +3,10 @@ import {firstInjury,laterInjuries} from './inversion-lesson.js';
 import {currentCase} from './differential.js';
 export const SOAP_STAGES=[
  {act:'act1',entry:'welcome',title:'S · 病史与目标',goal:'听清困扰与活动目标',task:'问受伤、症状、既往处理与意愿'},
- {act:'act4',entry:'ankle_stress',title:'O · 床旁查体与足弓',goal:'检查踝关节稳定性，再观察足弓',task:'在床旁完成两项手法检查，再比较坐站足弓、辨认组成骨'},
+ {act:'act4',entry:'ankle_stress',title:'O · 床旁稳定性',goal:'辨认机械性不稳线索',task:'取得同意，完成前抽屉与内翻应力检查'},
  {act:'act2',entry:'local_intro',title:'O · 活动与轴面',goal:'认识运动方向与测量',task:'了解量角器摆法，辨认主要关节与开链复合运动'},
  {act:'act3',entry:'muscle_intro',title:'O · 踝足肌群',goal:'比较踝足四个方向的抗阻表现',task:'先检查肌力，可选做肌肉解剖测试和彩绘'},
- {act:'act6',entry:'arch_concern',title:'O · 足底压力',goal:'比较双足站立时的足底负荷',task:'双足赤足站立，采集足印后解释压力色标和左右差异'},
+ {act:'act6',entry:'arch_intro',title:'O · 足弓与足底压力',goal:'解释承重时的变化',task:'辨认三条足弓，比较坐位和站位，预判高压区后揭示足印'},
  {act:'act7',entry:'balance_intro',title:'O · 静态COP',goal:'解读扭伤后站立时的姿势控制',task:'比较同条件的压力中心路径与平均速度'},
  {act:'act5',entry:'gait_intro',title:'O · 步态周期',goal:'看支撑、摆动与双侧差异',task:'回答步态周期的定义，展示三个时相'},
  {act:'act8',entry:'plan_intro',title:'A / P · 解释与计划',goal:'证据对应功能目标',task:'提出解释、选训练靶点与复评'}

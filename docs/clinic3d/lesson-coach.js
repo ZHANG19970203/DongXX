@@ -1,4 +1,4 @@
-import {gaitPhasesComplete} from './gait-phase-task.js';
+import {gaitPhasesComplete} from './gait-phase-task.js?v=72';
 import {motionComplete,strengthComplete} from './clinical-exams.js';
 
 // Contextual instructions point to genuine controls; they never answer a task.

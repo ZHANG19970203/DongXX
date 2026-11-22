@@ -10496,6 +10496,33 @@
       "duration": 5.8618125,
       "source": "Local synthesis using the existing Fei 1508 role reference",
       "transcriptCheck": "先说勾脚，您自己勾左脚18度，右脚10度，我帮您活动是左脚22度，右脚14度。"
+    },
+    "therapist|骨科已经确认，您的右脚踝有慢性不稳。我用模型给您解释一下，脚向内崴时发生了什么。": {
+      "role": "therapist",
+      "text": "骨科已经确认，您的右脚踝有慢性不稳。我用模型给您解释一下，脚向内崴时发生了什么。",
+      "src": "./assets/dialogue-v20/clinical72-referral.mp3",
+      "sha256": "693f21cc6149f77831052e27a9d9fe93ec50bf19208aa470bb5f915870f4c16c",
+      "duration": 6.035,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "骨科已经确认，您的右脚怀有慢性不稳，我用模型给您解释一下脚向内外时发生了什么。"
+    },
+    "therapist|两边用同样的方法测，右脚是六厘米，左脚是八厘米，相差两厘米。右脚踝在承重时向前活动的范围小一些。": {
+      "role": "therapist",
+      "text": "两边用同样的方法测，右脚是六厘米，左脚是八厘米，相差两厘米。右脚踝在承重时向前活动的范围小一些。",
+      "src": "./assets/dialogue-v20/clinical72-wall.mp3",
+      "sha256": "fdf16bbda320dfad7dad95de7cb085a7de196278d7c357c4ba959f03cc11e54a",
+      "duration": 7.63975,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "两边用同样的方法测，右脚是6厘米，左脚是8厘米，相差2厘米，右脚踝在承重时向前活动的范围小一些。"
+    },
+    "therapist|刚才右脚往外用力时，没能像左脚那样稳住。我们再看看承重有没有影响，先认一认足弓的位置，再比较您坐着和站着时的变化。": {
+      "role": "therapist",
+      "text": "刚才右脚往外用力时，没能像左脚那样稳住。我们再看看承重有没有影响，先认一认足弓的位置，再比较您坐着和站着时的变化。",
+      "src": "./assets/dialogue-v20/clinical72-arch.mp3",
+      "sha256": "9ba6990a16efed79ef3e0fff25ca58ee7c48f761b81715099e2030a4645ed705",
+      "duration": 8.728875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "刚才右脚往外用力时没能像左脚那样稳住。我们再看看承重有没有影响，先认一认足弓的位置，再比较您坐着和站桌时的变化。"
     }
   },
   "revision": "v26 respectful dialogue and patient reactions"

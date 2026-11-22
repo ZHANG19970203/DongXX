@@ -42,7 +42,7 @@ export function createHandRub(trolley){
  };
 }
 // Accessories use the same hand skeleton. They cannot drift from the fingers.
-export function createExamProtection(actor){
+export function createExamProtection(actor,gloveTint=0xb7dbdf){
  actor.bedsideRig.reset();actor.root.updateMatrixWorld(true);
  const skin=actor.model.getObjectByName('Patient_Skin')||(()=>{let s;actor.model.traverse(o=>{if(o.isSkinnedMesh&&/Patient_Skin/.test(o.name))s=o;});return s;})();
  const originalGeometry=skin.geometry,originalMaterial=skin.material;
@@ -64,7 +64,7 @@ export function createExamProtection(actor){
  }
  gloveGeometry.setAttribute('gloveSide',new THREE.Float32BufferAttribute(tags,1));
  gloveGeometry.setAttribute('gloveDon',new THREE.Float32BufferAttribute(don,1));
- const progress={value:new THREE.Vector2(0,0)},gloveColor=new THREE.Color(0xb7dbdf);
+ const progress={value:new THREE.Vector2(0,0)},gloveColor=new THREE.Color(gloveTint);
  const material=originalMaterial.clone();
  material.onBeforeCompile=(s,renderer)=>{
   originalMaterial.onBeforeCompile.call(material,s,renderer);

@@ -6,13 +6,13 @@ const lessons = [
   ['injury_question','了解患者对反复崴脚的疑问'], ['injury_mechanism','辨认内翻损伤机制','anatomical-model-reasoning'],
   ['safety','询问检查安全事项'], ['safety_answer','听取症状与安全信息'], ['goal','询问患者目标'],
   ['goal_answer','了解患者的活动目标'], ['fear_check','回应行走顾虑'], ['consent','说明检查目的'], ['consent_reply','取得检查同意'],
-  ['ankle_stress','完成床旁稳定性检查','receipt'], ['arch_intro','说明足弓检查'], ['arch_view','比较坐位与站位足弓','arch-posture-comparison'],
-  ['arch_compare','辨认三条足弓的骨骼','foot-arch-bone-selection'],
+  ['ankle_stress','完成床旁稳定性检查','receipt'],
   ['local_intro','说明活动度检查'], ['alignment','学习并辨认踝足运动','ankle-motion-knowledge'],
   ...romTrials.map(t=>['rom:'+t.key,sideLabel(t.side)+'踝'+t.mode+t.move.name+'读数',t]),
   ['rom_report','听取双侧活动度报告'],['trial','进行负重弓步测试'], ['local_record','听取弓步测试感受'], ['wall_adjust','调整膝触墙姿势'],
   ['wall_measure','用软尺测量双侧距离','wblt-tape'], ['local_explain','解释双侧测量结果'],
   ['muscle_intro','说明肌力检查'], ['muscle_match','比较双侧踝足肌力','simulated-ankle-strength'],
+  ['arch_intro','说明足弓检查'], ['arch_compare','辨认三条足弓的骨骼','foot-arch-bone-selection'], ['arch_view','比较坐位与站位足弓','arch-posture-comparison'],
   ['arch_concern','说明足底扫描'], ['pressure_compare','采集双足足印','case-plantar-scan'],
   ['pressure_intro','查看扫描结果'], ['cop_explain','解释足印颜色'],
   ['balance_intro','说明静态平衡检查'], ['static_cop','判读静态平衡轨迹','static-balance-interpretation'],
@@ -57,6 +57,7 @@ export function encounterProgress(state={}){
       done=validReading(measurements,scope)||!!(state.completedAt&&state.routeVersion<71&&!scope.move.sagittal&&Number.isFinite(measurements?.readings?.[previousKey]));
     }
     if(id==='arch_view' && receipt?.subject!=='case') done=false;
+    if(id==='synthesis' && state.routeVersion>=72 && !state.completedAt)done=receipt?.scope==='written-assessment';
     if(id==='soap_review') done=!!state.soapReviewPassed;
     if(id==='exam_close') done=done || !!state.examShoesOn && !state.skippedSteps?.exam_close && state.visited?.includes('exam_close');
     if(id==='exam_findings') done=done || !!state.examFeedbackDone;

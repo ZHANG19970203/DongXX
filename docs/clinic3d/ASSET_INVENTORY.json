@@ -147,8 +147,8 @@
     {
       "id": "original-actor-procedures",
       "path": "actors.js",
-      "bytes": 47749,
-      "sha256": "dd4a6580cdf514f0e5acbeb65debbfcb514eb569630794c285db5fe5c919e59d",
+      "bytes": 47754,
+      "sha256": "8d2fb89deb5ac4d70d69615b758104023ea72a892e602024faeac5c799713448",
       "source": "Project original room/rig procedures; includes portable clinical notes and pen. No separate stationery tray; existing medical trolley only holds clinical tools.",
       "license": "Original application code follows licenses/ORIGINAL_CODE_LICENSE.txt MIT scope; the source core mesh and skin weights remain attributed to MPFB CC0.",
       "includes": [
@@ -183,8 +183,8 @@
         "Static, dynamic and maximum modes keep fixed relative colour scale and condition labels"
       ],
       "path": "pressure-engine.js",
-      "bytes": 29122,
-      "sha256": "966cb4884f97add980a484555e97cbd3082b26273420298c9a5a00fd0b6ee1f9"
+      "bytes": 29406,
+      "sha256": "9d945e79eb415aaca5da8779851d50df9f7109b2c5cf2f275456bbaaacbb93ff"
     },
     {
       "id": "licensed-anatomy-window",
@@ -236,8 +236,8 @@
         "Clinical review pending",
         "Teaching operations are not patient measurements"
       ],
-      "bytes": 17316,
-      "sha256": "67b6d6a9da7ec2c74b21fdee318edbab3d7f69ae3be2de2dcc5fbe29d437c941"
+      "bytes": 17396,
+      "sha256": "7b283a7853f58b213677f01820219d641fdc72c59fab017f63724cde48709d92"
     },
     {
       "id": "original-appearance",
@@ -264,8 +264,8 @@
     {
       "id": "original-lesson-coach",
       "path": "lesson-coach.js",
-      "bytes": 6955,
-      "sha256": "0fdfd9cb3dce884d80864399c9d6aa537991af9aed81a9d5ba7a011df0afb579",
+      "bytes": 6960,
+      "sha256": "0f262d2cce83bfcf26b1f6af398584ce49a57f1a5587e21a5090e1b5a998b7bc",
       "source": "Original project implementation; no external media/model or patient data",
       "license": "MIT under original application code scope",
       "limits": [
@@ -286,8 +286,8 @@
     {
       "id": "original-concise-case-v12",
       "path": "case-flow.js",
-      "bytes": 66811,
-      "sha256": "9f434de754551968db6bdd34b996f6e3ff4b2d1fba7a387a9692189bd9d9ede8",
+      "bytes": 67721,
+      "sha256": "f193c0a7c95fdc0610d3d3ebe731d7f2c5d7519c654ec2f8907ddfe74f6cde58",
       "source": "Original fictional case and teaching choices; 41 nodes shortened without replacing evidence/safety paths",
       "license": "Application logic follows complete-site MIT scope; fictional case prose remains separate project teaching content",
       "limits": [
@@ -417,8 +417,8 @@
         "Clinical review pending",
         "Teaching operations are not patient measurements"
       ],
-      "bytes": 10114,
-      "sha256": "0edcb0ed13fc8d72ac58d93dc5278a16665fee80a84de575d1040979cfe1ec28"
+      "bytes": 10974,
+      "sha256": "002f1bf5cad9eff4c769ac5c6f1c63c6be45b8c53bb8ab3dab432be12937e68b"
     },
     {
       "id": "original-learning-space-v15",
@@ -506,8 +506,8 @@
     {
       "id": "local-dialogue-v20",
       "path": "assets/dialogue-v20/manifest.json",
-      "bytes": 497140,
-      "sha256": "850daca911e0d45ed8a1c43a3046779d642a9fe3aa0167236fdf9c1a8aa7a118",
+      "bytes": 499504,
+      "sha256": "699dc2cc69be9df1982925090f0d2fa80d9dc34874c842a492acd2924404c907",
       "source": "Course recordings and generated Mandarin dialogue. The voice and source fields identify individually credited clips.",
       "license": "Course dialogue assets. Speech engines and model weights are not distributed."
     },
@@ -593,15 +593,15 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 93868,
-      "sha256": "c265178fc5087c52b35196dbe245330e5684420ed0b11864135a947eab8a33ec"
+      "bytes": 94773,
+      "sha256": "a0efff28a757989d193fbe7d5c3a7e24ba7b2b3908b437217ccc8fc8b67de6d7"
     },
     {
       "id": "walking-pose-v27",
       "path": "walking-pose-v27.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 2238,
-      "sha256": "ae34fd2783ad75c9ac306c923a1c95677a4dd0649ee7ad513a70bc8e4486053a"
+      "bytes": 2364,
+      "sha256": "a52d644b03526de5fcd22350f565002e39292d1ec36bb83c190d9f638abb6c92"
     },
     {
       "id": "patient-shape-v42",

@@ -1,4 +1,4 @@
-import {encounterProgress} from './encounter-progress.js?v=71';
+import {encounterProgress} from './encounter-progress.js?v=72';
 const make=(tag,text)=>{const el=document.createElement(tag);el.textContent=text||'';return el;};
 export async function submitEncounter({state,profile,save}){
  if(document.querySelector('#encounterSubmission'))return;

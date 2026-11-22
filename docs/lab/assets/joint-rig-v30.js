@@ -8,7 +8,11 @@ const footKeys=new Set(['talus','calcaneus','navicular','cuboid','cuneiformM','c
 const isHand=p=>handKeys.has(p.key)||/^finger[1-5]_/.test(p.key);
 const isFoot=p=>footKeys.has(p.key)||/^toe[1-5]_/.test(p.key);
 class JointRig {
- constructor(parts){this.parts=parts;this.landmarks=g.DXXJointLandmarks;}
+ constructor(parts){
+  this.parts=parts;this.landmarks=g.DXXJointLandmarks;
+  this.indices=new Map(parts.map((p,i)=>[p.side+'/'+p.key,i]));
+  this.connective=parts.map((p,i)=>({p,i})).filter(({p})=>p.proximal&&p.distal);
+ }
  mark(key,which='center',side='right'){
   const row=this.landmarks[side]?.[key]||this.landmarks.bilateral?.[key];
   if(!row?.[which])throw Error('Missing source landmark: '+side+'/'+key+'/'+which);
@@ -106,6 +110,28 @@ class JointRig {
    center=mid(pt('L4','yHigh'),pt('L3','yLow'));const q=(t-.5)*2;
    if(['ap','ml','axialT'].includes(m)){axis=m==='ap'?[0,0,1]:m==='ml'?[1,0,0]:[0,1,0];const T=I();for(let j=0;j<3;j++)T[12+j]=axis[j]*q*.002;apply(p=>p.key==='L3',T,true);}
    else{axis=m==='lateral'?[0,0,1]:m==='axial'?[0,1,0]:[1,0,0];angle=q*4;apply(p=>p.key==='L3',R(axis,angle,center),true);anchor(center,'L3','L4');}
+  }
+  // Anchor both ends in the same atlas space. Deform along the line of pull
+  // so the insertion stays on the moving heel and the upper tendon stays on the calf.
+  const matrix=(side,key)=>matrices[this.indices.get(side+'/'+key)??this.indices.get('bilateral/'+key)];
+  for(const {p,i} of this.connective){
+   let near,far;
+   if(p.key==='achilles'){
+    near=matrix(p.side,'tibia');far=matrix(p.side,'calcaneus');
+   }else if(m?.startsWith('trunk')){
+    const n=Number(p.key.slice(6));
+    near=matrix(p.side,'rib'+n);
+    far=n<=7?matrix('bilateral','sternum'):n<=10?matrix(p.side,'costal'+(n-1)):near;
+   }else continue;
+   if(!near||!far)continue;
+   if(near===far){matrices[i]=near;continue;}
+   const along=M.sub(p.distal,p.proximal),length2=M.dot(along,along);
+   if(length2<1e-10)continue;
+   const delta=M.sub(M.point(far,p.distal),M.point(near,p.distal)),result=near.slice();
+   for(let col=0;col<3;col++)for(let row=0;row<3;row++)result[col*4+row]+=delta[row]*along[col]/length2;
+   const shift=M.dot(along,p.proximal)/length2;
+   for(let row=0;row<3;row++)result[12+row]-=delta[row]*shift;
+   matrices[i]=result;
   }
   return {matrices,center,axis,angle,anchors};
  }

@@ -10,3 +10,4 @@ function trial(seed,amplitude){
 }
 export const balanceTrials={open:trial(71,4.9),closed:trial(127,8.3)};
 export const balanceCues={closed:'接下来请闭上眼睛，尽量站稳。我就在旁边保护您，觉得不稳就睁眼，扶住扶手。',result:'这次闭眼以后，您站着的时候晃动更多。我们会结合肌力和走路的情况一起判断。'};
+export const balanceReference={open:trial(331,3.6),closed:trial(745,5.1)};

@@ -165,3 +165,20 @@ export function updatePressureOrder(prior){
  if(['arch_concern','pressure_intro'].includes(saved.afterBedside))saved.afterBedside='local_intro';
  saved.routeVersion=71;return saved;
 }
+
+export function updateAssessmentOrder(prior){
+ const saved=updatePressureOrder(prior);
+ if(!saved||saved.routeVersion>=72||saved.completedAt||saved.exitLock)return saved;
+ const next={ankle_stress:'local_intro',arch_intro:'arch_compare',arch_compare:'arch_view',arch_view:'arch_concern',muscle_match:'arch_intro'};
+ for(const entry of [saved,...Object.values(saved.navigationBookmarks||{})]){
+  const lock=entry.choiceLock;
+  if(lock&&next[lock.nodeId]&&lock.nextId!==lock.nodeId)lock.nextId=next[lock.nodeId];
+  if(lock?.nodeId==='synthesis')entry.choiceLock=null;
+ }
+ if(saved.afterBedside==='arch_intro')delete saved.afterBedside;
+ const marks=saved.navigationBookmarks||{};
+ if(['arch_intro','arch_compare','arch_view'].includes(marks.act4?.nodeId)){
+  marks.act6??=marks.act4;delete marks.act4;
+ }
+ saved.routeVersion=72;return saved;
+}

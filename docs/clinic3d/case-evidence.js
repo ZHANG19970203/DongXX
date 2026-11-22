@@ -29,6 +29,6 @@ export function assessInstability(state,findings=caseFindings(state)){
   if(!ids.has('giving'))missing.push('打软腿的情境与频率');
   if(!ids.has('drawer')||!ids.has('tilt'))missing.push('双侧韧带稳定性对照');
   if(!ids.has('resistance')&&!ids.has('gait'))missing.push('患侧肌力或步态表现');
-  if(missing.length)return {mixed:false,text:'分型依据待补。还需核对'+missing.join('、')+'。'};
+  if(missing.length)return {mixed:false,text:'骨科已确诊右侧慢性踝关节不稳。本次功能评定还需核对'+missing.join('、')+'。'};
   return {mixed:true,text:'右侧慢性踝关节不稳（CAI），兼有机械性和功能性不稳。前抽屉和内翻加压试验均见右侧较松，支持机械性成分。反复发软，结合'+(ids.has('resistance')?'右足抗阻外翻较早回落':'右脚单独支撑时间缩短')+'，支持功能性成分。'};
 }

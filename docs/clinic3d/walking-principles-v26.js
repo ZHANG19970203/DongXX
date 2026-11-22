@@ -1,5 +1,5 @@
 import {sampleGait,GAIT_CASE} from './gait-lesson.js';
-import {applyWalkingPose} from './walking-pose-v27.js';
+import {applyWalkingPose} from './walking-pose-v27.js?v=72';
 // Original analytic teaching model, NOT digitized literature or patient data.
 // Vertical force is derived from the same COM motion, not an unrelated curve.
 export const WALKING_DEMO=Object.freeze({cycleSeconds:1.2,verticalAmplitudeM:.018,lateralAmplitudeM:.020,gravity:9.81,stance:.6,leftContact:.5});

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {balanceTrials} from './balance-conditions.js';
+import {balanceTrials} from './balance-conditions.js?v=72';
 
 // Inset fixed force plate, side-entry protection rails and a forward-facing console.
 export function createBalanceStation(parent){

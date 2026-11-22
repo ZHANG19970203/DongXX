@@ -76,10 +76,20 @@ class ModelStage {
  constructor(canvas,assets,onPick){this.canvas=canvas;this.assets=assets;this.anatomy=assets.anatomy.model;this.rig=new g.DXXJointRig(this.anatomy.parts);this.native=this.anatomy;this.action=null;this.layer='both';this.showGuides=true;this.t=0;this.mode='native';this.viewer=createLabViewer(canvas,{pick:i=>onPick?.(this.anatomy.parts[i]),error:console.warn});this.viewer.addDataset('clean',this.anatomy,assets.anatomy.raw);this.motions=Object.fromEntries(assets.motions.map(x=>[x.id,x]));}
  supportsAnatomy(){return true;} supportsSide(){return true;}
  region(a){return a.kind==='pelvis3d'?'pelvis':a.region||this.motions[a.motion]?.region||'trunk';}
- set(a,t=0,mode='native'){this.action=a;this.t=t;this.mode=mode;this.viewer.use('clean',[]);this.viewer.yaw=-.45;this.viewer.pitch=.08;this.entry=a.kind==='muscleAtlas'?g.MuscleCatalogue.find(e=>e.id===a.muscleID):null;this.update(t);this.fullMask=this.viewer.visible.slice();this.fitAll();requestAnimationFrame(()=>{if(this.action===a)this.fitAll();});}
- allowed(p){const a=this.action,r=this.region(a),right=a.side!=='left';if(a.kind==='pelvis3d')return p.type==='bone'&&['hip','sacrum','femur'].includes(p.key);if(p.side!=='bilateral'&&p.side!==(right?'right':'left'))return false;
-  if(this.entry){const id=this.anatomy.parts.indexOf(p);return this.entry.partIndices.includes(id)||p.type==='bone'&&this.regionMatch(p,this.entry.boneRegion||r);}
+ set(a,t=0,mode='native'){this.action=a;this.t=t;this.mode=mode;this.viewer.use('clean',[]);this.viewer.yaw=a.motion==='ankle'||['gastrocnemius','soleus'].includes(a.muscleID)?2.55:-.45;this.viewer.pitch=.08;this.entry=a.kind==='muscleAtlas'?g.MuscleCatalogue.find(e=>e.id===a.muscleID):null;this.update(t);this.fullMask=this.viewer.visible.slice();this.fitAll();requestAnimationFrame(()=>{if(this.action===a)this.fitAll();});}
+ allowed(p){const a=this.action,r=this.region(a),right=a.side!=='left';if(a.kind==='pelvis3d')return p.type==='bone'&&['hip','sacrum','femur'].includes(p.key);if(!['trunk','thorax','spine'].includes(r)&&p.side!=='bilateral'&&p.side!==(right?'right':'left'))return false;
+  if(this.entry){if(p.key==='achilles')return ['gastrocnemius','soleus'].includes(this.entry.id);
+   if(p.type==='cartilage')return ['trunk','thorax','spine'].includes(this.entry.boneRegion||r);
+   const belongs=this.entry.partIndices.some(i=>{
+    const source=this.anatomy.parts[i];
+    if(source===p)return true;
+    return p.type==='muscle'&&p.key===source.key&&p.english.toLowerCase().replace(/\b(left|right)\b/g,'side')===source.english.toLowerCase().replace(/\b(left|right)\b/g,'side');
+   });
+   return belongs||p.type==='bone'&&this.regionMatch(p,this.entry.boneRegion||r);}
   if(a.kind==='fsu')return p.type==='bone'&&['L3','L4'].includes(p.key);
+  if(p.type==='cartilage')return ['trunk','thorax','spine'].includes(r)&&(this.mode!=='anatomy'||this.layer!=='muscle');
+  if(p.key==='achilles')return ['ankle','foot','lower','knee'].includes(r)&&(this.mode!=='anatomy'||this.layer!=='bone');
+  if(this.mode==='native'&&a.motion==='ankle'&&['gastrocnemius','soleus'].includes(p.key))return true;
   const ok=this.regionMatch(p,r);return ok&&(this.mode==='anatomy'?(this.layer==='both'||this.layer==='muscle'?this.layer==='muscle'?p.type==='muscle':true:p.type==='bone'):p.type==='bone');
  }
  regionMatch(p,r){
@@ -712,7 +722,7 @@ window.MuscleTeaching={
  hipAbd:{plane:'冠状面',axis:'近似前后轴',direction:'大腿远离中线为外展，靠近为内收',joint:'股骨相对骨盆',main:['臀中肌','臀小肌'],opposite:['内收长肌','内收短肌','大收肌等'],note:'单腿支撑时这些肌群还可参与骨盆稳定；骨盆偏移不直接证明单肌无力。'},
  hipRotate:{plane:'垂直股骨长轴的局部平面',axis:'股骨长轴',direction:'股骨内旋 / 外旋',joint:'股骨相对骨盆',main:['内旋：臀中/小肌前部、阔筋膜张肌等'],opposite:['外旋：臀大肌及髋深层外旋肌群'],note:'肌肉功能受髋角度影响；不能只看脚尖就把变化归为踝关节。'},
  knee:{plane:'以矢状面为主',axis:'近似内外侧轴',direction:'屈膝：小腿接近大腿后侧；伸膝：返回伸直',joint:'小腿相对大腿',main:['屈膝：腘绳肌群等'],opposite:['伸膝：股四头肌'],note:'下降控制和起身推进需结合负重。源模型含伴随变换，不等于个体真实接触求解。'},
- ankle:{plane:'以矢状面为主',axis:'距小腿关节斜轴',direction:'背伸：脚背靠近小腿；跖屈：脚尖远离',joint:'足相对小腿',main:['背伸：胫骨前肌','趾长伸肌等'],opposite:['跖屈：腓肠肌、比目鱼肌等'],note:'跖屈型动作不要只看足趾下压；小腿三头肌可在不同阶段推进或控制。'},
+ ankle:{plane:'以矢状面为主',axis:'距小腿关节斜轴',direction:'背伸：脚背靠近小腿；跖屈：脚尖远离',joint:'足相对小腿',main:['背伸：胫骨前肌','趾长伸肌等'],opposite:['跖屈：腓肠肌、比目鱼肌等'],note:'跖屈型动作不要只看足趾下压；腓肠肌和比目鱼肌通过跟腱牵拉跟骨，产生跖屈。'},
  footTilt:{plane:'多平面耦合',axis:'后足斜轴（源模型）',direction:'足底转向内侧 / 外侧',joint:'后足相关关节',main:['内翻：胫骨后肌、胫骨前肌等'],opposite:['外翻：腓骨长肌、腓骨短肌等'],note:'不把足内翻等同跖屈，不用单一倾斜程度判断扭伤级别。'},
  toeFlex:{plane:'局部屈伸面',axis:'跖趾段近似内外侧轴',direction:'合并足趾段屈曲 / 伸展',joint:'源模型合并足趾段相对前足',main:['趾长/短屈肌等'],opposite:['趾长/短伸肌等'],note:'趾间关节未逐一绑定；这个模型不能用于逐趾精细动作考核。'}
 };
@@ -940,12 +950,23 @@ function thorax(d,focus){
  b+=`<path d="${contour(xL,xR)}" fill="#eaf1fa" stroke="#698fbe" stroke-width="2.5"/>`;
  b+=`<path d="${contour(cx-90,cx+90)}" fill="none" stroke="${C.ghost}" stroke-width="2" stroke-dasharray="5 5"/>`;
  b+=`<path d="M${cx-74} 365 Q${cx} 205 ${cx+74} 365" fill="none" stroke="${C.ghost}" stroke-width="2" stroke-dasharray="5 5"/>`;
- // Each symmetric rib arc moves outward and slightly upward; sternum is only a locator.
- for(let i=0;i<6;i++){
-  const yy=145+i*30-9*d.q,edge=i<2?.83:1;
-  b+=`<path d="M${cx} ${yy+21} Q${cx-w*edge} ${yy+21} ${cx-w*edge+8} ${yy-5} M${cx} ${yy+21} Q${cx+w*edge} ${yy+21} ${cx+w*edge-8} ${yy-5}" fill="none" stroke="${C.bone}" stroke-width="7.5" stroke-linecap="round"/>`;
+ // Typical anterior thoracic cage. Each costal cartilage starts at its rib.
+ const sternumTop=124-7*d.q,sternumEnd=246-7*d.q;
+ b+=line([cx,sternumTop],[cx,sternumEnd],C.bone,8);
+ for(const sign of [-1,1]){
+  let previous=null;
+  for(let level=1;level<=12;level++){
+   const n=level-1, y=126+n*16-7*d.q, spread=.47+.51*Math.sin(Math.min(1,n/10)*Math.PI*.68);
+   const outer=cx+sign*w*spread, jx=cx+sign*w*(level<=7?.25+.060*n:.63+.04*(level-8));
+   const jy=y+12;
+   b+=`<path data-rib="${level}" d="M${outer-sign*7} ${y-9} Q${outer+sign*7} ${y+21} ${jx} ${jy}" fill="none" stroke="${C.bone}" stroke-width="6" stroke-linecap="round"/>`;
+   const ex=level<=7?cx+sign*3:level<=10?previous[0]:jx-sign*7;
+   const ey=level<=7?sternumTop+n*18:level<=10?previous[1]:jy+2;
+   const mx=(jx+ex)*.5,my=(jy+ey)*.5;
+   b+=`<path data-cartilage="${level}" d="M${jx} ${jy} Q${mx} ${my+3} ${ex} ${ey}" fill="none" stroke="#429591" stroke-width="${level>10?3:4.5}" stroke-linecap="round"/>`;
+   previous=[mx,my+1.5];
+  }
  }
- b+=line([cx,126-8*d.q],[cx,318-8*d.q],C.bone,8);
  // Quadratic Bezier apex at t=.5 is exactly d.apex.
  b+=`<path d="M${xL+17} ${d.edge} Q${cx} ${2*d.apex-d.edge} ${xR-17} ${d.edge} L${xR-17} ${d.edge+9} Q${cx} ${2*d.apex-d.edge+9} ${xL+17} ${d.edge+9} Z" fill="#efbd98" stroke="${C.orange}" stroke-width="2" data-diaphragm-apex="${d.apex.toFixed(4)}"/>`;
  b+=line([cx-89,90],[cx+89,90],C.ghost,1.5,'4 4');
@@ -958,7 +979,7 @@ function thorax(d,focus){
  b+=tx(ax+11,154,'上',20,focus==='abdominal'?C.orange:C.muted)+tx(ax+11,179,'下',20,focus==='abdominal'?C.orange:C.muted)+tx(ax+11,204,'径',20,focus==='abdominal'?C.orange:C.muted);
  if(d.inhaling){b+=arrow([xL+6,250],[xL-30,250],C.blue,focus==='thoracic'?4:2)+arrow([xR-6,250],[xR+30,250],C.blue,focus==='thoracic'?4:2)+arrow([cx,d.apex0+4],[cx,d.apex+18],C.orange,focus==='abdominal'?4:2);}
  else if(d.exhaling){b+=arrow([xL-28,250],[xL+4,250],C.blue,2.5)+arrow([xR+28,250],[xR-4,250],C.blue,2.5)+arrow([cx,d.apex+20],[cx,d.apex-3],C.orange,3);}
- b+=dot([cx,d.apex],C.orange,4)+tx(47,414,'虚线：呼气末原位',16,C.muted)+tx(47,438,'蓝：胸廓宽度　橙：胸腔纵向空间',15,C.muted);
+ b+=dot([cx,d.apex],C.orange,4)+tx(32,412,'青绿：肋软骨　虚线：呼气末原位',15,C.muted)+tx(32,434,'1–7 连胸骨，8–10 参与肋弓',14,C.muted)+tx(32,454,'11–12 前端游离',14,C.muted);
  // Side cutaway: abdominal bulge is anterior, NOT the width of an abdomen in frontal view.
  b+=box(411,280,99,166,'#fff',9)+tx(460,303,'侧面',15,C.muted,'middle');
  b+=`<path d="M435 320 L435 420 L472 420 Q${484+d.abdBulge*.56} 382 470 353 L472 320" fill="#eef4fc" stroke="#859db5" stroke-width="2"/>`;
@@ -1293,6 +1314,13 @@ function configure(){const a=state.action,na=nativeActive();$('diagram').innerHT
  }catch(e){$('modelCanvas').hidden=true;$('clinicCanvas').hidden=true;$('diagram').hidden=false;$('diagram').innerHTML=`<div class="readcard"><h2>模型未能加载</h2><p>${E(e.message)}</p><p>请使用支持WebGL的浏览器。文字和原理示意仍保留。</p></div>`;console.error(e);}
  $('caption').textContent=state.mode==='anatomy'?'静态结构用于定位，未与当前运动逐点配准；颜色不表示肌肉张力。':state.mode==='clinic'?'复用已有角色蒙皮，姿态为定性示范；不是临床量角、接触或患者能力测量。':a.caption;
  $('stageBadge').hidden=true;$('caption').hidden=true;
+ if(!$('modelCanvas').hidden){
+  const calf=a.motion==='ankle'||['soleus','gastrocnemius'].includes(a.muscleID);
+  if(calf||a.motion?.startsWith('trunk')){
+   $('caption').hidden=false;
+   $('caption').textContent=calf?'后方观察：红色为当前肌腹。腓肠肌与比目鱼肌借浅黄色的跟腱附着于跟骨后方。点击模型可辨认结构。':'青绿色为肋软骨。第1–7对直接连胸骨，第8–10对参与肋弓，第11、12对前端游离。下位肋软骨按典型连接示意。';
+  }
+ }
  if(a.kind==='pelvis3d')$('poseLabel').textContent='蓝：固定水平参照　橙：骨性教学标记连线。可旋转核对三维关系。';
  renderExtras();update();}
 function settingInput(key,label,min,max,step,value){return `<label>${label}<input type="number" data-setting="${key}" min="${min}" max="${max}" step="${step}" value="${value}"></label>`;}

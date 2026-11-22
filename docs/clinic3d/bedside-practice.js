@@ -1,5 +1,5 @@
 import {replies} from './clinic-dialogue.js?v=69';
-import {bothBedsideTests} from './progress-migration.js';
+import {bothBedsideTests} from './progress-migration.js?v=72';
 import {createDialogueAudio} from './dialogue-audio.js';
 import {preparationDuration,preparationLabel} from './exam-protection.js';
 export const PRACTICE_LINES={

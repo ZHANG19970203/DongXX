@@ -1475,7 +1475,7 @@ export const FILM_SEQUENCE = {
   ]
 };
 
-import {updateFilmDialogue} from "./soap-route-v20.js?v=71";
+import {updateFilmDialogue} from "./soap-route-v20.js?v=72";
 updateFilmDialogue(FILM_SEQUENCE);
 
 import {normalizeFilm} from './communication-v26.js';
@@ -1490,7 +1490,8 @@ reviseFilm(FILM_SEQUENCE);
 const archIntro=FILM_SEQUENCE.clips.find(clip=>clip.id==='04A');
 archIntro.anchorNode='arch_view';
 archIntro.actionLabel='坐位与站位观察';
-archIntro.handoff.studentAction='观察坐位与站位，完成比较后进入足弓识别。';
+archIntro.handoff.studentAction='在辨认组成骨的基础上，比较坐位和站位的足弓。';
+archIntro.handoff.nextNodeId='arch_view';
 const archSummary=FILM_SEQUENCE.clips.find(clip=>clip.id==='04B');
 archSummary.normal=archSummary.normal.filter(turn=>turn.speaker==='therapist');
 archSummary.actionLabel='开始足底扫描';

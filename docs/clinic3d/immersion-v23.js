@@ -1,7 +1,7 @@
-import {anatomicalPanel,staticCOPPanel,gaitExplorer,archCOPPanel} from './realistic-panels.js';
+import {anatomicalPanel,staticCOPPanel,gaitExplorer,archCOPPanel} from './realistic-panels.js?v=72';
 import {evidencePanel,contractionPanel,ligamentPanel} from '../soap/explorers.js';
 import {CASE_EVIDENCE} from '../soap/explorers-data.js';
-import {soapSummary} from './soap-summary.js?v=71';
+import {soapSummary} from './soap-summary.js?v=72';
 const el=(t,c='',v)=>{const n=document.createElement(t);n.className=c;if(v!==undefined)n.textContent=v;return n;};
 const btn=(t,f)=>{const b=el('button','',t);b.type='button';b.onclick=f;return b;};
 const concepts={act1:['倾听与SOAP','把患者感受与客观观察分开记录。'],act2:['关节与轴面','背伸、跖屈和内外翻分别涉及哪些关节？'],act3:['肌肉与收缩','起止点怎样决定动作？向心与离心怎样配合？'],act4:['三条足弓','先认识内侧纵弓、外侧纵弓和横弓。'],act5:['步态周期','接地、离地、支撑与摆动怎样衔接？'],act6:['足底负荷','足印、压力图与COP分别回答什么问题？'],act7:['静态COP','站着不动时，轨迹为什么仍在变化？'],act8:['从证据到计划','先核对已知和未知，再选择下一步。']};

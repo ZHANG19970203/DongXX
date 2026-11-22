@@ -44,7 +44,7 @@ export async function actorPreview(host,{role='patient',closeup=false,balance=fa
  return{actor,balanceFrame(p){station?.sample(p);},phase(p){phase=p;},dispose(){live=false;cancelAnimationFrame(raf);ro.disconnect();io.disconnect();station?.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.dispose());});renderer.dispose();renderer.domElement.remove();}};
 }
 function clock(c,duration,draw){let t=0,run=false,last=0,raf;const row=el('div','timeline-controls'),range=el('input'),out=el('output');Object.assign(range,{type:'range',min:0,max:duration,step:duration/1500,value:0});range.setAttribute('aria-label','教学采集时间');const paint=()=>{range.value=t;out.textContent=t.toFixed(1)+' / '+duration+' s';draw(t/duration);};const stop=()=>{run=false;cancelAnimationFrame(raf);play.textContent='播放采集';};const loop=n=>{if(!c.isConnected||document.hidden){stop();return;}t=Math.min(duration,t+Math.max(0,Math.min(.08,(n-last)/1000)));last=n;paint();if(t===duration)stop();else raf=requestAnimationFrame(loop);};const play=btn('播放采集',()=>{if(run){stop();return;}if(t===duration)t=0;run=true;play.textContent='暂停';last=performance.now();raf=requestAnimationFrame(loop);});range.oninput=()=>{stop();t=+range.value;paint();};row.append(play,btn('重置',()=>{stop();t=0;paint();}),range,out);c.append(row);paint();const all=()=>{stop();t=duration;paint();};all.reset=()=>{stop();t=0;paint();};return all;}
-import {balanceTrials,balanceCues} from './balance-conditions.js';
+import {balanceTrials,balanceReference,balanceCues} from './balance-conditions.js?v=72';
 export function staticCOPPanel({onObserve=()=>{},caseResults=false,onCue=()=>{}}={}){
  const c=panel('双足站立 · 压力中心轨迹','双脚位置、硬质板面和时长相同。先睁眼平视，再闭眼，各采集 30 秒；治疗师在旁保护。');
  c.classList.add('cop-live-panel');
@@ -65,7 +65,8 @@ export function staticCOPPanel({onObserve=()=>{},caseResults=false,onCue=()=>{}}
  }
  let preview,phase=0;
  if(!caseResults){const host=el('div','real-actor-view');c.append(host);whenVisible(host,async()=>{preview=await actorPreview(host,{balance:true});return()=>preview.dispose();});}
- c.append(canvas,toggle,legend,metric);
+ const normToggle=el('label','cop-reference-option'),normal=el('input');normal.type='checkbox';normal.checked=true;
+ normToggle.append(normal,'叠加同条件的健康教学参考');c.append(canvas,normToggle,toggle,legend,metric);
  function draw(){
   const g=canvas.getContext('2d'),count=Math.min(trace.length,1+Math.round((trace.length-1)*phase));
   const x=v=>300+v*14,y=v=>190-v*14;
@@ -84,16 +85,17 @@ export function staticCOPPanel({onObserve=()=>{},caseResults=false,onCue=()=>{}}
    for(let i=0;i<count;i++){const [,a,b]=series[i];if(i===0)g.moveTo(x(a),y(b));else g.lineTo(x(a),y(b));}
    g.stroke();g.setLineDash([]);
   }
+  if(normal.checked)plot(balanceReference[condition],'#656f79',[2,4]);
   if(reference.checked)plot(baseline,colour[condition==='open'?'closed':'open'],[6,5]);
   plot(trace,colour[condition],[]);
   const [,a,b]=trace[count-1];g.fillStyle='#075f54';g.beginPath();g.arc(x(a),y(b),4,0,2*Math.PI);g.fill();
-  legend.textContent=names[condition]+' · 实线'+(reference.checked?'　'+names[condition==='open'?'closed':'open']+' · 虚线':'')+'　青色睁眼，橙色闭眼';
+  legend.textContent=names[condition]+' · 实线'+(reference.checked?'　'+names[condition==='open'?'closed':'open']+' · 虚线':'')+(normal.checked?'　灰色点线：同条件健康模拟参考':'');
   function reading(series){const stats=count>1?copStats(series.slice(0,count)):null;return (stats?.pathMM||0).toFixed(1)+' mm'+(phase===1?' · 平均速度 '+stats.meanVelocityMMs.toFixed(2)+' mm/s':'');}
   metric.textContent=(phase*30).toFixed(1)+' 秒　路径 '+reading(trace)+(reference.checked?' ｜ '+names[condition==='open'?'closed':'open']+' '+reading(baseline):'');
  }
- reference.onchange=draw;
+ reference.onchange=normal.onchange=draw;
  const showAll=clock(c,30,p=>{phase=p;draw();preview?.balanceFrame(p);if(caseResults)c.dispatchEvent(new CustomEvent('clinic-balance-frame',{bubbles:true,detail:{fraction:p,condition,point:trace[Math.round(1500*p)]}}));if(p>=1)onObserve(condition);});
- if(caseResults)c.append(btn('查看完整30秒',showAll));c.append(el('p','note','病例模拟 · COP 为双足合成压力中心。比较同一时长的路径与速度。单凭轨迹无法定位患侧，也无法单独判定本体感觉损伤。'));
+ if(caseResults)c.append(btn('查看完整30秒',showAll));c.append(el('p','note','病例模拟 · COP 为双足合成压力中心。健康参考为同条件的教学模拟，不能作为诊断阈值。比较同一时长的路径与速度。单凭轨迹无法定位患侧，也无法单独判定本体感觉损伤。'));
  const sources=document.createElement('details'),summary=document.createElement('summary'),a=document.createElement('a');
  summary.textContent='研究依据与读图边界';a.href='https://doi.org/10.1186/s13102-025-01064-y';a.target='_blank';a.rel='noopener';a.textContent='查看双足测力板原始研究（2025）';
  sources.append(summary,el('p','note','一项双足测力板研究中，慢性踝关节不稳组在硬板睁眼和闭眼时，左右方向摆动及平均速度均高于健康对照组。此处展示双足合成 COP 的模拟对照，右踝受伤没有对应的固定轨迹形状。'),a);c.append(sources);

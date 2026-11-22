@@ -1,6 +1,6 @@
 import {filmFallback,replies} from './clinic-dialogue.js';
 const fallback=kind=>filmFallback[kind].map(([speaker,text])=>({speaker,text}));
-import { FILM_SEQUENCE } from './film-sequence-data.js?v=71';
+import { FILM_SEQUENCE } from './film-sequence-data.js?v=72';
 
 export const FILM_CLIPS=FILM_SEQUENCE.clips;
 const roles={therapist:'林治疗师',patient:'陈女士'};

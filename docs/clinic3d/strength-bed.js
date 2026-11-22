@@ -1,7 +1,8 @@
+import {examSightline} from './exam-sightline.js?v=72';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {handRest,placeHand,wrapFingers} from './bedside-motion.js';
-import {createExamProtection} from './exam-protection.js';
+import {createExamProtection} from './exam-protection.js?v=72';
 
 const v=(x=0,y=0,z=0)=>new THREE.Vector3(x,y,z);
 const X=v(1,0,0),Y=v(0,1,0),Z=v(0,0,1);
@@ -79,8 +80,9 @@ export function createStrengthBed(actors,room,scene){
    m.stencilWrite=true;m.stencilRef=obj===p.model.getObjectByName('Patient_Skin')?1:0;m.stencilZPass=THREE.ReplaceStencilOp;
   }
  });
- const hands={L:handRest(d,'L'),R:handRest(d,'R')},protection=createExamProtection(d);
+ const hands={L:handRest(d,'L'),R:handRest(d,'R')},protection=createExamProtection(d,0x3186a4);
  protection.set({mask:1,left:1,right:1});
+ const sightline=examSightline(d);
  const cart=room.objects.trolley,cartHome=cart.position.clone();cart.position.set(-.7,0,2.45);
  const stool=room.objects.examStool,previous=stool.position.clone(),scale=stool.scale.y;
  const arrow=new THREE.ArrowHelper(Y,v(),.12,0xc35e19,.032,.019);arrow.visible=false;scene.add(arrow);
@@ -134,7 +136,9 @@ export function createStrengthBed(actors,room,scene){
   const shankUp=shin.clone().sub(ankle).normalize();
   // At the front of the couch, the proximal hand stays just above the malleoli.
   const anterior=Z.clone().applyQuaternion(pr.rest.get('lowerleg01'+s).world.clone().invert()).applyQuaternion(p.bones.get('lowerleg01'+s).getWorldQuaternion(new THREE.Quaternion()));
-  const exposedDirection=Y.clone().projectOnPlane(shankUp).normalize();
+  // Seat the stabilizing palm on the exposed side of the distal shank.
+  const outside=(side==='R'?-1:1)*(1-2*prone);
+  const exposedDirection=v(outside*.70,.60,.24).projectOnPlane(shankUp).normalize();
   if(exposedDirection.lengthSq()<.1)exposedDirection.copy(anterior);
   fixed.copy(ankle).addScaledVector(shankUp,.10).addScaledVector(exposedDirection,.04);
   const fore=ankle.clone().lerp(toes,.81);
@@ -149,11 +153,11 @@ export function createStrengthBed(actors,room,scene){
   if(sampleIndex++%6===0){
    shinGap=surface(k,fixed,exposedDirection);foreGap=surface(k,contact,foreNormal);
   }
-  fixed.addScaledVector(exposedDirection,shinGap);contact.addScaledVector(foreNormal,foreGap);
+  fixed.addScaledVector(exposedDirection,shinGap);contact.addScaledVector(foreNormal,foreGap+.005);
   const height=THREE.MathUtils.clamp((contact.y+fixed.y)/2-.19,.39,.91);
   // Adjust examiner position to both contact landmarks and the flexed-knee height.
   const mid=contact.clone().lerp(fixed,.5);
-  const examiner=v(mid.x+.05,height,mid.z+.425).lerp(v(-1.30,.86,1.55),1-entry);
+  const examiner=v(mid.x+.035,height,mid.z+.38).lerp(v(-1.30,.86,1.55),1-entry);
   const yaw=turn(Y,Math.PI+.10);
   poseAt(d,examiner,yaw);d.root.visible=true;d.setDocumentation('desk');
   stool.position.set(examiner.x,0,examiner.z);stool.scale.y=scale*Math.max(.60,(height-.10)/.45);
@@ -165,13 +169,13 @@ export function createStrengthBed(actors,room,scene){
   const fixedHand=motion==='eversion'?k:(k==='R'?'L':'R');
   const resistHand=fixedHand==='L'?'R':'L';
   for(const [h,pt,inward,fingers] of [
-    [fixedHand,fixed,exposedDirection.clone().negate(),med.clone()],
+    [fixedHand,fixed,exposedDirection.clone().negate(),shankUp.clone().negate()],
     [resistHand,contact,direction,long.clone().negate()]
   ]){
    let along=fingers.projectOnPlane(inward).normalize();
    if(along.lengthSq()<.1)along=shankUp.clone().projectOnPlane(inward).normalize();
    const pole=pt.clone().add(v(h==='L'?-.22:.22,.02,.28));
-   placeHand(d,h,hands[h],pt,along,inward,blend,pole);wrapFingers(d,h,blend*(h===fixedHand?.65:.34));
+   placeHand(d,h,hands[h],pt,along,inward,blend,pole);wrapFingers(d,h,blend*(h===fixedHand?.44:.17));
    palms[h].copy(hands[h].palm).applyQuaternion(hands[h].wrist.clone().invert()).applyQuaternion(d.bones.get('wrist.'+h).getWorldQuaternion(new THREE.Quaternion())).add(at(d,'wrist.'+h));
   }
   arrow.visible=stage==='resist';arrow.position.copy(contact).addScaledVector(direction,-.13);arrow.setDirection(direction);
@@ -183,21 +187,24 @@ export function createStrengthBed(actors,room,scene){
  }
  function aim(view){
   protection.set({mask:1,right:1,left:1,visible:view!=='first'});
-  const centre=fixed.clone().lerp(contact,.62);
+  const ankle=at(p,'foot.'+side), kneePoint=at(p,'lowerleg01.'+side);
+  const centre=fixed.clone().lerp(contact,.56);
   const outside=(side==='R'?-1:1)*(1-2*prone);
   let off;
   if(view==='first'){
-   // Look down from just in front of the examiner, past the hands to the tested foot.
-   off=v(outside*.065,.40,.025);
+   // Eye line ahead of the examiner's torso, looking over the wrists.
+   off=v(outside*.075,.56,-.07);
   }else if(view==='feet'){
-   off=v(outside*.39,.23,-.075);
+   off=v((motion==='inversion'?-1:1)*outside*.49,.40,-.27);
   }else{
-   // Observe from the tested side to avoid shooting through the examiner's back.
-   off=v(outside*.67,.32,-.065);
+   // Include the ankle-to-knee segment, especially when the knee is flexed.
+   centre.lerp(ankle.clone().lerp(kneePoint,.48),.39);
+   const sign=motion==='inversion'?-1:1;
+   off=v(sign*outside*.72,.50,-.50);
   }
   return {target:centre,eye:centre.clone().add(off)};
  }
- return {update,aim,project(value){visible=value;},set(k,mode,action,flex,project){if(finished){finished(false);finished=null;}sampleIndex=0;side=k||'L';motion=action||'dorsiflexion';stage=mode||'rest';knee=!!flex;visible=project!==false;clock=0;return stage==='resist'?new Promise(resolve=>{finished=resolve;}):Promise.resolve(false);},
-  close(){if(finished)finished(false);closed=true;for(const [m,data] of stencils){[m.stencilWrite,m.stencilRef,m.stencilZPass]=data;}arrow.removeFromParent();arrow.dispose();for(const {mesh} of meshes){mesh.removeFromParent();mesh.geometry.dispose();mesh.material.dispose();}for(const skeleton of new Set(meshes.map(x=>x.mesh.skeleton)))skeleton.dispose();protection.dispose();p.setExamCuff(0);for(const a of [p,d]){a.root.quaternion.identity();a.root.position.set(0,0,0);a.bedsideRig.reset();}cart.position.copy(cartHome);stool.position.copy(previous);stool.scale.y=scale;delete document.body.dataset.strengthAtlas;}
+ return {update,aim,showHands(camera){sightline.update(camera,at(p,'lowerleg01.'+side),contact);},project(value){visible=value;},set(k,mode,action,flex,project){if(finished){finished(false);finished=null;}sampleIndex=0;side=k||'L';motion=action||'dorsiflexion';stage=mode||'rest';knee=!!flex;visible=project!==false;clock=0;return stage==='resist'?new Promise(resolve=>{finished=resolve;}):Promise.resolve(false);},
+  close(){sightline.close();if(finished)finished(false);closed=true;for(const [m,data] of stencils){[m.stencilWrite,m.stencilRef,m.stencilZPass]=data;}arrow.removeFromParent();arrow.dispose();for(const {mesh} of meshes){mesh.removeFromParent();mesh.geometry.dispose();mesh.material.dispose();}for(const skeleton of new Set(meshes.map(x=>x.mesh.skeleton)))skeleton.dispose();protection.dispose();p.setExamCuff(0);for(const a of [p,d]){a.root.quaternion.identity();a.root.position.set(0,0,0);a.bedsideRig.reset();}cart.position.copy(cartHome);stool.position.copy(previous);stool.scale.y=scale;delete document.body.dataset.strengthAtlas;}
  };
 }

@@ -293,7 +293,7 @@ export function renderPressureDiagram(svg, options = {}) {
 // all profiles. It is not a sensor calibration threshold or a diagnostic cutoff.
 const COMPARISON_CONTACT_THRESHOLD = .012;
 const REGION_LABELS = Object.freeze({ heel: '足跟', midfoot: '中足', forefoot: '前足', toes: '足趾' });
-const regionOf = cell => cell.forward < .025 ? 'heel' : cell.forward < .110 ? 'midfoot' : cell.forward < .180 ? 'forefoot' : 'toes';
+export const regionOf = cell => cell.forward < .025 ? 'heel' : cell.forward < .110 ? 'midfoot' : cell.forward < .180 ? 'forefoot' : 'toes';
 
 /** Percentages describe THIS synthetic diagram, not patient norms. Area uses a
  * fixed display threshold; load fractions use all current force, including
@@ -395,7 +395,7 @@ export function samplePlantarScan(centres={}) {
   return {kind:'plantar_scan',phase:1,measured:false,feet,cells};
 }
 
-export function renderPlantarScan(svg,frame,{highlightRight=false}={}) {
+export function renderPlantarScan(svg,frame,{highlightRight=false,comparison=null}={}) {
   svg.setAttribute('viewBox','0 0 340 260');
   svg.setAttribute('role','img');
   svg.setAttribute('aria-label',frame.kind==='plantar_scan'?'双足站立扫描，右中足内侧接触较宽':'左右脚各自承重早期的足压分布，右足压力偏向外侧');
@@ -405,6 +405,10 @@ export function renderPlantarScan(svg,frame,{highlightRight=false}={}) {
     const map=cell=>({x:x+cell.lateral*780,y:184-cell.forward*780});map.scale=780;
     markup+=`<rect x="${x-61}" y="5" width="122" height="233" rx="13" fill="white" stroke="#d2e1da"/>`;
     markup+=`<g class="scan-reveal" data-foot="${foot.side}">${pathCells(foot.cells,map)}</g>`;
+    if(comparison){
+      const point=map(comparison[foot.side]);
+      for(const [stroke,width] of [['white',4],['#153d3b',1.6]]) markup+=`<circle cx="${point.x}" cy="${point.y}" r="9" fill="none" stroke="${stroke}" stroke-width="${width}"/>`;
+    }
     if(highlightRight&&foot.side==='right'){
       const peak=foot.cells.reduce((best,cell)=>cell.pressure>best.pressure?cell:best);
       const point=map(peak),y=point.y.toFixed(1),cx=point.x.toFixed(1);

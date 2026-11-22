@@ -8,17 +8,18 @@ function curve(keys,p){
  }
  return keys.at(-1)[1];
 }
+export const heelRisePhase = protective => protective ? .24 : .35;
 export function footRocker(localPhase,ankleHeight=.0678,protective=false){
  const p=((localPhase%1)+1)%1;
  // Positive pitch means toes above the heel. Terminal stance rolls over forefoot.
- let pitch=curve([[0,15],[.08,0],[.35,0],[.45,-3],[.5,-10],[.6,-22],[.68,-14],[.77,0],[.88,0],[1,15]],p)*Math.PI/180;
+ let pitch=curve([[0,15],[.08,0],[heelRisePhase(protective),0],[.45,protective?-9:-3],[.5,-10],[.6,-22],[.68,-14],[.77,0],[.88,0],[1,15]],p)*Math.PI/180;
  if(protective&&pitch<0)pitch*=.55;
  const contact=p<.6;
  const clearance=contact?0:curve([[.6,0],[.65,.034],[.71,.079],[.79,.052],[.87,.034],[.94,.022],[1,0]],p);
  const pivot=pitch>=0?-.065:.180;
  const y=ankleHeight*Math.cos(pitch)-pivot*Math.sin(pitch)+clearance;
  const z=pivot-(ankleHeight*Math.sin(pitch)+pivot*Math.cos(pitch));
- const label=p<.08?'脚跟接触，脚掌逐渐落下':p<.35?'全脚掌承重，身体向前经过':p<.5?'脚跟抬起，前脚掌支撑':p<.6?'准备离地':p<.77?'屈膝提脚，向前摆动':p<.88?'脚尖抬起，避免拖地':'膝逐渐伸展，准备再次落脚';
+ const label=p<.08?'脚跟接触，脚掌逐渐落下':p<heelRisePhase(protective)?'全脚掌承重，身体向前经过':p<.5?'脚跟抬起，前脚掌支撑':p<.6?'准备离地':p<.77?'屈膝提脚，向前摆动':p<.88?'脚尖抬起，避免拖地':'膝逐渐伸展，准备再次落脚';
  return {pitch,ankleHeight:y,forwardOffset:z,clearance,contact,label};
 }
 export function applyWalkingPose(sample){
