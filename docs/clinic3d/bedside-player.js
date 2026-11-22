@@ -1,5 +1,5 @@
 import {createBedsideMotion,chapters,duration,instruction,preparationDuration} from './bedside-motion.js?v=69';
-import {createBedsidePractice} from './bedside-practice.js?v=69';
+import {createBedsidePractice} from './bedside-practice.js?v=70';
 
 import {seatOnExamBed} from './actors.js?v=69';
 

@@ -33,7 +33,7 @@
 .inversion-arc polygon{fill:#e7a62c}
 .case-films-link{display:inline-block;margin:.55rem .35rem;color:#185e57;font-weight:600}
 .heel-leader:before{content:'';position:absolute;width:8px;height:8px;border:2px solid #146859;background:#fffc;border-radius:50%;top:-6px;left:-6px}
-.practice-markers button:not(.practice-handle){width:30px;height:30px;min-height:30px;padding:0;background:#fffdf6eb;color:#125e54;font-size:14px}
+.practice-markers button:not(.practice-handle){width:40px;height:40px;min-height:40px;padding:0;background:#fffdf6eb;color:#125e54;font-size:14px}
 .practice-markers button:not(.practice-handle):before{content:'';position:absolute;bottom:100%;left:50%;height:max(0px,calc(var(--pin-rise) - 14px));border-left:1px dashed #126b5e;pointer-events:none}
 .bedside-player:is([data-practice-stage="fixed"],[data-practice-stage="heel"]) .practice-actions button{background:white;color:#184640}
 #clinic .film-cue #filmWatch{display:inline-flex;align-items:center;min-height:34px;font-size:14px;font-weight:650;padding:4px 12px;color:#fff;background:#17665d;border:0;border-radius:7px}

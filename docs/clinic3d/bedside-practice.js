@@ -33,7 +33,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   spoken.textContent='林治疗师：'+text;spoken.hidden=false;
   explanation.speak('林治疗师',text).then(()=>{if(version===explanationRevision)spoken.hidden=true;});
  }
- let active=true,stage='consent',test=0,pose,transfer=0,amount=0,drag=null,hold=0,loaded=false,grips={fixedWeight:0,heelWeight:0},attempts=0,errors=0,completed=[],returnTime=null,demo=null,currentSample=0,lastAspect=camera.aspect;
+ let active=true,stage='consent',test=0,pose,transfer=0,amount=0,drag=null,grips={fixedWeight:0,heelWeight:0},attempts=0,errors=0,completed=[],demo=null,currentSample=0,lastAspect=camera.aspect;
  const origin=performance.now(),omitted=new Set(checkpoint?.omitted||[]);
  if(checkpoint){
   test=checkpoint.test===1?1:0;completed=[...new Set(checkpoint.completed||[])];
@@ -62,7 +62,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   const remaining=Math.max(1500,Math.min(6000,text.length*65))-(performance.now()-start);if(active&&remaining>0)await new Promise(resolve=>setTimeout(resolve,remaining));};
  function button(text,fn,attr){const b=document.createElement('button');b.type='button';b.textContent=text;if(attr)b.dataset.practice=attr;b.onclick=fn;actions.append(b);return b;}
  function clear(){actions.replaceChildren();markers.replaceChildren();status.textContent='';drag=null;}
- function draw(value){currentSample=value;if(lastAspect!==camera.aspect){path=null;drag=null;hold=0;loaded=false;}lastAspect=camera.aspect;pose=seek(value,{...grips,showForces:stage==='demo'||stage==='pressing',conversation:stage==='consent'?'initial':stage==='retry'&&retryNeedsConsent?'retry':null});lastAspect=camera.aspect;positionMarkers();}
+ function draw(value){currentSample=value;if(lastAspect!==camera.aspect){path=null;drag=null;}lastAspect=camera.aspect;pose=seek(value,{...grips,showForces:stage==='demo'||stage==='pressing',conversation:stage==='consent'?'initial':stage==='retry'&&retryNeedsConsent?'retry':null});lastAspect=camera.aspect;positionMarkers();}
  function baseline(){return test===0?6.55:10.97;}
  function poseAmount(value){amount=value;draw((test===0?6.6:11.25)+value*(test===0?1.45:1.55));}
  function startDemo(){
@@ -72,7 +72,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
  function endDemo(){if(!demo)return;const previous=demo;demo=null;grips=previous.grips;setStage(previous.from,true);}
  function setStage(next,resuming=false){
   const revision=++stageRevision;
-  if(!['move','return','pressure','pressing','next','interpret'].includes(next))stopExplanation();
+  if(!['move','settle','return','pressure','pressing','next','interpret'].includes(next))stopExplanation();
   patientExpression('neutral');audio.cancel();stage=next;ui.dataset.practiceStage=next;ui.dataset.practiceTest=String(test);clear();
   if(next==='consent'){
    draw(-preparationDuration);line.textContent='检查前，先向陈女士说明目的并征求同意。';
@@ -103,13 +103,12 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
     if(stage==='fixed'){grips.fixedWeight=1;setStage('heel');}else{grips.heelWeight=1;setStage('move');}
    };markers.append(b);button(b.textContent+' · '+text,()=>b.click());}
    button('看双手示范',startDemo,'demo');positionMarkers();
-  }else if(next==='move'||next==='return'){
-   const returning=next==='return';
-   amount=returning?1:0;hold=0;loaded=returning;returnTime=null;path=null;draw(baseline());
-   if(returning)poseAmount(1);else if(!resuming)attempts++;
-   line.textContent=test===0?'踝稍跖屈。左手固定小腿，右手托住足跟向前平移。感受终末阻力，再缓慢回位。':returning?'压力已解除。沿弧线缓慢回到中立位。':'右手稳住胫骨下缘，左手虎口贴住足外侧缘，带动跟骨内收、内翻。';
-   if(!returning)explain();
-   const handle=document.createElement('button');handle.type='button';handle.className='practice-handle';handle.dataset.target='drag';handle.textContent=test===0?'带动足跟':returning?'缓慢回位':'内收、内翻';handle.setAttribute('aria-label',handle.textContent+'，也可沿箭头使用方向键');markers.append(handle);
+  }else if(next==='move'){
+   amount=0;path=null;draw(baseline());if(!resuming)attempts++;
+   line.textContent=test===0?'托住足跟，沿箭头向前拖一小段后松手。':'稳住小腿，顺着箭头将后足向内翻一小段后松手。';
+   explain();
+   const handle=document.createElement('button');handle.type='button';handle.className='practice-handle';handle.dataset.target='drag';
+   handle.textContent=test===0?'带动足跟':'内收、内翻';handle.setAttribute('aria-label',handle.textContent+'，也可按相应方向键');markers.append(handle);
    const guide=document.createElement('span');guide.className='practice-direction';markers.append(guide);
    if(test===1){
     guide.hidden=true;
@@ -118,25 +117,48 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
     markers.append(arc);
    }
    const leader=document.createElement('span');leader.className='heel-leader';markers.append(leader);
-   handle.onpointerdown=e=>{if(drag||returnTime!==null)return;e.preventDefault();handle.setPointerCapture(e.pointerId);const start=pointAt(amount);drag={x:e.clientX-start.x,y:e.clientY-start.y,last:performance.now(),lastAmount:amount,pointer:e.pointerId};emit('motion_start',{attempt:attempts});};
-   handle.onpointermove=e=>{if(drag?.pointer!==e.pointerId)return;const {value,lateral}=readGesture(e.clientX-drag.x,e.clientY-drag.y);const elapsed=performance.now()-drag.last;
-    if(value<-.16||lateral>travel()*.40){fail('direction','方向不对，请先回到原位，重新确认箭头方向。');return;}
-    if(value>1.25||(elapsed>12&&Math.abs(value-drag.lastAmount)/elapsed>.0032)){fail('too_fast',PRACTICE_LINES.fast);return;}
-    drag.last=performance.now();drag.lastAmount=value;move(Math.max(0,Math.min(1,value)));
+   handle.onpointerdown=e=>{
+    if(drag||!e.isPrimary||e.button!==0)return;
+    e.preventDefault();handle.setPointerCapture(e.pointerId);
+    drag={pointer:e.pointerId,x:e.clientX,y:e.clientY,best:0};
+    emit('motion_start',{attempt:attempts});
    };
-   handle.onpointerup=e=>{if(drag?.pointer!==e.pointerId)return;drag=null;if(returning){status.textContent='继续缓慢回位。';return;}if(loaded&&amount<=.10)success();else{status.textContent=test===1?'尚未到达终末位，请重新操作。':'请连续完成带动、保持和回位。';emit('incomplete',{amplitude:amount,held:loaded});hold=0;loaded=false;returnTime=0;}};
-   handle.onpointercancel=e=>{if(drag?.pointer===e.pointerId)fail('interrupted','操作中断，请重新开始。');};
+   function track(e){
+    const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+    const end=path[path.length-1],length=Math.hypot(end.x,end.y);
+    const forward=(dx*end.x+dy*end.y)/length;
+    const aligned=forward>=Math.hypot(dx,dy)*.45;
+    if(aligned&&forward>travel()*2.25){fail('too_fast',PRACTICE_LINES.fast);return;}
+    if(aligned)drag.best=Math.max(drag.best,forward);
+    poseAmount(aligned?Math.min(1,forward/travel()):0);
+    if(drag&&drag.best>=travel()*.24)status.textContent='方向正确，可以松手。';
+   }
+   handle.onpointermove=e=>{if(drag?.pointer===e.pointerId)track(e);};
+   handle.onpointerup=e=>{
+    if(drag?.pointer!==e.pointerId)return;
+    track(e);if(!drag)return;
+    const accepted=drag.best>=travel()*.24;
+    drag=null;
+    if(accepted)setStage('settle');
+    else{poseAmount(0);status.textContent='顺着箭头再拖一小段。';}
+   };
+   handle.onpointercancel=e=>{if(drag?.pointer===e.pointerId){drag=null;poseAmount(0);status.textContent='可以从原处再拖一次。';}};
    handle.onkeydown=e=>{
-    const keys={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowRight:[1,0],ArrowLeft:[-1,0]},key=keys[e.key];if(!key)return;e.preventDefault();
-    if(drag||returnTime!==null)return;
-    const a=pointAt(Math.max(0,amount-.04)),b=pointAt(Math.min(1,amount+.04)),dx=b.x-a.x,dy=b.y-a.y;
-    const alignment=(key[0]*dx+key[1]*dy)/Math.hypot(dx,dy);
-    if(Math.abs(alignment)<.55){status.textContent='请使用与箭头方向最接近的方向键。';return;}
-    move(Math.max(0,Math.min(1,amount+Math.sign(alignment)*.035)));if(stage==='move'&&test===0&&loaded&&amount<=.10)success();
+    const keys={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowRight:[1,0],ArrowLeft:[-1,0]},key=keys[e.key];
+    if(!key||drag)return;e.preventDefault();
+    const end=path[path.length-1];
+    if((key[0]*end.x+key[1]*end.y)/Math.hypot(end.x,end.y)<.45){status.textContent='请按与箭头方向相近的方向键。';return;}
+    emit('motion_start',{attempt:attempts});poseAmount(.3);setStage('settle');
    };
    button('停止检查',()=>fail('student_stop','检查已停止。先让患者放松，再决定是否重新尝试。'),'stop');
-   if(!returning)button('看双手示范',startDemo,'demo');else handle.focus();
+   button('看双手示范',startDemo,'demo');
    positionMarkers();
+  }else if(next==='settle'){
+   if(resuming)poseAmount(.3);
+   line.textContent=test===0?'方向正确。观察治疗师短暂停留，再将足跟缓慢送回原位。':'方向正确。观察治疗师将后足带到终末位，准备轻压外踝外侧。';
+   button('停止检查',()=>fail('student_stop','检查已停止。'),'stop');
+  }else if(next==='return'){
+   draw(13.65);line.textContent='压力已解除。观察足跟缓慢回到中立位。';
   }else if(next==='pressure'){
    draw(12.8);line.textContent='保持终末位，在右外踝外侧轻轻加压。';
    const press=()=>{if(stage!=='pressure')return;emit('lateral_pressure',{location:'lateral_malleolus',atEndRange:true});pressElapsed=0;setStage('pressing');};
@@ -218,15 +240,19 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   return points.map(q=>({x:q.x*travel()/length,y:q.y*travel()/length}));
  }
  function pointAt(t){const f=t*16,i=Math.min(15,Math.floor(f)),a=path[i],b=path[i+1];return {x:a.x+(b.x-a.x)*(f-i),y:a.y+(b.y-a.y)*(f-i)};}
- function readGesture(x,y){
-  let best={value:0,lateral:Infinity};
-  for(let i=0;i<16;i++){
-   const a=path[i],b=path[i+1],dx=b.x-a.x,dy=b.y-a.y;
-   let u=((x-a.x)*dx+(y-a.y)*dy)/(dx*dx+dy*dy);
-   if(i>0)u=Math.max(0,u);if(i<15)u=Math.min(1,u);
-   const lateral=Math.hypot(x-a.x-u*dx,y-a.y-u*dy);if(lateral<best.lateral)best={value:(i+u)/16,lateral};
-  }return best;
+ // Include the area immediately around each numbered landmark for touch and mouse.
+ function nearbyLandmark(event){
+  const frame=event.target.closest('.exam-detail-frame');
+  if(!frame||event.target.closest('button')||!['fixed','heel','pressure'].includes(stage))return;
+  let nearest=null,distance=42;
+  for(const pin of markers.querySelectorAll('button[data-target]')){
+   const box=pin.getBoundingClientRect();
+   const gap=Math.hypot(event.clientX-box.left-box.width/2,event.clientY-box.top-box.height/2);
+   if(gap<distance){nearest=pin;distance=gap;}
+  }
+  nearest?.click();
  }
+ ui.addEventListener('click',nearbyLandmark);
  function positionMarkers(){if(!pose)return;
   const points=[...markers.querySelectorAll('[data-target]:not(.practice-handle)')].map(b=>{
    const id=b.dataset.target;
@@ -239,7 +265,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
    return {b,...p,top:p.y};
   }).sort((a,b)=>a.y-b.y);
   for(let i=0;i<points.length;i++){
-   const q=points[i];for(const other of points.slice(0,i))if(Math.abs(q.x-other.x)<34)q.top=Math.max(q.top,other.top+33);
+   const q=points[i];for(const other of points.slice(0,i))if(Math.abs(q.x-other.x)<44)q.top=Math.max(q.top,other.top+44);
    q.b.style.left=q.x+'px';q.b.style.top=q.top+'px';q.b.style.setProperty('--pin-rise',(q.top-q.y)+'px');
   }
   const guide=markers.querySelector('.practice-direction');if(guide){
@@ -253,24 +279,16 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
     guide.style.left=x+'px';guide.style.top=y+'px';guide.style.transform=`rotate(${Math.atan2(d.y,d.x)}rad)`;guide.style.width=travel()+'px';
     const arc=markers.querySelector('.inversion-arc');if(arc){
      arc.style.left=x+'px';arc.style.top=y+'px';arc.firstChild.setAttribute('points',path.map(q=>q.x+','+q.y).join(' '));
-     const end=stage==='return'?path[0]:d,prev=stage==='return'?path[1]:path[15],angle=Math.atan2(end.y-prev.y,end.x-prev.x),cx=Math.cos(angle),cy=Math.sin(angle);
+     const end=d,prev=path[15],angle=Math.atan2(end.y-prev.y,end.x-prev.x),cx=Math.cos(angle),cy=Math.sin(angle);
      arc.lastChild.setAttribute('points',[[end.x,end.y],[end.x-12*cx+5*cy,end.y-12*cy-5*cx],[end.x-12*cx-5*cy,end.y-12*cy+5*cx]].map(p=>p.join(',')).join(' '));
     }
   }
  }
- function move(value){
-   if(stage!=='move'&&stage!=='return')return;
-   returnTime=null;poseAmount(value);
-   if(test===1){
-     if(stage==='return'&&value<=.001)success();
-     else if(stage==='move'&&value>=.999)setStage('pressure');
-   }else status.textContent=loaded?'现在缓慢回到原位。':value>=.75?'保持片刻，然后缓慢回位。':'缓慢带动，留意患者反应。';
- }
- function fail(kind,message){if(['direction','too_fast'].includes(kind))errors++;emit('motion_feedback',{kind,amplitude:amount});painReported=kind==='too_fast';retryNeedsConsent=painReported||kind==='student_stop';if(retryNeedsConsent)grips={fixedWeight:0,heelWeight:0};drag=null;returnTime=null;amount=0;hold=0;loaded=false;draw(baseline());setStage('retry');if(!retryNeedsConsent)line.textContent=message;}
- function success(){emit('motion_complete',{held:true,returned:true,amplitudeIsInterfaceScale:true});const key=test===0?'anterior_drawer':'inversion_stress';if(!omitted.has(test)&&!completed.includes(key))completed.push(key);draw(baseline());
+ function fail(kind,message){if(['direction','too_fast'].includes(kind))errors++;emit('motion_feedback',{kind,amplitude:amount});painReported=kind==='too_fast';retryNeedsConsent=painReported||kind==='student_stop';if(retryNeedsConsent)grips={fixedWeight:0,heelWeight:0};drag=null;amount=0;draw(baseline());setStage('retry');if(!retryNeedsConsent)line.textContent=message;}
+ function success(){emit('motion_complete',{returned:true,assistedEndRangeAndReturn:true,amplitudeIsInterfaceScale:true});const key=test===0?'anterior_drawer':'inversion_stress';if(!omitted.has(test)&&!completed.includes(key))completed.push(key);draw(baseline());
   if(test===0&&completed.includes('inversion_stress')){test=1;setStage('interpret');}else setStage(test===0?'next':'interpret');}
- function keydown(e){if(!active)return;if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(stage==='move')fail('student_stop','检查已停止。先让患者放松，再决定是否重新尝试。');else if(stage==='demo'){endDemo();}else ui.querySelector('[data-back]')?.click();}if(e.key==='Tab'){const nodes=[...ui.querySelectorAll('button')].filter(x=>!x.disabled&&x.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(!ui.contains(document.activeElement)){e.preventDefault();first.focus();}else if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}
- function visibility(){if(document.hidden)snapshot();if(document.hidden&&['move','pressure','pressing','return'].includes(stage)&&(drag||amount>0))fail('interrupted','操作已暂停。返回后确认患者状态，再重新尝试。');}
+ function keydown(e){if(!active)return;if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(stage==='move'||stage==='settle')fail('student_stop','检查已停止。先让患者放松，再决定是否重新尝试。');else if(stage==='demo'){endDemo();}else ui.querySelector('[data-back]')?.click();}if(e.key==='Tab'){const nodes=[...ui.querySelectorAll('button')].filter(x=>!x.disabled&&x.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(!ui.contains(document.activeElement)){e.preventDefault();first.focus();}else if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}
+ function visibility(){if(document.hidden)snapshot();if(document.hidden&&['move','pressure','pressing'].includes(stage)&&(drag||amount>0))fail('interrupted','操作已暂停。返回后确认患者状态，再重新尝试。');}
  window.addEventListener('pagehide',snapshot);
  document.addEventListener('keydown',keydown,true);document.addEventListener('visibilitychange',visibility);
  const resumeStage=agreed&&checkpoint?.stage==='consent'?null:checkpoint?.stage;
@@ -287,10 +305,10 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
    if(stage==='consent'||stage==='bedprep'||(stage==='retry'&&retryNeedsConsent)){onSkip();return;}
    if(stage==='fixed')grips.fixedWeight=1;
    if(stage==='heel')grips.heelWeight=1;
-   const next={protection:'transfer',transfer:'fixed',neutral:'fixed',positioning:'fixed',fixed:'heel',heel:'move',move:test===0?'next':'pressure',pressure:'return',pressing:'return',return:'interpret',retry:test===0?'next':'interpret',interpret:'complete'}[stage];
+   const next={protection:'transfer',transfer:'fixed',neutral:'fixed',positioning:'fixed',fixed:'heel',heel:'move',move:test===0?'next':'pressure',settle:test===0?'next':'pressure',pressure:'return',pressing:'return',return:'interpret',retry:test===0?'next':'interpret',interpret:'complete'}[stage];
    if(next)setStage(next);else onSkip();
  }
- return {skip,changeView(){path=null;if(stage==='move'&&(drag||amount>0)){drag=null;amount=0;hold=0;loaded=false;returnTime=null;draw(baseline());status.textContent='已切换视角，从原位开始。';}else draw(currentSample);},tick(dt){
+ return {skip,changeView(){path=null;if(stage==='move'&&(drag||amount>0)){drag=null;amount=0;draw(baseline());status.textContent='已切换视角，从原位开始。';}else draw(currentSample);},tick(dt){
   if(camera.aspect!==lastAspect&&stage!=='bedprep')draw(currentSample);
   if(document.hidden)return;
   if(stage==='bedprep'){
@@ -312,7 +330,13 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
      if(t>=5.6)endDemo();
    }
   }
-  else if(stage==='move'){if(test===0&&returnTime===null&&amount>=.75){hold+=dt;if(hold>=.55)loaded=true;}else if(!loaded)hold=0;if(returnTime!==null){returnTime+=dt;poseAmount(Math.max(0,amount-dt*.6));if(amount===0)returnTime=null;}}
+  else if(stage==='settle'){
+   const end=test===0?10.2:12.8;
+   draw(Math.min(end,currentSample+dt));
+   if(currentSample>=end){if(test===0)success();else setStage('pressure');}
+  }else if(stage==='return'){
+   draw(Math.min(15,currentSample+dt));if(currentSample>=15)success();
+  }
   positionMarkers();
- },close(){snapshot();active=false;stopExplanation();explanation.dispose();audio.dispose();window.removeEventListener('pagehide',snapshot);document.removeEventListener('keydown',keydown,true);document.removeEventListener('visibilitychange',visibility);markers.remove();},getState:()=>({stage,test,amount,loaded,completed:[...completed]})};
+ },close(){snapshot();active=false;ui.removeEventListener('click',nearbyLandmark);stopExplanation();explanation.dispose();audio.dispose();window.removeEventListener('pagehide',snapshot);document.removeEventListener('keydown',keydown,true);document.removeEventListener('visibilitychange',visibility);markers.remove();},getState:()=>({stage,test,amount,loaded:stage==='pressure'||stage==='pressing',completed:[...completed]})};
 }

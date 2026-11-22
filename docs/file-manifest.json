@@ -1554,7 +1554,7 @@
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
       "bytes": 55805,
-      "sha256": "9a48db21a266403bf98121f3bfaf3b2d399390c8d4af042027454d68833851dd"
+      "sha256": "b2f33a606cf5e255dab43b7033f51e7c0deacaae3048e4051f6d6019134bb926"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -1579,7 +1579,7 @@
     {
       "path": "clinic3d/app.js",
       "bytes": 89522,
-      "sha256": "6e763e316b78387cb67db94ac37a2e3d8113bc912c63ca337a8e46c4a5e98d64"
+      "sha256": "7e4feaab9975ccf042d367922ed2a7e52f4561bee39033f063b30c6faf47059d"
     },
     {
       "path": "clinic3d/appearance.js",
@@ -7874,12 +7874,12 @@
     {
       "path": "clinic3d/bedside-player.js",
       "bytes": 6438,
-      "sha256": "ccf1b4b8826d6c90d9f8b6d285446811978a2134eb60843be7fd3ebf667a5aca"
+      "sha256": "a808812cc74909b19ac019c1178be3129f8f763211c9097c2a8b657a2e517fd3"
     },
     {
       "path": "clinic3d/bedside-practice.js",
-      "bytes": 26878,
-      "sha256": "5062db2c7c977cd33c6ae15d2fe61667569617ea4357bc7c0e53b09e3058e570"
+      "bytes": 26630,
+      "sha256": "943b4dd9a2771c90aca5e528b29067331398f0c86232f90e48d93b12d84c6c98"
     },
     {
       "path": "clinic3d/bedside-preview.js",
@@ -7889,7 +7889,7 @@
     {
       "path": "clinic3d/bedside.css",
       "bytes": 5453,
-      "sha256": "fec3220ac2f49eb029a896c7b4d219cc99bbb2ec6c20cd8e3d42f941eb5301ef"
+      "sha256": "427a07588039afff1ee221816cc8b5972a53d9631293d903bf5db05e33b64ccb"
     },
     {
       "path": "clinic3d/bedside.html",
@@ -8758,8 +8758,8 @@
     },
     {
       "path": "clinic3d/index.html",
-      "bytes": 13776,
-      "sha256": "b818c5cd8cce35dd1b251f4996b4e81cd52a8a63b902a71fd91ee35a25b4f3a9"
+      "bytes": 13781,
+      "sha256": "2d18d96c2a02567ab20b3d5aa018bc108dfcfed0c9be9997f64998c9a55e01e9"
     },
     {
       "path": "clinic3d/inversion-lesson.js",

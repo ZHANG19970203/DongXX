@@ -12,7 +12,7 @@ import {openArchObservation} from './arch-observation.js?v=68';
 import {openArchBones} from './arch-bones.js';
 import {voiceRole,replies,spokenCommunicationChoices,archHistory} from './clinic-dialogue.js?v=69';
 import {openInversionStudy} from './inversion-study.js?v=67';
-import {startBedside} from './bedside-player.js?v=69';
+import {startBedside} from './bedside-player.js?v=70';
 import {differentialPanel} from './differential.js';
 import {reactionFor,repairLabel,repairSpoken} from './communication-v26.js';
 import {installImmersion} from './immersion-v23.js?v=68';
