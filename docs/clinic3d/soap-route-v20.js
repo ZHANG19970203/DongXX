@@ -51,6 +51,10 @@ export function applySOAPRoute(flow,data,evidence){
   text:'我一直有个疑问，为什么我的脚总是右脚崴，又总是朝内崴呢？医生，您可不可以给我解释一下？',
   next:'injury_mechanism'
  };
+ flow.injury_question.turns=[
+  {speaker:'patient',text:flow.injury_question.text},
+  {speaker:'therapist',text:'好的，您这种情况可能是慢性的踝关节不稳，我先和您大概介绍一下这是什么问题。'}
+ ];
  flow.injury_mechanism={id:'injury_mechanism',act:'act1',kind:'task',speaker:'模型观察',text:'陈女士下楼时右脚向内崴。观察右踝模型，判断哪些结构与这个动作有关。',next:'safety'};
  evidence.injury_history.text='患者自述约一年前下楼梯时右足内翻、外踝疼，之后又扭伤两次，最近一次跑步变向。初伤角度及韧带损伤程度待核实。';
  flow.safety_answer.text='主要是酸胀、发紧，不是一直像针扎那样疼。站久或走多以后更明显，坐下休息会好一些。 最近没有新伤或麻木，能走路。';

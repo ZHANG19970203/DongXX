@@ -10262,6 +10262,69 @@
       "duration": 7.1644375,
       "source": "Local synthesis using the existing Fei 1508 role reference",
       "transcriptCheck": "下次先把缺的检查补上，您可以留意一下在哪种路面右脚最容易发软，到时候告诉我，我们在一起定练习。"
+    },
+    "therapist|好的，您这种情况可能是慢性的踝关节不稳，我先和您大概介绍一下这是什么问题。": {
+      "role": "therapist",
+      "text": "好的，您这种情况可能是慢性的踝关节不稳，我先和您大概介绍一下这是什么问题。",
+      "src": "./assets/dialogue-v20/clinical69-mechanism-intro.mp3",
+      "sha256": "c02dffcfea9ccba2ddfe041493b15356d09b24476ed4133bf0e8e2b732c2dc8b",
+      "duration": 5.426,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "好的，您这种情况可能是慢性的踝关节不稳。我先和您大概介绍一下这是什么问题。"
+    },
+    "therapist|我需要给您检查一下，看看您的踝关节韧带有没有松弛的情况。如果您感觉有点疼痛，您可以跟我说具体是哪里有点疼。不要强忍着。": {
+      "role": "therapist",
+      "text": "我需要给您检查一下，看看您的踝关节韧带有没有松弛的情况。如果您感觉有点疼痛，您可以跟我说具体是哪里有点疼。不要强忍着。",
+      "src": "./assets/dialogue-v20/clinical69-consent-pain.mp3",
+      "sha256": "c8c1ecc59f7376e76c01f62a2f8db6f237ae5fe11b8c9bb6d113c2ef032d6084",
+      "duration": 8.27975,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "我需要给您检查一下，看看您的踝关节韧带有没有松弛的情况。如果您感觉有点疼痛，您可以跟我说具体是哪里有点疼，不要强忍着。"
+    },
+    "therapist|您请脱掉鞋袜，上床躺下，放松就好。慢一点，注意安全。": {
+      "role": "therapist",
+      "text": "您请脱掉鞋袜，上床躺下，放松就好。慢一点，注意安全。",
+      "src": "./assets/dialogue-v20/clinical69-prepare.mp3",
+      "sha256": "251cb64d7f93326dd7a8e6cebe0b74be65d17a124f2f8ade843f0df88ea337b5",
+      "duration": 3.81175,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "您请脱掉鞋袜，上床躺下放松就好，慢一点，注意安全。"
+    },
+    "therapist|我固定您的小腿，托住足跟轻轻向前带。这是前抽屉试验，主要看距腓前韧带能不能限制脚踝向前滑动。": {
+      "role": "therapist",
+      "text": "我固定您的小腿，托住足跟轻轻向前带。这是前抽屉试验，主要看距腓前韧带能不能限制脚踝向前滑动。",
+      "src": "./assets/dialogue-v20/clinical69-drawer.mp3",
+      "sha256": "211409cbd0b1aa9287c6a5c0ee761acbaec7fb633c51841c57b4b05d010fd091",
+      "duration": 7.2711875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "我固定您的小腿，托住足跟轻轻向前带，这是前抽屉试验，主要看拒肥前韧带能不能限制脚踝向前滑动。"
+    },
+    "therapist|我扶住您的小腿和足跟，让脚底慢慢向内翻。这是内翻加压试验，主要看跟腓韧带能不能限制过度内翻。": {
+      "role": "therapist",
+      "text": "我扶住您的小腿和足跟，让脚底慢慢向内翻。这是内翻加压试验，主要看跟腓韧带能不能限制过度内翻。",
+      "src": "./assets/dialogue-v20/clinical69-tilt.mp3",
+      "sha256": "a89041207b6f41c6f5772215d2b7690dcde101f9ace7a2d2175bff7d149472ee",
+      "duration": 7.4125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "我扶住您的小腿和足跟，让脚底慢慢向内翻，这是内翻加压试验，主要看跟肥韧带能不能限制过度内翻。"
+    },
+    "therapist|不好意思，弄疼您了，我再慢一点。": {
+      "role": "therapist",
+      "text": "不好意思，弄疼您了，我再慢一点。",
+      "src": "./assets/dialogue-v20/clinical69-sorry.mp3",
+      "sha256": "b8d0a8b8b64a2e7e49c5ae33efe13f4a50368d443186d9ebbf7e358b466b96e7",
+      "duration": 2.131625,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "不好意思，弄疼您了，我再慢一点。"
+    },
+    "therapist|现在可以继续吗？": {
+      "role": "therapist",
+      "text": "现在可以继续吗？",
+      "src": "./assets/dialogue-v20/clinical69-again.mp3",
+      "sha256": "965233fb247e6e169d9f5940619f869dd26c6e7fd4ee9b96a023a885edb5a25d",
+      "duration": 1.301375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "现在可以继续吗？"
     }
   },
   "revision": "v26 respectful dialogue and patient reactions"

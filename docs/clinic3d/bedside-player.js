@@ -1,8 +1,11 @@
-import {createBedsideMotion,chapters,duration,instruction,preparationDuration} from './bedside-motion.js';
-import {createBedsidePractice} from './bedside-practice.js';
+import {createBedsideMotion,chapters,duration,instruction,preparationDuration} from './bedside-motion.js?v=69';
+import {createBedsidePractice} from './bedside-practice.js?v=69';
 
-export function startBedside({host,actors,room,camera,renderer,onClose,backLabel='返回接诊',onSkip,skipExamination=false,film=false,onComplete,onContinue,checkpoint,saveCheckpoint,agreed=false,record,voiceEnabled}){
-  const motion=createBedsideMotion(actors,room);
+import {seatOnExamBed} from './actors.js?v=69';
+
+export function startBedside({host,actors,room,camera,renderer,onClose,backLabel='返回接诊',onSkip,skipExamination=false,film=false,onComplete,onContinue,checkpoint,saveCheckpoint,agreed=false,prepared=false,onPrepared=()=>{},record,voiceEnabled}){
+  const barefoot=film||prepared||Boolean(checkpoint?.stage&&!['consent','bedprep'].includes(checkpoint.stage));
+  const motion=createBedsideMotion(actors,room,{seatedStart:!film,barefoot});
   const ui=document.createElement('section');
   ui.className='bedside-player';ui.setAttribute('aria-label','床旁右踝被动检查');
   ui.innerHTML='<div class="bedside-title"><strong>陈女士 · 右踝床旁查体</strong><button type="button" data-back>返回接诊</button></div><div class="bedside-bottom"><p class="bedside-line"></p><div class="bedside-controls"><button type="button" data-play>暂停</button><input aria-label="查体播放进度" type="range" step=".05" min="0" max="16" value="0"><div class="bedside-chapters"></div></div></div>';
@@ -66,7 +69,18 @@ export function startBedside({host,actors,room,camera,renderer,onClose,backLabel
     skip.onclick=skipExamination?onSkip:()=>practice.skip();back.before(skip);
   }
   slider.min=-preparationDuration;seek(-preparationDuration);
-  const practice=film?null:createBedsidePractice({ui,camera,seek,onComplete,onContinue,onSkip,checkpoint,saveCheckpoint,agreed,record,voiceEnabled});
-  return {seek,getPracticeState:()=>practice?.getState(),tick(dt){if(practice){if(ui.dataset.detail==='true'&&(frame.clientWidth!==frameWidth||frame.clientHeight!==frameHeight||camera.aspect!==frameWidth/frameHeight))practice.changeView();practice.tick(dt);}else if(playing||camera.aspect!==lastAspect)seek(time+(playing?dt:0));},
-    close(){practice?.close();layout(false);motion.release();ui.remove();delete host.dataset.bedsideActive;camera.fov=originalFov;camera.updateProjectionMatrix();}};
+  function beginBedPrep(){
+    seek(-preparationDuration,{conversation:'initial',fixedWeight:0,heelWeight:0});
+    seatOnExamBed(actors.patient,room.objects.examBed);
+    actors.patient.setFootwear('shoes');
+    actors.patient.startFootwearRemoval();
+    camera.position.set(.72,1.34,1.35);camera.lookAt(-1.48,.92,.18);camera.updateMatrixWorld(true);
+  }
+  function stepBedPrep(dt){
+    actors.patient.update(dt,dt);
+    return actors.patient.getState().footwearRemoval.completed;
+  }
+  const practice=film?null:createBedsidePractice({ui,camera,seek,onComplete,onContinue,onSkip,checkpoint,saveCheckpoint,agreed,prepared:barefoot,beginBedPrep,stepBedPrep,onPrepared,record,voiceEnabled,patientExpression:value=>actors.patient.setEmotion(value)});
+  return {seek,getPracticeState:()=>practice?.getState(),tick(dt){actors.patient.updateFace(dt);if(practice){if(ui.dataset.detail==='true'&&(frame.clientWidth!==frameWidth||frame.clientHeight!==frameHeight||camera.aspect!==frameWidth/frameHeight))practice.changeView();practice.tick(dt);}else if(playing||camera.aspect!==lastAspect)seek(time+(playing?dt:0));},
+    close(){practice?.close();actors.patient.setEmotion('neutral');layout(false);motion.release();ui.remove();delete host.dataset.bedsideActive;camera.fov=originalFov;camera.updateProjectionMatrix();}};
 }

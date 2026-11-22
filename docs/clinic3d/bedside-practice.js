@@ -1,20 +1,38 @@
+import {replies} from './clinic-dialogue.js?v=69';
 import {bothBedsideTests} from './progress-migration.js';
 import {createDialogueAudio} from './dialogue-audio.js';
 import {preparationDuration,preparationLabel} from './exam-protection.js';
 export const PRACTICE_LINES={
- consent:'检查一下您的踝关节有没有松弛。',
+ consent:replies.explain_consent,
+ prepare:"您请脱掉鞋袜，上床躺下，放松就好。慢一点，注意安全。",
+ drawer:"我固定您的小腿，托住足跟轻轻向前带。这是前抽屉试验，主要看距腓前韧带能不能限制脚踝向前滑动。",
+ tilt:"我扶住您的小腿和足跟，让脚底慢慢向内翻。这是内翻加压试验，主要看跟腓韧带能不能限制过度内翻。",
+ sorry:"不好意思，弄疼您了，我再慢一点。",
+ again:"现在可以继续吗？",
  agree:'可以。',
  fast:'有点疼，请先停一下。',
  finish:'两项床旁查体已完成，结果已记录。'
 };
-export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelector('[data-back]')?.click(),onComplete=()=>{},onContinue,checkpoint,saveCheckpoint=()=>{},agreed=false,record=()=>{},voiceEnabled=()=>true}){
+export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelector('[data-back]')?.click(),onComplete=()=>{},onContinue,checkpoint,saveCheckpoint=()=>{},agreed=false,prepared=false,beginBedPrep,stepBedPrep,onPrepared,record=()=>{},voiceEnabled=()=>true,patientExpression=()=>{}}){
  const bottom=ui.querySelector('.bedside-bottom'),line=ui.querySelector('.bedside-line');
  ui.classList.add('bedside-practice');ui.querySelector('.bedside-controls').hidden=true;
  const actions=document.createElement('div');actions.className='practice-actions';
  const status=document.createElement('p');status.className='practice-feedback';status.setAttribute('role','status');
  const markers=document.createElement('div');markers.className='practice-markers';ui.append(markers);bottom.append(status,actions);
  const audio=createDialogueAudio({enabled:voiceEnabled,onTalking:()=>{},onStatus:message=>{status.textContent=message;}});
- let transferSpeech=null;
+ let preparationHeard=false,painReported=Boolean(checkpoint?.painReported),stageRevision=0;
+ const explained=new Set(checkpoint?.explained||[]);
+ const explanation=createDialogueAudio({enabled:voiceEnabled,onTalking:()=>{},onStatus:()=>{}});
+ const spoken=document.createElement('p');spoken.className='practice-feedback';spoken.hidden=true;line.after(spoken);
+ let explanationRevision=0;
+ function stopExplanation(){explanationRevision++;explanation.cancel();spoken.hidden=true;}
+ function explain(){
+  if(explained.has(test))return;
+  explained.add(test);stopExplanation();
+  const version=explanationRevision,text=test===0?PRACTICE_LINES.drawer:PRACTICE_LINES.tilt;
+  spoken.textContent='林治疗师：'+text;spoken.hidden=false;
+  explanation.speak('林治疗师',text).then(()=>{if(version===explanationRevision)spoken.hidden=true;});
+ }
  let active=true,stage='consent',test=0,pose,transfer=0,amount=0,drag=null,hold=0,loaded=false,grips={fixedWeight:0,heelWeight:0},attempts=0,errors=0,completed=[],returnTime=null,demo=null,currentSample=0,lastAspect=camera.aspect;
  const origin=performance.now(),omitted=new Set(checkpoint?.omitted||[]);
  if(checkpoint){
@@ -29,6 +47,8 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
  const label=()=>test===0?'前抽屉试验':'内翻加压试验';
  const emit=(type,payload={})=>record('clinic3d_bedside_'+type,{test:label(),stage,...payload,teachingSimulation:true,measuredForce:false});
  async function say(role,text){
+  stopExplanation();
+  patientExpression(role==='patient'&&text===PRACTICE_LINES.fast?'pain':'neutral');
   const start=performance.now(),source=stage;
   while(active&&stage===source){
    const result=await audio.speak(role==='patient'?'陈女士':'林治疗师',text);
@@ -50,7 +70,10 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   grips={fixedWeight:0,heelWeight:0};setStage('demo');draw(baseline());
  }
  function endDemo(){if(!demo)return;const previous=demo;demo=null;grips=previous.grips;setStage(previous.from,true);}
- function setStage(next,resuming=false){audio.cancel();stage=next;ui.dataset.practiceStage=next;ui.dataset.practiceTest=String(test);clear();
+ function setStage(next,resuming=false){
+  const revision=++stageRevision;
+  if(!['move','return','pressure','pressing','next','interpret'].includes(next))stopExplanation();
+  patientExpression('neutral');audio.cancel();stage=next;ui.dataset.practiceStage=next;ui.dataset.practiceTest=String(test);clear();
   if(next==='consent'){
    draw(-preparationDuration);line.textContent='检查前，先向陈女士说明目的并征求同意。';
    const consent=button('说明检查并征求同意',async()=>{
@@ -63,10 +86,13 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
      await say('patient',PRACTICE_LINES.agree);
      if(!active||stage!=='consent')return;
      emit('consent',{agreed:true});
-     setStage('protection');
+     setStage(prepared?'protection':'bedprep');
    },'consent');
+  }else if(next==='bedprep'){
+   preparationHeard=false;beginBedPrep();line.textContent='林治疗师：'+PRACTICE_LINES.prepare;
+   say('therapist',PRACTICE_LINES.prepare).then(()=>{if(active&&stageRevision===revision)preparationHeard=true;});
   }else if(next==='protection'){transfer=resuming?Math.min(preparationDuration,checkpoint?.phaseTime||0):0;draw(transfer-preparationDuration);line.textContent=preparationLabel(transfer);if(!resuming)emit('protection_started');
-  }else if(next==='transfer'){transfer=resuming?Math.min(6.2,checkpoint?.phaseTime||0):0;draw(transfer);line.textContent='陈女士，您先坐到床边，再慢慢躺下。';const ticket={};transferSpeech=ticket;say('therapist',line.textContent).finally(()=>{if(transferSpeech===ticket)transferSpeech=null;});}
+  }else if(next==='transfer'){transfer=resuming?Math.min(6.2,checkpoint?.phaseTime||0):0;draw(transfer);line.textContent='陈女士将双腿移到床上，慢慢躺好。';}
   else if(next==='fixed'||next==='heel'){
    draw(baseline());line.textContent=next==='fixed'?(test===1?'内翻加压试验：右手应固定哪里？':label()+'：左手应固定在哪里？'):(test===1?'左手虎口应贴住哪里？':label()+'：右手应托握哪里？');
    let targets=next==='fixed'?[['胫骨下段','shin'],['前足','toes'],['足跟','heel']]:[['足跟','heel'],['脚趾','toes'],['小腿中段','shin']];
@@ -82,6 +108,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
    amount=returning?1:0;hold=0;loaded=returning;returnTime=null;path=null;draw(baseline());
    if(returning)poseAmount(1);else if(!resuming)attempts++;
    line.textContent=test===0?'踝稍跖屈。左手固定小腿，右手托住足跟向前平移。感受终末阻力，再缓慢回位。':returning?'压力已解除。沿弧线缓慢回到中立位。':'右手稳住胫骨下缘，左手虎口贴住足外侧缘，带动跟骨内收、内翻。';
+   if(!returning)explain();
    const handle=document.createElement('button');handle.type='button';handle.className='practice-handle';handle.dataset.target='drag';handle.textContent=test===0?'带动足跟':returning?'缓慢回位':'内收、内翻';handle.setAttribute('aria-label',handle.textContent+'，也可沿箭头使用方向键');markers.append(handle);
    const guide=document.createElement('span');guide.className='practice-direction';markers.append(guide);
    if(test===1){
@@ -123,8 +150,23 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   }else if(next==='retry'){
    if(retryNeedsConsent){
     draw(baseline());
-    const retry=button('休息后询问是否继续',async()=>{retry.disabled=true;line.textContent='可以吗？';await say('therapist',line.textContent);if(!active||stage!=='retry')return;status.textContent='陈女士：好。';await say('patient','好。');if(active&&stage==='retry'){emit('consent',{agreed:true,retry:true});grips={fixedWeight:0,heelWeight:0};setStage('fixed');}},'retry');
+    const current=()=>active&&stageRevision===revision;
+    const retry=button('询问是否可以继续',async()=>{
+     retry.disabled=true;line.textContent='林治疗师：'+PRACTICE_LINES.again;
+     await say('therapist',PRACTICE_LINES.again);if(!current())return;
+     line.textContent='陈女士：好。';await say('patient','好。');
+     if(current()){emit('consent',{agreed:true,retry:true});painReported=false;retryNeedsConsent=false;grips={fixedWeight:0,heelWeight:0};setStage('fixed');}
+    },'retry');
     button('结束本次检查',onSkip,'leave');
+    if(painReported){
+     retry.disabled=true;
+     line.textContent='陈女士：'+PRACTICE_LINES.fast;
+     (async()=>{
+      await say('patient',PRACTICE_LINES.fast);if(!current())return;
+      line.textContent='林治疗师：'+PRACTICE_LINES.sorry;
+      await say('therapist',PRACTICE_LINES.sorry);if(current())retry.disabled=false;
+     })();
+    }else line.textContent='检查已暂停，等陈女士休息好再询问。';
    }else button('重新操作',()=>setStage('move'),'retry');
   }else if(next==='next'){draw(10.2);
    line.textContent='陈女士保持仰卧，接下来做内翻加压试验。';
@@ -160,7 +202,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   snapshot();
  }
  function snapshot(){
-  if(stage!=='demo')saveCheckpoint({stage,test,omitted:[...omitted],completed:[...completed],grips:{...grips},attempts,errors,retryNeedsConsent,phaseTime:transfer,elapsedSeconds:elapsed()});
+  if(stage!=='demo')saveCheckpoint({stage,test,omitted:[...omitted],completed:[...completed],grips:{...grips},attempts,errors,retryNeedsConsent,painReported,explained:[...explained],phaseTime:transfer,elapsedSeconds:elapsed()});
  }
  function travel(){return markers.clientWidth<450?65:100;}
  function project(v){const r=markers.getBoundingClientRect(),p=v.clone().project(camera);return {x:(p.x+1)*r.width/2,y:(1-p.y)*r.height/2};}
@@ -224,7 +266,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
      else if(stage==='move'&&value>=.999)setStage('pressure');
    }else status.textContent=loaded?'现在缓慢回到原位。':value>=.75?'保持片刻，然后缓慢回位。':'缓慢带动，留意患者反应。';
  }
- function fail(kind,message){if(['direction','too_fast'].includes(kind))errors++;emit('motion_feedback',{kind,amplitude:amount});retryNeedsConsent=kind==='too_fast'||kind==='student_stop';if(retryNeedsConsent)grips={fixedWeight:0,heelWeight:0};drag=null;returnTime=null;amount=0;hold=0;loaded=false;draw(baseline());setStage('retry');line.textContent=message;if(kind==='too_fast')say('patient',PRACTICE_LINES.fast);}
+ function fail(kind,message){if(['direction','too_fast'].includes(kind))errors++;emit('motion_feedback',{kind,amplitude:amount});painReported=kind==='too_fast';retryNeedsConsent=painReported||kind==='student_stop';if(retryNeedsConsent)grips={fixedWeight:0,heelWeight:0};drag=null;returnTime=null;amount=0;hold=0;loaded=false;draw(baseline());setStage('retry');if(!retryNeedsConsent)line.textContent=message;}
  function success(){emit('motion_complete',{held:true,returned:true,amplitudeIsInterfaceScale:true});const key=test===0?'anterior_drawer':'inversion_stress';if(!omitted.has(test)&&!completed.includes(key))completed.push(key);draw(baseline());
   if(test===0&&completed.includes('inversion_stress')){test=1;setStage('interpret');}else setStage(test===0?'next':'interpret');}
  function keydown(e){if(!active)return;if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();if(stage==='move')fail('student_stop','检查已停止。先让患者放松，再决定是否重新尝试。');else if(stage==='demo'){endDemo();}else ui.querySelector('[data-back]')?.click();}if(e.key==='Tab'){const nodes=[...ui.querySelectorAll('button')].filter(x=>!x.disabled&&x.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(!ui.contains(document.activeElement)){e.preventDefault();first.focus();}else if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}
@@ -234,7 +276,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
  const resumeStage=agreed&&checkpoint?.stage==='consent'?null:checkpoint?.stage;
  // Resume a gesture at a stable pose, retaining completed manoeuvres.
  const restore={positioning:'fixed',pressing:'return'};
- setStage((restore[resumeStage]||resumeStage)||(agreed?'protection':'consent'),!!resumeStage);
+ setStage((restore[resumeStage]||resumeStage)||(agreed?(prepared?'protection':'bedprep'):'consent'),!!resumeStage);
  actions.querySelector('button')?.focus();
  function skip(){
    if(!active)return;
@@ -242,17 +284,19 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
    if(stage==='demo'){endDemo();return;}
    if(stage==='next'){actions.querySelector('[data-practice="next-test"]').click();return;}
    emit('step_skipped',{assessmentCredit:false});omitted.add(test);
-   if(stage==='consent'||(stage==='retry'&&retryNeedsConsent)){onSkip();return;}
+   if(stage==='consent'||stage==='bedprep'||(stage==='retry'&&retryNeedsConsent)){onSkip();return;}
    if(stage==='fixed')grips.fixedWeight=1;
    if(stage==='heel')grips.heelWeight=1;
    const next={protection:'transfer',transfer:'fixed',neutral:'fixed',positioning:'fixed',fixed:'heel',heel:'move',move:test===0?'next':'pressure',pressure:'return',pressing:'return',return:'interpret',retry:test===0?'next':'interpret',interpret:'complete'}[stage];
    if(next)setStage(next);else onSkip();
  }
  return {skip,changeView(){path=null;if(stage==='move'&&(drag||amount>0)){drag=null;amount=0;hold=0;loaded=false;returnTime=null;draw(baseline());status.textContent='已切换视角，从原位开始。';}else draw(currentSample);},tick(dt){
-  if(camera.aspect!==lastAspect)draw(currentSample);
+  if(camera.aspect!==lastAspect&&stage!=='bedprep')draw(currentSample);
   if(document.hidden)return;
-  if(stage==='protection'){transfer=Math.min(preparationDuration,transfer+dt);draw(transfer-preparationDuration);line.textContent=preparationLabel(transfer);if(transfer>=preparationDuration){emit('protection_completed',{mask:true,gloves:true,handHygieneDemonstration:true,handHygieneEpisodes:1,dispenserPresses:1,sequenceSeconds:preparationDuration});setStage('transfer');}}
-  else if(stage==='transfer'){transfer=Math.min(6.2,transfer+dt);draw(transfer);if(transfer>=6.2&&!transferSpeech)setStage('fixed');}
+  if(stage==='bedprep'){
+   if(stepBedPrep(dt)&&preparationHeard){prepared=true;onPrepared();setStage('protection');}
+  }else if(stage==='protection'){transfer=Math.min(preparationDuration,transfer+dt);draw(transfer-preparationDuration);line.textContent=preparationLabel(transfer);if(transfer>=preparationDuration){emit('protection_completed',{mask:true,gloves:true,handHygieneDemonstration:true,handHygieneEpisodes:1,dispenserPresses:1,sequenceSeconds:preparationDuration});setStage('transfer');}}
+  else if(stage==='transfer'){transfer=Math.min(6.2,transfer+dt);draw(transfer);if(transfer>=6.2)setStage('fixed');}
   else if(stage==='positioning'){transfer=Math.min(.77,transfer+dt);draw(10.2+transfer);if(transfer>=.77){emit('position',{patient:'supine',ankle:'neutral'});setStage('fixed');}}
   else if(stage==='pressing'){pressElapsed=Math.min(.85,pressElapsed+dt);draw(12.8+pressElapsed);if(pressElapsed>=.85)setStage('return');}
   else if(stage==='demo'&&demo){
@@ -270,5 +314,5 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   }
   else if(stage==='move'){if(test===0&&returnTime===null&&amount>=.75){hold+=dt;if(hold>=.55)loaded=true;}else if(!loaded)hold=0;if(returnTime!==null){returnTime+=dt;poseAmount(Math.max(0,amount-dt*.6));if(amount===0)returnTime=null;}}
   positionMarkers();
- },close(){snapshot();active=false;audio.dispose();window.removeEventListener('pagehide',snapshot);document.removeEventListener('keydown',keydown,true);document.removeEventListener('visibilitychange',visibility);markers.remove();},getState:()=>({stage,test,amount,loaded,completed:[...completed]})};
+ },close(){snapshot();active=false;stopExplanation();explanation.dispose();audio.dispose();window.removeEventListener('pagehide',snapshot);document.removeEventListener('keydown',keydown,true);document.removeEventListener('visibilitychange',visibility);markers.remove();},getState:()=>({stage,test,amount,loaded,completed:[...completed]})};
 }

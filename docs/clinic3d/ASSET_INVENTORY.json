@@ -147,8 +147,8 @@
     {
       "id": "original-actor-procedures",
       "path": "actors.js",
-      "bytes": 43576,
-      "sha256": "bc0dd38a50cc56c9f4d41ba014fd4c1cada12ddbb3f90ff8ab9d53148ab8712b",
+      "bytes": 46506,
+      "sha256": "db3cbfe7ba21f831d4ba6d483d28f53ea61ac24efa17e315f1e62892caf91c6e",
       "source": "Project original room/rig procedures; includes portable clinical notes and pen. No separate stationery tray; existing medical trolley only holds clinical tools.",
       "license": "Original application code follows licenses/ORIGINAL_CODE_LICENSE.txt MIT scope; the source core mesh and skin weights remain attributed to MPFB CC0.",
       "includes": [
@@ -247,8 +247,8 @@
       "limits": [
         "Existing CC0 base topology adapted for fictional male and female display; not photorealistic or clinically calibrated."
       ],
-      "bytes": 5328,
-      "sha256": "fda956f65a1e05cd22713f1414a643a838b2dfd9d07f992f5b0bd61a5c800438"
+      "bytes": 5333,
+      "sha256": "30b958c9a824b6f64c3a5529a24e96aad7571f0a18e0a7d8dde365e92567f7bb"
     },
     {
       "id": "original-characters",
@@ -286,8 +286,8 @@
     {
       "id": "original-concise-case-v12",
       "path": "case-flow.js",
-      "bytes": 65948,
-      "sha256": "dabc71dae81b78a65d01f4622a985c239ee5352e34c85954c8bd0b72c4d66aee",
+      "bytes": 65953,
+      "sha256": "a4fbc22a5c0d46104bbdd1c80acf89b1db7ddff970b97334337bda1bed7b8ba1",
       "source": "Original fictional case and teaching choices; 41 nodes shortened without replacing evidence/safety paths",
       "license": "Application logic follows complete-site MIT scope; fictional case prose remains separate project teaching content",
       "limits": [
@@ -506,8 +506,8 @@
     {
       "id": "local-dialogue-v20",
       "path": "assets/dialogue-v20/manifest.json",
-      "bytes": 479391,
-      "sha256": "ac9a00c50e1a384e9d7478c24664bd17fbb9e366bdc4606b4925ad540e807dca",
+      "bytes": 484049,
+      "sha256": "8084d7dcabc492ed83a877d7639110f9ecb3963f2cfb1b383453fd8be72be96c",
       "source": "Course recordings and generated Mandarin dialogue. The voice and source fields identify individually credited clips.",
       "license": "Course dialogue assets. Speech engines and model weights are not distributed."
     },
@@ -572,8 +572,8 @@
       "id": "reference-head",
       "path": "reference-head.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 8724,
-      "sha256": "d111840cfd027ade51fffb5572f9c5026c908014fd5f29c3fe497a982d3ed60e"
+      "bytes": 8863,
+      "sha256": "346b66c66dcbb45dfa88c1f01eb7b3551a1687a5863be588bb0adbe4af2b83fd"
     },
     {
       "id": "reference-wardrobe",
@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 87864,
-      "sha256": "af5a86c896824f9cdca0afeea3510247b644438462c02e117e5511a533acfc4c"
+      "bytes": 89522,
+      "sha256": "6e763e316b78387cb67db94ac37a2e3d8113bc912c63ca337a8e46c4a5e98d64"
     },
     {
       "id": "walking-pose-v27",

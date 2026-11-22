@@ -1,3 +1,4 @@
+import {patientFaceMorphs} from './patient-expression.js';
 import {fitHeadObject} from './head-fit.js';
 import * as THREE from 'three';
 const N=144,H=96;
@@ -23,7 +24,9 @@ function resources(role){
   }
   g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(index);g.computeVertexNormals();
   const morph=pos.slice();for(let i=0;i<pos.length/3;i++){const v=Math.floor(i/(N+1))/H,t=Math.abs((i%(N+1)/N-.5)*2*Math.PI);const weight=Math.exp(-(((v-.815)/.093)**2)-((t/.50)**2));morph[i*3+1]-=.0028*weight;morph[i*3+2]+=.001*weight;}
-  g.morphAttributes.position=[new THREE.BufferAttribute(morph,3)];g.computeBoundingSphere();
+  g.morphAttributes.position=[new THREE.BufferAttribute(morph,3)];
+  if(patient)g.morphAttributes.position.push(...patientFaceMorphs(pos,N,H));
+  g.computeBoundingSphere();
   if(profile){profile.colorSpace=THREE.SRGBColorSpace;profile.wrapS=THREE.RepeatWrapping;profile.anisotropy=4;}
   const drawing=new URL('./assets/reference-characters/',import.meta.url);
   const tex=async name=>{const t=await new THREE.TextureLoader().loadAsync(new URL(name,drawing).href);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t;};

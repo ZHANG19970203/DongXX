@@ -378,7 +378,7 @@ medical_evaluation:'先安全休息，安排进一步医学评估。'
 for(const node of Object.values(FLOW))for(const option of node.options||[])if(choiceLabels[option.id])option.shortLabel=choiceLabels[option.id];
 
 // v20 applied at import for all consumers, including tests and audio inventory.
-import {applySOAPRoute} from "./soap-route-v20.js";
+import {applySOAPRoute} from "./soap-route-v20.js?v=69";
 applySOAPRoute(FLOW,CASE_DATA,EVIDENCE_CATALOG);
 
 import {normalizeFlow} from './communication-v26.js';

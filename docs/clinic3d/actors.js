@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { sampleGait } from './gait-lesson.js';
 import { walkingVisualSample, WALKING_DEMO, WALKING_PROFILE } from './walking-principles-v26.js';
 import { applyWalkingPose } from './walking-pose-v27.js';
-import { applyActorAppearance } from './appearance.js';
+import { applyActorAppearance } from './appearance.js?v=69';
 import {dressFromDrawings} from './illustrated-clothing.js';
 import {smoothSurface,clipped} from './reference-wardrobe.js';
 
@@ -197,6 +197,15 @@ export async function createActor(scene, role, url) {
   let gaitSampler = sampleGait;
   let emotion="neutral", emotionWeight=0;
   let heelAction = null, heelElapsed = 0, heelStart = null;
+  const face=role==='patient'?root.getObjectByName('Reference_face_patient'):null;
+  let scratchTime=null;
+  const faceWeights=face?.morphTargetInfluences;
+  function updateFace(dt){
+    if(!faceWeights)return;
+    const weights=[emotion==='pain'?1:emotion==='sore'?.44:0,
+      emotion==='concerned'?1:emotion==='upset'?.70:0,emotion==='questioning'?1:0];
+    for(let i=0;i<weights.length;i++)faceWeights[i+1]=THREE.MathUtils.damp(faceWeights[i+1],weights[i],9,dt);
+  }
   const tempQuaternion = new THREE.Quaternion();
   const getPoint = name => root.worldToLocal(bones.get(name).getWorldPosition(new THREE.Vector3()));
   const restore = () => {
@@ -238,6 +247,22 @@ export async function createActor(scene, role, url) {
     const actualJoint = getPoint(lower);
     const lowerDelta = new THREE.Quaternion().setFromUnitVectors(c.clone().sub(b).normalize(), target.clone().sub(actualJoint).normalize());
     setWorldQuaternion(lower, lowerDelta.multiply(rest.get(lower).world));
+  }
+  // Map the index fingertip to the hair above the right temple. The wrist
+  // follows from the actual hand length; the other hand keeps its seated pose.
+  function scratchHand(wrist,pole,weight,t){
+    const stroke=Math.cos(2*Math.PI*THREE.MathUtils.clamp((t-.67)/.70,0,1));
+    const tip=root.worldToLocal(face.localToWorld(position(-.105,1.684+.004*stroke,.078+.003*stroke)));
+    const finger=rest.get('finger2-3.R').point.clone().sub(rest.get('wrist.R').point);
+    const across=rest.get('finger2-1.R').point.clone().sub(rest.get('finger5-1.R').point);
+    function frame(along,side){
+      const y=along.clone().normalize(),z=new THREE.Vector3().crossVectors(side,y).normalize();
+      return new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(new THREE.Vector3().crossVectors(y,z),y,z));
+    }
+    const aim=frame(position(.22,1,-.22),position(0,0,1)).multiply(frame(finger,across).invert());
+    wrist.lerp(tip.sub(finger.applyQuaternion(aim)),weight);
+    pole.lerp(getPoint('upperarm01.R').add(position(-.38,-.10,.26)),weight);
+    return aim.multiply(rest.get('wrist.R').world);
   }
   function resetFootwearObjects(value) {
     if(trousers)trousers.morphTargetInfluences[0]=value==='shoes'?1:0;
@@ -324,7 +349,7 @@ export async function createActor(scene, role, url) {
       if(t>=2.15) {
         const destination=home.base.clone();destination.x=sign*.32;destination.z=.27;
         const bound=new THREE.Box3().setFromObject(home.shoe);const localMin=root.worldToLocal(position(0,bound.min.y,0)).y;
-        destination.y=home.shoe.position.y-localMin+.005;
+        destination.y=home.shoe.position.y-localMin-root.position.y+.005;
         // Recompute against the base, not the previous frame, to avoid drift.
         home.floor=home.floor||destination.clone();
         const carry=home.floor.clone().add(position(0,.38,0));
@@ -338,7 +363,7 @@ export async function createActor(scene, role, url) {
       sock.loose.position.copy(pulled.clone().multiplyScalar(smooth((t-3.45)/1.2)));
       if(t>=4.65) {
         const foot=rest.get(`foot.${frame.side}`).point;
-        const destination=position(sign*.28-foot.x,sock.floorY,.16-(foot.z+.12));
+        const destination=position(sign*.28-foot.x,sock.floorY-root.position.y,.16-(foot.z+.12));
         const carry=destination.clone().add(position(0,.28,0));
         sock.loose.position.copy(pulled).lerp(carry,smooth((t-4.65)/.8));
         if(t>=5.45)sock.loose.position.copy(carry).lerp(destination,smooth((t-5.45)/.2));
@@ -447,6 +472,7 @@ export async function createActor(scene, role, url) {
     } else {
       offset('spine03',X,lean);
     }
+    updateFace(dt);
     emotionWeight=THREE.MathUtils.damp(emotionWeight,emotion==='neutral'?0:1,5,dt);
     offset('head', X, -.016 + (talking ? .018 : .005) * Math.sin(time * (talking ? 2.4 : 1.1)) - .025*emotionWeight);
     if(emotionWeight>.001){const head=bones.get('head');head.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(UP,emotionWeight*(emotion==='upset'?.035:.018)*Math.sin(time*1.6)));}
@@ -499,12 +525,22 @@ export async function createActor(scene, role, url) {
         carryTarget.lerp(writeTarget,documentationWriteWeight);
         wristTarget.lerp(carryTarget,documentationCarryWeight);
       }
+      let scratchRotation,reach=0;
+      if(side==='R'&&scratchTime!==null&&face&&pose==='seated'&&!clinicalPose&&!removing){
+        reach=smooth(scratchTime/.70)*(1-smooth((scratchTime-1.42)/.68));
+        scratchRotation=scratchHand(wristTarget,elbowPole,reach,scratchTime);
+      }
       if(wall)wristTarget=position(sign*.20,1.20,.485);
       if(clinicalPose==='guard'&&side==='L')wristTarget=position(.16,1.03,.38);
       if(railWeight>.001)wristTarget.lerp(position(sign*.447,.85,.045),railWeight);
       if(removing)wristTarget=removalHand(removing,side,wristTarget,footTarget);
       solveTwoLinks(`upperarm01${suffix}`, `lowerarm01${suffix}`, `wrist${suffix}`,
         wristTarget, elbowPole);
+      if(scratchRotation&&reach>0){
+        const wrist='wrist'+suffix;
+        const current=root.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(bones.get(wrist).getWorldQuaternion(new THREE.Quaternion()));
+        setWorldQuaternion(wrist,current.slerp(scratchRotation,reach));
+      }
       // Keep the rest LOCAL wrist rotation inherited from the forearm. The
       // previous world-rest reset made the hand bend independently of the arm.
       // Talking never adds arm, wrist, or finger tapping motions.
@@ -553,7 +589,10 @@ export async function createActor(scene, role, url) {
   const actor = {
     root, model, bones, role, ready: true,
     bedsideRig: { rest, reset: restore, offset, orient: setWorldQuaternion, reach: solveTwoLinks },
-    setEmotion(value){emotion=["questioning","concerned","upset"].includes(value)?value:"neutral";return actor;},
+    updateFace,
+    setEmotion(value){emotion=['questioning','concerned','upset','pain','sore'].includes(value)?value:'neutral';return actor;},
+    scratchTemple(){if(face&&pose==='seated'&&!clinicalPose&&scratchTime===null)scratchTime=0;},
+    endGesture(){scratchTime=null;},
     setPose,
     bindDocumentation(props={}) {
       if(role!=='therapist')return actor;
@@ -638,6 +677,10 @@ export async function createActor(scene, role, url) {
     update(dt,elapsed=dt) {
       if (halted) return;
       dt = clamp(Number(dt) || 0, 0, .1); time += dt;
+      if(scratchTime!==null){
+        scratchTime+=clamp(elapsed,0,.5);
+        if(scratchTime>=2.1||pose!=='seated')scratchTime=null;
+      }
       if(removal.active)removal.elapsed=Math.min(removal.duration,removal.elapsed+clamp(elapsed,0,.5));
       if (pose === 'heel_raise' && heelAction) {
         mixer.update(dt); heelElapsed += dt;
@@ -653,6 +696,15 @@ export async function createActor(scene, role, url) {
   procedural(0);
   await dressFromDrawings(root,role);
   return actor;
+}
+
+export function seatOnExamBed(patient,bed){
+  patient.root.rotation.set(0,Math.PI/2,0);
+  patient.setLocomotion(false);
+  patient.setPose('seated',true);
+  const seat=bed.localToWorld(new THREE.Vector3(.27,.806,.13));
+  patient.root.position.add(seat.sub(patient.getBodyReferencePosition()));
+  patient.root.updateMatrixWorld(true);
 }
 
 export async function createActors(scene, options = {}) {

@@ -1,4 +1,4 @@
-import {replaceHead} from './reference-head.js';
+import {replaceHead} from './reference-head.js?v=69';
 import {referenceWardrobe} from './reference-wardrobe.js';
 import * as THREE from 'three';
 

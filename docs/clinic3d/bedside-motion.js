@@ -242,7 +242,7 @@ function examUndershirt(actor,patient){
 }
 
 // Snapshots are absolute, so replay and scrubbing cannot accumulate joint rotations.
-export function createBedsideMotion(actors,room){
+export function createBedsideMotion(actors,room,{seatedStart=false,barefoot=true}={}){
   const p=actors.patient, d=actors.therapist, pr=p.bedsideRig, dr=d.bedsideRig;
   const protection=createExamProtection(d);
   const removeLayers=[examUndershirt(p,true),examUndershirt(d,false)];
@@ -267,7 +267,7 @@ export function createBedsideMotion(actors,room){
   // Clear the side used for the transfer; bring the examiner's stool to the foot end.
   stool.position.set(-1.943,0,1.406);
   stool.scale.y=stoolHeight*(.45+.126)/.45;
-  p.setFootwear('barefoot'); d.setDocumentation('desk');d.root.visible=true;
+  p.setFootwear(barefoot?'barefoot':'shoes'); d.setDocumentation('desk');d.root.visible=true;
   const reference=name=>pr.rest.get(name).point.clone();
   const medial=reference('foot.L').sub(reference('foot.R')).normalize();
   const acrossFoot=reference('toe1-1.R').sub(reference('toe5-1.R')).normalize();
@@ -300,7 +300,7 @@ export function createBedsideMotion(actors,room){
     const prepTime=t<0?t+preparationDuration:null;t=Math.max(0,t);
     if(prepTime===null){cart.position.set(-.7,0,2.42);cart.scale.y=cartHeight;sanitizer.set(0,0);}
     protection.set({mask:1,right:1,left:1});
-    const sit=ramp(t,.45,1.95), swing=ramp(t,2,4.15), recline=ramp(t,2.2,4.65);
+    const sit=seatedStart?1:ramp(t,.45,1.95), swing=ramp(t,2,4.15), recline=ramp(t,2.2,4.65);
     const reach=ramp(t,4.35,6.2);
     p.setExamCuff(recline);
     const drawer=peak(t,6.6,8.05,8.95,10.2);
@@ -317,7 +317,7 @@ export function createBedsideMotion(actors,room){
       pr.offset('upperleg01'+suffix,X,-1.40*bend-.70*raised-.14*recline);
       pr.offset('lowerleg01'+suffix,X,.03*bend-.56*raised+.14*recline);
       pr.offset('foot'+suffix,X,-.12*raised+.10*recline);
-      const plant=1-ramp(t,1.4,2.15);
+      const plant=seatedStart?0:1-ramp(t,1.4,2.15);
       if(plant>0){
         const initialAnkle=pr.rest.get('foot'+suffix).point.clone().sub(pivot).applyQuaternion(turn(Y,Math.PI/2)).add(V(-1.21,.906,.18));
         const target=local(p,world(p,'foot'+suffix)).lerp(local(p,initialAnkle),plant);
@@ -420,18 +420,19 @@ export function createBedsideMotion(actors,room){
         translation.scale.setScalar(1);
       }
     }
-    if(grips.conversation){
-      const retry=grips.conversation==='retry',head=world(p,'head');
+    if(grips.conversation==='retry'){
+      // Unload both hands at the ankle while retaining the examiner’s seated base.
+      dr.offset('head',Y,-.14);
+    }else if(grips.conversation==='initial'){
+      const head=world(p,'head'),standing=V(-.24,0,.18);
       dr.reset();
-      const standing=retry?head.clone().add(V(.53,0,.23)):V(-.24,0,.18);
       d.root.position.set(standing.x,0,standing.z);
       d.root.rotation.set(0,Math.atan2(head.x-standing.x,head.z-standing.z),0);
       d.root.updateMatrixWorld(true);
-      if(retry){dr.offset('spine03',X,.24);dr.offset('head',X,.49);pr.offset('head',Y,.48);}
       for(const [side,sign] of [['R',-1],['L',1]]){
         dr.reach('upperarm01.'+side,'lowerarm01.'+side,'wrist.'+side,V(sign*.24,.83,.095),V(sign*.39,1.09,-.10));
       }
-      protection.set({mask:retry?1:0,right:retry?1:0,left:retry?1:0,visible:retry});
+      protection.set({mask:0,right:0,left:0,visible:false});
     }else if(prepTime!==null)prepare(prepTime);
     const left=world(p,'foot.L');
     const sole=plantar.clone().applyQuaternion(footTurn).applyQuaternion(p.root.quaternion);
@@ -476,7 +477,7 @@ export function createBedsideMotion(actors,room){
     if(conversation){
       const patientHead=world(p,'head'),therapistHead=world(d,'head');
       look=patientHead.lerp(therapistHead,.5).add(V(0,-.14,0));
-      eye=look.clone().add(conversation==='retry'?V(.34,.36,1.82):V(.04,.06,1.88));
+      eye=look.clone().add(conversation==='retry'?V(2.65,.75,.72):V(.04,.06,1.88));
     }else if(t<0){
       const elapsed=t+preparationDuration;
       if(elapsed<prep.maskEnd){look=V(-1.8,1.49,1.43);eye=look.clone().add(V(.27,.09,.83));}

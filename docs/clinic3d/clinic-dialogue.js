@@ -5,7 +5,7 @@ export const replies={
  ask_screening:'最近又扭过吗？有没有比以前更肿、更疼，或者脚发麻、不敢踩地？',
  ask_goal:'当时去医院看过吗？现在您最想恢复什么？',
  ask_fear:'走到不平的地方，是脚踝突然使不上劲，还是怕再崴，就不敢往前走？',
- explain_consent:'检查一下您的踝关节有没有松弛。',
+ explain_consent:'我需要给您检查一下，看看您的踝关节韧带有没有松弛的情况。如果您感觉有点疼痛，您可以跟我说具体是哪里有点疼。不要强忍着。',
  reassure_without_guarantee:'没事的，我们慢慢来，如果您感觉疼随时和我说就好。',
  respect_decline:'那今天先不做，行吗？',
  pain_stop:'先停一下，别再往前压了。',

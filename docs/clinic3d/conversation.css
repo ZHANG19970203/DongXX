@@ -117,3 +117,29 @@ body:has(#clinic) .learning-bubble-v25{bottom:auto;top:128px;right:16px}
 @media(max-width:700px){body:has(#clinic) .dxx-assistant-launch{top:9px!important;right:64px!important;width:39px;height:39px;padding:2px}body:has(#clinic) .dxx-assistant-launch span{display:none}body #clinic #coach.lesson-coach{top:56px!important;right:8px!important}}
 
 body[data-node=wall_measure] #clinic #conversation:not([hidden]){inset:auto auto 14px 14px!important;transform:none!important;width:min(350px,75vw)!important;max-height:28dvh;overflow:auto}
+
+/* Place interview speech just beneath the existing toolbar. Leave the model
+   below the card, including in the therapist's close view and on phones. */
+body[data-interview] #clinic #conversation:not([hidden]){
+  inset:68px auto auto 50%;left:50%!important;transform:translateX(-50%);
+  width:min(620px,calc(100vw - 32px));max-height:35dvh;
+}
+body[data-interview] #conversation .conversation-head{padding:6px var(--gutter)}
+body[data-interview] #conversation .speaker-portrait{width:34px;height:37px;flex-basis:34px}
+body[data-interview] #conversationBody{padding:8px var(--gutter)}
+body[data-interview] #conversation .conversation-foot{padding:5px var(--gutter)}
+body[data-interview] #clinic #coach{display:none!important}
+@media(max-width:880px){
+ body[data-interview] #clinic #conversation:not([hidden]){top:111px}
+}
+@media(max-width:530px){
+ body[data-interview] #clinic #conversation:not([hidden]){top:97px;width:calc(100vw - 16px);max-height:33dvh}
+ body[data-interview] #conversation #line{font-size:18px}
+}
+@media(max-height:540px){
+ body[data-interview] #clinic #conversation:not([hidden]){top:60px;max-height:42dvh}
+ body[data-interview] #conversation .conversation-foot button{min-height:26px;padding:2px 8px}
+ body[data-interview] #conversation .speaker-portrait{width:27px;height:30px;flex-basis:27px}
+}
+
+body:has(#clinic[data-bedside-active=true]) .dxx-assistant-launch{inset:70px 14px auto auto!important}
