@@ -263,7 +263,29 @@ export async function createActor(scene, role, url) {
     sock.loose.geometry.computeBoundingBox();sock.floorY=.006-sock.loose.geometry.boundingBox.min.y;
     sock.captured=true;sock.worn.visible=false;sock.loose.visible=true;
   }
+  function dressingFrame(){
+    const fraction=clamp(removal.elapsed/removal.duration,0,.99999)*2;
+    const side=fraction<1?'L':'R',u=fraction%1;
+    const lift=smooth(u/.23)*(1-smooth((u-.70)/.27));
+    return {side,u,lift,lean:lift,time:u*7,stage:'put_on_shoe'};
+  }
+  function dressShoe(frame){
+    const home=shoeHomes.find(h=>h.side===frame.side),sock=socks.find(s=>s.side===frame.side);
+    if(!home)return;
+    const k=smooth((frame.u-.11)/.52);
+    if(k>=1){
+      home.parent.add(home.shoe);home.shoe.position.copy(home.position);home.shoe.quaternion.copy(home.quaternion);home.shoe.scale.copy(home.scale);
+      if(sock)sock.worn.visible=true;
+    }else{
+      const end=root.worldToLocal(home.parent.localToWorld(home.position.clone()));
+      const toesFirst=position(0,.035,.18*Math.sin(k*Math.PI));
+      home.shoe.position.copy(home.floor).lerp(end,k).add(toesFirst);
+      const rotation=root.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(home.parent.getWorldQuaternion(new THREE.Quaternion())).multiply(home.quaternion);
+      home.shoe.quaternion.copy(rotation);
+    }
+  }
   function removalFrame() {
+    if(removal.dressing)return dressingFrame();
     // Sample every authored shoe and sock movement on the shorter playback clock.
     const t=17.6 * removal.elapsed / removal.duration;
     if(t<1.6) return {side:'L',time:-1.6+t,lift:0,lean:0,stage:'sit'};
@@ -274,6 +296,11 @@ export async function createActor(scene, role, url) {
     return {side,time:local,lift,lean,stage};
   }
   function removalHand(frame,side,normalTarget,activeFoot) {
+    if(removal.dressing&&frame.side===side){
+      const k=smooth((frame.u-.11)/.52),sign=side==='L'?1:-1;
+      const pick=position(sign*.25,.10,.37),toe=activeFoot.clone().add(position(sign*.015,.045,.08+.12*Math.sin(Math.PI*k)));
+      return normalTarget.clone().lerp(pick.lerp(toe,k),smooth(frame.u/.18)*(1-smooth((frame.u-.70)/.26)));
+    }
     if(frame.side!==side || frame.time<.35 || frame.time>=7.1)return normalTarget;
     const sign=side==='L'?1:-1,t=frame.time;
     const reach=activeFoot.clone().add(position(sign*.025,.075,.055));
@@ -335,11 +362,11 @@ export async function createActor(scene, role, url) {
     const noteOffset=position(-.06,-.09,.09).lerp(position(-.09,-.025,.025),w);
     const notePoint=left.clone().add(noteOffset);
     const noteQuaternion=new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2,0,0));
-    noteQuaternion.slerp(new THREE.Quaternion().setFromEuler(new THREE.Euler(1.0,0,0)),w);
+    noteQuaternion.slerp(new THREE.Quaternion().setFromEuler(new THREE.Euler(.76,0,0)),w);
     propInActorFrame(documentation.notes,notePoint,noteQuaternion);
     const penPoint=right.clone().add(position(.01,-.08,.035).lerp(position(.01,-.01,.01),w));
     const carryQuaternion=new THREE.Quaternion().setFromEuler(new THREE.Euler(.20,0,-.18));
-    const tipTarget=position(.01+Math.sin(time*4.2)*.003,.008,-.015+Math.sin(time*6.3)*.002).applyQuaternion(noteQuaternion).add(notePoint);
+    const tipTarget=position(.01+Math.sin(time*4.2)*.008,.008,-.015+Math.sin(time*6.3)*.004).applyQuaternion(noteQuaternion).add(notePoint);
     const tipDirection=tipTarget.clone().sub(penPoint).normalize();
     const writeQuaternion=new THREE.Quaternion().setFromUnitVectors(position(0,-1,0),tipDirection);
     penPoint.lerp(tipTarget.clone().addScaledVector(tipDirection,-.0795),w);
@@ -468,7 +495,7 @@ export async function createActor(scene, role, url) {
       }
       if(role==='therapist'&&documentation) {
         const carryTarget=side==='L'?position(.24,.96-.365*sitting,.13):wristTarget.clone();
-        const writeTarget=side==='L'?position(.105,1.03-.365*sitting,.235):position(-.020+Math.sin(time*4.2)*.003,1.082-.365*sitting,.290+Math.sin(time*6.3)*.002);
+        const writeTarget=side==='L'?position(.105,1.03-.22*sitting,.235):position(-.020+Math.sin(time*4.2)*.008,1.082-.22*sitting,.290+Math.sin(time*6.3)*.004);
         carryTarget.lerp(writeTarget,documentationWriteWeight);
         wristTarget.lerp(carryTarget,documentationCarryWeight);
       }
@@ -489,6 +516,11 @@ export async function createActor(scene, role, url) {
     }
     updateDocumentationProps();
     if(removing) {
+      if(removal.dressing){
+        dressShoe(removing);removal.side=removing.side;
+        if(removal.elapsed>=removal.duration){removal.active=false;removal.dressing=false;removal.completed=false;removal.phase='shod';footwear='shoes';resetFootwearObjects('shoes');}
+        return;
+      }
       updateRemovalProps(removing);removal.phase=removing.stage;removal.side=removing.side;removal.progress=clamp(removal.elapsed/removal.duration,0,1);
       if(removal.elapsed>=removal.duration) {
         removal.active=false;removal.completed=true;removal.phase='completed';removal.progress=1;footwear='barefoot';
@@ -552,9 +584,19 @@ export async function createActor(scene, role, url) {
     setFootwear(value) {
       const next=role==='therapist'?'shoes':['shoes','socks','barefoot'].includes(value)?value:'shoes';
       if(next===footwear && !removal.active)return actor;
-      removal.active=false;removal.completed=next==='barefoot';removal.elapsed=0;removal.progress=next==='barefoot'?1:0;removal.phase=next==='barefoot'?'restored_barefoot':'idle';removal.side=null;
+      removal.active=false;removal.dressing=false;removal.completed=next==='barefoot';removal.elapsed=0;removal.progress=next==='barefoot'?1:0;removal.phase=next==='barefoot'?'restored_barefoot':'idle';removal.side=null;
       footwear=next;resetFootwearObjects(next);
       return actor;
+    },
+    startFootwearDressing(){
+      if(role!=='patient'||footwear==='shoes'||removal.dressing)return;
+      resetFootwearObjects('barefoot');setPose('seated',true);manualGaitPhase=null;walking=false;walkWeight=0;halted=false;
+      for(const home of shoeHomes){
+        root.attach(home.shoe);home.shoe.visible=true;home.floor=position(home.side==='L'?.25:-.25,.036,.37);
+        home.shoe.position.copy(home.floor);
+      }
+      Object.assign(removal,{dressing:true,active:true,completed:false,elapsed:0,phase:'dressing',side:'L',progress:0});
+      footwear='dressing';
     },
     startFootwearRemoval() {
       if(role!=='patient'||removal.active||removal.completed)return actor;

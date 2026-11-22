@@ -20,9 +20,9 @@ export function ankleExamPanel(openInClinic,actionLabel) {
   replay.append(label,movie);
   panel.append(title,action,replay);
   const note = document.createElement('p');
-  note.textContent = '前移与内翻松弛是结构线索。下一步比较背屈活动、背屈与外翻抗阻表现，再结合步态和静态压力中心（COP）解释发软。';
+  note.textContent = '前移与内翻松弛是结构线索。下一步比较背伸活动、背伸与外翻抗阻表现，再结合步态和静态压力中心（COP）解释发软。';
   const link = document.createElement('a');
-  link.textContent = '进入人体运动学实验室观察踝背屈 ↗';
+  link.textContent = '进入人体运动学实验室观察踝背伸 ↗';
   link.href = '../lab/index.html?lesson=10';
   link.target = '_blank';
   link.rel = 'noopener';

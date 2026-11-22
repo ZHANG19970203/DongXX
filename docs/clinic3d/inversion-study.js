@@ -2,8 +2,8 @@ import {makeAnkleModel} from './inversion-model.js?v=67';
 
 const stations=[
   {title:'距骨怎样进入踝穴？',prompt:'从上方看距骨滑车，再切换两种足位，观察哪一段转入胫腓骨之间。',
-   actions:[['dome','俯看距骨'],['dorsi','做背屈'],['plantar','做跖屈']],
-   caption:{neutral:'绿色为距骨，半透明部分为胫骨和腓骨。',dome:'俯视右距骨。两条横线示意滑车前、后部的宽度。',dorsi:'背屈时足尖抬起。看距骨滑车怎样转入踝穴。',plantar:'跖屈时足尖下移。与背屈位置来回比较。'},
+   actions:[['dome','俯看距骨'],['dorsi','做背伸'],['plantar','做跖屈']],
+   caption:{neutral:'绿色为距骨，半透明部分为胫骨和腓骨。',dome:'俯视右距骨。两条横线示意滑车前、后部的宽度。',dorsi:'背伸时足尖抬起。看距骨滑车怎样转入踝穴。',plantar:'跖屈时足尖下移。与背伸位置来回比较。'},
    question:'如果落脚时右踝处于跖屈，哪一部分进入踝穴？',
    answers:['较宽的滑车前部','较窄的滑车后部','距骨头'],correct:1,
    retry:'回到俯视图辨认滑车前后，再比较足尖抬起和下移时的位置。',

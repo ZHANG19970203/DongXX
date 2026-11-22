@@ -36,7 +36,7 @@ export const flowLines={
  safety_answer:'最近没再扭，也没发麻，还能走。就是站久了或者走多了会酸胀，坐会儿就好些。',
  goal_answer:'头一回拍了片，说没骨折。歇了大概三个星期，后来再崴就自己歇歇，没专门练，也没一直戴护踝。现在就想走不平的路能踏实点，以后还能慢跑。',
  consent_reply:'可以。碰到上次崴的地方会不会疼？',
- local_intro:'我想先看看您脚踝的活动度。',
+ local_intro:'接下来我为您检查一下脚踝活动度怎么样。',
  trial:'双手扶墙，我在您旁边。脚跟踩稳，膝盖对着第二个脚趾，慢慢往前碰墙。',
  local_record:'右脚踝有点紧，再往前，脚跟就要起来了。',
  gait_intro:'就这么光脚走？要对准地上那块板吗？',
@@ -69,8 +69,8 @@ export const scenes={
  new_injury_or_unable_to_bear_weight:'P刚又扭了一下，疼得不敢踩地。|T先别站，您坐着。我请医生过来看看。',
  declined:'P我还是想下次再查。|T可以，今天就先不查。'},
  '02A':{
- normal:'T我想先看看您脚踝的活动度。|P好。',
- consent_missing:'T我想先看看您脚踝的活动度。|P好。',
+ normal:'T接下来我为您检查一下脚踝活动度怎么样。|P好。',
+ consent_missing:'T接下来我为您检查一下脚踝活动度怎么样。|P好。',
  declined:'P今天我不想让人碰脚，能先看看怎么做吗？|T行，我做给您看。',
  stopped:'P等一下，有点不舒服。|T先停，哪儿不舒服？'},
  '02B':{
@@ -130,7 +130,7 @@ export const scenes={
  several_checks_skipped:'P那回去该怎么练？|T还有几项没查，先不急着加练，下次查完再定。',
  declined_or_medical_stop_route:'P今天没查完，回去还练吗？|T今天先不加练，等弄清楚为什么不舒服再说。'},
  '08B':{
- normal:'T练的时候如果越来越疼，或者站不稳，记得先停。|P那我先扶稳，歇一歇，不硬撑。',
+ normal:'T我们按今天商量的计划复评。',
  plan_not_selected:'P那我回去先练什么？|T今天先不加新的动作，下次查完再定。',
  patient_does_not_understand:'P什么情况我就别练了？|T越练越疼，或者觉得要摔了，就先扶好、停下来。如果又扭伤，或者明显更疼、更肿，要及时看医生。',
  medical_stop_or_declined_route:'P剩下的今天还要做吗？|T不用，今天就到这儿。'}

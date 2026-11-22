@@ -8,7 +8,7 @@
 
 新增可选 API：
   viewer.setMotion('sagittal'|'frontal'); // 清零当前教学角度，关闭肌肉，切换骨骼运动
-  viewer.setAngle(degrees);             // 有界教学角度：正背屈/内翻，负跖屈/外翻
+  viewer.setAngle(degrees);             // 有界教学角度：正背伸/内翻，负跖屈/外翻
   await viewer.setMusclesVisible(true); // 首次懒加载肌肉分片；回到中立位，禁用运动滑块
   await viewer.setMusclesVisible(false);// 返回骨骼运动
   options.onMotion({mode,angleDegrees,muscleMode,approximateTeachingProjection:true});

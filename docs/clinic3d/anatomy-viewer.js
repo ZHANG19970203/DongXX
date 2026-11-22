@@ -7,7 +7,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const DEFAULT_PROVENANCE = new URL('./docs/anatomy-v10-provenance.json', import.meta.url);
 const FOCUS = {
   ankle: { title: '踝关节怎样承接身体重量？', key: 'talus', target: [-.083, .015, .085], size: .23,
-    explanation: '胫骨、腓骨围成踝穴，距骨位于其中。拖动滑块，观察踝关节背屈与跖屈。' },
+    explanation: '胫骨、腓骨围成踝穴，距骨位于其中。拖动滑块，观察踝关节背伸与跖屈。' },
   arch: { title: '足弓由哪些结构共同组成？', key: 'navicular', target: [-.092, -.032, .122], size: .235,
     explanation: '沿跟骨、距骨、舟骨、内侧楔骨到第1跖骨观察内侧纵弓。足弓还需要韧带、筋膜和肌肉共同维持。' },
   foot: { title: '从后足到前足，认识承重结构', key: 'mt1', target: [-.092, -.038, .137], size: .31,
@@ -37,9 +37,9 @@ const GROUP_KEYS = { cuneiform: ['cuneiformM', 'cuneiformI', 'cuneiformL'],
   metatarsal: ['mt1', 'mt2', 'mt3', 'mt4', 'mt5'] };
 const STYLE_ID = 'dxx-anatomy-v10-style';
 const MOTION = {
-  sagittal: { label: '背屈 / 跖屈', plane: '矢状面', axis: '横轴', min: -25, max: 20,
-    positive: '踝关节背屈', negative: '踝关节跖屈', color: 0x3384a3,
-    purpose: '背屈使足背靠近小腿；跖屈使足背远离小腿。', pivot: [-.075, -.014, .077] },
+  sagittal: { label: '背伸 / 跖屈', plane: '矢状面', axis: '横轴', min: -25, max: 20,
+    positive: '踝关节背伸', negative: '踝关节跖屈', color: 0x3384a3,
+    purpose: '背伸使足背靠近小腿；跖屈使足背远离小腿。', pivot: [-.075, -.014, .077] },
   frontal: { label: '内翻 / 外翻', plane: '额状面', axis: '前后轴', min: -12, max: 12,
     positive: '足内翻', negative: '足外翻', color: 0xb5812d,
     purpose: '内翻时足底朝内，外翻时足底朝外；主要涉及距下等多个关节。', pivot: [-.075, -.035, .075] }
@@ -96,7 +96,7 @@ export async function createAnatomyViewer(host, options = {}) {
   axisLabel.append(axisToggle, document.createTextNode('轴与运动面')); motionRow.append(muscleToggle, axisLabel);
   const rangeRow = element('div', 'anatomy-v10-range');
   const rangeLeft = element('span'), rangeRight = element('span'); const range = element('input');
-  range.type = 'range'; range.step = '1'; range.value = '0'; range.setAttribute('aria-label', '踝关节背屈与跖屈教学角度');
+  range.type = 'range'; range.step = '1'; range.value = '0'; range.setAttribute('aria-label', '踝关节背伸与跖屈教学角度');
   rangeRow.append(rangeLeft, range, rangeRight);
   const motionValue = element('output', 'anatomy-v10-value', '中立位 · 0°'); motionValue.setAttribute('aria-live', 'off');
   const motionPurpose = element('p', 'anatomy-v10-caption');

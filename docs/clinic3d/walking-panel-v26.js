@@ -33,7 +33,7 @@ export function walkingPanel(){
  notes.append(el('p','','图中的“垂直地面反作用力”是地面给脚的向上作用力，不是足底某个部位的压力。纵轴BW表示体重力mg的倍数；1 BW相当于一个体重力。两次较高受力通常分别发生在承重早期和支撑后期，但形状与数值会受速度、任务和个体影响。'));
  notes.append(el('p','','只显示向上的分量，不能把后面的峰直接叫“向前推进力”；推进还涉及前后方向的力。身体质心位置的高低，也不等于此刻受力大小：双脚总竖直力减体重力，决定的是质心的竖直加速度。'));
  notes.append(el('p','','本页是原创理想化平地、对称步行模型：1.2秒一周期，每足支撑60%，上下位移幅度1.8厘米、左右幅度2厘米，均为教学设定而非正常界值。z = −0.018 cos[4π(p−0.05)] m；F右,z + F左,z = m(g + z̈)。受力由同一条质心函数求导得到，双支撑时用平滑权重分给两脚。人物采用原比例、相对地面后移的跑台式观察；脚跟滚动、足底支撑、屈膝摆动与对侧摆臂均为按阶段编排的教学动作，非动作捕捉。支撑腿按模型长度约束，骨盆位置不等于全身质心测量。'));
- notes.append(el('p','','黄色点是理想化质心的教学标记，未按本角色各体段质量求得；三维姿态用于认识时相，不能据此读取真实关节角度、肌力或患者诊断。它与患侧56%支撑期的病例练习分开，两个示例的数值不能混用。可在“关节与轴面”中继续学习背屈、跖屈。'));
+ notes.append(el('p','','黄色点是理想化质心的教学标记，未按本角色各体段质量求得；三维姿态用于认识时相，不能据此读取真实关节角度、肌力或患者诊断。它与患侧56%支撑期的病例练习分开，两个示例的数值不能混用。可在“关节与轴面”中继续学习背伸、跖屈。'));
  WALKING_SOURCES.some(x=>x.url==='https://now.aapmr.org/biomechanics-normal-gait/')||WALKING_SOURCES.push({title:'AAPM&R：正常步态各阶段与足部滚动',url:'https://now.aapmr.org/biomechanics-normal-gait/',supports:'用来核对阶段顺序，不把角色动画当作实测关节角度。'});const list=el('ul');for(const s of WALKING_SOURCES){const li=el('li'),a=el('a','',s.title);a.href=s.url;a.target='_blank';a.rel='noopener';li.append(a,document.createTextNode('：'+s.supports));list.append(li);}notes.append(list);c.append(notes);
  function stop(){run=false;cancelAnimationFrame(raf);play.textContent='连续步行';}
  function tick(t){if(!alive||!c.isConnected||document.hidden){stop();return;}phase=(phase+Math.min((t-last)/1000,.08)/(WALKING_DEMO.cycleSeconds*rate))%1;last=t;draw();raf=requestAnimationFrame(tick);}

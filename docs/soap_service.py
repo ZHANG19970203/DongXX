@@ -98,7 +98,7 @@ class SOAPService:
   if name=='hypothesis':passed=len(str(a.get('text','')).strip())>=8;feedback='已保留初步假设。后面应允许证据修正它，不能把关联预写成因果。'
   elif name=='interview':passed=all(g in d['covered'] for g in GROUPS+['安全核对','意愿沟通']);feedback='病史四模块、安全与意愿均已涉及。' if passed else '还需了解：'+ '、'.join(g for g in GROUPS+['安全核对','意愿沟通'] if g not in d['covered'])
   elif name=='joint':
-   passed=a.get('plane')=='sagittal' and a.get('axis')=='mediolateral' and a.get('position')=='same';score=sum([a.get('plane')=='sagittal',a.get('axis')=='mediolateral',a.get('position')=='same'])/3;feedback='背屈/跖屈主要在矢状面绕近似内外侧轴。真实轴为斜轴；比较ROM必须统一体位、膝位、负重和方法。'
+   passed=a.get('plane')=='sagittal' and a.get('axis')=='mediolateral' and a.get('position')=='same';score=sum([a.get('plane')=='sagittal',a.get('axis')=='mediolateral',a.get('position')=='same'])/3;feedback='背伸/跖屈主要在矢状面绕近似内外侧轴。真实轴为斜轴；比较ROM必须统一体位、膝位、负重和方法。'
   elif name=='muscle':
    correct={'dorsi':'tibialis_anterior','plantar':'triceps_surae','eversion':'fibularis','inversion':'tibialis_posterior'};score=sum(a.get(k)==v for k,v in correct.items())/4;passed=score==1;feedback='这些是主要参与肌群，并非一对一独占。肌肉也有协同、离心控制；仅看动作不能判定肌力等级或激活时序。'
   elif name=='arch':

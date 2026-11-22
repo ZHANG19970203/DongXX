@@ -4,18 +4,23 @@ const el=(tag,text)=>{const n=document.createElement(tag);if(text)n.textContent=
 function action(label,fn){const b=el('button',label);b.type='button';b.addEventListener('click',fn);return b;}
 
 const movementItems=[
- ['抬起脚尖、再向下压，主要由哪个关节完成？',['距跟关节','距小腿关节','趾间关节'],1,'距小腿关节又称距上关节，主要完成背屈和跖屈。'],
- ['从外侧看脚尖抬起和下压，主要在哪个面、绕哪个方向的轴运动？',['矢状面，近似绕内外方向的轴','额状面，近似绕前后方向的轴','水平面，近似绕垂直轴'],0,'背屈和跖屈以矢状面运动为主。真实踝轴略倾斜，足还可伴随小幅的其他方向运动。'],
+ ['抬起脚尖、再向下压，主要由哪个关节完成？',['距跟关节','距小腿关节','趾间关节'],1,'距小腿关节又称距上关节，主要完成背伸和跖屈。'],
+ ['从外侧看脚尖抬起和下压，主要在哪个面、绕哪个方向的轴运动？',['矢状面，近似绕内外方向的轴','额状面，近似绕前后方向的轴','水平面，近似绕垂直轴'],0,'背伸和跖屈以矢状面运动为主。真实踝轴略倾斜，足还可伴随小幅的其他方向运动。'],
  ['把足底转向内侧或外侧，后足主要在哪个关节发生这个动作？',['距跟关节','距小腿关节','第一跖趾关节'],0,'距跟关节属于距下关节，其斜轴运动有明显的内翻、外翻分量。'],
- ['坐位、足相对小腿运动。哪一组是常见的伴随方向？',['背屈伴内收，跖屈伴外展','背屈和跖屈都伴内收','背屈伴外展，跖屈伴内收'],2,'以足相对小腿为参照，抬起时可伴外展，下压时可伴内收。伴随幅度会随个体和任务而变。'],
- ['足整体旋前时，哪三个方向组合在一起？',['跖屈、内收、内翻','背屈、外展、外翻','背屈、内收、外翻'],1,'开链旋前包括背屈、外展和外翻，距下关节参与三平面的联动。'],
- ['把动作反过来，足整体旋后时会看到什么？',['跖屈、内收、内翻','跖屈、外展、内翻','背屈、外展、外翻'],0,'开链旋后包括跖屈、内收和内翻。']
+ ['坐位、足相对小腿运动。哪一组是常见的伴随方向？',['背伸伴内收，跖屈伴外展','背伸和跖屈都伴内收','背伸伴外展，跖屈伴内收'],2,'以足相对小腿为参照，抬起时可伴外展，下压时可伴内收。伴随幅度会随个体和任务而变。'],
+ ['足整体旋前时，哪三个方向组合在一起？',['跖屈、内收、内翻','背伸、外展、外翻','背伸、内收、外翻'],1,'开链旋前包括背伸、外展和外翻，距下关节参与三平面的联动。'],
+ ['把动作反过来，足整体旋后时会看到什么？',['跖屈、内收、内翻','跖屈、外展、内翻','背伸、外展、外翻'],0,'开链旋后包括跖屈、内收和内翻。']
 ];
-export function motionComplete(book){return movementItems.every((_,i)=>book.get('motion54_'+i)===true);}
+const motionLessons=[
+ {id:'sagittal',name:'距小腿关节 · 跖屈和背伸',description:'从右踝外侧看。小腿保持不动，距骨在踝穴中随足转动。脚尖先向下压，再向上勾。'},
+ {id:'subtalar',name:'距下关节 · 内翻和外翻',description:'从右足后方看橙色的跟骨。跟骨相对距骨转动，足底先朝内侧，再朝外侧。'}
+];
+function hasSeenMotion(book,lesson){return book.get('motionVideo_'+lesson.id)===true;}
+export function motionComplete(book){return motionLessons.every(lesson=>hasSeenMotion(book,lesson))&&movementItems.every((_,i)=>book.get('motion54_'+i)===true);}
 const strengthActions={
- dorsiflexion:{name:'背屈',muscle:'胫骨前肌',paint:'tibAnt',cue:'把脚尖往上勾，稍微朝里，保持住。',hand:'固定小腿远端，在足背内侧向下、向外施阻。'},
- plantarflexion:{name:'跖屈',muscle:'腓肠肌、比目鱼肌',paint:'gastrocnemius',cue:'脚往下踩，顶住我的手。',hand:'俯卧，足伸出床沿。固定小腿，在前脚掌足底向背屈方向施阻。伸膝观察小腿三头肌，屈膝侧重比目鱼肌。'},
- inversion:{name:'内翻',muscle:'胫骨后肌',paint:'tibPost',cue:'脚尖稍微往下，把脚底朝里转，保持住。',hand:'足稍跖屈，固定小腿，从足背内侧向外翻、略向背屈方向施阻。'},
+ dorsiflexion:{name:'背伸',muscle:'胫骨前肌',paint:'tibAnt',cue:'把脚尖往上勾，稍微朝里，保持住。',hand:'固定小腿远端，在足背内侧向下、向外施阻。'},
+ plantarflexion:{name:'跖屈',muscle:'腓肠肌、比目鱼肌',paint:'gastrocnemius',cue:'脚往下踩，顶住我的手。',hand:'俯卧，足伸出床沿。固定小腿，在前脚掌足底向背伸方向施阻。伸膝观察小腿三头肌，屈膝侧重比目鱼肌。'},
+ inversion:{name:'内翻',muscle:'胫骨后肌',paint:'tibPost',cue:'脚尖稍微往下，把脚底朝里转，保持住。',hand:'足稍跖屈，固定小腿，从足背内侧向外翻、略向背伸方向施阻。'},
  eversion:{name:'外翻',muscle:'腓骨长肌、腓骨短肌',paint:'fibLong',cue:'把脚底朝外转，顶住我的手。',hand:'固定小腿，手贴足背外侧缘，在前足向内翻方向施阻，观察能否保持。'}
 };
 const passes=['dorsiflexion','inversion','eversion','plantarflexion','soleus'];
@@ -46,10 +51,39 @@ function quiz(host,items,book,prefix,onAnswer){
 
 export function showMotion(ctx){
  const {wrap,book,record,changed}=ctx;
- wrap.append(el('p','用通用量角器测背屈和跖屈。轴心对准外踝中心，固定臂沿腓骨外侧指向腓骨头，移动臂沿第五跖骨外侧，随足转动。'));
- ctx.anatomyButton(wrap,'ankle');
- const panel=el('section');panel.className='clinical-quiz';wrap.append(panel);
- quiz(panel,movementItems,book,'motion54_',(i,j,correct)=>{record('clinic3d_motion_answer',{item:i,answer:j,correct});changed();});
+ const content=el('section');content.className='motion-lesson';wrap.append(content);
+ function questions(){
+  content.replaceChildren();
+  content.append(el('p','用通用量角器测背伸和跖屈。轴心对准外踝中心，固定臂沿腓骨外侧指向腓骨头，移动臂沿第五跖骨外侧，随足转动。'));
+  const nav=el('div');nav.className='clinical-nav';
+  nav.append(action('重看关节动画',()=>watch(0)));ctx.anatomyButton(nav,'ankle');content.append(nav);
+  const panel=el('section');panel.className='clinical-quiz';content.append(panel);
+  quiz(panel,movementItems,book,'motion54_',(i,j,correct)=>{record('clinic3d_motion_answer',{item:i,answer:j,correct});changed();});
+ }
+ function watch(index){
+  const lesson=motionLessons[index],last=index===motionLessons.length-1;
+  const video=el('video');
+  video.src=new URL('./assets/ankle-motion-'+lesson.id+'.mp4',import.meta.url).href;
+  video.controls=true;video.playsInline=true;video.muted=true;video.preload='auto';
+  video.setAttribute('aria-label',lesson.name);video.dataset.motion=lesson.id;
+  const next=action(last?'进入运动辨认':'看内翻和外翻',()=>{video.pause();if(last)questions();else watch(index+1);});
+  next.disabled=!hasSeenMotion(book,lesson);
+  const nav=el('div');nav.className='clinical-nav';
+  if(index>0)nav.append(action('重看跖屈和背伸',()=>{video.pause();watch(0);}));
+  nav.append(next);
+  content.replaceChildren(el('h3',lesson.name),video,el('p',lesson.description),nav);
+  video.addEventListener('ended',()=>{
+   if(!video.isConnected||!content.contains(video))return;
+   if(!hasSeenMotion(book,lesson)){
+    book.set('motionVideo_'+lesson.id,true);
+    record('clinic3d_joint_motion_viewed',{joint:lesson.id,assessmentCredit:false});changed();
+   }
+   next.disabled=false;
+  });
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)video.play().catch(()=>{});
+ }
+ const pending=motionLessons.findIndex(lesson=>!hasSeenMotion(book,lesson));
+ if(pending===-1)questions();else watch(pending);
 }
 
 export function showStrength(ctx){
@@ -71,13 +105,13 @@ export function showStrength(ctx){
  }
  project.addEventListener('change',()=>ctx.projectMuscle(project.checked));
  function controls(){
-  const trial=title(),loading=mode==='resist';
+  const trial=title(),loading=mode==='resist'||mode==='relax';
   heading.textContent=sideName()+'侧 · '+(pass==='soleus'?'屈膝跖屈':pass==='plantarflexion'?'伸膝跖屈':trial.name)+' · '+(pass==='soleus'?'比目鱼肌':trial.muscle);
   tabs.replaceChildren();
   for(const [k,label] of [['L','左侧 · 健侧'],['R','右侧 · 患侧']]){
    const b=action(label,()=>select(k,passes.find(x=>!book.get(recordKey(k,x)))||'eversion'));b.disabled=loading||(k==='R'&&!sideDone(book,'L'));b.setAttribute('aria-pressed',String(side===k));tabs.append(b);
   }
-  help.textContent=trial.hand;
+  help.textContent=motion()==='eversion'?(side==='R'?'治疗师右手固定右小腿，左手贴右前足外侧，向内施阻。':'治疗师左手固定左小腿，右手贴左前足外侧，向内施阻。'):trial.hand;
   paint.textContent='肌肉彩绘 ↗';paint.href='../painting/index.html?muscle='+(pass==='soleus'?'soleus':trial.paint);
   trials.replaceChildren();
   const menu=el('select');menu.setAttribute('aria-label','选择检查动作');menu.disabled=loading;
@@ -87,10 +121,16 @@ export function showStrength(ctx){
    const start=action(book.get(recordKey(side,pass))?'再查一次':'固定小腿，患者用力',()=>{mode='active';poseNow();coachVoice(pass==='soleus'?'现在把膝盖弯起来，再往下踩一次。':trial.cue);finding.textContent='观察治疗师双手接触的位置。';controls();});start.dataset.mmt='contact';trials.append(start);
   }
   if(mode==='active')trials.append(action('施加反向阻力',()=>{
-   const attempt=++token;mode='resist';const done=poseNow();
-   finding.textContent='观察足部能否保持。';controls();
-   done.then(ok=>{
+   const attempt=++token;mode='resist';
+   const effort='您用力对抗我的手，来，慢慢用力。';
+   finding.textContent='林治疗师：'+effort;controls();
+   Promise.all([poseNow(),coachVoice(effort)]).then(async ([ok])=>{
     if(!ok||token!==attempt||!trials.isConnected)return;
+    mode='relax';poseNow();
+    const release='很好，您慢慢放松。';
+    finding.textContent='林治疗师：'+release;controls();
+    await coachVoice(release);
+    if(token!==attempt||!trials.isConnected)return;
     const yields=pass==='eversion'&&side==='R';
     mode='result';book.set(recordKey(side,pass),true);
     record('clinic3d_resisted_motion',{side,action:motion(),knee:pass==='soleus'?'flexed':pass==='plantarflexion'?'extended':null,observation:yields?'yields':'holds',source:'simulated-bedside-case'});

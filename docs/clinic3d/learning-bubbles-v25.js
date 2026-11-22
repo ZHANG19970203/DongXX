@@ -1,6 +1,6 @@
 const topics=[
  {id:'muscle',re:/肌肉|腓骨.{0,2}肌|胫骨前肌|收缩|肌群|离心|向心/,title:'肌肉怎样把骨骼带动起来？',note:'看看起止点，再试试把它画出来。',act:'act3',lab:3,muscle:'fibLong'},
- {id:'joint',re:/关节|背屈|跖屈|量角|运动轴|运动面/,title:'转动模型，找到运动的轴与面。',note:'为什么要在相同体位下比较？',act:'act2',lab:10,muscle:'tibAnt'},
+ {id:'joint',re:/关节|背伸|跖屈|量角|运动轴|运动面/,title:'转动模型，找到运动的轴与面。',note:'为什么要在相同体位下比较？',act:'act2',lab:10,muscle:'tibAnt'},
  {id:'arch',re:/足弓|脚弓|足形|扁平/,title:'三条足弓，怎样一起承重？',note:'看结构，再区分足形与症状。',act:'act4',lab:10,muscle:'tibPost'},
  {id:'gait',re:/步态|支撑|摆动|步长|步速|步宽/,title:'把行走放慢，找一个完整周期。',note:'支撑期、摆动期和双侧差异在哪里？',act:'act5',lab:13,muscle:'gastrocnemius'},
  {id:'cop',re:/COP|压力中心|重心|平衡|轨迹/,title:'压力中心，等于身体重心吗？',note:'一起比较足下轨迹与身体运动。',act:'act7',lab:12,muscle:'soleus'},
@@ -19,5 +19,5 @@ export function installLearningBubbles({pause,record,persist,openConcept}){
  bubble.querySelector('.bubble-dismiss').onclick=()=>{dismissed.add(last);bubble.hidden=true;record('clinic3d_concept_ignore',{topic:current?.id,notAssessmentCredit:true});};
  bubble.querySelector('[data-model]').onclick=()=>{openConcept(current.act);record('clinic3d_bubble_model_open',{topic:current.id});};bubble.querySelector('[data-paint]').onclick=()=>open('../painting/index.html?embedded=1&muscle='+current.muscle);
  bubble.querySelector('[data-lab]').onclick=()=>open('../lab/index.html?lesson='+current.lab+'&embedded=1');
- return {utterance(info){const t=topics.find(t=>t.re.test(info.text||''));if(!t){bubble.hidden=true;last='';return;}const id=info.nodeId+'|'+t.id;if(id===last||dismissed.has(id))return;last=id;current=t;bubble.querySelector('strong').textContent=t.title;bubble.querySelector('p').textContent=t.note;bubble.hidden=false;},hide(){bubble.hidden=true;last='';},isOpen:()=>overlay.open};
+ return {utterance(info){if(['plan_intro','plan','synthesis','debrief','teachback','plan_patient','gait_interpret'].includes(document.body.dataset.node)){bubble.hidden=true;return;}const t=topics.find(t=>t.re.test(info.text||''));if(!t){bubble.hidden=true;last='';return;}const id=info.nodeId+'|'+t.id;if(id===last)return;if(dismissed.has(t.id)){bubble.hidden=true;last='';return;}dismissed.add(t.id);last=id;current=t;bubble.querySelector('strong').textContent=t.title;bubble.querySelector('p').textContent=t.note;bubble.hidden=false;},hide(){bubble.hidden=true;last='';},isOpen:()=>overlay.open};
 }

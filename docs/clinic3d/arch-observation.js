@@ -1,3 +1,4 @@
+import {rearFootReference} from './posture-reference.js';
 import {archOutlines} from './arch-bones.js';
 
 // Confirm each observation after the patient reaches the corresponding pose.
@@ -16,6 +17,7 @@ export function openArchObservation({host,subject,standingSeenNext,actor,seat,on
   const outlines=archOutlines(),fig=outlines.children[standing?1:0];
   fig.querySelector('figcaption').textContent='病例示意 · 右足内侧';
   diagram.replaceChildren(fig);
+  if(standing)diagram.append(rearFootReference());
   hint.textContent=standing?'比较同一位置，右脚负重后内侧纵弓比坐位时低。':'先看坐位时右脚内侧的弧度。';
   action.textContent=standing?'完成比较，进入足弓识别':'已看坐位，观察站位';
   actor.setPose(standing?'standing':'seated');

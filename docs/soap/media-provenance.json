@@ -59,8 +59,10 @@
           "outStart": 37.994083333333336,
           "outEnd": 40.683083333333336
         }
-      ]
-    }
+      ],
+      "status": "archived"
+    },
+    "activePlayback": "media/intro-playback.mp4"
   },
   {
     "id": "arch",
@@ -90,8 +92,10 @@
           "outStart": 3.08,
           "outEnd": 7.883916666666667
         }
-      ]
-    }
+      ],
+      "status": "archived"
+    },
+    "activePlayback": "media/arch.mp4"
   },
   {
     "id": "gait",
@@ -121,8 +125,10 @@
           "outStart": 5.06,
           "outEnd": 6.638375
         }
-      ]
-    }
+      ],
+      "status": "archived"
+    },
+    "activePlayback": "media/gait.mp4"
   },
   {
     "id": "scan",
@@ -176,7 +182,9 @@
           "outStart": 12.1965,
           "outEnd": 15.313020833333333
         }
-      ]
-    }
+      ],
+      "status": "archived"
+    },
+    "activePlayback": "media/plan.mp4"
   }
 ]

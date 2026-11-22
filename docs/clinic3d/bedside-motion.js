@@ -22,7 +22,7 @@ export function instruction(t){
   if(t<12.8)return '右手稳住胫骨，左手从足外侧带动跟骨内收、内翻。';
   if(t<13.65)return '保持内翻终末位，在外踝外侧轻轻加压。';
   if(t<15)return '松开压力，缓慢将后足带回中立位。';
-  return '本例右侧前移、内翻倾斜较健侧略大。接下来比较背屈和外翻抗阻表现。';
+  return '本例右侧前移、内翻倾斜较健侧略大。接下来比较背伸和外翻抗阻表现。';
 }
 
 function basis(along, across){

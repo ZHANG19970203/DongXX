@@ -305,12 +305,14 @@
       "duration": 2.6653968253968254,
       "sha256": "383b9a18a30229d79f53c62e8ba723b892e2389dbbc9b573789969c6f085770f"
     },
-    "therapist|我们看踝关节背屈、跖屈，再看负重背屈。": {
-      "src": "./assets/dialogue-v20/057bb8e27a19bf6cdca5.mp3",
+    "therapist|我们看踝关节背伸、跖屈，再看负重背伸。": {
       "role": "therapist",
-      "text": "我们看踝关节背屈、跖屈，再看负重背屈。",
-      "duration": 4.727256235827665,
-      "sha256": "8b3dbc1374b0c72cb46f7e32a593f2d8c24484f9112129976c32486d86b0b260"
+      "text": "我们看踝关节背伸、跖屈，再看负重背伸。",
+      "src": "./assets/dialogue-v20/clinical68-rom-directions.mp3",
+      "sha256": "991b8f0841b66496e18ee19484a2fcb409a74ee54e45d6380eb26b4dc2e0e7fc",
+      "duration": 2.58525,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "我们看踝关节背身，只需再看负重背身。"
     },
     "therapist|不舒服就停。": {
       "src": "./assets/dialogue-v20/98b3c94ae2c769a8d186.mp3",
@@ -406,12 +408,14 @@
       "duration": 2.8903854875283446,
       "sha256": "0df8fdfba9bfdd1416d51d337811f2421791679d3accffa9e623d31f5f6bf68f"
     },
-    "therapist|右侧负重背屈较小；发紧不等于错位，还需综合判断。": {
-      "src": "./assets/dialogue-v20/6380c4919627ecd50d33.mp3",
+    "therapist|右侧负重背伸较小；发紧不等于错位，还需综合判断。": {
       "role": "therapist",
-      "text": "右侧负重背屈较小；发紧不等于错位，还需综合判断。",
-      "duration": 5.818956916099773,
-      "sha256": "d25c0dca7aa75f614cd7f86c40eb309abb5dda39e754bef864ac4b1bfa5484d6"
+      "text": "右侧负重背伸较小；发紧不等于错位，还需综合判断。",
+      "src": "./assets/dialogue-v20/clinical68-rom-finding.mp3",
+      "sha256": "b3879b98e5ff76b8d74c61f994496e6a6e597132655e5fd597a5cec941a0322a",
+      "duration": 3.498,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "右侧负重背身较小，发紧不等于错位，还需综合判断。"
     },
     "therapist|一定是距骨移位，把它推回去就能根治。": {
       "src": "./assets/dialogue-v20/77d6e6f43f6cea1935c4.mp3",
@@ -1182,12 +1186,14 @@
       "duration": 3.94140589569161,
       "sha256": "1be00bc2914c725669071515f25dc8164f67519c2940e54f21efb56413b46934"
     },
-    "therapist|现在看踝关节背屈和跖屈。": {
-      "src": "./assets/dialogue-v20/c4b6422e99b091d25b9c.mp3",
+    "therapist|现在看踝关节背伸和跖屈。": {
       "role": "therapist",
-      "text": "现在看踝关节背屈和跖屈。",
-      "duration": 3.3621768707482995,
-      "sha256": "7acd9af2af05cfa900ac6ca3b9d52ed1c1a7a332b071604b684a3a4c22de6545"
+      "text": "现在看踝关节背伸和跖屈。",
+      "src": "./assets/dialogue-v20/clinical68-rom-pair.mp3",
+      "sha256": "241d2c6490b485b389fbc0e885cd96fb529e576951b09c6f4af0e7ce5abf15bf",
+      "duration": 1.9946875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "现在看踝关节被深核直区。"
     },
     "patient|向上动时，右边有点紧。": {
       "src": "./assets/dialogue-v20/178a3beb56ed975529e5.mp3",
@@ -10040,6 +10046,222 @@
       "source": "Local synthesis using the existing Fei 1508 role reference",
       "transcriptCheck": "静态下的足踝功能我们查完了。接下来我看看您走路的情况。",
       "voice": "普通话男声（参考项目既有 TTSMaker 1508 阿飞声线合成）"
+    },
+    "therapist|接下来我为您检查一下脚踝活动度怎么样。": {
+      "role": "therapist",
+      "text": "接下来我为您检查一下脚踝活动度怎么样。",
+      "src": "./assets/dialogue-v20/clinical68-rom.mp3",
+      "sha256": "5de9551a239dd677664ce4da7b5a4d8166609fc502cb509f4eac984c1c6ecf12",
+      "duration": 2.9461875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "接下来我为您检查一下脚踝活动度怎么样。"
+    },
+    "therapist|您用力对抗我的手，来，慢慢用力。": {
+      "role": "therapist",
+      "text": "您用力对抗我的手，来，慢慢用力。",
+      "src": "./assets/dialogue-v20/clinical68-resist.mp3",
+      "sha256": "d4088766fb1ad01c3c193b7fbfb47ae53e1adcda96b1480f665af1283484447b",
+      "duration": 2.03,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "你用力对抗我的手来慢慢用力。"
+    },
+    "therapist|很好，您慢慢放松。": {
+      "role": "therapist",
+      "text": "很好，您慢慢放松。",
+      "src": "./assets/dialogue-v20/clinical68-relax.mp3",
+      "sha256": "8045d9386c2f4590d3a979c95e687504b59fd8323a99e5b148cf8a9d3dedcbe9",
+      "duration": 1.179125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "很好，您慢慢放松。"
+    },
+    "therapist|陈女士，检查完了，谢谢您的配合，您先穿上鞋，我跟您详细说一下情况。": {
+      "role": "therapist",
+      "text": "陈女士，检查完了，谢谢您的配合，您先穿上鞋，我跟您详细说一下情况。",
+      "src": "./assets/dialogue-v20/clinical68-finish-chen.mp3",
+      "sha256": "0cad0a49e6d8782188f6733c7089caec5dd495262e78d85c420d1ec36d8d0d7e",
+      "duration": 4.688125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "陈女士检查完了，谢谢您的配合，您先穿上鞋，我跟您详细说一下情况。"
+    },
+    "therapist|刚才比较两边，您的右脚踝比左边稍微松一些。": {
+      "role": "therapist",
+      "text": "刚才比较两边，您的右脚踝比左边稍微松一些。",
+      "src": "./assets/dialogue-v20/clinical68-explain-lax.mp3",
+      "sha256": "6fa3a997b85d14310455174aae7dfd23db2d8c10c25f2dacf6c15711464990ff",
+      "duration": 3.113,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "刚才比较两边，您的右脚踝比左边稍微松一些。"
+    },
+    "therapist|您站起来以后，右脚内侧的足弓比坐着时低一些。": {
+      "role": "therapist",
+      "text": "您站起来以后，右脚内侧的足弓比坐着时低一些。",
+      "src": "./assets/dialogue-v20/clinical68-explain-arch.mp3",
+      "sha256": "80fa228468ae1c2d00f7dc3361b440483730feaf209d8f79c04c4d8ca985e22b",
+      "duration": 3.18275,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "您站起来以后，右脚内侧的足弓比坐者实低一些。"
+    },
+    "therapist|从这次足印看，右脚中间偏内侧接触地面的范围比左脚大。": {
+      "role": "therapist",
+      "text": "从这次足印看，右脚中间偏内侧接触地面的范围比左脚大。",
+      "src": "./assets/dialogue-v20/clinical68-explain-scan.mp3",
+      "sha256": "bea3f65710bddd99107650b25ca29b89aea2a9892cb197326ff73b6f37e33def",
+      "duration": 4.1165,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "从这次足印看，右脚中间偏内侧接触地面的范围比左脚大。"
+    },
+    "therapist|刚才量了膝盖碰墙的距离，右边比左边短，右脚踝往上活动的幅度小一些。": {
+      "role": "therapist",
+      "text": "刚才量了膝盖碰墙的距离，右边比左边短，右脚踝往上活动的幅度小一些。",
+      "src": "./assets/dialogue-v20/clinical68-explain-wall.mp3",
+      "sha256": "4e82083f99d38c517acb62c56759504de9897848807282e5994a134c69984d0a",
+      "duration": 5.2648125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "刚才亮了膝盖碰墙的距离，右边比左边短，右脚踝往上活动的幅度小一些。"
+    },
+    "therapist|脚往外用力时，右边比左边更早顶不住我的手。": {
+      "role": "therapist",
+      "text": "脚往外用力时，右边比左边更早顶不住我的手。",
+      "src": "./assets/dialogue-v20/clinical68-explain-muscle.mp3",
+      "sha256": "1dcdc2761266252c91b2bf724b37a753a0485450beb3b5dbb908e9eb55bd4dc7",
+      "duration": 3.238,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "脚往外用力时，右边比左边更早顶不住我的手。"
+    },
+    "therapist|刚才站在测力板上时，您脚下的压力中心移动得比参考轨迹多。": {
+      "role": "therapist",
+      "text": "刚才站在测力板上时，您脚下的压力中心移动得比参考轨迹多。",
+      "src": "./assets/dialogue-v20/clinical68-explain-balance.mp3",
+      "sha256": "7a65aca26adb4d8dc296a330c96cbb69b08f814e86404294f3344673739c7549",
+      "duration": 4.514,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "刚才站在测力板上时，您脚下的压力中心移动得比参考轨迹多。"
+    },
+    "therapist|走路时，您右脚单独撑地的时间较短，往前蹬的力也小一些。": {
+      "role": "therapist",
+      "text": "走路时，您右脚单独撑地的时间较短，往前蹬的力也小一些。",
+      "src": "./assets/dialogue-v20/clinical68-explain-gait.mp3",
+      "sha256": "f9453201901fe85629fd4ce403bc943d26c568d10444ce0e7f888cd5abbfbdb0",
+      "duration": 4.016375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "走路时，您右脚单独撑地的时间较短，往前蹬的力也小一些。"
+    },
+    "therapist|今天做过的检查我都记下了，还缺的部分下次再补。": {
+      "role": "therapist",
+      "text": "今天做过的检查我都记下了，还缺的部分下次再补。",
+      "src": "./assets/dialogue-v20/clinical68-explain-partial.mp3",
+      "sha256": "37309531e04dd7ef749efb1df09cdacc1a058d7bb33ff271c8af2578b680ec9f",
+      "duration": 3.6075,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "今天做过的检查我都记下了，还缺的部分，下次再补。"
+    },
+    "therapist|陈女士，请坐到床边，膝盖弯成直角，双脚放松。先量左脚，再量右脚。": {
+      "role": "therapist",
+      "text": "陈女士，请坐到床边，膝盖弯成直角，双脚放松。先量左脚，再量右脚。",
+      "src": "./assets/dialogue-v20/clinical68-rom-setup.mp3",
+      "sha256": "cef1b9eb595379c75b32681c4d47dbce3391ae85fb595bddf095afa9ba10be87",
+      "duration": 4.6525625,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "陈女士请坐到床边，膝盖弯成直角，双脚放松，先量左脚再量右脚。"
+    },
+    "therapist|请您自己活动脚踝，到舒服的尽头就停。": {
+      "role": "therapist",
+      "text": "请您自己活动脚踝，到舒服的尽头就停。",
+      "src": "./assets/dialogue-v20/clinical68-rom-active.mp3",
+      "sha256": "f4ec75896d365f4b50a9387d6c01f9dffa097ad6b04cc9ddde9451c4d3f58bf9",
+      "duration": 2.944,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "请您自己活动脚踝，到舒服的尽头就停。"
+    },
+    "therapist|现在放松，我托着您的脚慢慢带一下，疼了就告诉我。": {
+      "role": "therapist",
+      "text": "现在放松，我托着您的脚慢慢带一下，疼了就告诉我。",
+      "src": "./assets/dialogue-v20/clinical68-rom-passive.mp3",
+      "sha256": "9183573905fd82cd04a4a04d3f076febe577a4cc3256b45eeeccfa795234b48d",
+      "duration": 3.271,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "现在放松，我拖着您的脚慢慢带一下，疼了就告诉我。"
+    },
+    "therapist|先说勾脚。您自己勾，左脚十八度，右脚十度。我帮您活动时，左脚二十二度，右脚十四度。": {
+      "role": "therapist",
+      "text": "先说勾脚。您自己勾，左脚十八度，右脚十度。我帮您活动时，左脚二十二度，右脚十四度。",
+      "src": "./assets/dialogue-v20/clinical68-rom-up.mp3",
+      "sha256": "29b4a98026da628ee48b0a188d7cd856c4f8700faca5605698780da88c7f6205",
+      "duration": 5.8618125,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "先说勾脚，您自己勾左脚18度，右脚10度，我帮您活动是左脚22度，右脚14度。"
+    },
+    "therapist|往下绷脚，您自己动是左脚四十五度、右脚四十度。我帮您动是左脚五十度、右脚四十五度。": {
+      "role": "therapist",
+      "text": "往下绷脚，您自己动是左脚四十五度、右脚四十度。我帮您动是左脚五十度、右脚四十五度。",
+      "src": "./assets/dialogue-v20/clinical68-rom-down.mp3",
+      "sha256": "a06dce635844ceb8c424d7b3488c86760338722ebbcf0e481724953b8f09df00",
+      "duration": 6.2835,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "往下绷脚，您自己动视左脚45度，右脚40度，我帮您动视左脚50度，右脚45度。"
+    },
+    "therapist|脚底往里翻，您自己动是左脚三十度、右脚二十五度。我帮您动是左脚三十五度、右脚三十度。": {
+      "role": "therapist",
+      "text": "脚底往里翻，您自己动是左脚三十度、右脚二十五度。我帮您动是左脚三十五度、右脚三十度。",
+      "src": "./assets/dialogue-v20/clinical68-rom-in.mp3",
+      "sha256": "aa8666e599d54f4cd70573c845f9e7a4fab020ca3b6f355832cf19fa403669f9",
+      "duration": 6.15375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "脚底往里翻，您自己动视左脚30，右脚25度，我帮您动视左脚35度，右脚30度。"
+    },
+    "therapist|脚底往外翻，您自己动是左脚十五度、右脚八度。我帮您动是左脚十八度、右脚十二度。": {
+      "role": "therapist",
+      "text": "脚底往外翻，您自己动是左脚十五度、右脚八度。我帮您动是左脚十八度、右脚十二度。",
+      "src": "./assets/dialogue-v20/clinical68-rom-out.mp3",
+      "sha256": "226bed5e2c674b170b7d8b747d2675f6da75d94ff26b4d9332ac43556fb811b5",
+      "duration": 5.926,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "脚底往外翻，您自己动视左脚15度，右脚8度，我帮您动视左脚18度，右脚12度。"
+    },
+    "therapist|两边一比，您的右脚往上勾、往外翻，幅度都比左脚小。我帮您时还能再动一点。我们再看站着时，这个差别对您有没有影响。": {
+      "role": "therapist",
+      "text": "两边一比，您的右脚往上勾、往外翻，幅度都比左脚小。我帮您时还能再动一点。我们再看站着时，这个差别对您有没有影响。",
+      "src": "./assets/dialogue-v20/clinical68-rom-explain.mp3",
+      "sha256": "93bc7352920feefe2b57087a7b3852dd0c1ed373a3daa944dd008852fe5217b2",
+      "duration": 7.6360625,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "两边一比，您的右脚往上勾，往外翻幅度都比左脚小，我帮您时还能再动一点。我们再看站着时，这个差别对您有没有影响？"
+    },
+    "therapist|先坐着练右脚向外用力，再扶着桌子练站稳。等右脚踩得踏实了，我们再练走不平的路。下次来，我看看您右脚用力和走路的变化。": {
+      "role": "therapist",
+      "text": "先坐着练右脚向外用力，再扶着桌子练站稳。等右脚踩得踏实了，我们再练走不平的路。下次来，我看看您右脚用力和走路的变化。",
+      "src": "./assets/dialogue-v20/clinical68-plan-control.mp3",
+      "sha256": "ad0c641a64fb08d7e4bb75dc3bbfd14310801341d3234fd6df6c0c000d5754bf",
+      "duration": 8.820375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "先坐着练右脚向外用力，再扶着桌子练站稳，等右脚踩的踏实了，我们再练走不平的路，下次来我看看您右脚用力和走路的变化。"
+    },
+    "therapist|先在坐着的时候练勾脚，在舒服的范围里慢慢做。下次用同样的姿势量两边脚踝，也看看您下楼有没有轻松些。": {
+      "role": "therapist",
+      "text": "先在坐着的时候练勾脚，在舒服的范围里慢慢做。下次用同样的姿势量两边脚踝，也看看您下楼有没有轻松些。",
+      "src": "./assets/dialogue-v20/clinical68-plan-mobility.mp3",
+      "sha256": "0a71aacbc4564167e413a33ce2f7a277ba6756743e75a8bbbf26db19ad630873",
+      "duration": 7.407375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "现在坐着的时候练勾脚在舒服的范围里慢慢做，下次用同样的姿势量两边脚踝，也看看您下楼有没有轻松些。"
+    },
+    "therapist|站久了脚踝酸，您就中间坐下歇一会儿。下次告诉我能站多久、哪段路还会发软，我们再商量要不要试鞋垫。": {
+      "role": "therapist",
+      "text": "站久了脚踝酸，您就中间坐下歇一会儿。下次告诉我能站多久、哪段路还会发软，我们再商量要不要试鞋垫。",
+      "src": "./assets/dialogue-v20/clinical68-plan-load.mp3",
+      "sha256": "e65c92e06c331fddc2f8f2b3da194795545bfd2717c71eaa5f0de471d5887f17",
+      "duration": 7.004875,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "站久了脚踝酸，您就中间坐下歇一会儿，下次告诉我能站多久，哪段路还会发软，我们再商量要不要是鞋垫。"
+    },
+    "therapist|下次先把缺的检查补上。您可以留意一下，在哪种路面右脚最容易发软，到时候告诉我，我们再一起定练习。": {
+      "role": "therapist",
+      "text": "下次先把缺的检查补上。您可以留意一下，在哪种路面右脚最容易发软，到时候告诉我，我们再一起定练习。",
+      "src": "./assets/dialogue-v20/clinical68-plan-assessment.mp3",
+      "sha256": "2b1ac93d1dd1d7642c83ba5641468fc6e5d66b7448cf87168f27d581b46b367d",
+      "duration": 7.1644375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "下次先把缺的检查补上，您可以留意一下在哪种路面右脚最容易发软，到时候告诉我，我们在一起定练习。"
     }
   },
   "revision": "v26 respectful dialogue and patient reactions"

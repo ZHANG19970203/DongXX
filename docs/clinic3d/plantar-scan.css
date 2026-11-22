@@ -6,3 +6,47 @@ body[data-node=muscle_match] .clinical-nav select{max-width:100%;padding:7px;bor
 
 body:is([data-node=gait_events],[data-node=muscle_match],[data-node=static_cop],[data-node=pressure_compare]) .dxx-assistant-launch{left:16px;right:auto}
 @media(max-width:700px){body[data-split-practice] .dxx-assistant-launch{display:none!important}}
+
+#spokenPressureMap[hidden]{display:none}#spokenPressureMap .plantar-scan{max-width:460px;margin:10px auto 2px}#spokenPressureMap svg{height:clamp(136px,28dvh,235px);max-height:none}#spokenPressureMap .scan-legend{gap:6px 11px}
+
+.motion-lesson video{display:block;width:100%;height:auto;aspect-ratio:22/13;border-radius:10px;background:#eff5f2}.motion-lesson h3{font-size:1.04rem;margin:.45em 0}.motion-lesson p{line-height:1.6}
+
+/* Reserve canvas space for the working foot and keep the test panel alongside it. */
+body[data-node=muscle_match] #clinic {--mmt-panel:clamp(260px,32vw,378px);background:#e8eee9}
+@media(min-width:701px){
+ body[data-node=muscle_match] #clinic #scene{inset:58px auto auto 0!important;width:calc(100% - var(--mmt-panel) - 24px)!important;height:calc(100% - 222px)!important}
+ body[data-node=muscle_match][data-split-practice] #clinic #scene{height:calc(100% - 66px)!important}
+ body[data-node=muscle_match] #clinic #taskDock{inset:125px 9px 8px auto!important;width:var(--mmt-panel)!important;max-height:none!important}
+ body[data-node=muscle_match] #clinic:has(#taskDock:not([hidden])) #conversation:not([hidden]){inset:auto auto 8px 8px!important;left:8px!important;transform:none!important;width:calc(100% - var(--mmt-panel) - 32px)!important;max-height:150px!important}
+ body[data-node=muscle_match] #conversation .conversation-head{display:none}
+}
+@media(max-width:700px){
+ body[data-node=muscle_match] #clinic #scene{inset:54px 0 auto!important;width:100%!important;height:calc(48% - 54px)!important}
+ body[data-node=muscle_match] #clinic #taskDock{inset:48% 6px 105px!important;width:auto!important;max-height:none!important}
+ body[data-node=muscle_match][data-split-practice] #clinic #taskDock{bottom:6px!important}
+ body[data-node=muscle_match] #clinic:has(#taskDock:not([hidden])) #conversation:not([hidden]){inset:auto 6px 5px!important;left:6px!important;transform:none!important;width:calc(100% - 12px)!important;max-height:95px!important}
+ body[data-node=muscle_match] #conversation .conversation-head,body[data-node=muscle_match] #learningGuide{display:none}
+}
+#spokenGait{margin:8px auto 0;text-align:center}#spokenGait[hidden]{display:none}
+#spokenGait video{display:block;width:100%;height:auto;max-height:min(35dvh,292px);object-fit:contain;border-radius:10px;background:#e9f1ed}
+#spokenGait figcaption{margin-top:3px;color:#375b50;font-size:13px}
+body[data-gait-print=true] #gaitMedia{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:center;gap:8px}
+#gaitMedia #spokenGait{grid-column:1;grid-row:1;width:100%}
+#gaitMedia #gaitLoadPrint{grid-column:2;grid-row:1;min-width:0}
+body[data-node=gait_interpret] #clinic #coach,body:is([data-node=plan],[data-node=plan_intro],[data-node=synthesis],[data-node=debrief]) #clinic #coach{display:none!important}
+body:is([data-node=muscle_match],[data-node=gait_interpret],[data-node=plan],[data-node=synthesis]) .assessment-dock{inset:8px auto auto 50%;transform:translateX(-50%);padding:4px 9px;font-size:13px}
+@media(max-width:700px){body:is([data-node=muscle_match],[data-node=gait_interpret],[data-node=plan],[data-node=synthesis]) .assessment-dock{inset:auto auto 4px 4px;transform:none;font-size:11px;padding:2px 5px}body[data-gait-print=true] #gaitMedia{gap:3px}#gaitMedia figcaption{font-size:11px}}
+.evidence-paper section{margin:16px 0}.evidence-paper section h3{margin:0 0 5px}.evidence-paper section ul{margin:0;padding-left:1.4em}.evidence-paper li{margin:4px 0}
+
+body[data-soap-writing=A] #clinic,body[data-soap-writing=P] #clinic{--soap-panel:clamp(320px,40vw,540px);background:#eaf0eb}
+@media(min-width:701px){
+ body:is([data-soap-writing=A],[data-soap-writing=P]) #clinic #scene{inset:54px auto 0 0!important;width:calc(100% - var(--soap-panel) - 16px)!important;height:calc(100% - 58px)!important}
+ body:is([data-soap-writing=A],[data-soap-writing=P]) #clinic #conversation:not([hidden]){inset:84px 10px auto auto!important;left:auto!important;transform:none!important;width:var(--soap-panel)!important;max-height:calc(100dvh - 98px)!important}
+}
+@media(max-width:700px){
+ body:is([data-soap-writing=A],[data-soap-writing=P]) #clinic #scene{inset:48px auto auto 0!important;width:100%!important;height:calc(48% - 48px)!important}
+ body:is([data-soap-writing=A],[data-soap-writing=P]) #clinic #conversation:not([hidden]){inset:49% 8px auto 8px!important;left:8px!important;transform:none!important;width:calc(100% - 16px)!important;max-height:49dvh!important}
+}
+body:is([data-soap-writing=A],[data-soap-writing=P]) #clinic #coach,body:is([data-soap-writing=A],[data-soap-writing=P]) #clinic #taskDock,body:is([data-soap-writing=A],[data-soap-writing=P]) .learning-bubble-v25{display:none!important}
+body[data-soap-writing=P] #clinic #conversation #options{display:grid}
+body[data-node=muscle_match] #clinic #coach{display:none!important}

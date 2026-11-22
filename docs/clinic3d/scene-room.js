@@ -232,6 +232,20 @@ export function createClinicRoom(scene) {
   const penBody=cyl(.004,.135,[0,0,0],dark,clinicalPen,12);penBody.name='ClinicalPenBarrel';
   const penTip=mesh(new THREE.ConeGeometry(.0035,.012,12),steel,[0,-.0735,0],clinicalPen,'ClinicalPenTip');penTip.rotation.z=Math.PI;
   box([.002,.035,.003],[.004,.040,0],steel,clinicalPen,'ClinicalPenPocketClip');
+  let writtenNote='';
+  objects.writeCaseNote=(phase,lines)=>{
+    const key=JSON.stringify([phase,lines]);if(key===writtenNote)return;writtenNote=key;
+    const canvas=casePaper.image,ctx=canvas.getContext('2d');
+    ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#244e49';ctx.font='bold 35px "Microsoft YaHei",sans-serif';
+    ctx.fillText(phase==='A'?'A · 评定':'P · 计划',32,65);
+    ctx.fillStyle='#314a46';ctx.font='25px "Microsoft YaHei",sans-serif';
+    let y=122;
+    for(const text of lines){let line='';for(const ch of text){
+      if(ctx.measureText(line+ch).width>414){ctx.fillText(line,32,y);y+=40;line='';}line+=ch;
+    }ctx.fillText(line,32,y);y+=52;if(y>canvas.height-30)break;}
+    casePaper.needsUpdate=true;
+  };
   objects.clinicalNotes=clinicalNotes;objects.clinicalPen=clinicalPen;
   objects.documentationDeskParent=desk;
   const goniometerMat = material('clear-plastic', 0xc2e2e5, { transparent: true, opacity: .6, roughness: .3 });

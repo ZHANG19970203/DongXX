@@ -1,12 +1,12 @@
 import {archCaseText,archOutlines} from './arch-bones.js';
-import {mountPlantarScan,plantarFigure,pressureLegend} from './plantar-scan.js?v=67';
+import {mountPlantarScan,plantarFigure,pressureLegend} from './plantar-scan.js?v=68';
 import {renderSOAPTask} from './soap-tasks-v20.js';
 import { createLessonCoach } from './lesson-coach.js';
 import { createArchComparison } from './arch-comparison.js';
 import { createAnatomyViewer } from './anatomy-viewer.js';
 import {sampleWalking,renderPlantarScan} from "./pressure-engine.js";
 import { GAIT_CASE } from './gait-lesson.js';
-import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js';
+import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js?v=68';
 
 import {mountGaitQuestion,paintGaitQuestion} from './gait-phase-task.js';
 
@@ -60,7 +60,7 @@ export function createLearningUI(ctx) {
     text('dialogueKind',node.id==='arch_compare'?'足骨模型操作':node.kind==='summary'?'共同复盘':patient?'听听患者怎么说':therapist?'治疗师的解释':narrationTurn?'运动学讲解':'轮到你来回应');
     text('careCue',edu.care);show('careCue',false);
     show('taskDock',['ankle_stress','exam_reasoning'].includes(node.id)||!!node.task&&!['history','evidence'].includes(node.task.type));
-    const docked=!!node.task&&!['history','evidence'].includes(node.task.type),options=$('options');
+    const docked=!!node.task&&!['history','evidence','plan'].includes(node.task.type),options=$('options');
     if(docked)$('taskDock').querySelector('.dock-content').append(options);
     else $('conversationBody').append(options);
     $('gaitLoadPrint')?.remove();
@@ -77,7 +77,7 @@ export function createLearningUI(ctx) {
       for(const foot of feet)for(const cell of foot.cells)cell.pressure/=peak;
       const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
       renderPlantarScan(svg,{kind:'gait',feet});figure.append(svg,nodeEl('figcaption','','各足承重早期 · 按单足负荷归一化 · 暖色表示较集中'));
-      $('line').after(figure);
+      $('spokenGait').before(figure);
     }
     $('scanExplanation')?.remove();
     if(node.id==='cop_explain'){
@@ -115,7 +115,7 @@ export function createLearningUI(ctx) {
     if(task.type==='evidence'){
       wrap.append(nodeEl('p','task-description','本次实际留下的资料与判断'));
       const list=nodeEl('div','evidence-preview');for(const id of state.evidence.slice(-4))list.append(nodeEl('span','',catalog[id]?.label||id));
-      wrap.append(list,button('回看完整接诊记录',()=>ctx.openDrawer('notes')));return;
+      wrap.append(list,button('查看 SOAP 病历',()=>ctx.openDrawer('notes')));return;
     }
     if(task.type==='gait'){
       mountGaitQuestion({wrap,button,nodeEl,play:ctx.playGaitPhase,chooseAnswer(id){
@@ -153,7 +153,7 @@ export function createLearningUI(ctx) {
       }wrap.append(checklist);addSource(wrap,'从可保护的低难度起点讨论；患者可以暂停、降低难度或不做。');
     } else if(task.type==='plan'){
       const goal=nodeEl('div','task-card');goal.append(nodeEl('small','','陈女士最在意的事'),nodeEl('p','','先安心走不平的路，再逐步讨论恢复轻松跑步。'));wrap.append(goal);
-      const list=nodeEl('div','evidence-preview');for(const id of state.evidence.filter(id=>['triggers','goal','local_record','arch_record','pressure_record','ankle_strength54','balance54','balance_record'].includes(id)))list.append(nodeEl('span','',catalog[id]?.label||id));wrap.append(list,button('对照完整证据记录',()=>ctx.openDrawer('notes')));
+
     } else {wrap.hidden=true;}
     paintTask();
   }

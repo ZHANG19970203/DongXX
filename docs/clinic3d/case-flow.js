@@ -35,7 +35,7 @@ export const EVIDENCE_CATALOG = {
   consent: {label: '已解释并获本轮同意', status: 'communication', text: '同意可随时撤回；每次新增接触或任务仍需说明。'},
   alignment: {label: '量角器对线教学', status: 'authored_demonstration', text: '识别本教学图标示的轴心和两条参考线，不是患者实测角度。'},
   valid_trial: {label: '识别同方法有效试次', status: 'authored_demonstration', text: '足跟落地、足与膝方向符合设定、同一方法的试次可用于比较。'},
-  local_record: {label: '虚构病例的活动表现记录', status: 'fictional_case_record', text: '本例膝触墙三次有效距离的均值：右 6.0 cm，左 9.0 cm。右侧负重背屈较小，仍需结合症状判断原因。'},
+  local_record: {label: '虚构病例的活动表现记录', status: 'fictional_case_record', text: '本例膝触墙三次有效距离的均值：右 6.0 cm，左 9.0 cm。右侧负重背伸较小，仍需结合症状判断原因。'},
   gait_events: {label: '步态周期与三个步行时相', status: 'authored_demonstration', text: '通过教学模型观察两脚同时着地、右脚单独支撑和右脚摆动。'},
   gait_observation: {label: '将步态观察与机制推断分开', status: 'reasoning', text: '记录可见事件和患者感受；动画不提供力矩、肌力、韧带状态或病理诊断。'},
   arch_record: {label: '虚构病例的负重低足弓特征', status: 'fictional_case_record', text: '病例设定坐站时足弓外观不同；不能单凭两幅示意确诊柔韧性扁平足或证明因果。'},
@@ -96,7 +96,7 @@ export const FLOW = {
     O('respect_decline', '也可以今天先交流，下次再决定检查。', 'decline_stop', '尊重拒绝，未做检查不补成正常结果。', {evidence: ['declined']}),
     retry('guarantee_no_pain', '保证不会疼，也不会再崴。', 'consent_reply', '不要作无法兑现的安全保证。应说明可调整和随时停止。')
   ]}),
-  local_intro: N('local_intro', 'act2', 'dialogue', '林治疗师', '请坐稳，先脱鞋袜。我们看踝关节背屈、跖屈，再看负重背屈。不舒服就停。', {next: 'tool', visualMode: 'exam', patientCue: '先邀请患者坐稳并确认舒服；双脚落地，说明后才尝试小幅踝关节背屈、跖屈'}),
+  local_intro: N('local_intro', 'act2', 'dialogue', '林治疗师', '请坐稳，先脱鞋袜。我们看踝关节背伸、跖屈，再看负重背伸。不舒服就停。', {next: 'tool', visualMode: 'exam', patientCue: '先邀请患者坐稳并确认舒服；双脚落地，说明后才尝试小幅踝关节背伸、跖屈'}),
   tool: N('tool', 'act2', 'task', '准备观察脚踝活动', '先选量角器，认识对线标志。', {visualMode: 'goniometer', task: {type: 'goniometer', stage: 'tool', instructions: '选择用于角度对线的教具；这一步先学会放在哪里、看哪两条线。'}, options: [
     O('choose_goniometer', '通用量角器：轴心与两臂', 'alignment', '刻度分辨率不等于测量准确度；先统一体位和标志。'),
     retry('choose_tape', '软皮尺：直接读关节角度', 'tool', '软尺可量长度，不能直接替代本项角度对线。'),
@@ -106,15 +106,15 @@ export const FLOW = {
     O('alignment_checked', '三处已核对，进入试次判断', 'trial', '这是标志对线练习，不据通用角色读取患者真实角度。', {evidence: ['alignment'], requiresTask: true}),
     retry('max_angle', '动画转到最大，就完成测量。', 'alignment', '动画旋转值不等于患者关节角度；需要体位、固定和标志一致。')
   ]}),
-  trial: N('trial', 'act2', 'task', '负重弓箭步测试（膝触墙）', '左右同方法、足跟落地，比较才有意义。请选择有效试次。', {visualMode: 'wall', patientCue: '先解释小腿前移与背屈关系；取得同意后面墙扶稳，小幅前移；主动询问感受', task: {type: 'trial', instructions: '先看脚跟是否落地，再核对足与膝的方向、左右方法和不适记录。', criteria: ['脚跟持续落地', '足与膝方向符合本次设定', '左右使用相同方法', '记录症状并尊重停止']}, options: [
+  trial: N('trial', 'act2', 'task', '负重弓箭步测试（膝触墙）', '左右同方法、足跟落地，比较才有意义。请选择有效试次。', {visualMode: 'wall', patientCue: '先解释小腿前移与背伸关系；取得同意后面墙扶稳，小幅前移；主动询问感受', task: {type: 'trial', instructions: '先看脚跟是否落地，再核对足与膝的方向、左右方法和不适记录。', criteria: ['脚跟持续落地', '足与膝方向符合本次设定', '左右使用相同方法', '记录症状并尊重停止']}, options: [
     O('valid_pair', '同方法、足跟落地，无明显足外转代偿。', 'local_record', '方法一致、代偿受控后才比较；仍需记录试次与症状。', {evidence: ['valid_trial']}),
-    retry('heel_lift', '足跟抬起碰得更远，就选这次。', 'trial', '脚跟抬起改变了任务条件，不能拿它证明背屈更大。'),
+    retry('heel_lift', '足跟抬起碰得更远，就选这次。', 'trial', '脚跟抬起改变了任务条件，不能拿它证明背伸更大。'),
     retry('different_method', '右膝触墙、左坐位，直接比最大值。', 'trial', '不同体位和方法的结果不能直接互换。'),
     O('pain_stop', '不适加重并要求停止：停止这个动作。', 'symptom_stop', '暂停和稳定优先，不为完成记录继续做这个动作。', {record: {stopReason: 'increased_discomfort'}})
   ]}),
   local_record: N('local_record', 'act2', 'dialogue', '陈女士', '右边到这里就紧，再往前脚跟要抬。我怕骨头错位了。', {visualMode: 'wall', next: 'local_explain', patientCue: '停止前移，保留双手支撑'}),
   local_explain: N('local_explain', 'act2', 'choice', '回应患者', '发紧是否等于骨头错位？', {visualMode: 'exam', options: [
-    O('limited_inference', '右侧负重背屈较小；发紧不等于错位，还需综合判断。', 'gait_intro', '先回应恐惧，再解释可见发现；把活动表现与尚未证实的组织机制分开。', {evidence: ['local_record']}),
+    O('limited_inference', '右侧负重背伸较小；发紧不等于错位，还需综合判断。', 'gait_intro', '先回应恐惧，再解释可见发现；把活动表现与尚未证实的组织机制分开。', {evidence: ['local_record']}),
     retry('talus_out', '一定是距骨移位，把它推回去就能根治。', 'local_explain', '当前没有证据支持脱位或唯一修复方法，不能这样承诺。')
   ]}),
   gait_intro: N('gait_intro', 'act3', 'dialogue', '陈女士', '保持赤足走就可以吗？要踩准每一块板吗？', {visualMode: 'gait', next: 'gait_instruction', patientCue: '在观察带起点停稳，等待说明'}),
@@ -261,7 +261,7 @@ const ACT_EDUCATION = {
   },
   act2: {
     why: '了解脚踝在活动、承重时怎样移动，为后续比较留下一致的起点。',
-    concept: '背屈是足背向小腿靠近；负重时也可表现为小腿在足上方向前移动。',
+    concept: '背伸是足背向小腿靠近；负重时也可表现为小腿在足上方向前移动。',
     patientMeaning: '这能帮助描述“哪里紧、怎样动”，不会仅凭一次发紧就诊断骨头错位。',
     steps: ['先说明动作并确认舒适体位', '统一标志和任务方法', '同时记录活动表现与感受'],
     care: '新增接触先解释并询问意愿；只在可耐受范围内，不追求最大幅度。',
@@ -316,8 +316,8 @@ const NODE_EDUCATION = {
   consent: {why: '知道目的、过程和选择，患者才能决定是否参与。', concept: '解释与同意是持续交流，每次增加任务仍需确认。', patientMeaning: '她可以问、可以调整，也可以选择不做。', steps: ['把检查连到生活目标', '说明怎样开始和怎样暂停', '等待提问与选择'], care: '不用“必须完成”或绝对安全保证换取同意。'},
   consent_reply: {why: '先回应“会不会又崴”的恐惧，再商量可控的起点。', concept: '担心与回避是需要了解的信息，不能被“放心就行”替代。', patientMeaning: '知道有人认真倾听，也知道停止会被尊重。', steps: ['确认听到担心', '说明支撑和小幅开始', '保留暂停或拒绝'], care: '不保证绝对不疼，不以通关要求压过意愿。'},
   tool: {why: '选合适教具，是为了让观察有明确方法。', concept: '量角器比较两条参考方向的夹角；软尺记录长度，二者不能直接互换。', patientMeaning: '测量有方法，重复时才更容易比较。', steps: ['选择角度教具', '认识轴心与两臂', '进入标志对线'], care: '先说明工具用途；不把刻度细就说成一定准确。'},
-  alignment: {why: '相同体位、相同标志，是前后记录能比较的基础。', concept: '本项侧面参考线：外踝为轴心标志，小腿与第五跖骨外侧提供两臂方向。', patientMeaning: '这是认识测量方法，不是让患者尽力踝关节背屈到最大。', steps: ['找外踝标志', '沿腓骨外侧放固定臂', '沿第五跖骨外侧放移动臂'], care: '接触前询问；遮盖与体位照顾患者舒适。'},
-  trial: {why: '抬脚跟、转脚或换方法，都可能让数字看似更好却失去可比性。', concept: '负重背屈观察的是任务中的相对运动；代偿会改变任务条件。', patientMeaning: '比较自己的实际表现，比追求更远距离有意义。', steps: ['核对脚跟落地', '核对足与膝方向', '左右同法并记录症状'], care: '先扶稳；疼痛增加或要求停止就停止这个动作。'},
+  alignment: {why: '相同体位、相同标志，是前后记录能比较的基础。', concept: '本项侧面参考线：外踝为轴心标志，小腿与第五跖骨外侧提供两臂方向。', patientMeaning: '这是认识测量方法，不是让患者尽力踝关节背伸到最大。', steps: ['找外踝标志', '沿腓骨外侧放固定臂', '沿第五跖骨外侧放移动臂'], care: '接触前询问；遮盖与体位照顾患者舒适。'},
+  trial: {why: '抬脚跟、转脚或换方法，都可能让数字看似更好却失去可比性。', concept: '负重背伸观察的是任务中的相对运动；代偿会改变任务条件。', patientMeaning: '比较自己的实际表现，比追求更远距离有意义。', steps: ['核对脚跟落地', '核对足与膝方向', '左右同法并记录症状'], care: '先扶稳；疼痛增加或要求停止就停止这个动作。'},
   local_explain: {why: '纠正“发紧等于错位”的担心，同时承认目前确实有活动表现差异。', concept: '功能表现与组织病因是两层问题，一项观察不能完成所有定位。', patientMeaning: '不轻率贴标签，也不否认她的真实感受。', steps: ['先回应担心', '描述已取得的活动记录', '说明仍需结合其他检查'], care: '避免“推回去就根治”等无法支持的承诺。'},
   gait_instruction: {why: '自然任务更能回答她平时怎样走，而不是怎样踩准标记。', concept: '起步、直线行走和转身有不同任务要求，应分开观察。', patientMeaning: '不需要为了配合设备改变每一步。', steps: ['确认愿意尝试', '用日常方式走直线', '不适即停，转身另看'], care: '用短句说明，给患者熟悉空间的时间。'},
   gait_events: {why:'观察步行时双脚怎样交替支撑。', concept:'一个周期始于一侧足初次着地，结束于同一侧足下一次初次着地。', steps:['回答步态周期的定义','分别展示三个时相']},
@@ -386,25 +386,25 @@ normalizeFlow(FLOW);
 import {applyNaturalFlow} from './natural-language-v26.js';
 applyNaturalFlow(FLOW);
 
-import {reviseFlow} from './dialogue-revision33.js';
+import {reviseFlow} from './dialogue-revision33.js?v=68';
 reviseFlow(FLOW);
 // The therapist's observation precedes the existing original arch comparison film.
 FLOW.arch_view={id:'arch_view',act:'act4',kind:'task',speaker:'足弓坐站观察',visualMode:'exam',text:'先观察坐位，再看站立承重时的足弓。',task:{type:'archPostures'},next:FLOW.arch_intro.next};
 FLOW.arch_intro.next='arch_view';
 FLOW.arch_compare.text='在右足模型上选出内侧纵弓、外侧纵弓和横弓的组成骨。';
 
-Object.assign(FLOW.muscle_match,{speaker:'踝足肌力检查',text:'在模型上比较双侧抗阻外翻和抗阻背屈。',options:[{id:'muscle_match_done',label:'记录肌力比较，继续',shortLabel:'记录肌力比较，继续',good:true,safe:true,requiresTask:true,evidence:['ankle_strength54'],next:'balance_intro'}]});
+Object.assign(FLOW.muscle_match,{speaker:'踝足肌力检查',text:'在模型上比较双侧抗阻外翻和抗阻背伸。',options:[{id:'muscle_match_done',label:'记录肌力比较，继续',shortLabel:'记录肌力比较，继续',good:true,safe:true,requiresTask:true,evidence:['ankle_strength54'],next:'balance_intro'}]});
 FLOW.muscle_match.task.stage='resisted';
-FLOW.muscle_match.task.instructions='比较两侧抗阻外翻，再比较抗阻背屈。';
-Object.assign(FLOW.alignment,{speaker:'踝足运动辨认',text:'观察足相对小腿的运动，辨认主要关节和复合方向。',options:[{id:'alignment_checked',label:'保存判断，进入膝触墙测试',good:true,safe:true,requiresTask:true,evidence:['ankle_motion54'],next:'trial'}]});
-FLOW.alignment.task.instructions='阅读量角器放置方法，完成踝足运动辨认。';
+FLOW.muscle_match.task.instructions='比较两侧抗阻外翻，再比较抗阻背伸。';
+Object.assign(FLOW.alignment,{speaker:'踝足运动辨认',text:'先看两组右足骨骼动画，再辨认关节运动。',options:[{id:'alignment_checked',label:'保存判断，进入膝触墙测试',good:true,safe:true,requiresTask:true,evidence:['ankle_motion54'],next:'trial'}]});
+FLOW.alignment.task.instructions='先观察跖屈和背伸，再观察内翻和外翻，然后学习量角器的放置方法。';
 FLOW.static_cop.text='查看两组同条件的站立轨迹，判断踝扭伤后的静态平衡表现。';
 FLOW.static_cop.task.instructions=FLOW.static_cop.text;
 FLOW.static_cop.options[0].evidence=['balance54'];
 const strengthPlan=FLOW.plan.options.find(o=>o.id==='graded_control');
 if(strengthPlan)strengthPlan.supports=[...new Set([...(strengthPlan.supports||[]),'ankle_strength54','balance54'])];
 Object.assign(EVIDENCE_CATALOG,{
- ankle_strength54:{label:'双侧抗阻外翻与背屈',status:'fictional_case_record',text:'模拟同档阻力下，右足维持外翻较困难，左足能保持；背屈时两侧都能保持。记录为模拟观察。'},
+ ankle_strength54:{label:'双侧抗阻外翻与背伸',status:'fictional_case_record',text:'模拟同档阻力下，右足维持外翻较困难，左足能保持；背伸时两侧都能保持。记录为模拟观察。'},
  ankle_motion54:{label:'踝足关节运动辨认',status:'authored_demonstration',text:'已辨认距小腿、距下关节的主要运动及开链旋前、旋后的组成。'},
  balance54:{label:'踝扭伤后静态平衡判读',status:'synthetic_teaching_data',text:'双足睁眼站立30秒的合成示例中，扭伤情境的压力中心路径较长、平均速度较高，提示这项任务中姿势摆动较大。'}
 });
@@ -419,7 +419,7 @@ FLOW.wall_adjust={...FLOW.local_record,id:'wall_adjust',speaker:'林治疗师',t
 FLOW.wall_measure={id:'wall_measure',act:'act2',kind:'task',speaker:'操作指导',visualMode:'wall',text:'观察治疗师用软尺测量两脚大脚趾尖到墙面的距离。',next:'local_explain'};
 FLOW.local_explain.text='两边用同样的方法测，右脚是六厘米，左脚是九厘米。您右脚踝负重时，往上弯的幅度小一些。';
 FLOW.local_explain.evidence=['local_record'];
-FLOW.local_explain.purpose='观察脚跟离地后怎样调整距离，比较同条件下的负重背屈。';
+FLOW.local_explain.purpose='观察脚跟离地后怎样调整距离，比较同条件下的负重背伸。';
 FLOW.local_explain.education=FLOW.trial.education;
 
 import {scanColourExplanation} from './clinic-dialogue.js';
@@ -454,4 +454,18 @@ EVIDENCE_CATALOG.gait_observation.text='本例表现为右侧单支撑缩短、�
 FLOW.muscle_match.text='患者坐到床边收起裤腿。先查左侧，再查右侧，比较四个方向的抗阻表现。';
 FLOW.muscle_match.task.instructions=FLOW.muscle_match.text;
 FLOW.muscle_match.purpose='固定小腿，在前足沿相反方向施阻，观察能否保持。';
-Object.assign(EVIDENCE_CATALOG.ankle_strength54,{label:'床旁踝足四向抗阻比较',text:'左右依次完成背屈、跖屈、内翻、外翻。模拟同档阻力下，右侧抗阻外翻较早回落，其他方向未见明显侧差。'});
+Object.assign(EVIDENCE_CATALOG.ankle_strength54,{label:'床旁踝足四向抗阻比较',text:'左右依次完成背伸、跖屈、内翻、外翻。模拟同档阻力下，右侧抗阻外翻较早回落，其他方向未见明显侧差。'});
+
+// The agreed plan leads directly to the encounter summary.
+for(const option of FLOW.plan.options)if(option.next==='plan_patient')option.next='debrief';
+
+FLOW.exam_close=N('exam_close','act8','dialogue','林治疗师','陈女士，检查完了，谢谢您的配合，您先穿上鞋，我跟您详细说一下情况。',{visualMode:'consult',next:'exam_findings'});
+FLOW.exam_findings=N('exam_findings','act8','dialogue','林治疗师','检查结果',{visualMode:'consult',next:'plan_intro'});
+
+FLOW.alignment.options[0].next='rom_measure';
+FLOW.alignment.options[0].label=FLOW.alignment.options[0].shortLabel='保存判断，开始量角测量';
+FLOW.rom_measure=N('rom_measure','act2','task','林治疗师','陈女士，请坐到床边，膝盖弯成直角，双脚放松。先量左脚，再量右脚。',{visualMode:'exam',next:'rom_report'});
+FLOW.rom_report=N('rom_report','act2','dialogue','林治疗师','双侧踝关节活动度结果',{visualMode:'exam',next:'trial'});
+
+FLOW.plan_discussion=N('plan_discussion','act8','dialogue','陈女士','那我回去先练什么？',{visualMode:'consult',next:'debrief'});
+for(const option of FLOW.plan.options)if(option.planDomain)option.next='plan_discussion';

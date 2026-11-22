@@ -33,7 +33,7 @@
     "roles": "每个片段必须可见这两位固定人物；仅双方轮流交流，不使用旁白代替患者或治疗师。",
     "shoeLogic": "只有鞋袜准备完成后才播放赤足动作。经跳步进入检查，先补准备或明确改变条件；不得瞬间变装。",
     "finalFootState": "第08幕回到接诊桌仍赤足。未制作并审核穿袜穿鞋的连续动作前，不跳切成已穿鞋。",
-    "scienceTerminology": "统一用踝关节背屈、跖屈；患者可说往上动、往下伸，但治疗师不改称背伸。",
+    "scienceTerminology": "统一用踝关节背伸、跖屈；患者可说往上动、往下伸，但治疗师不改称背伸。",
     "source": "work/clinic-v8/case-flow.js 与 15.0.4 知识审查范围；全为原创虚构病例。",
     "protectiveScope": "手位、量角器固定、施阻、提踵评定及真实保护接触须专业教师审核。短片只承担解释交流与已审核的动作；未经审核不制作权威操作近景。",
     "data": "不提供虚构角度、MMT等级、力矩、EMG延迟、平衡时长、实测COP或COM。压力资料为明确标识的教学合成示意。",
@@ -242,7 +242,7 @@
         "alignment",
         "trial"
       ],
-      "learningPoint": "背屈、跖屈与同方法比较；动作先于数值。",
+      "learningPoint": "背伸、跖屈与同方法比较；动作先于数值。",
       "evidenceRequirement": {
         "all": [
           "consent"
@@ -260,7 +260,7 @@
         },
         {
           "speaker": "therapist",
-          "text": "脚背靠近小腿叫背屈，向下伸叫跖屈。先小幅试试，不舒服就停，再用同样方法比左右。"
+          "text": "脚背靠近小腿叫背伸，向下伸叫跖屈。先小幅试试，不舒服就停，再用同样方法比左右。"
         },
         {
           "speaker": "patient",
@@ -346,7 +346,7 @@
         "all": [
           "local_record"
         ],
-        "source": "仅正常线：虚构病例右侧同方法负重背屈表现较小；没有角度值。"
+        "source": "仅正常线：虚构病例右侧同方法负重背伸表现较小；没有角度值。"
       },
       "normal": [
         {
@@ -355,7 +355,7 @@
         },
         {
           "speaker": "therapist",
-          "text": "先停在舒服的位置。刚才右侧负重背屈表现较小，发紧本身不能说明骨头错位。"
+          "text": "先停在舒服的位置。刚才右侧负重背伸表现较小，发紧本身不能说明骨头错位。"
         },
         {
           "speaker": "patient",
@@ -1597,7 +1597,7 @@
       "不制作、不上传、不生成语音或视频；完整脚本、外观和声音仍待确认。"
     ],
     "integrationStatus": "Proposed node anchors and eligibility rules only; video routing not integrated into the running lab.",
-    "term": "踝关节背屈、跖屈",
+    "term": "踝关节背伸、跖屈",
     "paidGenerationCalls": 0
   },
   "approvalUpdate": {

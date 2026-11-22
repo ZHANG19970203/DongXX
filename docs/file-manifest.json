@@ -114,7 +114,7 @@
     {
       "path": "assembly/assets/catalog.js",
       "bytes": 933067,
-      "sha256": "abc462c3608a9ee93bb5ce36a4c9ab89aa0f8becc001e7c427c45cef71946697"
+      "sha256": "1eb18dda4670335749876be93b0334404756c2a01bb23e8504de9d4160790c93"
     },
     {
       "path": "assembly/assets/game.css",
@@ -123,8 +123,8 @@
     },
     {
       "path": "assembly/assets/game.js",
-      "bytes": 53257,
-      "sha256": "97accbae6062e6dc9629dbb5bd531fd2eefb9b1334149aa52b880fc6fc3a8b72"
+      "bytes": 53654,
+      "sha256": "30b346797ba91656b86d74cd152ebd36439dfc17e884dd881784d45d509aa1fe"
     },
     {
       "path": "assembly/assets/geometry-loader.js",
@@ -212,9 +212,984 @@
       "sha256": "d0a1ed18101c8a7ff74d0b4a142fdceb3fb5c997be61978a3dbc926c8215fbeb"
     },
     {
+      "path": "assembly/flat/ankle-35-edl.webp",
+      "bytes": 2388,
+      "sha256": "732b2909124e36305448a5e32ed7d18397b5c241be1617fa1617183a7e8794d8"
+    },
+    {
+      "path": "assembly/flat/ankle-35-ehl.webp",
+      "bytes": 914,
+      "sha256": "86a9a86457dc3d60a15de4db45a1fcb921ae98af554b25081a7f1cdc5dfd7a31"
+    },
+    {
+      "path": "assembly/flat/ankle-35-tibAnt.webp",
+      "bytes": 2040,
+      "sha256": "bda1215ea14f77471b83d9c3718277d56eb22a97eec593ceb46e8ace848e0a70"
+    },
+    {
+      "path": "assembly/flat/ankle-35.webp",
+      "bytes": 3872,
+      "sha256": "168b2ec320a34e458d188d7ccdabf22a22eb58c6445dbe3636033d47e1d5cd97"
+    },
+    {
+      "path": "assembly/flat/ankle-36-fdl.webp",
+      "bytes": 2110,
+      "sha256": "5040df22c28e6f1e550ca888c7c4e8eb0276619cc4696d55ec9791c6ab930001"
+    },
+    {
+      "path": "assembly/flat/ankle-36-fhl.webp",
+      "bytes": 1878,
+      "sha256": "3e64ef4c11f6ea088237fe80b4d39415326c1c228a86b616d8a8fd0b6a623ebb"
+    },
+    {
+      "path": "assembly/flat/ankle-36-soleus.webp",
+      "bytes": 3676,
+      "sha256": "233cd3f166a63d463ba36bd785d8320b1a3cdadc2ec1a28cb339272e19dd5549"
+    },
+    {
+      "path": "assembly/flat/ankle-36-tibPost.webp",
+      "bytes": 2476,
+      "sha256": "2a7b3b22a1c7b524d458c74849ed4035f26100b8b9145f2a6c1a496522f9508c"
+    },
+    {
+      "path": "assembly/flat/ankle-36.webp",
+      "bytes": 3676,
+      "sha256": "233cd3f166a63d463ba36bd785d8320b1a3cdadc2ec1a28cb339272e19dd5549"
+    },
+    {
+      "path": "assembly/flat/ankle-37-gastrocnemius.webp",
+      "bytes": 4754,
+      "sha256": "9847abe4eb6fdae83f8a0f125ddcc936a59583a7ec7d8e63020fd7b86a366f32"
+    },
+    {
+      "path": "assembly/flat/ankle-37-plantaris.webp",
+      "bytes": 1742,
+      "sha256": "ecf73f44b73cb5ab6dc9a87a8a795771a8a02b0a4142912401c45effbbd23392"
+    },
+    {
+      "path": "assembly/flat/ankle-37.webp",
+      "bytes": 3466,
+      "sha256": "d3f2b458010edd678d1e0fdab2ee93a1505a2cb33f3855f45a3266299a68be56"
+    },
+    {
+      "path": "assembly/flat/ankle-38-fibLong.webp",
+      "bytes": 2776,
+      "sha256": "923f0fddf2fb6ca59e205427ef6657c3c29c795c5fae85d93690d6e89e6cee5b"
+    },
+    {
+      "path": "assembly/flat/ankle-38-fibTertius.webp",
+      "bytes": 584,
+      "sha256": "3cbd8a6149bcb5ad2a7b449a68e4df1c8d7f5804cf2c936e3054e1d7bbb4a4ce"
+    },
+    {
+      "path": "assembly/flat/ankle-38.webp",
+      "bytes": 4376,
+      "sha256": "dc7a088739362ad32f26406dc68c0042f3c01a7c311ca74cebe837355bcc919f"
+    },
+    {
+      "path": "assembly/flat/ankle-39-fibBrevis.webp",
+      "bytes": 2000,
+      "sha256": "f354b79d20036fe5e4c991962118d3b541d44122b5129b9fc227fc2059e7f7ee"
+    },
+    {
+      "path": "assembly/flat/ankle-39.webp",
+      "bytes": 5578,
+      "sha256": "3e6cea12432c8a5a61f72d337e41b35cc34db726363e477abc3679e2a80bfa12"
+    },
+    {
+      "path": "assembly/flat/elbow-10-biceps.webp",
+      "bytes": 2996,
+      "sha256": "d3dfd0712643580c012df6c28fafe4efbb4766ed8aa2dfa0124587c7a1eeabef"
+    },
+    {
+      "path": "assembly/flat/elbow-10-pronatorTeres.webp",
+      "bytes": 1236,
+      "sha256": "1589d0c93d6b402e56b98749e8fb94139976009698b747b08a566e66737a8944"
+    },
+    {
+      "path": "assembly/flat/elbow-10.webp",
+      "bytes": 4412,
+      "sha256": "c24a8ecf63eee7e8d5b7e40a254e6c459e38381cddd38d858bdd010ed0dcbaff"
+    },
+    {
+      "path": "assembly/flat/elbow-11-brachiorad.webp",
+      "bytes": 4252,
+      "sha256": "9f305f2f7978ff83e3786fe05a8c53e6607ca57ab5a24f7247d2446edac9e565"
+    },
+    {
+      "path": "assembly/flat/elbow-11.webp",
+      "bytes": 2770,
+      "sha256": "aa344d0c03f65653b84d305fb36a5a83022eb25bb67a128c53031cde96d8c1a7"
+    },
+    {
+      "path": "assembly/flat/elbow-12-anconeus.webp",
+      "bytes": 1038,
+      "sha256": "3df8dd8d85c89834fa6b86a1de54bf102c5c05f1591227979862e140e77a7b5b"
+    },
+    {
+      "path": "assembly/flat/elbow-12-triceps.webp",
+      "bytes": 5306,
+      "sha256": "3ef9383c8d89e82113e3229c5ee917d78cf95b005cb96e22ab5cd131397ade56"
+    },
+    {
+      "path": "assembly/flat/elbow-12.webp",
+      "bytes": 5012,
+      "sha256": "f222739d37e407ddc9c80a6ac04526f02550217f57a2b6ed474ebc255baf52cf"
+    },
+    {
+      "path": "assembly/flat/elbow-9-brachialis.webp",
+      "bytes": 2240,
+      "sha256": "a5912aaf5715cba56ff0cb72ef34d43e9668e99688d9c7e41672eb59570143b4"
+    },
+    {
+      "path": "assembly/flat/elbow-9-pronatorQuad.webp",
+      "bytes": 886,
+      "sha256": "ea6d24452b3773a482d44f4d27f868b3b4e510eb36b0a7b95b8400e2cccde041"
+    },
+    {
+      "path": "assembly/flat/elbow-9-supinator.webp",
+      "bytes": 1480,
+      "sha256": "9ba0e429937d0d2df84ddf432a7b5215fbfad565ad4e81a14399f2e9b33ad569"
+    },
+    {
+      "path": "assembly/flat/elbow-9.webp",
+      "bytes": 3746,
+      "sha256": "f8c0b288af34c3713c70a1dd95eee1d0943237518c64f17f2f2003577a29ae85"
+    },
+    {
+      "path": "assembly/flat/foot-40-abh.webp",
+      "bytes": 1822,
+      "sha256": "4c6f33983040e3911d9f5c62e99cf30763d469f7e9836bcf485574644079d1a7"
+    },
+    {
+      "path": "assembly/flat/foot-40-fdb.webp",
+      "bytes": 4540,
+      "sha256": "4810c547189c5a4c0c18efbaf027d1a16a4f3cfc05a32b065136b2614b4e9738"
+    },
+    {
+      "path": "assembly/flat/foot-40-footAbdMin.webp",
+      "bytes": 1964,
+      "sha256": "6e70b62743d8b11ccdb886f728cec2f1fedd622600ad00fb40d93c6a093b4d26"
+    },
+    {
+      "path": "assembly/flat/foot-40.webp",
+      "bytes": 10216,
+      "sha256": "37527f8d2bd062c4b6e4e4efbc072a2b50f164d9a81817d06621a06ace46e866"
+    },
+    {
+      "path": "assembly/flat/foot-41-adh.webp",
+      "bytes": 2928,
+      "sha256": "f94a772719d3b5e518bbf2a29f7c25935c8f9aa70e4532b2d03e96def9d324fb"
+    },
+    {
+      "path": "assembly/flat/foot-41-fhb.webp",
+      "bytes": 3668,
+      "sha256": "061acc0f3b9611bc4319cfa50330d663e164bb00f259d64069eaeb678cfe9b2c"
+    },
+    {
+      "path": "assembly/flat/foot-41-footFlexMin.webp",
+      "bytes": 1662,
+      "sha256": "415d8781f388e7fd44dc7946de9a2fd60d9ce0898e136d9b63134a4f218b577a"
+    },
+    {
+      "path": "assembly/flat/foot-41-footLumb1.webp",
+      "bytes": 1480,
+      "sha256": "94e4e89a965cf4e31e868b93153d05e31642d71218dbd2948287d872fddb29ef"
+    },
+    {
+      "path": "assembly/flat/foot-41.webp",
+      "bytes": 14098,
+      "sha256": "c73f2a403b343c138d688cf9329bdbfac258a5c5ecb3e0558cbea145cf71ec59"
+    },
+    {
+      "path": "assembly/flat/foot-42-edl.webp",
+      "bytes": 2422,
+      "sha256": "f3d1ae3ae7c6c546e9d22f73ce5e20d01ab271407913f6385eebc11272c5ad51"
+    },
+    {
+      "path": "assembly/flat/foot-42-ehl.webp",
+      "bytes": 900,
+      "sha256": "2f8ad399e1f94fa0430e3f6c41071b22a0e3ae1d4d8dcc307c06e32a972c4562"
+    },
+    {
+      "path": "assembly/flat/foot-42.webp",
+      "bytes": 3518,
+      "sha256": "478685147b5946cf50095c5483430ced4e1509b511277f463bf42d1a87f889a8"
+    },
+    {
+      "path": "assembly/flat/foot-43-fdl.webp",
+      "bytes": 2628,
+      "sha256": "b7142431aa9a9c479eade5cbe85128b51f9580ce0a811dd5c019074a42ae09a2"
+    },
+    {
+      "path": "assembly/flat/foot-43-fhl.webp",
+      "bytes": 2272,
+      "sha256": "6304d951fd37934aa77b1c2dd1eb1d16f66d1b0c76cbef5037af631a862516a9"
+    },
+    {
+      "path": "assembly/flat/foot-43.webp",
+      "bytes": 3562,
+      "sha256": "27081ef38cf5b01e71ce648148e636ab98592e6899360be0e6a37b7d1201c2a6"
+    },
+    {
+      "path": "assembly/flat/foot-44-footEhb.webp",
+      "bytes": 2226,
+      "sha256": "46d828683c558f90ce333c824381ee66142f8ddf77f3a82b7b00721b655a4e34"
+    },
+    {
+      "path": "assembly/flat/foot-44.webp",
+      "bytes": 12018,
+      "sha256": "cd32cfccb4ae970d43dd0a219425208f9ea42824db330e97b5068db0b4ab89db"
+    },
+    {
+      "path": "assembly/flat/hand-17-apb.webp",
+      "bytes": 1418,
+      "sha256": "97e5df955011636e5035add79f2dd247177cc0856eabaaa07e68aa7168e83c15"
+    },
+    {
+      "path": "assembly/flat/hand-17-flexPolBrevis.webp",
+      "bytes": 1344,
+      "sha256": "812bfc45443448c704b8ecc08f7732ed6f9d635eff984c079465c8a2b89f2c7b"
+    },
+    {
+      "path": "assembly/flat/hand-17-handAbdDigMin.webp",
+      "bytes": 1284,
+      "sha256": "e18479ab55bdb5aaee6aaa536c7094a89981db41e7fbeb78a6da5be5fc2950e4"
+    },
+    {
+      "path": "assembly/flat/hand-17-handFlexMin.webp",
+      "bytes": 794,
+      "sha256": "7963226d63749bd8d9367a2cf54bf5f95f913d0174c7b47afddede34428bb54c"
+    },
+    {
+      "path": "assembly/flat/hand-17.webp",
+      "bytes": 12102,
+      "sha256": "312a2687d292e695a205519d2e72a7006cbed716d4a56d5043fd9e907a9639fa"
+    },
+    {
+      "path": "assembly/flat/hand-18-addPol.webp",
+      "bytes": 2516,
+      "sha256": "11cd158394ce730f0470404d8783805dcda7deaeebb80bb3b75a107e04ee1077"
+    },
+    {
+      "path": "assembly/flat/hand-18-lumbricalHand.webp",
+      "bytes": 4258,
+      "sha256": "586d55a417acbafae4c05f46c7b2ace28e719c293932ab9672e2b0d5a7655527"
+    },
+    {
+      "path": "assembly/flat/hand-18-opp.webp",
+      "bytes": 1798,
+      "sha256": "707476632e8a43a6a21d8032e0b42606870152427a4e69076d76adea5e321353"
+    },
+    {
+      "path": "assembly/flat/hand-18.webp",
+      "bytes": 12168,
+      "sha256": "3c6f0b468907510f75fb04cb42ce47a215a6da38ee16bb38c86dda0efa8f5f61"
+    },
+    {
+      "path": "assembly/flat/hand-19-fdp.webp",
+      "bytes": 4396,
+      "sha256": "1bba7cf9ab751a889565f934622014e6574c8d8421944d8e1a4b39fbb42b2a7e"
+    },
+    {
+      "path": "assembly/flat/hand-19-fpl.webp",
+      "bytes": 1392,
+      "sha256": "fd3cf0ec51e318afe4a25fa872edb3470f4dab87754d681bc796adfc1378918e"
+    },
+    {
+      "path": "assembly/flat/hand-19.webp",
+      "bytes": 5576,
+      "sha256": "78cf04ed25e15da6819c47503b13044efe48003408c4678907b5ccc87a12aa42"
+    },
+    {
+      "path": "assembly/flat/hand-20-apl.webp",
+      "bytes": 2180,
+      "sha256": "5175659529f5b7b57e925a0505522e8617ed0a6da52d30f3803f19fddaff25d6"
+    },
+    {
+      "path": "assembly/flat/hand-20-epb.webp",
+      "bytes": 1396,
+      "sha256": "f46d3db281e157a819033a3a4795ee6fa1af24a815aa11b50e8d8a46b103c587"
+    },
+    {
+      "path": "assembly/flat/hand-20-epl.webp",
+      "bytes": 1636,
+      "sha256": "6893eb11bad1ce09daec69b00dd2838b897b0473476ca3b4ec7ac422feb3a40a"
+    },
+    {
+      "path": "assembly/flat/hand-20.webp",
+      "bytes": 6260,
+      "sha256": "8d2c8731671f6568a81529f0215bb36f53bf2195153fe5ae2c70454dc401553f"
+    },
+    {
+      "path": "assembly/flat/hand-21-fds.webp",
+      "bytes": 5418,
+      "sha256": "01109f316d67186de49a540f1698b8f3571315eee5d211379b4e1758f687ee50"
+    },
+    {
+      "path": "assembly/flat/hand-21.webp",
+      "bytes": 5476,
+      "sha256": "509f3e1010197e4e4b087e896405f71ebefb5003eb35efef323262f72ca9a161"
+    },
+    {
+      "path": "assembly/flat/hand-22-ed.webp",
+      "bytes": 3266,
+      "sha256": "b4f4bcdf20fc2c061248e5428715cf527f441f578c9493c4361d94239d971e54"
+    },
+    {
+      "path": "assembly/flat/hand-22-edm.webp",
+      "bytes": 1054,
+      "sha256": "961337fa359009053fb18563f453b99eb79bf352f6a673cb4ae1a8e28aaedee1"
+    },
+    {
+      "path": "assembly/flat/hand-22.webp",
+      "bytes": 5102,
+      "sha256": "82468ee41e4855e65cfd5c1c7c35181ca6b2d838d389bb675c72341fb96efc58"
+    },
+    {
+      "path": "assembly/flat/hand-23-ei.webp",
+      "bytes": 1478,
+      "sha256": "b9734ec35574720d8b82ba3e00eca5e78a4173e9689048cadeff1d732a0fab93"
+    },
+    {
+      "path": "assembly/flat/hand-23.webp",
+      "bytes": 7358,
+      "sha256": "bdf2183cc573748c6c27f6670dc4ea31af969b45174326487224a2421511c196"
+    },
+    {
+      "path": "assembly/flat/hip-24-gluteMax.webp",
+      "bytes": 4738,
+      "sha256": "7205a89140f3f805840f79d3af143926be65aba02eb0b79a78652d7674af742c"
+    },
+    {
+      "path": "assembly/flat/hip-24-gluteMed.webp",
+      "bytes": 4070,
+      "sha256": "b07fa2644830da0cccf5da1f396a97ccbaf70ff88df1f14fed78b00fc363c8b9"
+    },
+    {
+      "path": "assembly/flat/hip-24.webp",
+      "bytes": 9092,
+      "sha256": "39e097d6c6c96990d8fa92ec95952ae6a64957cb743c0251028a2ec5a32b5010"
+    },
+    {
+      "path": "assembly/flat/hip-25-gluteMin.webp",
+      "bytes": 5412,
+      "sha256": "f3fb3a1691371c6918b66fcf86f950c4a5674c7e47487a70d4839c5207037f57"
+    },
+    {
+      "path": "assembly/flat/hip-25-obturator.webp",
+      "bytes": 2612,
+      "sha256": "dcaafd0447c5f21e1580f6c723af00a67f434b8ef0ed530c9998095a91fbcdf2"
+    },
+    {
+      "path": "assembly/flat/hip-25-piriformis.webp",
+      "bytes": 2778,
+      "sha256": "f916991ba6b890223b2f51049efba04333a45986fe01ebba5d42411ce1414818"
+    },
+    {
+      "path": "assembly/flat/hip-25-quadratusFem.webp",
+      "bytes": 2060,
+      "sha256": "1d190b5277133dd6804790a488dbb2dbc860faccb99ba097b4f2d23d7be4ca3b"
+    },
+    {
+      "path": "assembly/flat/hip-25.webp",
+      "bytes": 11582,
+      "sha256": "a4f3ffd8230788cf46bdbdaf2d8fb6a2b42f0728a0344b367c9146669516cf5b"
+    },
+    {
+      "path": "assembly/flat/hip-26-gemInf.webp",
+      "bytes": 2004,
+      "sha256": "e536d531c49ac647f3046796ead0620304540756701f3a8fd7006f9d26d01188"
+    },
+    {
+      "path": "assembly/flat/hip-26-gemSup.webp",
+      "bytes": 1712,
+      "sha256": "435d5901006c74373f58229cb3542af49b4cda6e6963a215c43a854591932033"
+    },
+    {
+      "path": "assembly/flat/hip-26.webp",
+      "bytes": 8918,
+      "sha256": "0d963c6053dddb3d59a515de315e287c64a44d869196ada4d28751aeec1ac135"
+    },
+    {
+      "path": "assembly/flat/hip-27-addBrevis.webp",
+      "bytes": 814,
+      "sha256": "786deb0bd9c415e52ae518844b90b5210da7549467cd0adb99e109ffebaa2e45"
+    },
+    {
+      "path": "assembly/flat/hip-27-addMagnus.webp",
+      "bytes": 2786,
+      "sha256": "3d91fa8700f3414689c8a9ff5116559e59e7ffcd043fefbbb08a386bac8b8cad"
+    },
+    {
+      "path": "assembly/flat/hip-27-iliacus.webp",
+      "bytes": 1460,
+      "sha256": "3b3498d2d5e428b4fd10abd10c37ec8592018b003b3f649e599ffdeaa711e334"
+    },
+    {
+      "path": "assembly/flat/hip-27-psoas.webp",
+      "bytes": 1608,
+      "sha256": "b1ef19573d5ea449f8eaf993dff58f00d79670688256d417c04248d405df827c"
+    },
+    {
+      "path": "assembly/flat/hip-27.webp",
+      "bytes": 4220,
+      "sha256": "76f94c0dd344cef92e8477d7aa2f25453926dec8a6fd607332b77ce1a8ad80f4"
+    },
+    {
+      "path": "assembly/flat/hip-28-obtExt.webp",
+      "bytes": 2316,
+      "sha256": "a89e5afe28f5c1c2c3c0ceec1da6808352d1fe2c5d0ba688ca5ded495a52ff8b"
+    },
+    {
+      "path": "assembly/flat/hip-28.webp",
+      "bytes": 8702,
+      "sha256": "a7ac17ed6b4ee785d72eb0ff86669e9178c4866748792282ee50f53cca8ae51b"
+    },
+    {
+      "path": "assembly/flat/hip-29-addLong.webp",
+      "bytes": 2954,
+      "sha256": "d37065d25f1672394435ebfcb132e9a26293add6b7ef349fff74358055199fe5"
+    },
+    {
+      "path": "assembly/flat/hip-29-pectineus.webp",
+      "bytes": 1430,
+      "sha256": "5de4e5dd3c39e5a349413ea03bce7a2db602e8a838379cd8c98128c10942207d"
+    },
+    {
+      "path": "assembly/flat/hip-29-tfl.webp",
+      "bytes": 866,
+      "sha256": "fdfac7ddc63dfa11aa9b2da3abde73237b3a810d56d3a64ae276cd01a02fae09"
+    },
+    {
+      "path": "assembly/flat/hip-29.webp",
+      "bytes": 5776,
+      "sha256": "c9e6a731718f85c878f60514516ae244759a7a9db5dcf486570c818b6a1b7cd3"
+    },
+    {
+      "path": "assembly/flat/knee-30-vastusInt.webp",
+      "bytes": 3976,
+      "sha256": "5a2c454938045d0912a39fb48779467befd9f1ca680e08cda704b0fc24c2c6b9"
+    },
+    {
+      "path": "assembly/flat/knee-30.webp",
+      "bytes": 3902,
+      "sha256": "f393a7af00f7abc78a3d5767db5f800cbbd847dc3230a2dd2eb9fd5b3ad1f07b"
+    },
+    {
+      "path": "assembly/flat/knee-31-rectusFem.webp",
+      "bytes": 3634,
+      "sha256": "24a2755872dc745fd92a74a983d8f88b901ce5f56c76c231daa65dbeb0f513e8"
+    },
+    {
+      "path": "assembly/flat/knee-31-sartorius.webp",
+      "bytes": 2244,
+      "sha256": "8b7214dac69cbe722841cb295d439b05948783ab96e95b04f5e9808c5932e021"
+    },
+    {
+      "path": "assembly/flat/knee-31-vastusLat.webp",
+      "bytes": 3928,
+      "sha256": "61a1d04883db280ae1cc93123d1d2c45952aa3d1b08a5769d3f997982d669bed"
+    },
+    {
+      "path": "assembly/flat/knee-31-vastusMed.webp",
+      "bytes": 2548,
+      "sha256": "c8c4d1731810796dc7c7600ae044a635c8b631aac7e9ad27e4e7d5e6a35ef07f"
+    },
+    {
+      "path": "assembly/flat/knee-31.webp",
+      "bytes": 4138,
+      "sha256": "37a57e7910d3e9d2cbdbebe7380b6e0a0d65695a751a50dd57e17ea2dc8e0fbf"
+    },
+    {
+      "path": "assembly/flat/knee-32-gracilis.webp",
+      "bytes": 2156,
+      "sha256": "2fea962d67264070c7abe6914039b8eef0d6703da761ca9cee40491b0dc09c03"
+    },
+    {
+      "path": "assembly/flat/knee-32.webp",
+      "bytes": 4030,
+      "sha256": "70e340566fd90247ed2bdf92ec0d6499807faff8b10f4553337437592984e301"
+    },
+    {
+      "path": "assembly/flat/knee-33-bicepsFem.webp",
+      "bytes": 5368,
+      "sha256": "0053b15de88240a02de34f125e207a3e452d864f77ae5358d986394e5d4351dc"
+    },
+    {
+      "path": "assembly/flat/knee-33-semitend.webp",
+      "bytes": 2170,
+      "sha256": "4c864dc0014a618cf876dfa8a6d104a4061eebddb86a72daddf2113b3c67bce6"
+    },
+    {
+      "path": "assembly/flat/knee-33.webp",
+      "bytes": 3936,
+      "sha256": "bbe2d153319d1327058c1ab498dd7199e835f2b28db576bf5ff21b81aa4d2648"
+    },
+    {
+      "path": "assembly/flat/knee-34-popliteus.webp",
+      "bytes": 684,
+      "sha256": "7541993aa4a654995e68c5f632a7c9a89530f8d5310afb0d6af9b46e19565117"
+    },
+    {
+      "path": "assembly/flat/knee-34-semimem.webp",
+      "bytes": 3826,
+      "sha256": "84efe9a5f5b41aef4750fc5b989c8a50ffd15d2ac8e0aa0f65b5329cca23bdeb"
+    },
+    {
+      "path": "assembly/flat/knee-34.webp",
+      "bytes": 3720,
+      "sha256": "fbc6dd29a467c4ee989f5e2ee232d51210edc6a9a089c248e9c5f4babb531a68"
+    },
+    {
+      "path": "assembly/flat/layers.json",
+      "bytes": 41699,
+      "sha256": "02b3153546d38f8118a05aaf16477543a26b4ee6dab62508b8b0fa67d03cab22"
+    },
+    {
+      "path": "assembly/flat/loc-intOblique-intOblique.webp",
+      "bytes": 412,
+      "sha256": "1e5b46abbb1d10fdc6d207bfc87d98987e4c76ad5794d418118acc18e85cc2d5"
+    },
+    {
+      "path": "assembly/flat/loc-intOblique-transAb.webp",
+      "bytes": 410,
+      "sha256": "93a9a4bca7a9059065b65b8907fee414130b51319eaa12c263d27c953984f3fd"
+    },
+    {
+      "path": "assembly/flat/loc-intOblique.webp",
+      "bytes": 12540,
+      "sha256": "62ed2a65c63883af9a9ac10e488209275b7ad16e3f64f74587f00792d9e827f3"
+    },
+    {
+      "path": "assembly/flat/loc-latissimus-latissimus.webp",
+      "bytes": 506,
+      "sha256": "6870ce176abe3bb791de18b46309fd18456e955990bf8c49a8283f51795e472f"
+    },
+    {
+      "path": "assembly/flat/loc-latissimus.webp",
+      "bytes": 12442,
+      "sha256": "4143f11f85321338923d1c7028cea57ad2e6796ffe5a790cfc3f37e8b1101e3f"
+    },
+    {
+      "path": "assembly/flat/loc-masseter-masseter.webp",
+      "bytes": 482,
+      "sha256": "1f33d57d128201636e0f32aa9c7774268c8173f90be37717b5c4681beacc41b6"
+    },
+    {
+      "path": "assembly/flat/loc-masseter-temporalis.webp",
+      "bytes": 658,
+      "sha256": "0ea1cac2b8e37ea76ba16bb43f7fa3f6f2ee90f84dabfe1721a5473b6ce39a0f"
+    },
+    {
+      "path": "assembly/flat/loc-masseter.webp",
+      "bytes": 12254,
+      "sha256": "a2ab323918f06f318c9d42ced25e7ab128db028d54bdaef6abe18487ce373e01"
+    },
+    {
+      "path": "assembly/flat/loc-pterygoidMed-pterygoidLat.webp",
+      "bytes": 414,
+      "sha256": "d553391e01ce2045ed60a4ac512447cbb28201573769412e754871762b0b3a5e"
+    },
+    {
+      "path": "assembly/flat/loc-pterygoidMed-pterygoidMed.webp",
+      "bytes": 652,
+      "sha256": "4f92a672849d6f34e9e1c6c04aca770ed1b3a53a99f92cc960be10322b316347"
+    },
+    {
+      "path": "assembly/flat/loc-pterygoidMed.webp",
+      "bytes": 10858,
+      "sha256": "42743c87198c48b87f578b990ee9ade732c347f79fa0627be473e0eedc887250"
+    },
+    {
+      "path": "assembly/flat/loc-quadratusL-quadratusL.webp",
+      "bytes": 248,
+      "sha256": "e309b83e86c80635765439dc228ccccf7169d0dea3ed3da2657079b76ffc0e0b"
+    },
+    {
+      "path": "assembly/flat/loc-quadratusL.webp",
+      "bytes": 15480,
+      "sha256": "e6f7f0eb6a6114a38e520e7043b4cfec79459a309d8e3f35b6d7f4893cba1940"
+    },
+    {
+      "path": "assembly/flat/loc-rectusAb-rectusAb.webp",
+      "bytes": 282,
+      "sha256": "d21f5bf90784d6938ba937495244cf68f9c0f203975051b74e395e9e9c849214"
+    },
+    {
+      "path": "assembly/flat/loc-rectusAb.webp",
+      "bytes": 12684,
+      "sha256": "9c0420f1e21d8e764d52e23e7e720628fb88ed6856a66b46a70d509d6cb2ce2d"
+    },
+    {
+      "path": "assembly/flat/shoulder-1-supra.webp",
+      "bytes": 2724,
+      "sha256": "c7d3fa701a87c7b4b2862364416a9c0823141a9d60ef7292937e4ac2256197be"
+    },
+    {
+      "path": "assembly/flat/shoulder-1.webp",
+      "bytes": 13738,
+      "sha256": "d6c82489746bbd7c8071ecf3a087404676991a31dbc82cbc682e45c1bc0ded7b"
+    },
+    {
+      "path": "assembly/flat/shoulder-2-infra.webp",
+      "bytes": 1860,
+      "sha256": "9b323daee433177bbf64b041fdff01f82ffc416f1db88235ac9dfab6f3942ffe"
+    },
+    {
+      "path": "assembly/flat/shoulder-2-levator.webp",
+      "bytes": 2188,
+      "sha256": "a93503d398e663cbe136cb31d4d4f567fd17d8eddc6aa4dbaccdce872b4a7ec4"
+    },
+    {
+      "path": "assembly/flat/shoulder-2-rhomboid.webp",
+      "bytes": 4102,
+      "sha256": "904afd76a070b9099e9e8fe6c70180d37810b0116b54a04b330c052e1fb16ed0"
+    },
+    {
+      "path": "assembly/flat/shoulder-2-teresMinor.webp",
+      "bytes": 1080,
+      "sha256": "981b549e4dca770969892932fe832ec54a6596fa7e7afc0b0dc44db42da5a4a5"
+    },
+    {
+      "path": "assembly/flat/shoulder-2.webp",
+      "bytes": 13374,
+      "sha256": "df11fee47db05ac6891c2e982e9fa73159692d693a7c06fd7a0de23fcd0cfa00"
+    },
+    {
+      "path": "assembly/flat/shoulder-3-rhomboidMinor.webp",
+      "bytes": 4396,
+      "sha256": "714b835a06a4ba3f23fbb31ddb207d35dab3de541f57434419f236608b1118a4"
+    },
+    {
+      "path": "assembly/flat/shoulder-3.webp",
+      "bytes": 14544,
+      "sha256": "212e1e2ea65095c9468e51122d5162eec05533caade2f513d9d423acb8197f68"
+    },
+    {
+      "path": "assembly/flat/shoulder-4-coraco.webp",
+      "bytes": 1350,
+      "sha256": "8f4eb551790c744759846b05bb3446fa354c3329590622336c72279a396dde43"
+    },
+    {
+      "path": "assembly/flat/shoulder-4-pecMinor.webp",
+      "bytes": 7114,
+      "sha256": "402b9b9ea0075a71d94b8363d6cc3342d703438ad0826e52785317d7a267b6a6"
+    },
+    {
+      "path": "assembly/flat/shoulder-4-subclavius.webp",
+      "bytes": 1144,
+      "sha256": "0efdd922e176a3de7b9af2cf693d8fd5b0aac6ff1c531fd8e2e7ea9b1854c9c3"
+    },
+    {
+      "path": "assembly/flat/shoulder-4-subscap.webp",
+      "bytes": 3432,
+      "sha256": "3244ea0af1138288b7eb9057e005f0484a41652bedc108c7a239db52149684ef"
+    },
+    {
+      "path": "assembly/flat/shoulder-4.webp",
+      "bytes": 14478,
+      "sha256": "faa8b088c47696215e8250340415daf6b1dbb3719f3228866d39a9d7e7cdb7bf"
+    },
+    {
+      "path": "assembly/flat/shoulder-5-biceps.webp",
+      "bytes": 3558,
+      "sha256": "e7c6c6f75e4d18c48d39865a6bc07de8575f7f0c1b406a3ac6ea110e6ab2bdc9"
+    },
+    {
+      "path": "assembly/flat/shoulder-5-deltoidAnt.webp",
+      "bytes": 1658,
+      "sha256": "5d8f492ce93acd548deb57a219a61e61046d1476300ce0ffd379ed957a780fad"
+    },
+    {
+      "path": "assembly/flat/shoulder-5-pecMajor.webp",
+      "bytes": 9508,
+      "sha256": "8d05570be1487099d7afd5c1fd4fe9aba1cc4bc131a864ed8f6ba3bcfcf7a748"
+    },
+    {
+      "path": "assembly/flat/shoulder-5.webp",
+      "bytes": 11236,
+      "sha256": "7021738b8b43241b1d79ed35223fceb25b6aa3bbadfd254e5d605b7080babea1"
+    },
+    {
+      "path": "assembly/flat/shoulder-6-deltoidMid.webp",
+      "bytes": 2132,
+      "sha256": "8199c8759eb103f1d2cae828149cc70a37a3938ee69f704deb567e24677c7aac"
+    },
+    {
+      "path": "assembly/flat/shoulder-6-serratus.webp",
+      "bytes": 25006,
+      "sha256": "81e76272e6004c050ad7f988cb5f1599bb5691805d5521b5193f6ef508bfff42"
+    },
+    {
+      "path": "assembly/flat/shoulder-6.webp",
+      "bytes": 15202,
+      "sha256": "fdeef3079200bbd18517eea319939d15855f27ca6d2aae304fc9bf7117cca76c"
+    },
+    {
+      "path": "assembly/flat/shoulder-7-deltoidPost.webp",
+      "bytes": 1568,
+      "sha256": "97cee8e808c7ae84848b8c681d56089942ab1ecbb7e63cdc1d81050bb8226c19"
+    },
+    {
+      "path": "assembly/flat/shoulder-7-teresMajor.webp",
+      "bytes": 896,
+      "sha256": "e976a55b41ee21ff4d57dc00b1c8249df390dbaf50d9db00a6d1b2b56366b6d9"
+    },
+    {
+      "path": "assembly/flat/shoulder-7-trapUpper.webp",
+      "bytes": 3080,
+      "sha256": "eb04c945a8f231293c439e9bfcfb62280472c21ef130ad63e41f168cf55f26cb"
+    },
+    {
+      "path": "assembly/flat/shoulder-7-tricepsLong.webp",
+      "bytes": 1872,
+      "sha256": "5af509c272e6b02acab9e1583a6be10ac2fd66c4eb5f0117e028cb81107d1a21"
+    },
+    {
+      "path": "assembly/flat/shoulder-7.webp",
+      "bytes": 9604,
+      "sha256": "59fed489b09cff95971a8f6510de0ab80ac928aa6bf5941ef6d9256cba1099dd"
+    },
+    {
+      "path": "assembly/flat/shoulder-8-trapLower.webp",
+      "bytes": 9204,
+      "sha256": "571208343a91c97d2854cdbe674094c20889425690dc2a337655776237389757"
+    },
+    {
+      "path": "assembly/flat/shoulder-8-trapMid.webp",
+      "bytes": 2742,
+      "sha256": "e4ec4db12e6ac7a74710227147e2339099c48f1aed06d61e80d07b27dd38520f"
+    },
+    {
+      "path": "assembly/flat/shoulder-8.webp",
+      "bytes": 12756,
+      "sha256": "b7b0ac35a2d3eaa4e88575cbc82fa24655c13fed7e1680235743c1ba11e932a5"
+    },
+    {
+      "path": "assembly/flat/spine-45-ilioLumbar.webp",
+      "bytes": 2816,
+      "sha256": "0be5fc15d72d3e39dc972c6729bc50b7b68cbe9cc86dd75018e2e1dd6eac51d4"
+    },
+    {
+      "path": "assembly/flat/spine-45-longissimus.webp",
+      "bytes": 2732,
+      "sha256": "8e3989fce21feab9d60395f977cefc7b8f84d5c64328047111eb8d1a3d1326f4"
+    },
+    {
+      "path": "assembly/flat/spine-45-spleniusCapitis.webp",
+      "bytes": 1380,
+      "sha256": "020a1991e243570d15880924e7c70b45f93edadf3c5fc491a52dabbdc06098b0"
+    },
+    {
+      "path": "assembly/flat/spine-45-spleniusCervicis.webp",
+      "bytes": 1202,
+      "sha256": "c2284f92a074e281713ee22e2d3b5bd8c6ef0d393707dc41df47e9aca1fdfc77"
+    },
+    {
+      "path": "assembly/flat/spine-45.webp",
+      "bytes": 9250,
+      "sha256": "8154b7b8794fbcc4fbb53e23ec8985e8971a05e50a92ab6f060b3edbeb16d422"
+    },
+    {
+      "path": "assembly/flat/spine-46-erector.webp",
+      "bytes": 7216,
+      "sha256": "c88c41b265513ee178faa06d86a2994125bb0de709acc705ce4e4d29815e43b5"
+    },
+    {
+      "path": "assembly/flat/spine-46-semispinalisCapitis.webp",
+      "bytes": 596,
+      "sha256": "f659ffd64d2c593c40b1fa770737d9c53d56311a4e2145729ec7a6e0636e8901"
+    },
+    {
+      "path": "assembly/flat/spine-46-serrPostInf.webp",
+      "bytes": 2510,
+      "sha256": "3db8ff16eb02c18876b2231c6c71827d2b4e075fb8b72c6fc82d6af2da260f77"
+    },
+    {
+      "path": "assembly/flat/spine-46.webp",
+      "bytes": 9188,
+      "sha256": "b532ea1827956a26a6e13e4c752d23be5e7c32d12f5c20da92c616de6cdddbfa"
+    },
+    {
+      "path": "assembly/flat/spine-47-extOblique.webp",
+      "bytes": 9196,
+      "sha256": "a033eeac658894b5fb2baeed40cf4612ee784744ecf3b0dfd6d38ab029aeb53e"
+    },
+    {
+      "path": "assembly/flat/spine-47-scm.webp",
+      "bytes": 1132,
+      "sha256": "9e0546989cb3d866c3d7e4fd7231606fd9ac9d5ec85544b9a9f0306791eca640"
+    },
+    {
+      "path": "assembly/flat/spine-47.webp",
+      "bytes": 8494,
+      "sha256": "185d0a5eaf3d5f2f1065fddd4fb46967570b34c3c3f57e75405b85d0b3f339aa"
+    },
+    {
+      "path": "assembly/flat/thorax-50-diaphragm.webp",
+      "bytes": 14464,
+      "sha256": "d3366bada103492e9732cf9a94a1646eb4d0882400440e2656020c132c494d5e"
+    },
+    {
+      "path": "assembly/flat/thorax-50-externalIntercostals.webp",
+      "bytes": 15728,
+      "sha256": "1296bbea63a3ce56a6bfe8240b898fea9d74f07251fa88ca623961da7c59ca0f"
+    },
+    {
+      "path": "assembly/flat/thorax-50.webp",
+      "bytes": 13210,
+      "sha256": "7821db469bedee84d1b09015e6ddcb6701d464821bbf02aaa54f409ff526b85c"
+    },
+    {
+      "path": "assembly/flat/thorax-51-internalIntercostals.webp",
+      "bytes": 11134,
+      "sha256": "c170b6aaaed5f0987afe899e1fd56d9179e5ce265a430ef48b94619bdd97439b"
+    },
+    {
+      "path": "assembly/flat/thorax-51-pecMinor.webp",
+      "bytes": 2304,
+      "sha256": "9a61602aaa18b2aeba316c15a526348fa0a6e2c673deb6829929c80eb1d8a4a7"
+    },
+    {
+      "path": "assembly/flat/thorax-51-scaleneAnterior.webp",
+      "bytes": 746,
+      "sha256": "9b54dc9df44f324a2b63ac6ad9789721075b514475d66f4877490bfb190e6e16"
+    },
+    {
+      "path": "assembly/flat/thorax-51-subclavius.webp",
+      "bytes": 512,
+      "sha256": "edc028239385537a20a726d4b73099dd3de565342f7a355cd666267a7eced885"
+    },
+    {
+      "path": "assembly/flat/thorax-51.webp",
+      "bytes": 13152,
+      "sha256": "8a35ce547007928a08cfd1f386d6386fe8d9afae6d3f39211e43eaef01bf86fd"
+    },
+    {
+      "path": "assembly/flat/thorax-52-scaleneMiddle.webp",
+      "bytes": 5462,
+      "sha256": "0ff6062230a82f5486b5368255b8f9913500338942e9403d976b270e36d31b5b"
+    },
+    {
+      "path": "assembly/flat/thorax-52-scalenePosterior.webp",
+      "bytes": 3128,
+      "sha256": "fcef838ec092460cf3262637409ce70e0579a1bc42fb43793a2a476b77ab1964"
+    },
+    {
+      "path": "assembly/flat/thorax-52.webp",
+      "bytes": 9716,
+      "sha256": "4e22456695926d39ae4ea40e86d66d6a45a0c156aaff2ea5b76df22753a7ffd1"
+    },
+    {
+      "path": "assembly/flat/thorax-53-serrPostSup.webp",
+      "bytes": 11978,
+      "sha256": "a64adce2f93c1b5d45cd39eb3477db36756d4e674675d1b193e5ed64272cabe0"
+    },
+    {
+      "path": "assembly/flat/thorax-53.webp",
+      "bytes": 14548,
+      "sha256": "08a6089f845a3dfc011ebe29db10d83722bbdceccf65f07e8a62b674db3e94e7"
+    },
+    {
+      "path": "assembly/flat/tmj-48-digastric.webp",
+      "bytes": 3018,
+      "sha256": "2bd67bd3e80a857da081081bc30c6cb12c0fc01194da6596059db4ed5accf767"
+    },
+    {
+      "path": "assembly/flat/tmj-48-mylohyoid.webp",
+      "bytes": 1614,
+      "sha256": "efb432547aa67b015c2ef2c1381563fb33bde3f36985e0d982c062d240a11123"
+    },
+    {
+      "path": "assembly/flat/tmj-48.webp",
+      "bytes": 12186,
+      "sha256": "637d48e7b6f381a75ed4d993dd7b0946b7507316fb364c0004e9b156265e91d4"
+    },
+    {
+      "path": "assembly/flat/tmj-49-geniohyoid.webp",
+      "bytes": 1986,
+      "sha256": "daec2fdd056ebab772a7b8048251b7a1a36271317fe791a219f988cccb7ef80a"
+    },
+    {
+      "path": "assembly/flat/tmj-49.webp",
+      "bytes": 4648,
+      "sha256": "7ecb45f626effc558187c1ab94035ebb21f7a3eaab39cef94fdd17e18ea0dba1"
+    },
+    {
+      "path": "assembly/flat/workbench.css",
+      "bytes": 3673,
+      "sha256": "87712b0b6c0dd69e4b6818b2b196fc18057b32abf77f9a7c24ac36157647ef45"
+    },
+    {
+      "path": "assembly/flat/workbench.js",
+      "bytes": 11561,
+      "sha256": "a7b9910c72e77f851bc69970c1b70b7f928857a8ce26a2b91880299f30e01381"
+    },
+    {
+      "path": "assembly/flat/wrist-13-ecrb.webp",
+      "bytes": 2176,
+      "sha256": "db3a30f9a57593b8b0029158353846c6f4a3bc77ce65434faa1c0ff4984c9175"
+    },
+    {
+      "path": "assembly/flat/wrist-13-ecrl.webp",
+      "bytes": 2028,
+      "sha256": "92d0fb2f44b7c5ba5f0312e05d8646f0350d5233c4b95b9eb29dd8d3a02556ec"
+    },
+    {
+      "path": "assembly/flat/wrist-13-fcr.webp",
+      "bytes": 2106,
+      "sha256": "40e60c730a2c36f3005573443fd8cc7414126ec7df661b919afe9e7b9ad69e99"
+    },
+    {
+      "path": "assembly/flat/wrist-13-fcu.webp",
+      "bytes": 3084,
+      "sha256": "9d51c9ca3116d64105003d7166ade723a999f65eaa016de93ebfc3cd59e4a6f4"
+    },
+    {
+      "path": "assembly/flat/wrist-13.webp",
+      "bytes": 5118,
+      "sha256": "428b690d2287f08430a9af1e71ce328151e6e5f4ef6966576d0a12820a0b229d"
+    },
+    {
+      "path": "assembly/flat/wrist-14-pl.webp",
+      "bytes": 3368,
+      "sha256": "b328264ccfbcf8cde1e6f652261d644b8af3796197f6602ea3bfb8a01e966b90"
+    },
+    {
+      "path": "assembly/flat/wrist-14.webp",
+      "bytes": 5866,
+      "sha256": "6cb05e54e21c0200c688d081932821ee66ac3c03a72051c00ce7c92bb1341ba5"
+    },
+    {
+      "path": "assembly/flat/wrist-15-ecu.webp",
+      "bytes": 1378,
+      "sha256": "92263bc45349069bd01de6c8ac24425d9d8b6340358009320aa3638c57b76344"
+    },
+    {
+      "path": "assembly/flat/wrist-15.webp",
+      "bytes": 5300,
+      "sha256": "10315046d1a56f6a59d67968e2372340b0f91c020b8d9f23b38d379bfceb630f"
+    },
+    {
+      "path": "assembly/flat/wrist-16-fdp.webp",
+      "bytes": 4396,
+      "sha256": "1bba7cf9ab751a889565f934622014e6574c8d8421944d8e1a4b39fbb42b2a7e"
+    },
+    {
+      "path": "assembly/flat/wrist-16-fpl.webp",
+      "bytes": 1392,
+      "sha256": "fd3cf0ec51e318afe4a25fa872edb3470f4dab87754d681bc796adfc1378918e"
+    },
+    {
+      "path": "assembly/flat/wrist-16.webp",
+      "bytes": 5576,
+      "sha256": "78cf04ed25e15da6819c47503b13044efe48003408c4678907b5ccc87a12aa42"
+    },
+    {
       "path": "assembly/index.html",
-      "bytes": 10447,
-      "sha256": "725d0371fffc5bc9c6b61c212f57b5a75fd99df5d766060f662fc8a7c6183912"
+      "bytes": 10590,
+      "sha256": "27356423efd94e7467135ce4584cf90bd7beca2fa57884dc28e7966fab090021"
     },
     {
       "path": "assembly/licenses/ASSET_PROVENANCE.json",
@@ -297,9 +1272,14 @@
       "sha256": "3072667749e4c64a0235b756a9ff565a2832a1382c20130a17e73b2e83d7cacb"
     },
     {
+      "path": "assembly/muscles.html",
+      "bytes": 2625,
+      "sha256": "bc2c6a78a23bb2a36ad4d6a554679d07f85453fbf33516382e893644d7961c27"
+    },
+    {
       "path": "assembly/tools/CATALOG_TEMPLATE.json",
       "bytes": 203064,
-      "sha256": "afb98ca238a30f318a49697fbd020ea6158b9ff010aafd7727c06a31246697ad"
+      "sha256": "62fc0abd233667eb090699f50322007dd22af26e86df41802c25ab40f8806642"
     },
     {
       "path": "assembly/tools/OBJ_ELEMENT_IDS.json",
@@ -409,7 +1389,7 @@
     {
       "path": "assets/learner-feedback.js",
       "bytes": 8967,
-      "sha256": "4ea1b2d33d8aaa80383c36a24670db943e4799dd9d708cf87642bbe1d3376680"
+      "sha256": "35d2417c0e3c9e49c6d5c4d85de4bc132b3ace8da0604a62b4e83911d78bf155"
     },
     {
       "path": "assets/login-welcome.js",
@@ -474,7 +1454,7 @@
     {
       "path": "assistant_knowledge.py",
       "bytes": 2700,
-      "sha256": "928ce5f728b0f4892f719e6579e638166f836a2fe01b068c442b2e323927a307"
+      "sha256": "31cd4d6bb216db24d022f66762618b05f81e369620005d7e9139a14f247d6320"
     },
     {
       "path": "certificate/certificate.css",
@@ -549,7 +1529,7 @@
     {
       "path": "clinic/cases.json",
       "bytes": 72832,
-      "sha256": "a6958df84d72b3dd42a5868cfafe15715092530845b0003237555bf033bf89ea"
+      "sha256": "a300f3f06e0b48f868c11c1af568767bcf987b76b61e8521eddd31c863e7f1a4"
     },
     {
       "path": "clinic/clinic.css",
@@ -574,7 +1554,7 @@
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
       "bytes": 55805,
-      "sha256": "6b570b4def2fefde2b945f09b90723270f20a2919f0727ce30f5b2f31f3a78ad"
+      "sha256": "23df2b22127fd8b7ca41d0fd3948c56c9b9e6452284dd0b2af12ba0e9c102a79"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -583,23 +1563,23 @@
     },
     {
       "path": "clinic3d/actors.js",
-      "bytes": 41140,
-      "sha256": "6e39b745973afc1b33afe2a1557c4e6026110f6214f8ccf5ad831453aa6c6d43"
+      "bytes": 43576,
+      "sha256": "bc0dd38a50cc56c9f4d41ba014fd4c1cada12ddbb3f90ff8ab9d53148ab8712b"
     },
     {
       "path": "clinic3d/anatomy-viewer.js",
       "bytes": 35118,
-      "sha256": "39303be812508e46535744e870e26d1ec92989b77194007908a49d7a182b89a7"
+      "sha256": "57ecfb9d56e3cc4028b7701337e39d9900bd423622fd0c407203c8288667bb2f"
     },
     {
       "path": "clinic3d/anatomy.html",
       "bytes": 2785,
-      "sha256": "6d283a79876b77c97f399ce8796ee42896b09d3a3aefd81d62647d60979b015d"
+      "sha256": "7efc5dac6efa0b9fbd842c3be6bfde5069121838d948f48372d7edd14960e7e5"
     },
     {
       "path": "clinic3d/app.js",
-      "bytes": 84194,
-      "sha256": "b60a10f6a1b67e0d2b7bc8156abdfeee47477434a8e829ede39f2904da16179f"
+      "bytes": 87864,
+      "sha256": "af5a86c896824f9cdca0afeea3510247b644438462c02e117e5511a533acfc4c"
     },
     {
       "path": "clinic3d/appearance.js",
@@ -613,8 +1593,8 @@
     },
     {
       "path": "clinic3d/arch-bones.css",
-      "sha256": "0d5b49dd08c8b4ddfc324e71f32f7f81d49439c2fa3c943f2b1bc72b104128ea",
-      "bytes": 1986
+      "sha256": "8cda260d8c05d822af8e97482c2cc57d6e636083ee2ce8a1792dd2f32b4b601b",
+      "bytes": 2967
     },
     {
       "path": "clinic3d/arch-bones.js",
@@ -633,8 +1613,8 @@
     },
     {
       "path": "clinic3d/arch-observation.js",
-      "bytes": 1923,
-      "sha256": "97df239338feff17c4af32c786fa1f66bae8347a14e67a127e37d138985406fc"
+      "bytes": 1995,
+      "sha256": "d0348c21b8833c3b5de74c293955110983c2a003b85f478861adbf31a4b73171"
     },
     {
       "path": "clinic3d/assets/MPFB_ASSETS_CC0.txt",
@@ -650,6 +1630,16 @@
       "path": "clinic3d/assets/PATIENT_PROVENANCE.json",
       "bytes": 1685,
       "sha256": "f1fd54ffab188397f353e853cf3879734fcf361598c9a070f864b300c790a551"
+    },
+    {
+      "path": "clinic3d/assets/ankle-motion-sagittal.mp4",
+      "bytes": 236511,
+      "sha256": "c931249c029109c7be48191b42fd445c9e0bd6cbe3d3172fa82b3202624647a1"
+    },
+    {
+      "path": "clinic3d/assets/ankle-motion-subtalar.mp4",
+      "bytes": 159001,
+      "sha256": "9fc8d3424a6052c4d3f1d13e23ba7bdb1c79fbab647c057d651cb83b659a46a8"
     },
     {
       "path": "clinic3d/assets/ankle-study.bin",
@@ -3307,6 +4297,141 @@
       "sha256": "3dcee584d5531f9b0a55cacca2d33b853baecb9e350c4768589358a9c2b54274"
     },
     {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-explain-arch.mp3",
+      "bytes": 28388,
+      "sha256": "80fa228468ae1c2d00f7dc3361b440483730feaf209d8f79c04c4d8ca985e22b"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-explain-balance.mp3",
+      "bytes": 42524,
+      "sha256": "7a65aca26adb4d8dc296a330c96cbb69b08f814e86404294f3344673739c7549"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-explain-gait.mp3",
+      "bytes": 36884,
+      "sha256": "f9453201901fe85629fd4ce403bc943d26c568d10444ce0e7f888cd5abbfbdb0"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-explain-lax.mp3",
+      "bytes": 29828,
+      "sha256": "6fa3a997b85d14310455174aae7dfd23db2d8c10c25f2dacf6c15711464990ff"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-explain-muscle.mp3",
+      "bytes": 30908,
+      "sha256": "1dcdc2761266252c91b2bf724b37a753a0485450beb3b5dbb908e9eb55bd4dc7"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-explain-partial.mp3",
+      "bytes": 35348,
+      "sha256": "37309531e04dd7ef749efb1df09cdacc1a058d7bb33ff271c8af2578b680ec9f"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-explain-scan.mp3",
+      "bytes": 38132,
+      "sha256": "bea3f65710bddd99107650b25ca29b89aea2a9892cb197326ff73b6f37e33def"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-explain-wall.mp3",
+      "bytes": 49316,
+      "sha256": "4e82083f99d38c517acb62c56759504de9897848807282e5994a134c69984d0a"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-finish-chen.mp3",
+      "bytes": 43508,
+      "sha256": "0cad0a49e6d8782188f6733c7089caec5dd495262e78d85c420d1ec36d8d0d7e"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-plan-assessment.mp3",
+      "bytes": 67004,
+      "sha256": "2b1ac93d1dd1d7642c83ba5641468fc6e5d66b7448cf87168f27d581b46b367d"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-plan-control.mp3",
+      "bytes": 81452,
+      "sha256": "ad0c641a64fb08d7e4bb75dc3bbfd14310801341d3234fd6df6c0c000d5754bf"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-plan-load.mp3",
+      "bytes": 64196,
+      "sha256": "e65c92e06c331fddc2f8f2b3da194795545bfd2717c71eaa5f0de471d5887f17"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-plan-mobility.mp3",
+      "bytes": 68108,
+      "sha256": "0a71aacbc4564167e413a33ce2f7a277ba6756743e75a8bbbf26db19ad630873"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-relax.mp3",
+      "bytes": 12524,
+      "sha256": "8045d9386c2f4590d3a979c95e687504b59fd8323a99e5b148cf8a9d3dedcbe9"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-resist.mp3",
+      "bytes": 18932,
+      "sha256": "d4088766fb1ad01c3c193b7fbfb47ae53e1adcda96b1480f665af1283484447b"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-active.mp3",
+      "bytes": 27020,
+      "sha256": "f4ec75896d365f4b50a9387d6c01f9dffa097ad6b04cc9ddde9451c4d3f58bf9"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-directions.mp3",
+      "bytes": 24428,
+      "sha256": "991b8f0841b66496e18ee19484a2fcb409a74ee54e45d6380eb26b4dc2e0e7fc"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-down.mp3",
+      "bytes": 58580,
+      "sha256": "a06dce635844ceb8c424d7b3488c86760338722ebbcf0e481724953b8f09df00"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-explain.mp3",
+      "bytes": 70508,
+      "sha256": "93bc7352920feefe2b57087a7b3852dd0c1ed373a3daa944dd008852fe5217b2"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-finding.mp3",
+      "bytes": 33332,
+      "sha256": "b3879b98e5ff76b8d74c61f994496e6a6e597132655e5fd597a5cec941a0322a"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-in.mp3",
+      "bytes": 58004,
+      "sha256": "aa8666e599d54f4cd70573c845f9e7a4fab020ca3b6f355832cf19fa403669f9"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-out.mp3",
+      "bytes": 54284,
+      "sha256": "226bed5e2c674b170b7d8b747d2675f6da75d94ff26b4d9332ac43556fb811b5"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-pair.mp3",
+      "bytes": 19244,
+      "sha256": "241d2c6490b485b389fbc0e885cd96fb529e576951b09c6f4af0e7ce5abf15bf"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-passive.mp3",
+      "bytes": 31244,
+      "sha256": "9183573905fd82cd04a4a04d3f076febe577a4cc3256b45eeeccfa795234b48d"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-setup.mp3",
+      "bytes": 44372,
+      "sha256": "cef1b9eb595379c75b32681c4d47dbce3391ae85fb595bddf095afa9ba10be87"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom-up.mp3",
+      "bytes": 55292,
+      "sha256": "29b4a98026da628ee48b0a188d7cd856c4f8700faca5605698780da88c7f6205"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical68-rom.mp3",
+      "bytes": 30332,
+      "sha256": "5de9551a239dd677664ce4da7b5a4d8166609fc502cb509f4eac984c1c6ecf12"
+    },
+    {
       "path": "clinic3d/assets/dialogue-v20/consent-ankle-feiref-v47.mp3",
       "bytes": 33740,
       "sha256": "a4a6ad7430dc5fe0cef8c8c29630f2f4c3a70c9aeecb389f9799e461f8bfedb2"
@@ -4538,8 +5663,8 @@
     },
     {
       "path": "clinic3d/assets/dialogue-v20/manifest.json",
-      "bytes": 463375,
-      "sha256": "0107ce33291ba635e424a9e374eec06596096cf1c0b2a8e0ad566d7996b4dea9"
+      "bytes": 479391,
+      "sha256": "ac9a00c50e1a384e9d7478c24664bd17fbb9e366bdc4606b4925ad540e807dca"
     },
     {
       "path": "clinic3d/assets/dialogue-v20/r33-000b12b72b24ffa0.mp3",
@@ -6567,6 +7692,31 @@
       "sha256": "d2d7bcee9e7d99e7305b70b524d96983c0824d0c896eff8d3e4a2be1ed6729c8"
     },
     {
+      "path": "clinic3d/assets/gait-review-landing.mp4",
+      "bytes": 112001,
+      "sha256": "119d8383908d3def27a782e27956d3fcc0980e783074a7c3478902b508f2fbc9"
+    },
+    {
+      "path": "clinic3d/assets/gait-review-overview.mp4",
+      "bytes": 183550,
+      "sha256": "a966b8db039e39a89e12749074db3dfd274dc207c8a218e5dfbb3c9642aca71c"
+    },
+    {
+      "path": "clinic3d/assets/gait-review-push.mp4",
+      "bytes": 121340,
+      "sha256": "dc79a19abd5a143b15a1a348070a2a872b728251ebd7c47062f305e9824d2050"
+    },
+    {
+      "path": "clinic3d/assets/gait-review-support.mp4",
+      "bytes": 121860,
+      "sha256": "061510fd2950230d4198da326786480d03e124221fb3f54dce3bdd8811b3c934"
+    },
+    {
+      "path": "clinic3d/assets/gait-review-swing.mp4",
+      "bytes": 104896,
+      "sha256": "60189f49fce098e4a85489f37e89e337402cf9569854029a731272b49f264a11"
+    },
+    {
       "path": "clinic3d/assets/mmt-muscles.glb",
       "bytes": 742976,
       "sha256": "84ddfc552a6cb5562bc240c2660fb71e7e022bd071aeddd6915fd3d0707916bc"
@@ -6684,7 +7834,7 @@
     {
       "path": "clinic3d/bedside-motion.js",
       "bytes": 30816,
-      "sha256": "ec45b76c2ff54ec13ca857263d19c87e610b15292412352e4b92118101f46ba6"
+      "sha256": "d262f59b83fdc5f5078557ca09d2ccc99d3164e619dbe486f52dd99fe5b5fc05"
     },
     {
       "path": "clinic3d/bedside-player.js",
@@ -6693,8 +7843,8 @@
     },
     {
       "path": "clinic3d/bedside-practice.js",
-      "bytes": 23767,
-      "sha256": "6ef0ff05f511cf0f8bbccb48121c88b96da6552974091183897f3d638aec17d6"
+      "bytes": 24259,
+      "sha256": "d6600a55296351592b39d103f262b6f4c72315ff05d6a62614d5d8a73b0473c9"
     },
     {
       "path": "clinic3d/bedside-preview.js",
@@ -6713,18 +7863,18 @@
     },
     {
       "path": "clinic3d/case-flow.js",
-      "bytes": 64235,
-      "sha256": "5a21ab03dd10dcbd2396076d2261b4729242750f59ecc273bcf14e1108225045"
+      "bytes": 65948,
+      "sha256": "dabc71dae81b78a65d01f4622a985c239ee5352e34c85954c8bd0b72c4d66aee"
     },
     {
       "path": "clinic3d/case-lesson-v14.js",
       "bytes": 17065,
-      "sha256": "fd19b53e82060707715bc923ead47e417d9ef4104e5dc7a93b1a7ec143bba4b4"
+      "sha256": "053b92f462b1004f2aa82870b1747378f0dba12527d33fd424b97b49e6a97e32"
     },
     {
       "path": "clinic3d/case-muscle-v14.js",
       "bytes": 5784,
-      "sha256": "ff7e948deff425b8f1dcf853987f32480e1a4f7e6ed8077b949ca6c466f69cdc"
+      "sha256": "a577251a1e852a689ba2d1863de1e4056f4c7891d4398863f06d041aa3db5808"
     },
     {
       "path": "clinic3d/characters.html",
@@ -6733,8 +7883,8 @@
     },
     {
       "path": "clinic3d/clinic-dialogue.js",
-      "bytes": 12599,
-      "sha256": "b80c4e33faf91d724037eeab390154416cda84bdbd5b6a01e03e4a0e34d6f7a8"
+      "bytes": 12582,
+      "sha256": "c2ada4c6f14e58e7cc74c925f49f3d30bd769d4fe0108cf6a5a82d47393466b9"
     },
     {
       "path": "clinic3d/clinic.css",
@@ -6743,8 +7893,8 @@
     },
     {
       "path": "clinic3d/clinical-exams.js",
-      "bytes": 10421,
-      "sha256": "a8e8e3bb7fd379e0ce53e67190465eece06abce72abfbb9399b08cf9b228082e"
+      "bytes": 13102,
+      "sha256": "a3146a9defc1cc4f3d1181df03a3d22cc82eadaf2398f68105f247e4ca8c7a31"
     },
     {
       "path": "clinic3d/communication-v26.js",
@@ -6763,13 +7913,13 @@
     },
     {
       "path": "clinic3d/dialogue-player.js",
-      "bytes": 4683,
-      "sha256": "8dc77f87a190f314a0daead19e388ec2cbbc8fa3e52082b2b7f175ceccbee4cf"
+      "bytes": 4717,
+      "sha256": "2c945fd9910f81bf55975f48428e06f10738f500a504d861f2f132850527cad4"
     },
     {
       "path": "clinic3d/dialogue-revision33.js",
-      "bytes": 13307,
-      "sha256": "0d6c010ed56ef4133d51e6e8fffc67bc0e2cb8c00ed8656f92550872251abbcc"
+      "bytes": 13312,
+      "sha256": "5b5b509aa6438c8ea11578acb8550f7243f44872a6b08753038a2ce8a30ad0a7"
     },
     {
       "path": "clinic3d/differential.js",
@@ -6799,7 +7949,7 @@
     {
       "path": "clinic3d/docs/README-v12-fragment.md",
       "bytes": 4745,
-      "sha256": "114fd457779be106df86fe07543250a68528db4aa6f29afa90b7f6744098e3fc"
+      "sha256": "8114c2c44fd56665214472edfd419a1846bc9035e40bb3055729cb3293b46cd6"
     },
     {
       "path": "clinic3d/docs/README-v13-fragment.md",
@@ -6814,7 +7964,7 @@
     {
       "path": "clinic3d/docs/README_v12_historical.md",
       "bytes": 4745,
-      "sha256": "114fd457779be106df86fe07543250a68528db4aa6f29afa90b7f6744098e3fc"
+      "sha256": "8114c2c44fd56665214472edfd419a1846bc9035e40bb3055729cb3293b46cd6"
     },
     {
       "path": "clinic3d/docs/README_v5_historical.md",
@@ -6854,12 +8004,12 @@
     {
       "path": "clinic3d/docs/anatomy-v10-API.txt",
       "bytes": 3190,
-      "sha256": "82da4dd1b002899353d4570a83604c70c93df1e2e8aeeaab401d86e17c97e344"
+      "sha256": "60ac0a19054d6b9fd1d3555c07f15d69466a138455eaa109395e172803101c2f"
     },
     {
       "path": "clinic3d/docs/anatomy-v10-provenance.json",
       "bytes": 83169,
-      "sha256": "b23813b5ed64c25ae284af0aaeba5502c12f047862e9bbb03781508fd542efbf"
+      "sha256": "3ab16a5d5fb7ff192258e5bf09c389af4615d0a6ace67556ab87ae8938075465"
     },
     {
       "path": "clinic3d/docs/anatomy-v10-structure-check.json",
@@ -6984,12 +8134,12 @@
     {
       "path": "clinic3d/docs/care-content-v9-review.json",
       "bytes": 8875,
-      "sha256": "14a370f3ec2e8b1d3e74431156a36ecd96dbbcb52e652e4e04b89f0758864d00"
+      "sha256": "ad63b991e316289855bd80ef2dd4c66e481a451169030a450ed650fd77b62a27"
     },
     {
       "path": "clinic3d/docs/clinical-audit.json",
       "bytes": 23878,
-      "sha256": "3f180cb37dfc26c7a9fd62fa4e9e7bde3f7aae3205440361284aa46f5827a198"
+      "sha256": "d08c5e5953de34cd4aff85d70e1f50c974377e401090c3a97a29145ed89d3682"
     },
     {
       "path": "clinic3d/docs/deepseek-v15-sources.json",
@@ -7024,12 +8174,12 @@
     {
       "path": "clinic3d/docs/eight-act-script-v14.html",
       "bytes": 29742,
-      "sha256": "786bdc5a3fc83bedd4e9f669bcdc3e32ad7c5247318c831610500974dca1abf0"
+      "sha256": "371b25acd6d5133a0581123cee79d1fb8bd55642746bbe733339e8228995df93"
     },
     {
       "path": "clinic3d/docs/film-dialogue-v18.json",
       "bytes": 62115,
-      "sha256": "83c96eac812bb024b7698a02f85019135dcf840deef46eebd44ef0cfac46f00e"
+      "sha256": "c66ff0fdedbe3eb2426b20b83b13bbcd75c95453b0eb5916982f78502128b1f4"
     },
     {
       "path": "clinic3d/docs/film-events-v18-validation.json",
@@ -7089,12 +8239,12 @@
     {
       "path": "clinic3d/docs/heygen-v16-script.html",
       "bytes": 29305,
-      "sha256": "8f10d9d747ea1017aba732afb6fc10dcd17508544e9c02c3d5420914cb67d212"
+      "sha256": "99e39ab33694286e7451fb34d319760349ae209aaeec5040063ae4f7130e09dd"
     },
     {
       "path": "clinic3d/docs/heygen-v16-script.json",
       "bytes": 28907,
-      "sha256": "607ada7c0553d468e7a67df6ae067fdc2ce0a034b62f23b3b05abcd0e11e2242"
+      "sha256": "37e87c845d0e0f82f2f44dbb95d661b0d18592c3d73d81b9bc96333629ad8d4f"
     },
     {
       "path": "clinic3d/docs/heygen-v18-pilot-request.json",
@@ -7139,7 +8289,7 @@
     {
       "path": "clinic3d/docs/objectives-v15.json",
       "bytes": 20775,
-      "sha256": "a147eb81d53f7373686073b3485bec2acad80c06265d05a1eed068f8e362aed1"
+      "sha256": "46128d6802a77d858542257c6307f2db88cc3655dfbd9fa30737c6f87b0a5209"
     },
     {
       "path": "clinic3d/docs/patient-v11-content-review.json",
@@ -7269,12 +8419,12 @@
     {
       "path": "clinic3d/docs/script-v7.html",
       "bytes": 91372,
-      "sha256": "ca425eccddd6fdd8442ff2492e3e1bbf43f89092970521fcc06c89a906195a97"
+      "sha256": "c5ae38b00eccea1190383219ecf26d75d21c799b06594a2a9c9b2556d6257f82"
     },
     {
       "path": "clinic3d/docs/script.json",
       "bytes": 31728,
-      "sha256": "6761ed867fbb4ccd3f921b538b6842a1cda63a223716aca2cf9e7cb7732e984b"
+      "sha256": "7a98bee71758743c8785ac676b051aa47baf82fc20ac200c70da87481dc6f39f"
     },
     {
       "path": "clinic3d/docs/shelf-v11-notice.txt",
@@ -7339,7 +8489,7 @@
     {
       "path": "clinic3d/docs/teacher-review-v12.md",
       "bytes": 5015,
-      "sha256": "3d813f54efe7dbaa219cac65ed0c6d0c9e20aa819c63533f5eb519ce8e192462"
+      "sha256": "e43bf466581c1461d83554790c381609ccecab5ff0bce8f30b7a91d16e6d8f03"
     },
     {
       "path": "clinic3d/docs/teacher-review-v13.md",
@@ -7404,17 +8554,17 @@
     {
       "path": "clinic3d/docs/v14-clinical-integration-check.json",
       "bytes": 6533,
-      "sha256": "5cbd2a8eed62603d4871ce87fa7b70d5c73f241f09830418888ccc7b69d6f549"
+      "sha256": "cd213eb192453acc17814f9509f837df508b604dcaffe715243f300cd426edb2"
     },
     {
       "path": "clinic3d/docs/v14-clinical-script-review.md",
       "bytes": 6560,
-      "sha256": "52c2bea7cabecc28a6ccf2d67ffe3c359e8858225a26673f9144b0f59cce776a"
+      "sha256": "aabced28739e1c313bef24e6208d8457d235205f775ddcf464d5f6201bf63f90"
     },
     {
       "path": "clinic3d/docs/v14-clinical-sources.json",
       "bytes": 12215,
-      "sha256": "6532b4933581b058fc996827bfee909075b3c7d04c5c5f06daf60a61a93fc80b"
+      "sha256": "22cf5b2c3c6a8140780f617b73814943b068ca62bcedbe6a0bd5f048afc2938f"
     },
     {
       "path": "clinic3d/docs/v14-flow-migration-audit.md",
@@ -7444,12 +8594,12 @@
     {
       "path": "clinic3d/docs/v14-rom-mmt-review.md",
       "bytes": 8547,
-      "sha256": "66c7138ee5a9ac5f526f7e216287903a203fa6dc2eb2e6c53077918887fc4d02"
+      "sha256": "ad4765af49f690f503a37f5e4074f856783e3ada2857893315c73e909148c2c6"
     },
     {
       "path": "clinic3d/docs/v14-rom-mmt-sources.json",
       "bytes": 7939,
-      "sha256": "2cb4b6654cdc70130310b7fad05f67ba38030fce5518e4c7c91735963e29badd"
+      "sha256": "095e1e67c226d03509f584f5db586d07bd6f0922d3cf304eaecbdce678e08006"
     },
     {
       "path": "clinic3d/docs/v14-script-content-check.json",
@@ -7497,24 +8647,29 @@
       "sha256": "a4835eac8c26b7a91cbcce32234fbcd21fb09d35b7432b32b11c062046976ec4"
     },
     {
+      "path": "clinic3d/encounter-progress.js",
+      "bytes": 4815,
+      "sha256": "263dc8844e41851c38690acbef5de0ca130a6f015f964c76cbb373d5547ffa8b"
+    },
+    {
       "path": "clinic3d/exam-protection.js",
       "bytes": 7439,
       "sha256": "81889f0c89afeb263cdcbecc167c210ae51aa7c76adeb3304e900224e4038f7d"
     },
     {
       "path": "clinic3d/film-media-v18.json",
-      "bytes": 3011,
-      "sha256": "0f1ea6820c2bd3788479ba2efde4f4dc39ee2860deddc191910a7e76f76588d0"
+      "bytes": 2102,
+      "sha256": "f61faab2c1c30e4a562ad9f3eec097e3821797a75e90bf051a7d10dbe558a611"
     },
     {
       "path": "clinic3d/film-sequence-data.js",
-      "bytes": 57903,
-      "sha256": "28c0575fe2762f072ea532c7b8ede00a747bdea46970d7048e5c0e20619aea3b"
+      "bytes": 57914,
+      "sha256": "ccd6eb8ce3b5ea3fef7c941e0f128b26289e9c4a511055ff13f603cc353a9f60"
     },
     {
       "path": "clinic3d/film-sequence.js",
-      "bytes": 10795,
-      "sha256": "2e8e919140d14f52e76a2073c04c74e86639a6646ed718e9a8758ca646188cdc"
+      "bytes": 10799,
+      "sha256": "9341d2a10f7e8d2a3d3434d8e5bc4e7f2694b633f5146d1beda23704b3cb2d77"
     },
     {
       "path": "clinic3d/focus-v21.css",
@@ -7542,6 +8697,16 @@
       "sha256": "d274ac3631c71a522ac5eb7cf2826787f74dbb6c74b43acc33ab53e5d597888c"
     },
     {
+      "path": "clinic3d/gait-review.js",
+      "bytes": 1419,
+      "sha256": "8de3f2d45a7be90fd70132009576813ed88409da83dbc8b59dfbfce44dfddd80"
+    },
+    {
+      "path": "clinic3d/goniometry.js",
+      "bytes": 10749,
+      "sha256": "18800f754f0ededf9f3832a5fbe025ad74de528649fcc8fbd1cbdc15a80eec44"
+    },
+    {
       "path": "clinic3d/head-fit.js",
       "bytes": 464,
       "sha256": "46f777cb54e01a5d407919b4e9cea8b9084cd3a21bb355bab32a86fbf632bd0c"
@@ -7553,13 +8718,13 @@
     },
     {
       "path": "clinic3d/immersion-v23.js",
-      "bytes": 7696,
-      "sha256": "c71687ae32656b9b16a1ae8f7d3a76c0364851ffb2a7b64ff8fcb8b56021feaf"
+      "bytes": 5983,
+      "sha256": "b6bd991128cbd24feb01f5b4a1a5995cea85d41c9a2e8042b6b1cad58d877729"
     },
     {
       "path": "clinic3d/index.html",
-      "bytes": 14231,
-      "sha256": "a3f5be30a9e535721101398056eca17f1c15b465e9c60fe48427c980fc93feec"
+      "bytes": 13776,
+      "sha256": "5de278e5a199be5ad6396660c08584488bf64713038216c4ce2b174489f8711f"
     },
     {
       "path": "clinic3d/inversion-lesson.js",
@@ -7579,7 +8744,7 @@
     {
       "path": "clinic3d/inversion-study.js",
       "bytes": 10525,
-      "sha256": "05e2ab86bd18a7188f8c70c8cb4d32204f182cbb94a9ee9bb1e26ba39df95a63"
+      "sha256": "e50821d22ac4dbe1e2ed960a3d105e02aaac3a04c04b8562aa5e952d6eff871c"
     },
     {
       "path": "clinic3d/learning-bubbles-v25.css",
@@ -7588,8 +8753,8 @@
     },
     {
       "path": "clinic3d/learning-bubbles-v25.js",
-      "bytes": 4327,
-      "sha256": "5ec0cc52ba53d4c2bb74f268079ec552f06df069818111b1d745563919797fda"
+      "bytes": 4543,
+      "sha256": "e7213d0e2a7dedba78634ce21e3dfd5dd2d5b822f765a416e4b68081265d01ca"
     },
     {
       "path": "clinic3d/learning-evidence33.js",
@@ -7598,8 +8763,8 @@
     },
     {
       "path": "clinic3d/learning-ui.js",
-      "bytes": 17372,
-      "sha256": "4ab43844cb5ef592f29dc0b66635185550279e32f5ba228cefa677210da8da78"
+      "bytes": 17221,
+      "sha256": "1a08dec867e790091544be9f2b6cedbd0204099ddb172f4b58f5a87f56962dcc"
     },
     {
       "path": "clinic3d/lesson-coach.js",
@@ -7617,14 +8782,19 @@
       "sha256": "17a8b7caf1cba22dfe1bf1bd81c4440a9c5a512e648db0dbdfc117fc7458757e"
     },
     {
+      "path": "clinic3d/plan-discussion.js",
+      "bytes": 1256,
+      "sha256": "1b5c1c9e04153890084d45d320c4c87a73b8c156014f7b97eac0712a0a00eda4"
+    },
+    {
       "path": "clinic3d/plantar-scan.css",
-      "bytes": 2046,
-      "sha256": "9b1dd9f0536c01b8cca219f112e1abaaf64816d242a646f11e8b503e946e94ec"
+      "bytes": 6960,
+      "sha256": "20807c2e0e527a2b4c91dd3043465df605a261f9ba9909f0fd90da013a7cd30d"
     },
     {
       "path": "clinic3d/plantar-scan.js",
-      "bytes": 2656,
-      "sha256": "f40a1952cc5cb391dcf3d2039122d0686bdda65f4ef625354afac804e6b01651"
+      "bytes": 2776,
+      "sha256": "dd3af739c9c122e70047aebe4ace4c54100d4e8131704c4900b16a23c174ef7c"
     },
     {
       "path": "clinic3d/portraits-v21.js",
@@ -7632,9 +8802,14 @@
       "sha256": "07f9b4891ba3d5af3d44b33ebd3f003fbfa51477d801f4db9d600edc7f12b6cd"
     },
     {
+      "path": "clinic3d/posture-reference.js",
+      "bytes": 4193,
+      "sha256": "e03ff2ced3fecaf3fb38bb5bf181f276a516521344536d3743a17b8187474650"
+    },
+    {
       "path": "clinic3d/pressure-engine.js",
-      "bytes": 28451,
-      "sha256": "af614eb995d658dd8ec522da66fa18e0b24d925bb8ec87fb6efde6985ffdedf1"
+      "bytes": 29122,
+      "sha256": "966cb4884f97add980a484555e97cbd3082b26273420298c9a5a00fd0b6ee1f9"
     },
     {
       "path": "clinic3d/pressure-stage.js",
@@ -7673,8 +8848,8 @@
     },
     {
       "path": "clinic3d/scene-room.js",
-      "bytes": 32064,
-      "sha256": "c97f8d7ce7d363e171d5362b937a4dd307c1fcc1a746c4c153acd912673507ad"
+      "bytes": 32859,
+      "sha256": "0939e5517a5f7eee64a2c7b9392a527bc48971b2e0d8117ec6531efcbaf41691"
     },
     {
       "path": "clinic3d/skip-step.css",
@@ -7684,7 +8859,12 @@
     {
       "path": "clinic3d/soap-route-v20.js",
       "bytes": 12136,
-      "sha256": "44766e4773af66fd0d30f5fe7ba7e5d3897cfb12c5fcdeddf6846f4d6f0d9c9e"
+      "sha256": "f034f40e84a394667d1bedf0bf33ea1ac50e92eb1caba75aae258d58f6ca8b21"
+    },
+    {
+      "path": "clinic3d/soap-summary.js",
+      "bytes": 5278,
+      "sha256": "848e7bbdad88bde875def6cb0fd319eeb607fe7b3030abdff47d8973d61d89b3"
     },
     {
       "path": "clinic3d/soap-tasks-v20.js",
@@ -7693,18 +8873,18 @@
     },
     {
       "path": "clinic3d/strength-bed.js",
-      "bytes": 11830,
-      "sha256": "d8371a58699e2d861c373538c218792261a0993f460cb4f2a8f9137defc205f8"
+      "bytes": 13581,
+      "sha256": "01807b7aa83dfc54224e72330cbd7fd3ea0257a44cea745f91df4f990489f8bc"
     },
     {
       "path": "clinic3d/task-desk.css",
-      "bytes": 4109,
-      "sha256": "e9230352178f27ff762184dc04119ae1be71a56bf19bb8856a3221a43c6cdd21"
+      "bytes": 8100,
+      "sha256": "3df5f7d27ebdf478ca03a30a554ce84c42227bc708b5c0a8306d5088c8db5fdd"
     },
     {
       "path": "clinic3d/task-desk.js",
-      "bytes": 2804,
-      "sha256": "ef3a8c1dfd89bda4ba38a929cac4b9a684c5276d6ec139d6e8eefe31c95d0004"
+      "bytes": 2620,
+      "sha256": "6273cf6b1b82f73dbee328e9cba3cdb63167cb8513966331c5191f9c0b853aea"
     },
     {
       "path": "clinic3d/test-film-sequence-v18.mjs",
@@ -7769,7 +8949,7 @@
     {
       "path": "clinic3d/walking-panel-v26.js",
       "bytes": 15727,
-      "sha256": "dbef55ea3f69d744731bb0b2efde64cccd2585401da0eb075e7e2eca691191d9"
+      "sha256": "4e62e9cdefb3d2384bba8a9146396724f6faacf35989787636b0778919838dff"
     },
     {
       "path": "clinic3d/walking-pose-v27.js",
@@ -7929,7 +9109,7 @@
     {
       "path": "docs/review-v22.html",
       "bytes": 3807,
-      "sha256": "9af2e8233a67ed0a353241724914e92d4ab2f656759b9a44133f3e019a55247e"
+      "sha256": "59bff18a0237decdcc893a927526e00eec35437b714a873dcfab1e121e3e7654"
     },
     {
       "path": "docs/review-v23.html",
@@ -7944,7 +9124,7 @@
     {
       "path": "docs/teaching-design-v33.html",
       "bytes": 15413,
-      "sha256": "3d1230c7017fea537ccfbca9f3da802ae65b62740c1d0c48027b1ac548599866"
+      "sha256": "1df6c8e6a83472f8864f124188b5652715c5a03fb4dab6d74910d272fa4f797b"
     },
     {
       "path": "docs/ui-smoke-check.json",
@@ -7998,8 +9178,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 15189,
-      "sha256": "d8d34aa343b7300ac5179c61e5846a47cb6bfb999abb6874504acda53b6f29b7"
+      "bytes": 15195,
+      "sha256": "fff5fcc56b1021d7a4776b6ee8d6c67c06bbc3324ab4147d2c367bb6e67416ef"
     },
     {
       "path": "knowledge_exam.py",
@@ -8009,12 +9189,12 @@
     {
       "path": "lab/assets/app-data.json",
       "bytes": 1250651,
-      "sha256": "01c3c990e5a26859de082ccdefaafc6d6ba35e87eb68c3a6f2461603883506d2"
+      "sha256": "551eabcd4e7b02d6722b531a4618eba6db5e9bba9c6dcf110b003b22e166a3e8"
     },
     {
       "path": "lab/assets/app.js",
       "bytes": 267957,
-      "sha256": "ec8514620c795c155bc51c48692656a37bf7d546de193d94d03dba5643bb70fa"
+      "sha256": "53d85ba6ddc936e0a42eb7f77197b983523aa9310a688a2552a8e8d4db266b32"
     },
     {
       "path": "lab/assets/bridge-v24.js",
@@ -8079,7 +9259,7 @@
     {
       "path": "learning/ankle-exam.json",
       "bytes": 13296,
-      "sha256": "f9379a30f15715986a7a7c6955942d90c84742dd5b726a33fc81c0b3d4cd2ecf"
+      "sha256": "6fd2a37973039da603d8814f25d91d566740c5bc711468af7d5f1dbf056c8075"
     },
     {
       "path": "learning/case-chart.css",
@@ -8089,7 +9269,7 @@
     {
       "path": "learning/case-items.js",
       "bytes": 3785,
-      "sha256": "f81d706f15161a8860bc9a47b83cc070c85b1c1a67122a26db92bda62fda5c30"
+      "sha256": "2782551204be07ebbeb99f0d4f9e98aa07240e0b004e1d40512bfb1f1a20a793"
     },
     {
       "path": "learning/case-modes.js",
@@ -8124,7 +9304,7 @@
     {
       "path": "learning/module-exam.json",
       "bytes": 17566,
-      "sha256": "376e07574c04bda0107f886f82b913cfd9e4c649eb2cf721a01a1dfa012bf2f7"
+      "sha256": "2bf93bd260ed6646305332a3958e92cdafcf2db313d61ecd14e7a5da6ffce046"
     },
     {
       "path": "learning/module-test.css",
@@ -8139,7 +9319,7 @@
     {
       "path": "learning/objectives-v15.json",
       "bytes": 20775,
-      "sha256": "a147eb81d53f7373686073b3485bec2acad80c06265d05a1eed068f8e362aed1"
+      "sha256": "46128d6802a77d858542257c6307f2db88cc3655dfbd9fa30737c6f87b0a5209"
     },
     {
       "path": "learning/review-v15.html",
@@ -8159,7 +9339,7 @@
     {
       "path": "licenses/LICENSE_SCOPE.txt",
       "bytes": 7476,
-      "sha256": "7231bed2b6a542749006858e6f0f6a8d09ce195f81ac83ad85547477f3e70885"
+      "sha256": "489ad1434cfb10b5ebd1916d677855dc58e06179412ffdc722afcb9ba2687fd0"
     },
     {
       "path": "licenses/ORIGINAL_CODE_LICENSE.txt",
@@ -8244,7 +9424,7 @@
     {
       "path": "painting/catalog.json",
       "bytes": 280169,
-      "sha256": "86cd5bb4745430223ae93aa3165e285d48ebaa7b676f7b5abd8490de77eb835d"
+      "sha256": "0d01d7e80d2cc14b8805f0c191edabc08b5dea6562226452714bff96d7d4f0cc"
     },
     {
       "path": "painting/index.html",
@@ -8448,13 +9628,13 @@
     },
     {
       "path": "project-guide/film.html",
-      "bytes": 2045,
-      "sha256": "7f01714004adf6cc99342c93108361da05d7f65910d4d1837c635fa3c6815499"
+      "bytes": 2014,
+      "sha256": "f4789773fbc04cb8e5c983bb46943935af1dcffd93ac7f0eeb52e029cc294f09"
     },
     {
       "path": "project-guide/guide-data.js",
       "bytes": 4463,
-      "sha256": "5a4d6167eccede55c93c76592cb630b1ed0b48dccc4ab04016a22d49acfd4a7e"
+      "sha256": "0d7352c86d09459ed3d4ecea9e30686f1fed263a9d82e9036c7e9f34d9ee79ec"
     },
     {
       "path": "project-guide/guide-v26.css",
@@ -8499,12 +9679,12 @@
     {
       "path": "soap/ASSET_INVENTORY.json",
       "bytes": 6167,
-      "sha256": "d4468b8275e9c2da55da53e47adc1791ce2a919f487ad44c1614631382989ff3"
+      "sha256": "a6076462fc37a5a1029434bb9c9b3d97383ab52a3d9c4aa6811553092549f88a"
     },
     {
       "path": "soap/ankle-exam.js",
       "bytes": 2051,
-      "sha256": "3f0d399cad05c5ba5b66320961b45fb8717e798ff00300faf03727fb721dcc5a"
+      "sha256": "b741cfb43228cc95995fd2d09ad37935afba9b1522ab6c7352436351c9fd252c"
     },
     {
       "path": "soap/case-profile.json",
@@ -8514,7 +9694,7 @@
     {
       "path": "soap/explorers-data.js",
       "bytes": 10056,
-      "sha256": "65632e43369374003f8f603406b7f86556c4b42413dbe430bdf18083fd5bb130"
+      "sha256": "4726c2f60fb53d08b726546123d4bff3402fb27dad03ab703a7a9102e74a7bf9"
     },
     {
       "path": "soap/explorers.css",
@@ -8533,8 +9713,8 @@
     },
     {
       "path": "soap/index.html",
-      "bytes": 2895,
-      "sha256": "4555b3c69ecdcbe7813d3d2d81265af490730782310823a5340ead352d8277a1"
+      "bytes": 2900,
+      "sha256": "1b993a3a0376e52925b4859b654abdeccc52d78f7b69ae86c5ec6a93ba1d468e"
     },
     {
       "path": "soap/interview-dialogue.json",
@@ -8553,13 +9733,13 @@
     },
     {
       "path": "soap/media-provenance.json",
-      "bytes": 6034,
-      "sha256": "1bb8ee02884dc64bdb931c0753332217a524c22660889b50e87038c44f061400"
+      "bytes": 6324,
+      "sha256": "7472624ef783d9107cf422429a29201089287bccdde1a95a8ea6c58836c163b0"
     },
     {
       "path": "soap/media.json",
-      "bytes": 3255,
-      "sha256": "2501a7b37e1cc390546a972989cc7386ee59cd1a9d19a2f63351719c80d1b470"
+      "bytes": 2402,
+      "sha256": "e87d5c2dd9b688649c7cfb828480b9effef08f754a56375556371cc2e336e97f"
     },
     {
       "path": "soap/media/ankle-exam.mp4",
@@ -8698,8 +9878,8 @@
     },
     {
       "path": "soap/soap.js",
-      "bytes": 33788,
-      "sha256": "adcd4bfa11e95e0099a42b0199f255d68f978113eac23a98bd4e0cce74982361"
+      "bytes": 33812,
+      "sha256": "5daa6356582e9ef56f8a35049043cd5a3b44355056e25c1ffb342494c95ce46b"
     },
     {
       "path": "soap/teaching-data.js",
@@ -8719,7 +9899,7 @@
     {
       "path": "soap_service.py",
       "bytes": 14875,
-      "sha256": "e3c4c50de0bd62b6279126c8bdecbbb21abb881c93e1350edb702d37e53be5e7"
+      "sha256": "3d08ff937b4d57171b5d927f1e1db12ee370072ade6877a3717711b0b5b921d7"
     },
     {
       "path": "start_local.py",
@@ -8834,7 +10014,7 @@
     {
       "path": "tests/test_explorers_v22.mjs",
       "bytes": 2511,
-      "sha256": "abf2d9177354e5a3e7da76d19741557c9535ff800e071d0da9276a4fa1df321b"
+      "sha256": "cd294111dba8588e0b06367ea74dad0f5cc8195f6e449ddc7e3c36f2aea70628"
     },
     {
       "path": "tests/test_gait_pose_v27.mjs",

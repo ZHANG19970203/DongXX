@@ -182,7 +182,7 @@ export const FILM_SEQUENCE = {
       "act": 2,
       "phase": "before",
       "title": "先解释，再邀请脱鞋袜",
-      "learningPoint": "背屈、跖屈与同方法比较；动作先于数值。",
+      "learningPoint": "背伸、跖屈与同方法比较；动作先于数值。",
       "evidenceRequirement": {
         "all": [
           "consent"
@@ -200,7 +200,7 @@ export const FILM_SEQUENCE = {
         },
         {
           "speaker": "therapist",
-          "text": "脚背靠近小腿叫背屈，向下伸叫跖屈。先小幅试试，不舒服就停，再用同样方法比左右。"
+          "text": "脚背靠近小腿叫背伸，向下伸叫跖屈。先小幅试试，不舒服就停，再用同样方法比左右。"
         },
         {
           "speaker": "patient",
@@ -282,7 +282,7 @@ export const FILM_SEQUENCE = {
         "all": [
           "local_record"
         ],
-        "source": "仅正常线：虚构病例右侧同方法负重背屈表现较小；没有角度值。"
+        "source": "仅正常线：虚构病例右侧同方法负重背伸表现较小；没有角度值。"
       },
       "normal": [
         {
@@ -291,7 +291,7 @@ export const FILM_SEQUENCE = {
         },
         {
           "speaker": "therapist",
-          "text": "先停在舒服的位置。刚才右侧负重背屈表现较小，发紧本身不能说明骨头错位。"
+          "text": "先停在舒服的位置。刚才右侧负重背伸表现较小，发紧本身不能说明骨头错位。"
         },
         {
           "speaker": "patient",
@@ -1483,7 +1483,7 @@ normalizeFilm(FILM_SEQUENCE);
 import {applyNaturalFilm} from './natural-language-v26.js';
 applyNaturalFilm(FILM_SEQUENCE);
 
-import {reviseFilm} from './dialogue-revision33.js';
+import {reviseFilm} from './dialogue-revision33.js?v=68';
 reviseFilm(FILM_SEQUENCE);
 
 // This chapter uses direct explanation and a three-arch bone activity.
@@ -1509,10 +1509,10 @@ agreement.handoff.nextNodeId='consent_reply';
 agreement.handoff.studentAction='确认患者意愿后，先做床旁稳定性检查。';
 
 for(const [id,label,next,prompt] of [
- ['03A','开始肌力检查','muscle_match','先左后右比较背屈、跖屈、内翻与外翻。'],
+ ['03A','开始肌力检查','muscle_match','先左后右比较背伸、跖屈、内翻与外翻。'],
  ['06B','查看踝关节活动度','local_intro','完成足底负荷观察后，检查踝关节活动度。'],
  ['05B','进入评估与计划','plan_intro','综合本次检查，讨论下一步。'],
- ['02A','辨认踝足运动','alignment','阅读量角器摆法，辨认关节运动方向。'],
+ ['02A','辨认踝足运动','alignment','先看两组关节运动，再学习量角器的摆法。'],
  ['07A','检查静态平衡','static_cop','双足睁眼站立，比较完整轨迹后判断结果。']
 ]){
  const clip=FILM_SEQUENCE.clips.find(c=>c.id===id);

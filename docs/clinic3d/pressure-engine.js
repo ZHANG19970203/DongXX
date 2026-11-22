@@ -395,7 +395,7 @@ export function samplePlantarScan(centres={}) {
   return {kind:'plantar_scan',phase:1,measured:false,feet,cells};
 }
 
-export function renderPlantarScan(svg,frame) {
+export function renderPlantarScan(svg,frame,{highlightRight=false}={}) {
   svg.setAttribute('viewBox','0 0 340 260');
   svg.setAttribute('role','img');
   svg.setAttribute('aria-label',frame.kind==='plantar_scan'?'双足站立扫描，右中足内侧接触较宽':'左右脚各自承重早期的足压分布，右足压力偏向外侧');
@@ -405,6 +405,12 @@ export function renderPlantarScan(svg,frame) {
     const map=cell=>({x:x+cell.lateral*780,y:184-cell.forward*780});map.scale=780;
     markup+=`<rect x="${x-61}" y="5" width="122" height="233" rx="13" fill="white" stroke="#d2e1da"/>`;
     markup+=`<g class="scan-reveal" data-foot="${foot.side}">${pathCells(foot.cells,map)}</g>`;
+    if(highlightRight&&foot.side==='right'){
+      const peak=foot.cells.reduce((best,cell)=>cell.pressure>best.pressure?cell:best);
+      const point=map(peak),y=point.y.toFixed(1),cx=point.x.toFixed(1);
+      markup+=`<g class="scan-callout" aria-label="圈出右足相对压力最高的区域"><path d="M189 ${y} H${point.x-9}" stroke="#163e39" stroke-width="1.4"/><circle cx="${cx}" cy="${y}" r="9" fill="none" stroke="white" stroke-width="4"/><circle cx="${cx}" cy="${y}" r="9" fill="none" stroke="#163e39" stroke-width="1.6"/></g>`;
+      markup+=text(186,point.y+4,'高压区','text-anchor="end" font-size="12" font-weight="700"');
+    }
     markup+=text(x,255,i===0?'左足 · 健侧':'右足 · 患侧','text-anchor="middle" font-size="15" font-weight="600"');
   }
   svg.innerHTML=markup;

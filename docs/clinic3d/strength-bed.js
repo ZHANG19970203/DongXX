@@ -45,6 +45,29 @@ function projectAtlas(template,patient,scene){
  return result;
 }
 
+// Intersect rays with the posed lower-limb skin so that the palm rests outside the mesh.
+function skinContacts(patient){
+ const skin=patient.model.getObjectByName('Patient_Skin'),geometry=skin.geometry;
+ const pos=geometry.attributes.position,index=geometry.index;
+ const faces={L:[],R:[]},vertex=v(),ray=new THREE.Ray(),hit=v(),world=[];
+ for(let i=0;i<(index?.count||pos.count);i+=3){
+  const tri=[0,1,2].map(k=>index?index.getX(i+k):i+k);
+  if(tri.some(k=>pos.getY(k)>.38))continue;
+  faces[pos.getX(tri[0])<0?'R':'L'].push(tri);
+ }
+ return (side,point,normal)=>{
+  const origin=point.clone().addScaledVector(normal,.17);
+  ray.set(origin,normal.clone().negate());world.length=0;
+  const localPoint=k=>world[k]|| (world[k]=skin.localToWorld(skin.getVertexPosition(k,vertex)).clone());
+  let nearest=.29,distance=null;
+  for(const [a,b,c] of faces[side]){
+    if(ray.intersectTriangle(localPoint(a),localPoint(b),localPoint(c),false,hit)){
+      const d=hit.distanceTo(origin);if(d<nearest){nearest=d;distance=.17-d;}
+    }
+  }
+  return distance===null?0:distance+.014;
+ };
+}
 export function createStrengthBed(actors,room,scene){
  const p=actors.patient,d=actors.therapist,pr=p.bedsideRig,dr=d.bedsideRig;
  const stencils=new Map();
@@ -62,7 +85,8 @@ export function createStrengthBed(actors,room,scene){
  const stool=room.objects.examStool,previous=stool.position.clone(),scale=stool.scale.y;
  const arrow=new THREE.ArrowHelper(Y,v(),.12,0xc35e19,.032,.019);arrow.visible=false;scene.add(arrow);
  let meshes=[],closed=false,t=0,motion='dorsiflexion',side='L',stage='prepare',knee=false,visible=true,prone=0,bend=0,angle=0,blend=0,clock=0;
- let fixed=v(),contact=v(),target=v(),direction=v(),expose=0;
+ let fixed=v(),contact=v(),direction=v(),expose=0;
+ const surface=skinContacts(p);let sampleIndex=0,shinGap=0,foreGap=0;
  document.body.dataset.strengthAtlas='loading';
  atlas().then(model=>{if(!closed){meshes=projectAtlas(model,p,scene);document.body.dataset.strengthAtlas='ready';}}).catch(()=>{if(!closed)document.body.dataset.strengthAtlas='unavailable';});
  const poseAt=(actor,pelvis,rotation)=>{
@@ -77,7 +101,7 @@ export function createStrengthBed(actors,room,scene){
   const rate=Math.min(1,dt*7);
   prone=THREE.MathUtils.damp(prone,motion==='plantarflexion'?1:0,8,dt);
   bend=THREE.MathUtils.damp(bend,knee&&motion==='plantarflexion'?1:0,9,dt);
-  blend=THREE.MathUtils.lerp(blend,['active','resist','result'].includes(stage)?1:0,rate);
+  blend=THREE.MathUtils.lerp(blend,['active','resist'].includes(stage)?1:0,rate);
   const yielding=motion==='eversion'&&side==='R'&&stage==='resist'&&clock>.4;
   angle=THREE.MathUtils.damp(angle,blend*(yielding?.075:.27),9,dt);
   pr.reset();dr.reset();
@@ -110,7 +134,8 @@ export function createStrengthBed(actors,room,scene){
   const shankUp=shin.clone().sub(ankle).normalize();
   // At the front of the couch, the proximal hand stays just above the malleoli.
   const anterior=Z.clone().applyQuaternion(pr.rest.get('lowerleg01'+s).world.clone().invert()).applyQuaternion(p.bones.get('lowerleg01'+s).getWorldQuaternion(new THREE.Quaternion()));
-  const exposedDirection=anterior.clone().lerp(anterior.clone().negate(),prone).normalize();
+  const exposedDirection=Y.clone().projectOnPlane(shankUp).normalize();
+  if(exposedDirection.lengthSq()<.1)exposedDirection.copy(anterior);
   fixed.copy(ankle).addScaledVector(shankUp,.10).addScaledVector(exposedDirection,.04);
   const fore=ankle.clone().lerp(toes,.81);
   switch(motion){
@@ -119,11 +144,16 @@ export function createStrengthBed(actors,room,scene){
    case 'inversion':contact.copy(big).lerp(ankle,.23).addScaledVector(med,.014).addScaledVector(dorsal,.014);direction.copy(med).negate().addScaledVector(dorsal,.20);break;
    default:contact.copy(little).lerp(ankle,.19).addScaledVector(med,-.012).addScaledVector(dorsal,.010);direction.copy(med).addScaledVector(dorsal,.15);
   }
-  direction.normalize();target.copy(ankle).lerp(shin,.30);
+  direction.normalize();
+  const foreNormal=direction.clone().negate();
+  if(sampleIndex++%6===0){
+   shinGap=surface(k,fixed,exposedDirection);foreGap=surface(k,contact,foreNormal);
+  }
+  fixed.addScaledVector(exposedDirection,shinGap);contact.addScaledVector(foreNormal,foreGap);
   const height=THREE.MathUtils.clamp((contact.y+fixed.y)/2-.19,.39,.91);
   // Adjust examiner position to both contact landmarks and the flexed-knee height.
   const mid=contact.clone().lerp(fixed,.5);
-  const examiner=v(mid.x+.05,height,mid.z+.365).lerp(v(-1.30,.86,1.55),1-entry);
+  const examiner=v(mid.x+.05,height,mid.z+.425).lerp(v(-1.30,.86,1.55),1-entry);
   const yaw=turn(Y,Math.PI+.10);
   poseAt(d,examiner,yaw);d.root.visible=true;d.setDocumentation('desk');
   stool.position.set(examiner.x,0,examiner.z);stool.scale.y=scale*Math.max(.60,(height-.10)/.45);
@@ -132,7 +162,8 @@ export function createStrengthBed(actors,room,scene){
    dr.reach('upperleg01'+f,'lowerleg01'+f,'foot'+f,v(hs*.17,footY,.21),v(hs*.22,.56,.65));
   }
   dr.offset('spine03',X,.35);dr.offset('head',X,.25);
-  const fixedHand=(k==='R')?'L':'R',resistHand=(k==='R')?'R':'L';
+  const fixedHand=motion==='eversion'?k:(k==='R'?'L':'R');
+  const resistHand=fixedHand==='L'?'R':'L';
   for(const [h,pt,inward,fingers] of [
     [fixedHand,fixed,exposedDirection.clone().negate(),med.clone()],
     [resistHand,contact,direction,long.clone().negate()]
@@ -148,15 +179,25 @@ export function createStrengthBed(actors,room,scene){
   if(finished&&clock>=1.35&&t>2.5&&blend>.97&&((motion==='plantarflexion')=== (prone>.98))){
    finished(true);finished=null;
   }
-  return {contact:contact.clone(),fixed:fixed.clone(),fixedGap:fixed.distanceTo(palms[fixedHand]),contactGap:contact.distanceTo(palms[resistHand]),posture:prone>.98?'prone':prone<.02?'sitting':'turning',knee:bend,projection:meshes.filter(x=>x.mesh.visible).map(x=>x.key)};
+  return {fixedHand,resistHand,contact:contact.clone(),fixed:fixed.clone(),fixedGap:fixed.distanceTo(palms[fixedHand]),contactGap:contact.distanceTo(palms[resistHand]),posture:prone>.98?'prone':prone<.02?'sitting':'turning',knee:bend,projection:meshes.filter(x=>x.mesh.visible).map(x=>x.key)};
  }
  function aim(view){
-  const centre=view==='feet'?target.clone():view==='first'?target.clone().lerp(contact,.42):v(-1.67,.88,.60);
-  if(view==='feet')centre.y-=.025;
-  const off=view==='third'?v(2.48,.76,.83):view==='first'?v(.46,.77,.59):v((side==='R'?-1:1)*(1-2*prone)*.83,.47,.24);
+  protection.set({mask:1,right:1,left:1,visible:view!=='first'});
+  const centre=fixed.clone().lerp(contact,.62);
+  const outside=(side==='R'?-1:1)*(1-2*prone);
+  let off;
+  if(view==='first'){
+   // Look down from just in front of the examiner, past the hands to the tested foot.
+   off=v(outside*.065,.40,.025);
+  }else if(view==='feet'){
+   off=v(outside*.39,.23,-.075);
+  }else{
+   // Observe from the tested side to avoid shooting through the examiner's back.
+   off=v(outside*.67,.32,-.065);
+  }
   return {target:centre,eye:centre.clone().add(off)};
  }
- return {update,aim,project(value){visible=value;},set(k,mode,action,flex,project){if(finished){finished(false);finished=null;}side=k||'L';motion=action||'dorsiflexion';stage=mode||'rest';knee=!!flex;visible=project!==false;clock=0;return stage==='resist'?new Promise(resolve=>{finished=resolve;}):Promise.resolve(false);},
+ return {update,aim,project(value){visible=value;},set(k,mode,action,flex,project){if(finished){finished(false);finished=null;}sampleIndex=0;side=k||'L';motion=action||'dorsiflexion';stage=mode||'rest';knee=!!flex;visible=project!==false;clock=0;return stage==='resist'?new Promise(resolve=>{finished=resolve;}):Promise.resolve(false);},
   close(){if(finished)finished(false);closed=true;for(const [m,data] of stencils){[m.stencilWrite,m.stencilRef,m.stencilZPass]=data;}arrow.removeFromParent();arrow.dispose();for(const {mesh} of meshes){mesh.removeFromParent();mesh.geometry.dispose();mesh.material.dispose();}for(const skeleton of new Set(meshes.map(x=>x.mesh.skeleton)))skeleton.dispose();protection.dispose();p.setExamCuff(0);for(const a of [p,d]){a.root.quaternion.identity();a.root.position.set(0,0,0);a.bedsideRig.reset();}cart.position.copy(cartHome);stool.position.copy(previous);stool.scale.y=scale;delete document.body.dataset.strengthAtlas;}
  };
 }

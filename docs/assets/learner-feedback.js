@@ -40,7 +40,7 @@ window.DXXFeedback=(()=>{
    if(key.startsWith('dxx_clinic3d_v21_')){
     for(const k of Object.keys(raw.taskReceipts||{}))if(taskNames[k]){
      const scope=raw.taskReceipts[k]?.scope;
-     const title=({'simulated-eversion':'双侧踝外翻肌力检查','simulated-ankle-strength':'双侧抗阻外翻与背屈检查','ankle-motion-knowledge':'踝足关节运动辨认','static-balance-interpretation':'踝扭伤后静态平衡判读'})[scope];
+     const title=({'simulated-eversion':'双侧踝外翻肌力检查','simulated-ankle-strength':'双侧抗阻外翻与背伸检查','ankle-motion-knowledge':'踝足关节运动辨认','static-balance-interpretation':'踝扭伤后静态平衡判读'})[scope];
      progress.set('clinic:'+(title?scope:k),'足踝虚拟诊室 · '+(title||taskNames[k]));
     }
     for(const e of raw.events||[])if(e.type==='learning_active_interval'){const t=e.payload||{},a=Date.parse(t.from)/1000,b=Date.parse(t.to)/1000;if(t.method==='visible_recent_input_120s_v23'&&b>a&&b-a<=30)ranges.push([a,b]);}

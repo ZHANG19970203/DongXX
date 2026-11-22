@@ -1,4 +1,4 @@
-import {flowLines,replies,editScenes} from './clinic-dialogue.js';
+import {flowLines,replies,editScenes} from './clinic-dialogue.js?v=68';
 // Conversational script. Clinical facts and conditional routes are unchanged.
 const lines={
  '您愿意从什么时候开始说？':'您最担心的是哪件事？',
@@ -6,7 +6,7 @@ const lines={
  '好的，先停稳。我问清感受，再决定是否继续。':'好的，先停下来。现在是哪里不舒服？',
  '好，不用先给我下结论。':'好，那先检查清楚吧。',
  '往外稳住脚，是哪些肌肉呢？':'那哪些肌肉能帮我稳住脚踝呢？',
- '现在看踝关节背屈和跖屈。':'请把脚尖往上抬，再慢慢往下压，我看看脚踝能活动到哪里。',
+ '现在看踝关节背伸和跖屈。':'请把脚尖往上抬，再慢慢往下压，我看看脚踝能活动到哪里。',
  '我们先观察负重前后的变化。':'我看看您坐着和站着时，脚弓有什么变化。',
  '把实际取得的资料放在一起，再商量计划。':'检查先到这里。我们一起看看结果，再商量接下来怎么练。',
  '好。先定可做到的目标，再安排复评。':'好，我们先以走路更稳为目标，练习一段时间后再复查。',

@@ -10,7 +10,7 @@
     {
       "path": "soap/explorers-data.js",
       "bytes": 10056,
-      "sha256": "65632e43369374003f8f603406b7f86556c4b42413dbe430bdf18083fd5bb130"
+      "sha256": "4726c2f60fb53d08b726546123d4bff3402fb27dad03ab703a7a9102e74a7bf9"
     },
     {
       "path": "soap/explorers.css",
@@ -29,8 +29,8 @@
     },
     {
       "path": "soap/index.html",
-      "bytes": 2895,
-      "sha256": "4555b3c69ecdcbe7813d3d2d81265af490730782310823a5340ead352d8277a1"
+      "bytes": 2900,
+      "sha256": "1b993a3a0376e52925b4859b654abdeccc52d78f7b69ae86c5ec6a93ba1d468e"
     },
     {
       "path": "soap/interview-dialogue.json",
@@ -124,13 +124,13 @@
     },
     {
       "path": "soap/media-provenance.json",
-      "bytes": 6034,
-      "sha256": "1bb8ee02884dc64bdb931c0753332217a524c22660889b50e87038c44f061400"
+      "bytes": 6324,
+      "sha256": "7472624ef783d9107cf422429a29201089287bccdde1a95a8ea6c58836c163b0"
     },
     {
       "path": "soap/media.json",
-      "bytes": 3255,
-      "sha256": "2501a7b37e1cc390546a972989cc7386ee59cd1a9d19a2f63351719c80d1b470"
+      "bytes": 2402,
+      "sha256": "e87d5c2dd9b688649c7cfb828480b9effef08f754a56375556371cc2e336e97f"
     },
     {
       "path": "soap/references.json",
@@ -149,8 +149,8 @@
     },
     {
       "path": "soap/soap.js",
-      "bytes": 33788,
-      "sha256": "adcd4bfa11e95e0099a42b0199f255d68f978113eac23a98bd4e0cce74982361"
+      "bytes": 33812,
+      "sha256": "5daa6356582e9ef56f8a35049043cd5a3b44355056e25c1ffb342494c95ce46b"
     },
     {
       "path": "soap/teaching-data.js",

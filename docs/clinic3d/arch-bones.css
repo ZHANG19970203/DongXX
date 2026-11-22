@@ -15,3 +15,15 @@
 .arch-postures svg{display:block;width:100%;max-height:108px}
 .arch-postures figcaption{font-size:.8rem;color:#47616a}
 .arch-postures .study-primary{width:100%}
+
+.posture-reference,.stress-notes{font-size:.88rem;line-height:1.45;color:#244c46;padding:.45rem .6rem;border:1px solid #d7e4df;border-radius:.55rem;background:#f7faf7}
+.posture-reference summary,.stress-notes summary{cursor:pointer;font-weight:650}
+.posture-reference .posture-switch{display:flex;gap:.3rem;margin:.45rem 0}
+.posture-switch button{flex:1;padding:.26rem .4rem;font:inherit}
+.posture-switch [aria-pressed=true]{color:#fff;background:#1f6258}
+.arch-postures .posture-reference svg{max-height:148px}
+.posture-reference p,.stress-notes p{margin:.38rem 0}.posture-reference small{color:#526b65}
+.practice-actions .stress-notes{flex-basis:100%;text-align:left;max-height:26vh;overflow:auto}
+#wallReference{margin:.4rem 0 0;padding:.4rem;border-radius:.6rem;background:#f4f8f5;text-align:center}
+#wallReference svg{display:block;margin:auto;width:min(100%,400px);max-height:112px;font:13px sans-serif;fill:#31544e}
+#wallReference figcaption{font-size:.82rem;line-height:1.4;color:#3d5853}

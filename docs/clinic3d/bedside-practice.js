@@ -81,7 +81,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
    const returning=next==='return';
    amount=returning?1:0;hold=0;loaded=returning;returnTime=null;path=null;draw(baseline());
    if(returning)poseAmount(1);else if(!resuming)attempts++;
-   line.textContent=test===0?'固定小腿，沿直箭头带动足跟向患者前方平移。稍停，再缓慢回位。':returning?'压力已解除。沿弧线缓慢回到中立位。':'右手稳住胫骨下缘，左手虎口贴住足外侧缘，带动跟骨内收、内翻。';
+   line.textContent=test===0?'踝稍跖屈。左手固定小腿，右手托住足跟向前平移。感受终末阻力，再缓慢回位。':returning?'压力已解除。沿弧线缓慢回到中立位。':'右手稳住胫骨下缘，左手虎口贴住足外侧缘，带动跟骨内收、内翻。';
    const handle=document.createElement('button');handle.type='button';handle.className='practice-handle';handle.dataset.target='drag';handle.textContent=test===0?'带动足跟':returning?'缓慢回位':'内收、内翻';handle.setAttribute('aria-label',handle.textContent+'，也可沿箭头使用方向键');markers.append(handle);
    const guide=document.createElement('span');guide.className='practice-direction';markers.append(guide);
    if(test===1){
@@ -136,6 +136,12 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
    line.textContent='将右脚摆正，足底与小腿约呈直角。';draw(10.2);
   }else if(next==='interpret'){draw(15);
    line.textContent='病例资料提示右侧前移、内翻倾斜较对侧略大。怎样解释这一发现？';
+   const notes=document.createElement('details');notes.className='stress-notes';
+   const heading=document.createElement('summary');heading.textContent='怎样理解两项手法？';notes.append(heading);
+   for(const text of ['前抽屉比较足跟向前的移动及终末阻力，主要关注距腓前韧带。中立位内翻加压比较倾斜幅度及终末阻力，主要关注跟腓韧带。','若另有足部外旋受伤、踝上方疼痛等线索，可另行评估下胫腓联合。外旋应力试验关注是否诱发熟悉的联合区疼痛，并结合压痛、损伤机制及其他检查判断。']){
+    const paragraph=document.createElement('p');paragraph.textContent=text;notes.append(paragraph);
+   }
+   actions.append(notes);
    button('提示机械性松弛，还需结合病史和功能检查',()=>{emit('interpretation',{correct:true});setStage('complete');},'interpret-correct');
    button('可以直接确定韧带完全断裂',()=>{errors++;emit('interpretation',{correct:false});status.textContent='单凭手法检查不能确定韧带完全断裂，请重新选择。';},'interpret-wrong');
   }else if(next==='complete'){draw(15);

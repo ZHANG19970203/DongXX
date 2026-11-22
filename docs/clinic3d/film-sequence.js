@@ -1,6 +1,6 @@
 import {filmFallback,replies} from './clinic-dialogue.js';
 const fallback=kind=>filmFallback[kind].map(([speaker,text])=>({speaker,text}));
-import { FILM_SEQUENCE } from './film-sequence-data.js';
+import { FILM_SEQUENCE } from './film-sequence-data.js?v=68';
 
 export const FILM_CLIPS=FILM_SEQUENCE.clips;
 const roles={therapist:'林治疗师',patient:'陈女士'};
@@ -43,10 +43,10 @@ export function approvedFilmMedia(clipId,condition,manifest,baseUrl){
 export function createFilmSequence({$,state,player,record,persist,appendLine,pauseScene,resumeScene,refreshCoach}){
   let active=null,manifest={clips:{}},videoPause=null,manifestReady=false,waiting=null,playback=null;
   let introducing=false;
-  const originalScenes=new Set(['01A','04A','05A','06A','08A']);
+  const originalScenes=new Set(['01A','04A','05A','06A']);
   const cue=$('filmCue'),name=$('filmSegmentName'),handoff=$('filmHandoff'),replay=$('filmReplay'),watch=$('filmWatch'),overlay=$('filmOverlay'),video=$('filmVideo');
   const media=()=>active&&approvedFilmMedia(active.clip.id,active.branch.condition,manifest,location.href);
-  fetch('film-media-v18.json',{cache:'no-cache'}).then(response=>response.ok?response.json():{clips:{}}).catch(()=>({clips:{}})).then(value=>{
+  fetch('film-media-v18.json?v=68',{cache:'no-cache'}).then(response=>response.ok?response.json():{clips:{}}).catch(()=>({clips:{}})).then(value=>{
     manifest=value;manifestReady=true;watch.hidden=!media();if(waiting&&waiting===active)playPrimary();
   });
   function playPrimary(){

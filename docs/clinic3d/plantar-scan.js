@@ -1,4 +1,4 @@
-import {samplePlantarScan, renderPlantarScan} from './pressure-engine.js';
+import {samplePlantarScan, renderPlantarScan} from './pressure-engine.js?v=68';
 
 const example = samplePlantarScan();
 export function pressureLegend(){
@@ -12,13 +12,13 @@ export function pressureLegend(){
   return legend;
 }
 
-export function plantarFigure(){
+export function plantarFigure({highlightRight=false}={}){
   const figure=document.createElement('figure');
   figure.className='plantar-scan';
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  renderPlantarScan(svg,example);
+  renderPlantarScan(svg,example,{highlightRight});
   const caption=document.createElement('figcaption');
-  caption.textContent='双足站立 · 同一相对压力色标 · 教学模拟';
+  caption.textContent=highlightRight?'双足站立压力示例 · 圆圈标出右足高压区':'双足站立 · 同一相对压力色标 · 教学模拟';
   figure.append(svg,pressureLegend(),caption);
   return figure;
 }

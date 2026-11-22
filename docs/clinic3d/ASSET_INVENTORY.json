@@ -122,8 +122,8 @@
     {
       "id": "original-room",
       "path": "scene-room.js",
-      "bytes": 32064,
-      "sha256": "c97f8d7ce7d363e171d5362b937a4dd307c1fcc1a746c4c153acd912673507ad",
+      "bytes": 32859,
+      "sha256": "0939e5517a5f7eee64a2c7b9392a527bc48971b2e0d8117ec6531efcbaf41691",
       "source": "Project original room/rig procedures; includes portable clinical notes and pen. No separate stationery tray; existing medical trolley only holds clinical tools.",
       "license": "Room/application code follows the complete-site MIT scope; anatomical poster data derivatives retain CC BY 4.0 with attribution, modification notes and source IDs in docs/v12-anatomy-posters.json.",
       "includes": [
@@ -147,8 +147,8 @@
     {
       "id": "original-actor-procedures",
       "path": "actors.js",
-      "bytes": 41140,
-      "sha256": "6e39b745973afc1b33afe2a1557c4e6026110f6214f8ccf5ad831453aa6c6d43",
+      "bytes": 43576,
+      "sha256": "bc0dd38a50cc56c9f4d41ba014fd4c1cada12ddbb3f90ff8ab9d53148ab8712b",
       "source": "Project original room/rig procedures; includes portable clinical notes and pen. No separate stationery tray; existing medical trolley only holds clinical tools.",
       "license": "Original application code follows licenses/ORIGINAL_CODE_LICENSE.txt MIT scope; the source core mesh and skin weights remain attributed to MPFB CC0.",
       "includes": [
@@ -183,14 +183,14 @@
         "Static, dynamic and maximum modes keep fixed relative colour scale and condition labels"
       ],
       "path": "pressure-engine.js",
-      "bytes": 28451,
-      "sha256": "af614eb995d658dd8ec522da66fa18e0b24d925bb8ec87fb6efde6985ffdedf1"
+      "bytes": 29122,
+      "sha256": "966cb4884f97add980a484555e97cbd3082b26273420298c9a5a00fd0b6ee1f9"
     },
     {
       "id": "licensed-anatomy-window",
       "path": "anatomy-viewer.js",
       "bytes": 35118,
-      "sha256": "39303be812508e46535744e870e26d1ec92989b77194007908a49d7a182b89a7",
+      "sha256": "57ecfb9d56e3cc4028b7701337e39d9900bd423622fd0c407203c8288667bb2f",
       "codeLicense": "MIT under original project code scope",
       "geometryLicense": "CC BY 4.0",
       "assetCount": 35,
@@ -224,8 +224,8 @@
       "limits": [
         "Authored teaching case and presentation; not clinical validation"
       ],
-      "bytes": 4683,
-      "sha256": "8dc77f87a190f314a0daead19e388ec2cbbc8fa3e52082b2b7f175ceccbee4cf"
+      "bytes": 4717,
+      "sha256": "2c945fd9910f81bf55975f48428e06f10738f500a504d861f2f132850527cad4"
     },
     {
       "id": "original-learning-ui",
@@ -236,8 +236,8 @@
         "Clinical review pending",
         "Teaching operations are not patient measurements"
       ],
-      "bytes": 17372,
-      "sha256": "4ab43844cb5ef592f29dc0b66635185550279e32f5ba228cefa677210da8da78"
+      "bytes": 17221,
+      "sha256": "1a08dec867e790091544be9f2b6cedbd0204099ddb172f4b58f5a87f56962dcc"
     },
     {
       "id": "original-appearance",
@@ -286,8 +286,8 @@
     {
       "id": "original-concise-case-v12",
       "path": "case-flow.js",
-      "bytes": 64235,
-      "sha256": "5a21ab03dd10dcbd2396076d2261b4729242750f59ecc273bcf14e1108225045",
+      "bytes": 65948,
+      "sha256": "dabc71dae81b78a65d01f4622a985c239ee5352e34c85954c8bd0b72c4d66aee",
       "source": "Original fictional case and teaching choices; 41 nodes shortened without replacing evidence/safety paths",
       "license": "Application logic follows complete-site MIT scope; fictional case prose remains separate project teaching content",
       "limits": [
@@ -394,7 +394,7 @@
         "Teaching operations are not patient measurements"
       ],
       "bytes": 17065,
-      "sha256": "fd19b53e82060707715bc923ead47e417d9ef4104e5dc7a93b1a7ec143bba4b4"
+      "sha256": "053b92f462b1004f2aa82870b1747378f0dba12527d33fd424b97b49e6a97e32"
     },
     {
       "id": "original-muscle-method",
@@ -406,7 +406,7 @@
         "Teaching operations are not patient measurements"
       ],
       "bytes": 5784,
-      "sha256": "ff7e948deff425b8f1dcf853987f32480e1a4f7e6ed8077b949ca6c466f69cdc"
+      "sha256": "a577251a1e852a689ba2d1863de1e4056f4c7891d4398863f06d041aa3db5808"
     },
     {
       "id": "original-progress-migration",
@@ -454,7 +454,7 @@
         "Real DeepSeek connection requires user configuration; no external media copied"
       ],
       "bytes": 20775,
-      "sha256": "a147eb81d53f7373686073b3485bec2acad80c06265d05a1eed068f8e362aed1"
+      "sha256": "46128d6802a77d858542257c6307f2db88cc3655dfbd9fa30737c6f87b0a5209"
     },
     {
       "id": "original-learning-service-v15",
@@ -494,8 +494,8 @@
     {
       "id": "user-provided-communication-films-v19",
       "path": "../soap/media-provenance.json",
-      "bytes": 6034,
-      "sha256": "1bb8ee02884dc64bdb931c0753332217a524c22660889b50e87038c44f061400",
+      "bytes": 6324,
+      "sha256": "7472624ef783d9107cf422429a29201089287bccdde1a95a8ea6c58836c163b0",
       "source": "Five user-provided source clips, edited for course use",
       "license": "No independent third-party rights clearance asserted; existing program/model licenses do not relicense these videos",
       "limits": [
@@ -506,8 +506,8 @@
     {
       "id": "local-dialogue-v20",
       "path": "assets/dialogue-v20/manifest.json",
-      "bytes": 463375,
-      "sha256": "0107ce33291ba635e424a9e374eec06596096cf1c0b2a8e0ad566d7996b4dea9",
+      "bytes": 479391,
+      "sha256": "ac9a00c50e1a384e9d7478c24664bd17fbb9e366bdc4606b4925ad540e807dca",
       "source": "Course recordings and generated Mandarin dialogue. The voice and source fields identify individually credited clips.",
       "license": "Course dialogue assets. Speech engines and model weights are not distributed."
     },
@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 84194,
-      "sha256": "b60a10f6a1b67e0d2b7bc8156abdfeee47477434a8e829ede39f2904da16179f"
+      "bytes": 87864,
+      "sha256": "af5a86c896824f9cdca0afeea3510247b644438462c02e117e5511a533acfc4c"
     },
     {
       "id": "walking-pose-v27",
@@ -686,7 +686,7 @@
     {
       "path": "docs/anatomy-v10-provenance.json",
       "bytes": 83169,
-      "sha256": "b23813b5ed64c25ae284af0aaeba5502c12f047862e9bbb03781508fd542efbf"
+      "sha256": "3ab16a5d5fb7ff192258e5bf09c389af4615d0a6ace67556ab87ae8938075465"
     },
     {
       "path": "docs/gait-v10-sources.json",
@@ -766,7 +766,7 @@
     {
       "path": "docs/teacher-review-v12.md",
       "bytes": 5015,
-      "sha256": "3d813f54efe7dbaa219cac65ed0c6d0c9e20aa819c63533f5eb519ce8e192462"
+      "sha256": "e43bf466581c1461d83554790c381609ccecab5ff0bce8f30b7a91d16e6d8f03"
     },
     {
       "path": "docs/validation-v12.md",
@@ -836,7 +836,7 @@
     {
       "path": "docs/README-v12-fragment.md",
       "bytes": 4745,
-      "sha256": "114fd457779be106df86fe07543250a68528db4aa6f29afa90b7f6744098e3fc"
+      "sha256": "8114c2c44fd56665214472edfd419a1846bc9035e40bb3055729cb3293b46cd6"
     },
     {
       "path": "docs/socks-v12-integration-review.json",
@@ -971,7 +971,7 @@
     {
       "path": "docs/eight-act-script-v14.html",
       "bytes": 29742,
-      "sha256": "786bdc5a3fc83bedd4e9f669bcdc3e32ad7c5247318c831610500974dca1abf0"
+      "sha256": "371b25acd6d5133a0581123cee79d1fb8bd55642746bbe733339e8228995df93"
     },
     {
       "path": "docs/flow-v14.json",
@@ -996,17 +996,17 @@
     {
       "path": "docs/v14-clinical-integration-check.json",
       "bytes": 6533,
-      "sha256": "5cbd2a8eed62603d4871ce87fa7b70d5c73f241f09830418888ccc7b69d6f549"
+      "sha256": "cd213eb192453acc17814f9509f837df508b604dcaffe715243f300cd426edb2"
     },
     {
       "path": "docs/v14-clinical-script-review.md",
       "bytes": 6560,
-      "sha256": "52c2bea7cabecc28a6ccf2d67ffe3c359e8858225a26673f9144b0f59cce776a"
+      "sha256": "aabced28739e1c313bef24e6208d8457d235205f775ddcf464d5f6201bf63f90"
     },
     {
       "path": "docs/v14-clinical-sources.json",
       "bytes": 12215,
-      "sha256": "6532b4933581b058fc996827bfee909075b3c7d04c5c5f06daf60a61a93fc80b"
+      "sha256": "22cf5b2c3c6a8140780f617b73814943b068ca62bcedbe6a0bd5f048afc2938f"
     },
     {
       "path": "docs/v14-flow-migration-audit.md",
@@ -1031,12 +1031,12 @@
     {
       "path": "docs/v14-rom-mmt-review.md",
       "bytes": 8547,
-      "sha256": "66c7138ee5a9ac5f526f7e216287903a203fa6dc2eb2e6c53077918887fc4d02"
+      "sha256": "ad4765af49f690f503a37f5e4074f856783e3ada2857893315c73e909148c2c6"
     },
     {
       "path": "docs/v14-rom-mmt-sources.json",
       "bytes": 7939,
-      "sha256": "2cb4b6654cdc70130310b7fad05f67ba38030fce5518e4c7c91735963e29badd"
+      "sha256": "095e1e67c226d03509f584f5db586d07bd6f0922d3cf304eaecbdce678e08006"
     },
     {
       "path": "docs/v14-script-content-check.json",
@@ -1086,7 +1086,7 @@
     {
       "path": "docs/objectives-v15.json",
       "bytes": 20775,
-      "sha256": "a147eb81d53f7373686073b3485bec2acad80c06265d05a1eed068f8e362aed1"
+      "sha256": "46128d6802a77d858542257c6307f2db88cc3655dfbd9fa30737c6f87b0a5209"
     },
     {
       "path": "docs/review-v15-round-1.md",
@@ -1156,12 +1156,12 @@
     {
       "path": "docs/heygen-v16-script.html",
       "bytes": 29305,
-      "sha256": "8f10d9d747ea1017aba732afb6fc10dcd17508544e9c02c3d5420914cb67d212"
+      "sha256": "99e39ab33694286e7451fb34d319760349ae209aaeec5040063ae4f7130e09dd"
     },
     {
       "path": "docs/heygen-v16-script.json",
       "bytes": 28907,
-      "sha256": "607ada7c0553d468e7a67df6ae067fdc2ce0a034b62f23b3b05abcd0e11e2242"
+      "sha256": "37e87c845d0e0f82f2f44dbb95d661b0d18592c3d73d81b9bc96333629ad8d4f"
     },
     {
       "path": "docs/navigation-v16-events-tests.json",

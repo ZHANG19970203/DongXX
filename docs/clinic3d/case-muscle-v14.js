@@ -7,11 +7,11 @@ const freeze = value => {
 
 export const MUSCLE_ITEMS = freeze([
   {
-    id: 'dorsiflexion', label: '踝关节背屈', motion: '足背靠近小腿前侧',
-    muscles: ['胫骨前肌'], groupLabel: '背屈肌群 · 以胫骨前肌为代表',
+    id: 'dorsiflexion', label: '踝关节背伸', motion: '足背靠近小腿前侧',
+    muscles: ['胫骨前肌'], groupLabel: '背伸肌群 · 以胫骨前肌为代表',
     contributors: ['趾长伸肌', '拇长伸肌', '第三腓骨肌'],
-    position: '可采用有支撑的坐位；固定小腿并观察踝背屈，避免只伸脚趾或抬起整条腿。',
-    limits: ['不能把伸趾动作当成完成踝背屈。', '非标准减重体位的表现不能直接套用抗重力体位等级。', '本项只做肌群与检查条件匹配，不给陈女士生成肌力分数。'],
+    position: '可采用有支撑的坐位；固定小腿并观察踝背伸，避免只伸脚趾或抬起整条腿。',
+    limits: ['不能把伸趾动作当成完成踝背伸。', '非标准减重体位的表现不能直接套用抗重力体位等级。', '本项只做肌群与检查条件匹配，不给陈女士生成肌力分数。'],
     sourceIds: ['mmt_mrc', 'mmt_nih']
   },
   {
@@ -26,7 +26,7 @@ export const MUSCLE_ITEMS = freeze([
     id: 'inversion', label: '足内翻', motion: '足底朝向身体内侧',
     muscles: ['胫骨后肌', '胫骨前肌'], groupLabel: '内翻相关肌群 · 胫骨后肌与胫骨前肌',
     contributors: [],
-    position: '小腿获得支撑并固定；按目标肌选择内翻伴跖屈或内翻伴背屈，避免髋旋转代替足部运动。',
+    position: '小腿获得支撑并固定；按目标肌选择内翻伴跖屈或内翻伴背伸，避免髋旋转代替足部运动。',
     limits: ['胫骨后肌和胫骨前肌都参与内翻，踝位改变会影响检查侧重。', '足内翻是踝足复合运动，不能说成距小腿关节独立三轴中的一个自由转轴。', '手动抵抗只能按指定方法解释，不能据此直接读出内翻力矩。'],
     sourceIds: ['mmt_mrc', 'rom_openstax', 'rom_in_vivo1989']
   },
@@ -57,7 +57,7 @@ export const MUSCLE_DIALOGUE = freeze([
 ]);
 
 export const ROM_DIALOGUE = freeze([
-  { speaker: '林治疗师', text: '先坐稳，做小幅背屈和跖屈；哪里紧或痛就告诉我。' },
+  { speaker: '林治疗师', text: '先坐稳，做小幅背伸和跖屈；哪里紧或痛就告诉我。' },
   { speaker: '陈女士', text: '右边往上时发紧。' },
   { speaker: '林治疗师', text: '坐位和站立的方法不同。统一膝角、足位，再比较左右。发紧不等于骨头错位。' }
 ]);

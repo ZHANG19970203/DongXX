@@ -1,10 +1,10 @@
 import {anatomicalPanel,staticCOPPanel,gaitExplorer,archCOPPanel} from './realistic-panels.js';
-import {evidencePanel,referencePanel,contractionPanel,ligamentPanel} from '../soap/explorers.js';
-import {CASE_EVIDENCE,caseConclusion} from '../soap/explorers-data.js';
-import {SOAP_STAGES} from './soap-route-v20.js';
+import {evidencePanel,contractionPanel,ligamentPanel} from '../soap/explorers.js';
+import {CASE_EVIDENCE} from '../soap/explorers-data.js';
+import {soapSummary} from './soap-summary.js';
 const el=(t,c='',v)=>{const n=document.createElement(t);n.className=c;if(v!==undefined)n.textContent=v;return n;};
 const btn=(t,f)=>{const b=el('button','',t);b.type='button';b.onclick=f;return b;};
-const concepts={act1:['倾听与SOAP','把患者感受与客观观察分开记录。'],act2:['关节与轴面','背屈、跖屈和内外翻分别涉及哪些关节？'],act3:['肌肉与收缩','起止点怎样决定动作？向心与离心怎样配合？'],act4:['三条足弓','先认识内侧纵弓、外侧纵弓和横弓。'],act5:['步态周期','接地、离地、支撑与摆动怎样衔接？'],act6:['足底负荷','足印、压力图与COP分别回答什么问题？'],act7:['静态COP','站着不动时，轨迹为什么仍在变化？'],act8:['从证据到计划','先核对已知和未知，再选择下一步。']};
+const concepts={act1:['倾听与SOAP','把患者感受与客观观察分开记录。'],act2:['关节与轴面','背伸、跖屈和内外翻分别涉及哪些关节？'],act3:['肌肉与收缩','起止点怎样决定动作？向心与离心怎样配合？'],act4:['三条足弓','先认识内侧纵弓、外侧纵弓和横弓。'],act5:['步态周期','接地、离地、支撑与摆动怎样衔接？'],act6:['足底负荷','足印、压力图与COP分别回答什么问题？'],act7:['静态COP','站着不动时，轨迹为什么仍在变化？'],act8:['从证据到计划','先核对已知和未知，再选择下一步。']};
 export function installImmersion(ctx){
  const dialog=el('dialog','clinic-study'),head=el('header'),title=el('h2'),body=el('div','study-content'),close=btn('回到诊室',()=>dialog.close());head.append(title,close);dialog.append(head,body);document.body.append(dialog);
  let resume=null,afterPaper=null;dialog.addEventListener('close',()=>{body.replaceChildren();resume?.();resume=null;const fn=afterPaper;afterPaper=null;fn?.();});
@@ -22,17 +22,17 @@ export function installImmersion(ctx){
   show(name,d);ctx.record('clinic3d_concept_open',{act,concept:name,notAssessmentCredit:true});
  }
  const menu=document.getElementById('settings');const evidenceButton=btn('本次病历与记录',()=>{menu.hidden=true;paper();});evidenceButton.id='evidenceMenu';menu.insertBefore(evidenceButton,document.getElementById('voice'));
- function paper(next){const s=ctx.state,doc=el('article','evidence-paper'),top=el('div','paper-top');top.append(el('span','','运动康复 · 足踝评估'),el('small','','教学病例 / 本轮记录'));doc.append(top,el('h2','','接诊证据核对单'),el('p','paper-meta',`学生：${s.student?.name||'未登记'}　患者：陈女士　右侧反复扭伤与不稳`));
-  const table=el('table'),tr=el('tr');['已到访环节','本轮记录状态'].forEach(t=>tr.append(el('th','',t)));table.append(tr);
-  for(const stage of SOAP_STAGES.filter(x=>x.act!=='act8')){const visited=(s.visited||[]).filter(id=>ctx.flow[id]?.act===stage.act),tasks=Object.keys(s.taskReceipts||{}).filter(id=>ctx.flow[id]?.act===stage.act),r=el('tr');r.append(el('td','',stage.title),el('td','',tasks.length?`完成 ${tasks.length} 项教学操作`:visited.length?'到访/交流过，尚无完成操作记录':'本轮未到访'));table.append(r);}doc.append(table,el('h3','','已收集的线索'));
-  if(!s.evidence.length)doc.append(el('p','','尚未收集证据。可以先补问诊和观察，再形成判断。'));
-  for(const id of s.evidence){const item=ctx.catalog[id];doc.append(el('p','paper-evidence',(item?.text||item?.label||id)+'　〔'+({patient_report:'患者报告',synthetic_teaching_data:'合成教学数据',fictional_case_record:'虚构病例',authored_demonstration:'教学操作',reasoning:'学习判断'}[item?.status]||'本轮过程记录')+'〕'));}
-  doc.append(el('h3','','查阅过的病例资料（不等于完成检查）'));const reviewed=s.reviewedEvidence||[];if(!reviewed.length)doc.append(el('p','','尚未查阅补充查体卡。'));
-  for(const e of CASE_EVIDENCE.filter(e=>reviewed.includes(e.id)))doc.append(el('p','',e.title+'：'+e.result));
-  doc.append(el('h3','','当前能够形成的工作判断'),el('p','','主诉提示反复扭伤后持续不稳的评估方向。低足弓是需要结合功能检查的线索，不能直接认定为所有症状的病因。未做项目保留为待补。'));
-  if(reviewed.length)caseConclusion(reviewed).forEach(t=>doc.append(el('p','',t)));
-  const actions=el('div','paper-actions');actions.append(btn('回看对话',()=>{dialog.close();document.getElementById('notesOpen').click();}),btn('导出本次记录',()=>document.getElementById('export').click()),btn('参考文献',()=>{dialog.close();show('参考文献与制作依据',referencePanel());}));doc.append(actions);
-  const ack=btn(next?'已核对，进入分析与计划':'已核对，返回诊室',()=>{ctx.record('clinic3d_evidence_review',{evidenceIds:[...s.evidence],reviewedHandouts:[...reviewed],completedTasks:Object.keys(s.taskReceipts||{}),destination:next?.id||'review',notClinicalDiagnosis:true});ctx.persist();afterPaper=next?.go||null;dialog.close();});ack.className='paper-continue';doc.append(ack);if(next){const skip=btn('跳过此步骤',()=>{ctx.record('clinic3d_evidence_review_skipped',{destination:next.id,assessmentCredit:false});afterPaper=next.go;dialog.close();});skip.className='skip-step';doc.append(skip);}show('先核对证据，再作判断',doc);
+ function paper(next){
+  const s=ctx.state,doc=el('article','evidence-paper');
+  const reviewed=s.reviewedEvidence||[],sections=soapSummary(s,CASE_EVIDENCE);
+  doc.append(el('p','paper-meta','患者：陈女士　　学生：'+(s.student?.name||'未登记')));
+  const names={S:'主观资料',O:'客观检查',A:'评估',P:'计划'};
+  for(const [key,rows] of Object.entries(sections)){
+   if(rows.length){const section=el('section'),list=el('ul');section.append(el('h3','',key+' · '+names[key]),list);for(const line of rows)list.append(el('li','',line));doc.append(section);}
+  }
+  if(!Object.values(sections).some(rows=>rows.length))doc.append(el('p','','本次尚无可填写的病例资料。'));
+  function proceed(){if(next){s.soapReviewPassed=true;afterPaper=next.go;}ctx.persist();dialog.close();}
+  const ack=btn(next?'已核对，进行分析与计划':'已核对，返回诊室',()=>{ctx.record('clinic3d_evidence_review',{evidenceIds:[...s.evidence],reviewedHandouts:[...reviewed],completedTasks:Object.keys(s.taskReceipts||{}),destination:next?.id||'review',notClinicalDiagnosis:true});proceed();});ack.className='paper-continue';doc.append(ack);if(next){const skip=btn('跳过此步骤',()=>{ctx.record('clinic3d_evidence_review_skipped',{destination:next.id,assessmentCredit:false});proceed();});skip.className='skip-step';doc.append(skip);}show('SOAP 病历核对',doc);
  }
- let bypass=null;return{enterNode(node){const concept=concepts[node.pressureStation?'act6':node.act];prompt.hidden=!concept;label.textContent=concept?'动小助 · '+concept[0]:'';},beforeNode(id,go){if(!['plan_intro','plan'].includes(id)||bypass===id){bypass=null;return false;}paper({id,go:()=>{bypass=id;go();}});return true;},openConcept,paper};
+ let bypass=null;return{enterNode(node){const concept=concepts[node.pressureStation?'act6':node.act];prompt.hidden=!concept;label.textContent=concept?'动小助 · '+concept[0]:'';},beforeNode(id,go){if(!['plan_intro','plan'].includes(id)||ctx.state.soapReviewPassed||bypass===id){bypass=null;return false;}paper({id,go:()=>{bypass=id;go();}});return true;},openConcept,paper};
 }

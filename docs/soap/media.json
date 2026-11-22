@@ -2,44 +2,35 @@
   "schema": "dxx-user-film-v19",
   "clips": {
     "intro": {
-      "src": "media/intro-patient62.mp4",
+      "src": "media/intro-playback.mp4",
       "poster": "media/intro-original.jpg",
       "title": "接诊导入",
       "caption": "先看接诊情境，再进入本次实训。",
-      "sha256": "6a32aaf0014d5307a2638060686ed7896273338feafe78ef39223b5c4c0c6209",
-      "seconds": 41.94,
+      "sha256": "4c0edf0f88a706ba9284e5b4a316f69079ec50e8cf2b718e397e2e77191e4e5f",
+      "seconds": 34.39,
       "clinicalValidated": false,
-      "originalUncut": false,
+      "originalUncut": true,
       "sourceOriginal": "media/intro-original.mp4",
       "sourceSHA256": "e3d7b4eb71636a3d13e1e205ca7baf0e749ffc366ac5864e4f3c99205d05929f",
-      "encoding": "Case footage with revoiced patient cues and corresponding picture timing.",
-      "audioEdition": "patient-role-62"
+      "encoding": "Full-length playback derivative from supplied 导入.mp4; H.264/AAC 960x540 faststart; no scene or speech changes"
     },
     "arch": {
-      "src": "media/arch-patient62.mp4",
+      "src": "media/arch.mp4",
       "poster": "media/arch.jpg",
       "title": "坐位与站位，为什么都要看？",
       "caption": "观察足弓负重变化 · 结论需要进一步验证。",
-      "sha256": "ebcf1add3d6dccc60de2329984eb74c2e6d71175e99021d3a0e82c29470ab79b",
-      "seconds": 18.21,
-      "clinicalValidated": false,
-      "sourceOriginal": "media/arch.mp4",
-      "sourceSHA256": "536485f1a0ef67d4def86055895899ffbd4a78d8f469d30d76473453dfc74f0e",
-      "audioEdition": "patient-role-62",
-      "encoding": "Case footage with revoiced patient cues and corresponding picture timing."
+      "sha256": "536485f1a0ef67d4def86055895899ffbd4a78d8f469d30d76473453dfc74f0e",
+      "seconds": 16,
+      "clinicalValidated": false
     },
     "gait": {
-      "src": "media/gait-patient62.mp4",
+      "src": "media/gait.mp4",
       "poster": "media/gait.jpg",
       "title": "自然走过步道，不刻意找落脚点。",
       "caption": "观察步行过程 · 后续数值为独立合成练习，未从视频提取。",
-      "sha256": "2ce77757c706a6dc23daa174711d8001d22b325978b988073f0f50b52a420bd1",
-      "seconds": 22.74,
-      "clinicalValidated": false,
-      "sourceOriginal": "media/gait.mp4",
-      "sourceSHA256": "d464c8e412c131d22017b7fbe44ef6c51513229aaa6d4a15b7f9eb16282ef151",
-      "audioEdition": "patient-role-62",
-      "encoding": "Case footage with revoiced patient cues and corresponding picture timing."
+      "sha256": "d464c8e412c131d22017b7fbe44ef6c51513229aaa6d4a15b7f9eb16282ef151",
+      "seconds": 22.62,
+      "clinicalValidated": false
     },
     "scan": {
       "src": "media/scan-voiced.mp4",
@@ -53,17 +44,13 @@
       "sourceSHA256": "c1126985bdefd0a73c34b30239cc205b411ba1c8b0742e46613cbcbeb2006cb7"
     },
     "plan": {
-      "src": "media/plan-patient62.mp4",
+      "src": "media/plan.mp4",
       "poster": "media/plan.jpg",
       "title": "训练重点回到控制、平衡与步行。",
       "caption": "共同计划 · 按实际发现和患者目标讨论。",
-      "sha256": "8100539808fb1a7030ed1752adf624082d1e55e848c33fb718713f1ae27498aa",
-      "seconds": 15.31,
-      "clinicalValidated": false,
-      "sourceOriginal": "media/plan.mp4",
-      "sourceSHA256": "5452f94182ccc80d712ee65136e656f709e4e8661e847ddf454078ecde6e1bce",
-      "audioEdition": "patient-role-62",
-      "encoding": "Case footage with revoiced patient cues and corresponding picture timing."
+      "sha256": "5452f94182ccc80d712ee65136e656f709e4e8661e847ddf454078ecde6e1bce",
+      "seconds": 13.72,
+      "clinicalValidated": false
     }
   }
 }

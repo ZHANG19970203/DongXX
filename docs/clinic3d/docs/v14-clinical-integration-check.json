@@ -26,7 +26,7 @@
     {
       "id": "joint-axes-and-roll-glide",
       "passed": true,
-      "evidence": "EIGHT_ACT_EDUCATION.act2及HTML已区分距小腿背屈/跖屈与距下复杂斜轴耦合；明确滚滑为简化概念，图谱未精确配准。开链背屈前滚后滑与官方大学教学页一致，闭链只强调小腿在足上前移，没有称当前模型测出真实关节面运动。"
+      "evidence": "EIGHT_ACT_EDUCATION.act2及HTML已区分距小腿背伸/跖屈与距下复杂斜轴耦合；明确滚滑为简化概念，图谱未精确配准。开链背伸前滚后滑与官方大学教学页一致，闭链只强调小腿在足上前移，没有称当前模型测出真实关节面运动。"
     },
     {
       "id": "rom-thresholds-and-position",

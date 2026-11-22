@@ -12,7 +12,7 @@ export const SOAP_STAGES=[
 ];
 export const VOICED_TURNS={
  welcome:[['therapist','陈女士，您好。最近哪里不舒服？'],['patient','右脚这一年崴了三次，走路总怕发软。'],['therapist','我理解。我们先聊清楚，再一起检查。']],
- local_intro:[['therapist','现在看踝关节背屈和跖屈。'],['patient','向上动时，右边有点紧。'],['therapist','我们慢慢来，不舒服就停。']],
+ local_intro:[['therapist','现在看踝关节背伸和跖屈。'],['patient','向上动时，右边有点紧。'],['therapist','我们慢慢来，不舒服就停。']],
  muscle_intro:[['therapist','肌肉既产生动作，也帮助稳定脚踝。'],['patient','往外稳住脚，是哪些肌肉呢？'],['therapist','一起看腓骨长肌和短肌。']],
  arch_intro:[['therapist','请坐稳，先脱鞋袜，再比较坐着和站着的足弓。'],['patient','站久了，我的脚内侧会酸。'],['therapist','我们先观察负重前后的变化。']],
  pressure_intro:[['therapist','先看足印，再比较足底负荷。'],['patient','颜色越红，就是越严重吗？'],['therapist','不是。颜色要结合色标、任务和症状看。']],
@@ -103,7 +103,7 @@ export function updateFilmDialogue(sequence){
   if(clip.id==='06A'){clip.evidenceRequirement={all:[]};clip.alternative=clip.alternative.filter(a=>a.condition!=='gait_skipped');}
   if(clip.id==='07A')clip.actionLabel='比较双脚睁眼站立的静态COP';
   for(const branch of [clip.normal,...clip.alternative.map(a=>a.lines)])for(const turn of branch){
-   turn.text=turn.text.replaceAll('背伸','背屈');
+   turn.text=turn.text.replaceAll('背伸','背伸');
   }
  }
 }
