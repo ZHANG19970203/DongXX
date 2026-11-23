@@ -118,13 +118,13 @@
     },
     {
       "path": "assembly/assets/game.css",
-      "bytes": 19555,
-      "sha256": "f846560e90340c546bcafeee31f3001bf13f6b60ba133e6754360448b8f07e6b"
+      "bytes": 19769,
+      "sha256": "a0af180da5fb780d21fcb14a02f9fb3962ff25c2bd607946ed318eb0ac109264"
     },
     {
       "path": "assembly/assets/game.js",
-      "bytes": 53605,
-      "sha256": "18e802a98e80fb5d83be7bef82160cd75e9c3b775fc4d79100885f2a97133807"
+      "bytes": 55070,
+      "sha256": "1f3d45d4e8fee499735038487c54dec97f2e8c1b23cc1e82ce334c1daa0b817b"
     },
     {
       "path": "assembly/assets/geometry-loader.js",
@@ -1188,8 +1188,8 @@
     },
     {
       "path": "assembly/index.html",
-      "bytes": 10553,
-      "sha256": "914580af10686b79405cbf9299e818cbd864f282d617f5438421ba5b53b60a40"
+      "bytes": 10547,
+      "sha256": "0d237411e4e728c510c22dfbd2d171867d80f7070458ad4852c3a0aec923da26"
     },
     {
       "path": "assembly/licenses/ASSET_PROVENANCE.json",
@@ -8473,8 +8473,8 @@
     },
     {
       "path": "clinic3d/case-workshops.js",
-      "bytes": 9735,
-      "sha256": "05288bce376b7459ecc1493bae872cb76b8071bbc6664a9c043116c1c24a1759"
+      "bytes": 9759,
+      "sha256": "ee1d9af5886ddf15aed550892b088611ebb335232d2bb1a5e0b00ca381d5a6ff"
     },
     {
       "path": "clinic3d/characters.html",
@@ -9849,7 +9849,7 @@
     {
       "path": "index.html",
       "bytes": 13523,
-      "sha256": "402766fa247b4db6f77c3f29172d308531f1af3c2249ece1224e7bec93f773e5"
+      "sha256": "e0f27e4b58540ec1a97a20b292aa4b686cf3f0dab99124ef247b52d83ecc12b7"
     },
     {
       "path": "knowledge_exam.py",
