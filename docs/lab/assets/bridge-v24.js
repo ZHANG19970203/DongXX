@@ -23,14 +23,16 @@
   }
   if(!window.App||!window.Portal||window.DXX_DEPLOY_DIAGNOSTICS?.state!=='ready')return;
   active=true;
+  let adopting=!!p;
+  window.addEventListener('dxx:student-ready',()=>{if(Portal.access&&App.state.profile){if(!adopting)H.set(App.state.profile);adopting=false;user.textContent=App.state.profile.name+' · 学号 '+App.state.profile.studentId;openRequestedLesson();}});
   if(p){const err=Portal.validate(p.name,p.studentId,p.teacher);if(typeof err!=='string'){
    document.getElementById('studentName').value=p.name;document.getElementById('studentId').value=p.studentId;document.getElementById('teacherName').value=p.teacher;
    document.getElementById('loginForm').requestSubmit();
-   if(Portal.access)openRequestedLesson();
+
   }}
   for(const id of ['switchStudent','finishLogout']){const b=document.getElementById(id);if(b)b.onclick=()=>{Portal.logout();H.clear();H.go('login');};}
   // Existing validated login continues to work when the app is opened directly.
-  window.addEventListener('dxx:student-ready',()=>{if(Portal.access&&App.state.profile){H.set(App.state.profile);user.textContent=App.state.profile.name+' · 学号 '+App.state.profile.studentId;openRequestedLesson();}});
+
   window.DXX_BRIDGE_READY=true;
  }
  function openRequestedLesson(){const requested=Number(new URL(location.href).searchParams.get('lesson'));if(requested>=1&&requested<=13){App.openLesson(requested);return;}const params=new URL(location.href).searchParams,id=Number(params.get('experiment'));if(params.get('topic')==='muscles'){App.openLesson(201);return;}if(Number.isInteger(id)&&id>=1&&id<=13){App.openLesson(id);if(params.get('dynamic')==='1'){const a=App.state.module?.actions.find(a=>a.kind==='embedded');if(a)App.selectAction(a.id);}return;}App.home();}

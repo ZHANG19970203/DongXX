@@ -1,6 +1,6 @@
 import {archCaseText,archOutlines} from './arch-bones.js';
 import {mountPlantarScan,plantarFigure,pressureLegend} from './plantar-scan.js?v=72';
-import {renderSOAPTask} from './soap-tasks-v20.js?v=72';
+import {renderSOAPTask} from './soap-tasks-v20.js?v=77';
 import { createLessonCoach } from './lesson-coach.js';
 import { createArchComparison } from './arch-comparison.js';
 import { createAnatomyViewer } from './anatomy-viewer.js';

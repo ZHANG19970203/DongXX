@@ -20,7 +20,37 @@ export function renderSOAPTask(task,{wrap,nodeEl,button,stepBook,record,refresh,
    }
    judgment.append(feedback);
   }
-  wrap.append(staticCOPPanel({caseResults:true,onCue,onObserve(condition){
+  const cop=staticCOPPanel({caseResults:true,onCue,onObserve(condition){
    if(!stepBook.get('cop71_'+condition)){stepBook.set('cop71_'+condition,true);if(stepBook.get('cop71_open')&&stepBook.get('cop71_closed'))stepBook.set('cop54_full',true);record('clinic3d_static_cop_observed',{condition,seconds:30,synthetic:true});refresh();ask();}
-  }}),judgment);ask();return true;
+  }});
+  const stance=nodeEl('section','clinical-quiz'),summary=nodeEl('p',''),timer=nodeEl('output','');
+  const controls=nodeEl('div','clinical-nav');
+  let running=false;
+  stance.append(nodeEl('h4','','单腿闭眼站立计时'),nodeEl('p','','治疗师在旁保护。先睁眼站稳，抬起另一脚，再闭眼计时。睁眼、扶栏或抬起的脚触地即停止，每侧最多 30 秒。'),controls,timer,summary);
+  const display=()=>{const left=stepBook.get('stance77_L'),right=stepBook.get('stance77_R');
+   summary.textContent=[left&&('左 '+left+' 秒'),right&&('右 '+right+' 秒')].filter(Boolean).join('　')+(left&&right?'。本例右侧较短，提示闭眼时右侧单腿姿势控制较困难。本体感觉是影响因素之一。':'');};
+  const pose=(side,t=0)=>document.dispatchEvent(new CustomEvent('clinic-single-stance',{detail:{side,t}}));
+  for(const [side,name,duration] of [['L','左',28],['R','右',12]]){
+   controls.append(button('观察'+name+'脚支撑',()=>{
+    if(running)return;running=true;
+    for(const b of controls.children)b.disabled=true;
+    // Stop a COP replay before changing the stance used by the scene.
+    const play=cop.querySelector('.timeline-controls button');
+    if(play?.textContent==='暂停')play.click();
+    cop.inert=true;
+    let elapsed=0,last=performance.now();
+    function end(){running=false;cop.inert=false;for(const b of controls.children)b.disabled=false;pose(null);}
+    function frame(now){
+     if(!stance.isConnected||document.hidden){end();return;}
+     elapsed=Math.min(duration,elapsed+Math.min(.1,(now-last)/1000)*4);last=now;
+     timer.textContent='病例回放 ×4 · '+name+'脚支撑 '+elapsed.toFixed(1)+' 秒';
+     pose(side,elapsed);
+     if(elapsed<duration){requestAnimationFrame(frame);return;}
+     end();timer.textContent=name+'脚支撑结束，另一脚触地。';
+     stepBook.set('stance77_'+side,duration);record('clinic3d_single_stance',{side,seconds:duration,vision:'closed',synthetic:true,end:'touchdown'});refresh();display();
+    }
+    requestAnimationFrame(frame);
+   }));
+  }
+  wrap.append(cop,stance,judgment);display();ask();return true;
 }

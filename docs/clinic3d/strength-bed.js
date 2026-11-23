@@ -169,12 +169,22 @@ export function createStrengthBed(actors,room,scene){
   const fixedHand=motion==='eversion'?k:(k==='R'?'L':'R');
   const resistHand=fixedHand==='L'?'R':'L';
   for(const [h,pt,inward,fingers] of [
-    [fixedHand,fixed,exposedDirection.clone().negate(),shankUp.clone().negate()],
+    [fixedHand,fixed,exposedDirection.clone().negate(),shankUp.clone()],
     [resistHand,contact,direction,long.clone().negate()]
   ]){
    let along=fingers.projectOnPlane(inward).normalize();
    if(along.lengthSq()<.1)along=shankUp.clone().projectOnPlane(inward).normalize();
    const pole=pt.clone().add(v(h==='L'?-.22:.22,.02,.28));
+   if(h===fixedHand){
+    // Approach from the examiner's forearm. Let the fingers wrap along the shank
+    // without folding the wrist back towards the elbow on the bent-knee view.
+    const approach=pt.clone().sub(pole).projectOnPlane(inward);
+    if(approach.lengthSq()>.001){
+      approach.normalize();
+      if(along.dot(approach)<0)along.negate();
+      along.add(approach).normalize();
+    }
+   }
    placeHand(d,h,hands[h],pt,along,inward,blend,pole);wrapFingers(d,h,blend*(h===fixedHand?.44:.17));
    palms[h].copy(hands[h].palm).applyQuaternion(hands[h].wrist.clone().invert()).applyQuaternion(d.bones.get('wrist.'+h).getWorldQuaternion(new THREE.Quaternion())).add(at(d,'wrist.'+h));
   }

@@ -63,7 +63,25 @@ function loadFoot(view){
   }
   return views.get(view);
 }
-function figure(canvas,trial,stage,angle,placement){
+// Projected left-side BodyParts3D meshes share the skin atlas landmark. Mirror both for the right ankle.
+const bones=new Image();
+bones.src=new URL('./assets/gonio-bones.png',import.meta.url).href;
+const cutaway=document.createElement('canvas');cutaway.width=328;cutaway.height=329;
+function drawBones(g,skin,tile,lateral,angle){
+  if(!bones.complete||!bones.naturalWidth)return;
+  const c=cutaway.getContext('2d');
+  c.clearRect(0,0,328,329);
+  // The shank stays fixed. In the posterior view the calcaneus tilts beneath the talus.
+  for(const col of [2,1,0]){
+    c.save();c.translate(188,162);
+    if(col===2||(col===1&&lateral))c.rotate(rad(lateral?angle:-angle));
+    c.drawImage(bones,col*328,lateral?0:329,328,329,-188,-162,328,329);c.restore();
+  }
+  c.save();c.globalCompositeOperation='destination-in';
+  c.drawImage(skin,(tile%8)*328,Math.floor(tile/8)*329,328,329,0,0,328,329);c.restore();
+  g.save();g.globalAlpha=.58;g.drawImage(cutaway,-188,-162);g.restore();
+}
+function figure(canvas,trial,stage,angle,placement,showBones){
   const g=canvas.getContext('2d'),{move,side,mode}=trial,W=660,H=370;
   const ratio=Math.min(2,devicePixelRatio||1);
   if(canvas.width!==W*ratio||canvas.height!==H*ratio){canvas.width=Math.round(W*ratio);canvas.height=Math.round(H*ratio);}
@@ -87,6 +105,7 @@ function figure(canvas,trial,stage,angle,placement){
     const tile=Math.round(physicalAngle)+(lateral?50:10);
     g.save();g.translate(X,Y);g.scale(mirror*zoom,zoom);
     g.drawImage(image,(tile%8)*328,Math.floor(tile/8)*329,328,329,-188,-162,328,329);
+    if(showBones)drawBones(g,image,tile,lateral,physicalAngle);
     g.restore();
     const fade=g.createLinearGradient(0,0,0,36);fade.addColorStop(0,bg);fade.addColorStop(.38,bg);fade.addColorStop(1,'rgba(239,245,242,0)');g.fillStyle=fade;g.fillRect(0,0,W,36);
   }else{text(image?.complete?'足踝模型未载入，请重新打开此环节。':'正在载入足踝模型…',X-90,Y+55);}
@@ -186,7 +205,9 @@ export function mountGoniometer({host,receipt,initialKey,onTrial,onRead,onSave,v
   controls.className='gonio-actions';
   const summary=element('details');summary.append(element('summary','查看双侧记录（°）'),tableSlot);
   function btn(label,fn){const b=element('button',label);b.type='button';b.addEventListener('click',fn);controls.append(b);return b;}
-  function draw(){const t=romTrials[i];figure(canvas,t,stage,angle,placement);canvas.setAttribute('aria-label',sideLabel(t.side)+'踝'+t.mode+t.move.name+'，从中立位起 '+Math.round(angle)+' 度');}
+  const label=element('label'),toggle=element('input');toggle.type='checkbox';toggle.checked=true;
+  label.append(toggle,' 显示骨骼与关节');toggle.onchange=()=>draw();
+  function draw(){const t=romTrials[i];figure(canvas,t,stage,angle,placement,toggle.checked);canvas.setAttribute('aria-label',sideLabel(t.side)+'踝'+t.mode+t.move.name+'，从中立位起 '+Math.round(angle)+' 度');}
   function view(){
     const t=romTrials[i],s=t.move.sagittal;
     if(panel.dataset.trial!==t.key){panel.dataset.trial=t.key;onTrial?.(t.key);}
@@ -249,9 +270,10 @@ export function mountGoniometer({host,receipt,initialKey,onTrial,onRead,onSave,v
   }
   const method=element('details');method.append(element('summary','测量方法与依据'),element('p','内翻和外翻采用俯卧后方测量，观察跟骨相对小腿的倾斜。坐位从前方对线时，还会包含前足的复合运动。两种方法的角度应分别记录。'));
   const reference=element('a','查看两种测量体位的原始研究');reference.href='https://doi.org/10.1186/1471-2474-7-60';reference.target='_blank';reference.rel='noopener';method.append(reference);
-  panel.append(count,heading,canvas,cue,readout,controls,summary,method);
+  panel.append(count,heading,canvas,label,cue,readout,controls,summary,method);
   if(!initialKey&&romComplete(receipt)){stage='read';i=15;angle=romTrials[15].angle;}
   view();
+  bones.decode().then(()=>{if(!disposed)draw();}).catch(()=>{});
   for(const viewName of ['lateral','rear'])loadFoot(viewName).ready.then(()=>{if(!disposed)draw();});
   return ()=>{disposed=true;cancelAnimationFrame(frame);};
 }

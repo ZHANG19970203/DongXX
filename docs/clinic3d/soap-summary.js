@@ -26,6 +26,9 @@ export function soapSummary(state,handouts=[]){
   if(receipts.muscle_match?.scope==='simulated-ankle-strength'&&receipts.muscle_match.values?.bedStrength_interpret===true)O.push('同等模拟阻力下，右足外翻较左足更早回落。背伸、跖屈和内翻未见明显侧差。');
   if(receipts.pressure_compare?.scope==='case-plantar-scan')O.push('双足站立扫描：与左足相比，右足内侧中足接触区域较宽。');
   if(receipts.static_cop?.scope==='static-balance-interpretation')if(receipts.static_cop.values?.cop71_closed)O.push('双足站立各 30 秒，模拟病例闭眼时 COP 路径更长、平均速度更高。');else O.push('双足睁眼站立 30 秒：病例示例的压力中心路径比参考轨迹长，平均移动速度较高。');
+  const balance=receipts.static_cop?.values||{};
+  const stance=['L','R'].filter(side=>Number.isFinite(balance['stance77_'+side])).map(side=>(side==='L'?'左':'右')+' '+balance['stance77_'+side]+' 秒');
+  if(stance.length)O.push('闭眼单腿站立（病例模拟）：'+stance.join('、')+'。');
   if(receipts.gait_events?.scope==='gait-cycle-phases'||evidence.has('gait_observation'))O.push('病例步态中右足单独支撑占周期 30%，双足同时着地占 26%。');
   if(Number.isFinite(receipts.gait_events?.values?.heelRiseMark))O.push('逐帧标记：右足跟开始抬起，早于同一周期的教学参考，前足仍接触地面。');
   if(evidence.has('gait_observation'))O.push('右足承重早期负荷偏外侧，蹬地减弱，迈右腿时髋部代偿。');

@@ -20,6 +20,10 @@ window.DXXFeedback=(()=>{
    if(current.some(r=>r.passed))progress.set('test:modules','实验综合测试 · 最高 '+Math.max(...current.map(r=>r.score))+' / 100 分 · 及格，已获证');
    if(passed.length)progress.set('test:legacy','旧版人体运动学知识测试 · 已完成学习 · 最高 '+Math.max(...passed.map(r=>r.correct))+' / 30 分 · 已获证');
   }
+  const painting='dxx_painting_log.web-paint.'+encodeURIComponent(JSON.stringify([p.teacher,p.studentId,p.name]))+'/';
+  for(const key of Object.keys(localStorage).filter(k=>k.startsWith(painting))){
+   const row=read(localStorage,key);if(row?.kind==='function'&&row.result?.passed)progress.set('painting:'+row.muscle,'肌肉彩绘 · '+row.label);
+  }
   const lab=r.virtualLaboratory;
   if(same(lab.profile,p)){
    const explained=new Set((lab.explanations||[]).filter(e=>String(e.text||'').trim().length>=4).map(e=>String(e.sourceId)));
@@ -63,7 +67,7 @@ window.DXXFeedback=(()=>{
  async function update(r,onData){
   const p=r.profile,data=local(r),saved=read(localStorage,scoped(p));absorb(data,saved);
   onData(report(data),false,0);const credentials=[],remote={progress:new Map(),ranges:[],questions:new Map()};let failures=0;
-  const sessions=[...data.sessions.values()];
+  const sessions=location.hostname.endsWith('.github.io')?[]:[...data.sessions.values()];
   for(let i=0;i<sessions.length;i+=4)await Promise.all(sessions.slice(i,i+4).map(async s=>{
    try{
     const k='dxx_learning_capability_v15_'+s.id;

@@ -1,7 +1,7 @@
 import {speakerShot} from './speaker-shot.js';
 import {mountAssessment} from './functional-assessment.js?v=72';
 import {installEvidenceArchive} from './evidence-archive.js?v=71';
-import {soapSummary,spokenFindings} from './soap-summary.js?v=72';
+import {soapSummary,spokenFindings} from './soap-summary.js?v=77';
 import {expressionForPatientLine} from './patient-expression.js';
 import {createGaitReview} from './gait-review.js';
 import {plantarFigure} from './plantar-scan.js?v=72';
@@ -9,7 +9,7 @@ import {wallReference} from './posture-reference.js';
 import {wallTapeStudy} from './wall-tape.js?v=72';
 import {installTaskDesk} from './task-desk.js?v=74';
 import {markLearningStep,recoverLearningSteps,encounterProgress} from './encounter-progress.js?v=74';
-import {createStrengthBed} from './strength-bed.js?v=72';
+import {createStrengthBed} from './strength-bed.js?v=77';
 import {createStrengthCamera} from './strength-camera.js?v=72';
 import {addPractice} from '../learning/case-items.js';
 import {openArchObservation} from './arch-observation.js?v=68';
@@ -27,18 +27,18 @@ import { createDialogueAudio } from './dialogue-audio.js?v=74';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createClinicRoom } from './scene-room.js?v=75';
-import { createActors,seatOnExamBed } from './actors.js?v=74';
+import { createActors,seatOnExamBed } from './actors.js?v=77';
 import { samplePlantarScan, sampleStanding, sampleWalking, renderPressureDiagram } from './pressure-engine.js';
 import { createPressureStage } from './pressure-stage.js';
 import {gaitExcerpt,gaitPhasesComplete} from './gait-phase-task.js?v=72';
-import { createLearningUI } from './learning-ui.js?v=72';
+import { createLearningUI } from './learning-ui.js?v=77';
 import { createDialoguePlayer } from './dialogue-player.js?v=74';
 import { createFilmSequence } from './film-sequence.js?v=71';
 import {trainingFilm} from './training-film.js';
 import {presentPlan} from './plan-writing.js';
 import {submitEncounter} from './finish-encounter.js?v=73';
 import {planTurns,selectedPlan} from './plan-discussion.js';
-import {mountGoniometer,romComplete,romReport,romTable} from './goniometry.js?v=74';
+import {mountGoniometer,romComplete,romReport,romTable} from './goniometry.js?v=77';
 import { createLearningHub } from '../learning/learning-hub.js';
 import {strengthComplete,motionComplete} from './clinical-exams.js?v=71';
 import { migrateProgress, updateAssessmentOrder, legacyBedsideCheckpoint } from './progress-migration.js?v=72';
@@ -943,6 +943,13 @@ function syncGaitVisual(){
  else if(isPressure){actors.patient.setGaitPhase(null);actors.patient.setLocomotion(false);actors.patient.setPosition(room.anchors.pressureStand||[-.1,0,1.1]);}
  const showPressure=(isPressure&&pressureMode!=='maximum');pressureStage?.update(showPressure?currentPressureFrame():null,showPressure);
 }
+document.addEventListener('clinic-single-stance',event=>{
+ if(visualZone!=='posturography'||activeNode?.id!=='static_cop')return;
+ const {side,t}=event.detail;
+ actors.patient.setClinicalPose(side?'plate-single-'+side:'plate-stand');
+ const amplitude=side==='R'?2.8:1.25;
+ actors.patient.setPlateFrame(side?'closed':'open',side?[t,amplitude*Math.sin(t*2),amplitude*Math.cos(t)]:null);
+});
 document.addEventListener('clinic-balance-frame',event=>{
  if(visualZone==='posturography'&&activeNode?.id==='static_cop'){const {fraction,condition,point}=event.detail;room.objects.balanceStation.sample(fraction,condition);actors.patient.setPlateFrame(condition,point);}
 });

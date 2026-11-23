@@ -460,10 +460,11 @@ export async function createActor(scene, role, url) {
     const lungeTarget=lower&&clinicalPose!=='wall-kneel'?1:0;
     lungeLoad=THREE.MathUtils.damp(lungeLoad,lungeTarget,4,dt);
     railWeight=THREE.MathUtils.damp(railWeight,clinicalPose==='rail-hold'?1:0,8,dt);
-    const onPlate=['plate-stand','rail-hold'].includes(clinicalPose);
+    const support=clinicalPose?.startsWith('plate-single-')?clinicalPose.slice(-1):null;
+    const onPlate=!!support||['plate-stand','rail-hold'].includes(clinicalPose);
     const quietStand=onPlate||wall?0:(1-sitting)*(1-walkWeight);
     setRootShift(-.365 * sitting - .462*kneeling + walkShift * walkWeight + (role==='patient'?.013:.007)*quietStand,
-      gaitSample ? -gaitSample.reference.lateral*walkWeight : 0,.03*kneeling+.125*lungeLoad);
+      support?(support==='L'?.044:-.044):gaitSample ? -gaitSample.reference.lateral*walkWeight : 0,.03*kneeling+.125*lungeLoad);
     const removing=removal.active?removalFrame():null;
     documentationCarryWeight=THREE.MathUtils.damp(documentationCarryWeight,documentationMode==='desk'?0:1,8,dt);
     documentationWriteWeight=THREE.MathUtils.damp(documentationWriteWeight,documentationMode==='write'?1:0,8,dt);
@@ -489,6 +490,7 @@ export async function createActor(scene, role, url) {
       const suffix = `.${side}`, restFoot = rest.get(`foot${suffix}`).point;
       const footTarget = restFoot.clone();
       footTarget.x-=sign*(role==='patient'?.105:.073)*(1-sitting);
+      if(support)footTarget.x-=(support==='L'?.044:-.044);
       footTarget.z+=.36*sitting;
       const foot=gaitSample?.[side==='R'?'right':'left'].foot;
       if(foot)footTarget.lerp(position(-foot.lateral,restFoot.y+foot.height,foot.forward),walkWeight);
@@ -507,6 +509,7 @@ export async function createActor(scene, role, url) {
         const ankle=position(knee.x,rearAnkleY,knee.z-Math.sqrt(Math.max(.001,shin*shin-deltaY*deltaY)));
         footTarget.lerp(ankle,kneeling);kneeGuide.lerp(knee,kneeling);
       }
+      if(support&&support!==side){footTarget.y+=.15;footTarget.z-=.10;}
       if(eversionSide===side)footTarget.y+=.055;
       if(removing?.side===side) {
         footTarget.y+=.38*removing.lift;

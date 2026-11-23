@@ -147,8 +147,8 @@
     {
       "id": "original-actor-procedures",
       "path": "actors.js",
-      "bytes": 48164,
-      "sha256": "99925c12cebe42522f6178e2aa2a15def211145235928e8e845df4fb193778bd",
+      "bytes": 48433,
+      "sha256": "d938949aa242818c2f4bfc027f4a234556eb5f1003c13e461a6a32b8a2585777",
       "source": "Project original room/rig procedures; includes portable clinical notes and pen. No separate stationery tray; existing medical trolley only holds clinical tools.",
       "license": "Original application code follows licenses/ORIGINAL_CODE_LICENSE.txt MIT scope; the source core mesh and skin weights remain attributed to MPFB CC0.",
       "includes": [
@@ -237,7 +237,7 @@
         "Teaching operations are not patient measurements"
       ],
       "bytes": 17396,
-      "sha256": "7b283a7853f58b213677f01820219d641fdc72c59fab017f63724cde48709d92"
+      "sha256": "10b329c2f1b786668653b6e10c9496824c9df4f499e534409077787a54cba0f0"
     },
     {
       "id": "original-appearance",
@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 103510,
-      "sha256": "8160b626e1ca8a909f3e377ccbd4e3f29b0a1484be92f822906e2773e3277e8d"
+      "bytes": 103899,
+      "sha256": "b6485e9ea6afb7aad9f62ca30d3189edeee1efd271a76989508230ab60ec9689"
     },
     {
       "id": "walking-pose-v27",
