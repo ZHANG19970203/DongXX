@@ -2428,14 +2428,13 @@
       "sha256": "569019236092b9956a88495e26246c3b5b7ac46046e28a6deb410e74a710983d"
     },
     "patient|好，那就先查清楚，再决定怎么练。": {
-      "src": "./assets/dialogue-v20/c22eb1fea44cf53855fb.mp3",
       "role": "patient",
       "text": "好，那就先查清楚，再决定怎么练。",
-      "duration": 4.220226757369614,
-      "sha256": "ab2ca182ec4d6f79c47539fbc629e3f91da72b388fc6bba8d0d1ab1c8dc8df66",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-076.mp3",
+      "duration": 3.35944,
+      "sha256": "27d58c96f79293d378ff05f3788b2968038dd76c429ce9b4232ce9601422dfdd",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "therapist|今天没有完成体能检查，我们不据此制定训练处方。": {
       "src": "./assets/dialogue-v20/13b415e12d19e3cc514c.mp3",
@@ -2469,14 +2468,13 @@
       "sha256": "22cfb9e0203e8d0119ea08565c81f1bbab81b23e7f38a4eb491d667df557514a"
     },
     "patient|明白了。": {
-      "src": "./assets/dialogue-v20/c0d669efd8b255dfe278.mp3",
       "role": "patient",
       "text": "明白了。",
-      "duration": 1.305079365079365,
-      "sha256": "09fe8f0d582b4251599a22ae1e73920adec4d9b8324d50f6cd4a07a007470138",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-077.mp3",
+      "duration": 1.08294,
+      "sha256": "0c955c50bbf490879ab8d9d195363eebbfb5187b98ac52fae1e5e46966a9a365",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "patient|我先练安心走路，谢谢您。": {
       "src": "./assets/dialogue-v20/9d303d751e7f681c342e.mp3",
@@ -5735,13 +5733,11 @@
     "patient|有点疼，请先停一下。": {
       "role": "patient",
       "text": "有点疼，请先停一下。",
-      "id": "r33-c24e5e5bbf122ddf",
-      "src": "./assets/dialogue-v20/r33-c24e5e5bbf122ddf.mp3",
-      "duration": 2.922176870748299,
-      "sha256": "b240f0c42c3e019e571b9cd1b30f3d797389e19051a5764f2841d3ceb4501e98",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-075.mp3",
+      "duration": 2.49162,
+      "sha256": "9afa07f9c516cabaaa2bbb6ee519b987bbef4ac7fcf5fa84d55c6a414d9aabdb",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "therapist|好的，先停下来，您把脚放松。我们休息一下。": {
       "role": "therapist",
@@ -7513,32 +7509,11 @@
     "patient|这点我还没听明白，您能再说说吗？": {
       "role": "patient",
       "text": "这点我还没听明白，您能再说说吗？",
-      "id": "r35-5aed5cbbaf4efc2a",
-      "scenes": [
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略"
-      ],
-      "src": "./assets/dialogue-v20/r35-5aed5cbbaf4efc2a.mp3",
-      "duration": 3.9768707482993197,
-      "sha256": "1b2ddcbcbd1ab65d5374c0c5290ec17dfb5f037e0b6383fc29594bc77dbf6edc",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-074.mp3",
+      "duration": 3.5575,
+      "sha256": "ff687504da0183eb84d3f4705d3c171f4784aa20d009d687def70db5612ccd19",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "patient|睁着眼我都怕站不稳，能先不闭眼吗？": {
       "role": "patient",
@@ -7558,21 +7533,11 @@
     "patient|我不想接着做了，先停一下吧。": {
       "role": "patient",
       "text": "我不想接着做了，先停一下吧。",
-      "id": "r35-da70629ebd0f52ec",
-      "scenes": [
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略",
-        "同一担心再次被忽略"
-      ],
-      "src": "./assets/dialogue-v20/r35-da70629ebd0f52ec.mp3",
-      "duration": 3.397687074829932,
-      "sha256": "26b47b53e84edf80b8cf183db9c5790b79237e2d1adcbf84a923fa17d6c237d6",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-073.mp3",
+      "duration": 2.931,
+      "sha256": "fd555cf8132b69259a222c8b70b9adba7efe06c98c7c3eccbefa29afe122813d",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "therapist|最近又扭过吗？": {
       "role": "therapist",
@@ -7728,17 +7693,11 @@
     "patient|先跟我说说要怎么查，行吗？": {
       "role": "patient",
       "text": "先跟我说说要怎么查，行吗？",
-      "id": "r35-d37d9d4c36b28bcc",
-      "scenes": [
-        "选错后的回应",
-        "重新回应患者"
-      ],
-      "src": "./assets/dialogue-v20/r35-d37d9d4c36b28bcc.mp3",
-      "duration": 3.388843537414966,
-      "sha256": "3b141bf8b54439f990a52fed67ca1dc424313553b5f390c76c24fbba5162ae3f",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-068.mp3",
+      "duration": 2.72944,
+      "sha256": "ea4f1ac15efe07e517c3ed6f0f0f68eab8bf0566f445a4e6daf7b56ce156f078",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "therapist|我会轻一点，疼了咱们就停。": {
       "role": "therapist",
@@ -7780,34 +7739,20 @@
     "patient|真不会疼吗？": {
       "role": "patient",
       "text": "真不会疼吗？",
-      "id": "r35-848d132e88d35641",
-      "scenes": [
-        "选错后的回应",
-        "重新回应患者",
-        "重新回应患者"
-      ],
-      "src": "./assets/dialogue-v20/r35-848d132e88d35641.mp3",
-      "duration": 1.7045804988662132,
-      "sha256": "e1ece86a3503586ffc5a1a81723fe0030fd43eb5568c1ade0080cd41d18f9a39",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-069.mp3",
+      "duration": 1.5705,
+      "sha256": "19a0aef3f0aead7c8e0a6f50036dd4308c45ad950e54e1d44c8bab7946a8304f",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "patient|要是疼了能停吗？": {
       "role": "patient",
       "text": "要是疼了能停吗？",
-      "id": "r35-4b993cdf1b5fac20",
-      "scenes": [
-        "选错后的回应",
-        "重新回应患者",
-        "重新回应患者"
-      ],
-      "src": "./assets/dialogue-v20/r35-4b993cdf1b5fac20.mp3",
-      "duration": 2.2476190476190476,
-      "sha256": "51346d19774b93ac7f61e575632d379766b59f284d885372a3640def5b92131e",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-070.mp3",
+      "duration": 1.98469,
+      "sha256": "5068dd1a43b051d5ad6f8739ece0ae4e1f4f2e1cae89bd5b718ffcda67ddea62",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "therapist|您把脚尖往上抬，再慢慢往下压。": {
       "role": "therapist",
@@ -8052,17 +7997,11 @@
     "patient|光顾着踩那块板，我走路都不自然了。": {
       "role": "patient",
       "text": "光顾着踩那块板，我走路都不自然了。",
-      "id": "r35-291475d0d9613486",
-      "scenes": [
-        "选错后的回应",
-        "重新回应患者"
-      ],
-      "src": "./assets/dialogue-v20/r35-291475d0d9613486.mp3",
-      "duration": 3.914920634920635,
-      "sha256": "615e31506d13bad72cf4a2df2afc4ed7a0a128098835b9a69d62d5f987b02d78",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-071.mp3",
+      "duration": 3.40119,
+      "sha256": "f084b57535d396995912c507f05cae8e5a074bb8d6a1856b1ae23790004d2196",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "therapist|刚才走的时候，右脚踩地的时间短一些。": {
       "role": "therapist",
@@ -8569,17 +8508,11 @@
     "patient|我一踩地就疼，真站不了。": {
       "role": "patient",
       "text": "我一踩地就疼，真站不了。",
-      "id": "r35-c759977f0ad073c0",
-      "scenes": [
-        "选错后的回应",
-        "重新回应患者"
-      ],
-      "src": "./assets/dialogue-v20/r35-c759977f0ad073c0.mp3",
-      "duration": 3.1369614512471657,
-      "sha256": "0083c2e7df0161c44b9b1263f1a5781f0da18b6ed45ca1eca1e6844da94295aa",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-072.mp3",
+      "duration": 2.69944,
+      "sha256": "1b06e55e0834b3c6d630ca10e36ca807213c98beb583244bbf2d1f776d63650c",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "therapist|先扶好，我陪您坐下。": {
       "role": "therapist",
@@ -8773,16 +8706,11 @@
     "patient|好，我坐一会儿。": {
       "role": "patient",
       "text": "好，我坐一会儿。",
-      "id": "r35-65989ddba48ddbdf",
-      "scenes": [
-        "检查暂缓"
-      ],
-      "src": "./assets/dialogue-v20/r35-65989ddba48ddbdf.mp3",
-      "duration": 2.378185941043084,
-      "sha256": "d5774e2732476d18a1d53d92276dcf8517a45773109a39bfe8fbd5cde52c810e",
-      "voice": "Microsoft Huihui (zh-CN)",
-      "rate": 1,
-      "source": "Consistent local female role recording"
+      "src": "./assets/dialogue-v20/ruyu78-078.mp3",
+      "duration": 1.58838,
+      "sha256": "d18d79db1707ec8245c6f933f69642c659bda83cb6983824eebba8e2e794301c",
+      "source": "陈女士角色配音 · TTSMaker",
+      "voice": "1010 · Ruyu 如玉-知性女声"
     },
     "therapist|我先给您做个示范，可以吗？": {
       "role": "therapist",
@@ -10263,5 +10191,5 @@
       "transcriptCheck": "您最近又扭过脚吗？脚踝有没有比以前更重更疼，有没有脚发麻或者不敢踩地面的情况。"
     }
   },
-  "revision": "v78 · 陈女士分句配音"
+  "revision": "v78.1 · 陈女士主线与分支配音"
 }

@@ -1554,7 +1554,7 @@
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
       "bytes": 55807,
-      "sha256": "3c21cd387190639187858842b530e5a20bdc6e36b0cb26656f4f5a33a592ed33"
+      "sha256": "54bede08c16db6529d080c81c9bb042cacbec00cd301ce546fa5d69a2733b242"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -5818,8 +5818,8 @@
     },
     {
       "path": "clinic3d/assets/dialogue-v20/manifest.json",
-      "bytes": 494141,
-      "sha256": "89ea6aed80e361fb14a2ddb479b87f511a7dd2ab03ae592a7df0262c72d1d250"
+      "bytes": 491885,
+      "sha256": "f280f8b7e87373346f3385de17a6e9323c4c4ea2952d4ae4fb87521247c8536c"
     },
     {
       "path": "clinic3d/assets/dialogue-v20/r33-000b12b72b24ffa0.mp3",
@@ -8180,6 +8180,61 @@
       "path": "clinic3d/assets/dialogue-v20/ruyu78-067.mp3",
       "bytes": 31148,
       "sha256": "b7913c2aff53f851de248c8c125e8433d419bd05d81c2c37df848df5c35f9801"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-068.mp3",
+      "bytes": 22796,
+      "sha256": "ea4f1ac15efe07e517c3ed6f0f0f68eab8bf0566f445a4e6daf7b56ce156f078"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-069.mp3",
+      "bytes": 13580,
+      "sha256": "19a0aef3f0aead7c8e0a6f50036dd4308c45ad950e54e1d44c8bab7946a8304f"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-070.mp3",
+      "bytes": 17036,
+      "sha256": "5068dd1a43b051d5ad6f8739ece0ae4e1f4f2e1cae89bd5b718ffcda67ddea62"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-071.mp3",
+      "bytes": 28268,
+      "sha256": "f084b57535d396995912c507f05cae8e5a074bb8d6a1856b1ae23790004d2196"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-072.mp3",
+      "bytes": 22508,
+      "sha256": "1b06e55e0834b3c6d630ca10e36ca807213c98beb583244bbf2d1f776d63650c"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-073.mp3",
+      "bytes": 24524,
+      "sha256": "fd555cf8132b69259a222c8b70b9adba7efe06c98c7c3eccbefa29afe122813d"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-074.mp3",
+      "bytes": 29420,
+      "sha256": "ff687504da0183eb84d3f4705d3c171f4784aa20d009d687def70db5612ccd19"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-075.mp3",
+      "bytes": 21068,
+      "sha256": "9afa07f9c516cabaaa2bbb6ee519b987bbef4ac7fcf5fa84d55c6a414d9aabdb"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-076.mp3",
+      "bytes": 27980,
+      "sha256": "27d58c96f79293d378ff05f3788b2968038dd76c429ce9b4232ce9601422dfdd"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-077.mp3",
+      "bytes": 9836,
+      "sha256": "0c955c50bbf490879ab8d9d195363eebbfb5187b98ac52fae1e5e46966a9a365"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/ruyu78-078.mp3",
+      "bytes": 13868,
+      "sha256": "d18d79db1707ec8245c6f933f69642c659bda83cb6983824eebba8e2e794301c"
     },
     {
       "path": "clinic3d/assets/door-knock.wav",

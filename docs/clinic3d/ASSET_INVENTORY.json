@@ -506,8 +506,8 @@
     {
       "id": "local-dialogue-v20",
       "path": "assets/dialogue-v20/manifest.json",
-      "bytes": 494141,
-      "sha256": "89ea6aed80e361fb14a2ddb479b87f511a7dd2ab03ae592a7df0262c72d1d250",
+      "bytes": 491885,
+      "sha256": "f280f8b7e87373346f3385de17a6e9323c4c4ea2952d4ae4fb87521247c8536c",
       "source": "Course recordings and generated Mandarin dialogue. The voice and source fields identify individually credited clips.",
       "license": "Course dialogue assets. Speech engines and model weights are not distributed."
     },
