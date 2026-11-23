@@ -35,7 +35,7 @@ STATIC_SUFFIXES = {'.html', '.css', '.js', '.json', '.csv', '.txt', '.svg', '.pn
                    '.jpg', '.jpeg', '.gif', '.webp', '.ico', '.glb', '.gltf', '.bin',
                    '.mp4', '.webm', '.woff', '.woff2', '.ttf', '.pdf', '.md', '.cmd', '.py', '.mjs'}
 PUBLIC_DOCUMENTS = {'/.nojekyll', '/assembly/licenses/SOMAKINE_DATA_LICENSE', '/assembly/licenses/SOMAKINE_NOTICE'}
-STATIC_SUFFIXES.update({'.cjs', '.ps1', '.mp3'})
+STATIC_SUFFIXES.update({'.cjs', '.ps1', '.mp3', '.wav'})
 
 
 class APIError(Exception):

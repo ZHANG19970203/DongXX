@@ -9943,8 +9943,8 @@
     },
     {
       "path": "serve_lab.py",
-      "bytes": 39838,
-      "sha256": "7baa085236bb804f618afa71ebe42214db4b40c6e769a95917cdd7807cc1f633"
+      "bytes": 39846,
+      "sha256": "1ee8a7d5bfa64d9786aa904e3f7860aefa6a0882a705a68536f5e6c7115797cb"
     },
     {
       "path": "site-check.html",
