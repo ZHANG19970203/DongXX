@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {createClinicRoom} from './scene-room.js';
+import {createClinicRoom} from './scene-room.js?v=75';
 import {createActors} from './actors.js';
 import {startBedside} from './bedside-player.js';
 
@@ -17,6 +17,7 @@ async function open(){
   function resize(){renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();}
   resize();addEventListener('resize',resize);
   const actors=await createActors(scene);
+  room.setOccupied(true);
   const player=startBedside({host,actors,room,camera,renderer,film,onClose:()=>{const ref=document.referrer?new URL(document.referrer):null;if(ref?.origin===location.origin&&ref.pathname!==location.pathname&&history.length>1)history.back();else location.assign('../index.html#home');}});
   document.querySelector('#status').remove();
   const draw=()=>renderer.render(scene,camera);

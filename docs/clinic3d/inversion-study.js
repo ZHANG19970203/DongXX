@@ -34,10 +34,10 @@ const stations=[
 ];
 const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text)n.textContent=text;return n;};
 function button(text,run){const n=el('button','',text);n.type='button';n.addEventListener('click',run);return n;}
-export function openInversionStudy({host,draft,onSave,onDone,onContinue,onClose,onSkip,onBack,review,narrate=()=>{},stopNarration=()=>{}}){
+export function openInversionStudy({host,draft,onSave,onDone,onContinue,onClose,onSkip,onBack,review,afterDeparture=false,narrate=()=>{},stopNarration=()=>{}}){
   const book=structuredClone(draft?.version===1?draft:{version:1,step:0,observations:{},attempts:{},solved:{}});
   const abort=new AbortController(),dialog=el('dialog','ankle-study'),header=el('header','study-head'),title=el('h2','','下楼踩空，右脚为什么容易向内崴？');
-  dialog.setAttribute('aria-label','右踝扭伤机制模型练习');header.append(title,button('返回接诊',onClose));if(onSkip){const skip=button('跳过此步骤',onSkip);skip.className='skip-step';header.insertBefore(skip,header.lastChild);}
+  dialog.setAttribute('aria-label','右踝扭伤机制模型练习');header.append(title,button(afterDeparture?'返回本次记录':'返回接诊',onClose));if(onSkip){const skip=button('跳过此步骤',onSkip);skip.className='skip-step';header.insertBefore(skip,header.lastChild);}
   const body=el('div','study-body'),viewer=el('div','study-view'),stage=el('div','study-canvas'),cap=el('p','study-cap'),nav=el('div','study-view-nav');
   let focus='fibLong',showAll=false;
   let model=null,closed=false,current='neutral',ready=false,busy=false,generation=0;
@@ -58,7 +58,7 @@ export function openInversionStudy({host,draft,onSave,onDone,onContinue,onClose,
     const results=el('p','study-result','已完成 4 项判断，其中 '+stations.filter((s,i)=>book.attempts[i]?.[0]===s.correct).length+' 项首次判断正确。');
     const audio=el('details','study-source'),player=el('audio');player.src=new URL('../soap/media/inversion-lesson.mp3',import.meta.url);player.controls=true;player.preload='none';
     audio.append(el('summary','','听完整机制解说'),player);audio.ontoggle=()=>{if(!audio.open)player.pause();};
-    const next=button(review?'回到诊室入口':'继续问诊',onContinue);next.className='study-primary';
+    const next=button(afterDeparture?'返回本次记录':review?'回到诊室入口':'继续问诊',onContinue);next.className='study-primary';
     side.replaceChildren(h,para,results,next,audio,credit());
   }
   function attachmentCard(){

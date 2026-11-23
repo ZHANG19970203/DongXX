@@ -1554,7 +1554,7 @@
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
       "bytes": 55807,
-      "sha256": "39e12fc7a10aaa857125df8c162eaba2fda5edae82f70e7ef2234204efdeef69"
+      "sha256": "11bcc073439cb5e6c11b3e60d1ea46e54db5da05cb0dde88baed2bfe4ab1a338"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -1578,8 +1578,8 @@
     },
     {
       "path": "clinic3d/app.js",
-      "bytes": 101202,
-      "sha256": "0989d8d5360b61290b4d11365b6d565e6218c176d7d8b2c1c1e35f645171c4d2"
+      "bytes": 102738,
+      "sha256": "3cc57bfdbfa1aecceefb50627991eafe7f46e7d0d3691562c515388f9d679271"
     },
     {
       "path": "clinic3d/appearance.js",
@@ -8038,8 +8038,8 @@
     },
     {
       "path": "clinic3d/bedside-preview.js",
-      "bytes": 2251,
-      "sha256": "056df62a5322bd4b21883221be7869ebe22fece17c47d11593dc204d38c2c5e0"
+      "bytes": 2283,
+      "sha256": "ce2bd72431be49e4a6d4a682aeddb6969b754575c672ec698804c32fd942f55f"
     },
     {
       "path": "clinic3d/bedside.css",
@@ -8048,8 +8048,8 @@
     },
     {
       "path": "clinic3d/bedside.html",
-      "bytes": 816,
-      "sha256": "940619953afa3fa3538d367c90790281e64bb8d326ab4394b543e2f4028fcfe8"
+      "bytes": 821,
+      "sha256": "2a80ac2d2b5bcbba330371faf3b93088f7a159648b9ad97e1c04f6397eb02c07"
     },
     {
       "path": "clinic3d/case-evidence.js",
@@ -8949,7 +8949,7 @@
     {
       "path": "clinic3d/index.html",
       "bytes": 14599,
-      "sha256": "b4806e8962b3960aa956610527f50694f87404558792a11a256421e000086d18"
+      "sha256": "c53ad5efc8c6130ecc24daa8a5241f12a3b394883790f849fc48d51a6bda2fbe"
     },
     {
       "path": "clinic3d/inversion-lesson.js",
@@ -8968,8 +8968,8 @@
     },
     {
       "path": "clinic3d/inversion-study.js",
-      "bytes": 12402,
-      "sha256": "8921af73c0e41ccc725e14c99e9528adc73bc83206b8e88e8583702d73729fce"
+      "bytes": 12495,
+      "sha256": "ebc127a3354c3506209acc24cdfbd35c7814c079bdf878ccb59bfb153eefc373"
     },
     {
       "path": "clinic3d/learning-bubbles-v25.css",
@@ -9093,8 +9093,8 @@
     },
     {
       "path": "clinic3d/scene-room.js",
-      "bytes": 33077,
-      "sha256": "3d9cb6711a6acec27a11b2f3876792331b8e8a9c4406b9e012d84e6ff2644151"
+      "bytes": 34574,
+      "sha256": "740628bdc49a67998e1c280fe7a2e861033155edc5da31a7cfd3939c387afb31"
     },
     {
       "path": "clinic3d/skip-step.css",
@@ -9438,8 +9438,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 15227,
-      "sha256": "c99bf0cc610b92e8f80b70ea11128e0121bfe26acc39ceee03df3e68e38253bc"
+      "bytes": 13523,
+      "sha256": "f3ce98ca3423651cfd35a00cb670141a30afa03ceb6e59d6922d65fb3d19f098"
     },
     {
       "path": "knowledge_exam.py",
@@ -9508,8 +9508,8 @@
     },
     {
       "path": "lab/index.html",
-      "bytes": 62271,
-      "sha256": "a6b22cb22115e1a67b91bd2134e3e202082dbdec863a069b9e18bd84edd74a77"
+      "bytes": 62063,
+      "sha256": "c55ccdf383953b6c2cb37c8b65d23e9cb33f3efdcc1c0f107b0a7afff4842e86"
     },
     {
       "path": "lab/lab.css",

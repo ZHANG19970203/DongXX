@@ -122,8 +122,8 @@
     {
       "id": "original-room",
       "path": "scene-room.js",
-      "bytes": 33077,
-      "sha256": "3d9cb6711a6acec27a11b2f3876792331b8e8a9c4406b9e012d84e6ff2644151",
+      "bytes": 34574,
+      "sha256": "740628bdc49a67998e1c280fe7a2e861033155edc5da31a7cfd3939c387afb31",
       "source": "Project original room/rig procedures; includes portable clinical notes and pen. No separate stationery tray; existing medical trolley only holds clinical tools.",
       "license": "Room/application code follows the complete-site MIT scope; anatomical poster data derivatives retain CC BY 4.0 with attribution, modification notes and source IDs in docs/v12-anatomy-posters.json.",
       "includes": [
@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 101202,
-      "sha256": "0989d8d5360b61290b4d11365b6d565e6218c176d7d8b2c1c1e35f645171c4d2"
+      "bytes": 102738,
+      "sha256": "3cc57bfdbfa1aecceefb50627991eafe7f46e7d0d3691562c515388f9d679271"
     },
     {
       "id": "walking-pose-v27",

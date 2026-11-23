@@ -170,19 +170,49 @@ export function createClinicRoom(scene) {
   box([.87, 2.10, .035], [.435, 1.05, 0], white, leaf);
   box([.29, 1.12, .039], [.25, 1.38, 0], glass, leaf);
   box([.13, .028, .06], [.75, .96, .035], steel, leaf);
-  label('运动康复评估室', .70, .15, [-1.65, 2.32, -2.985]);
+  // The illuminated status is visible from both the corridor and the consultation room.
+  const statusPanel = group('DoorOccupancy', [-1.65, 2.36, -3.02], doorFrame);
+  const casing = material('door-sign-housing', 0x2b4144, {roughness: .5});
+  box([1.00, .285, .12], [0, 0, 0], casing, statusPanel);
+  function signFace(text, ink, background) {
+    return canvasTexture((ctx,w,h) => {
+      ctx.fillStyle=background;ctx.fillRect(0,0,w,h);
+      ctx.fillStyle=ink;ctx.shadowColor=ink;ctx.shadowBlur=9;
+      ctx.beginPath();ctx.arc(55,h/2,14,0,2*Math.PI);ctx.fill();
+      ctx.shadowBlur=0;ctx.font='bold 93px "Microsoft YaHei",sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,294,h/2+2);
+    },512,142);
+  }
+  const idleFace=signFace('空闲中','#c9ffe4','#124d43');
+  const busyFace=signFace('就诊中','#fff1bc','#754207');
+  const display=new THREE.MeshBasicMaterial({map:idleFace,toneMapped:false});
+  materials.add(display);
+  for(const side of [-1,1]){
+    const screen=mesh(new THREE.PlaneGeometry(.95,.253),display,[0,0,side*.061],statusPanel);
+    screen.rotation.y=side===1?0:Math.PI;
+    screen.castShadow=screen.receiveShadow=false;
+  }
+  function setOccupied(occupied){
+    statusPanel.userData.occupied=occupied;
+    display.map=occupied?busyFace:idleFace;
+  }
+  setOccupied(false);
   objects.door = leaf;
 
-  // Visible fixtures only; the host owns scene illumination and its settings.
-  const led = material('led-diffuser', 0xf8fbf7, { emissive: 0xd6e1d7, emissiveIntensity: .35 });
-  for (const x of [-1.05, 1.05]) for (const z of [-1.65, 1.05]) {
-    box([.63, .022, .63], [x, 2.765, z], edge);
-    box([.58, .009, .58], [x, 2.748, z], led);
+  const diffuser = new THREE.MeshBasicMaterial({color:0xfffdf4,toneMapped:false});
+  materials.add(diffuser);
+  const fixtureTrim=material('light-frame',0x85928f,{roughness:.62});
+  function fixture(x,z,width,depth){
+    box([width+.046,.024,depth+.046],[x,2.765,z],fixtureTrim);
+    const face=box([width,.014,depth],[x,2.745,z],diffuser,room,'LitCeilingPanel');
+    face.castShadow=face.receiveShadow=false;
   }
-  for (const z of [-.25, 1.3]) {
-    box([1.05, .022, .11], [-.1, 2.765, z], edge);
-    box([.98, .009, .075], [-.1, 2.748, z], led);
+  for(const z of [-1.65,1.05]){
+    for(const x of [-1.05,1.05])fixture(x,z,.58,.58);
+    const light=new THREE.PointLight(0xfffaec,2.2,4.2,2);
+    light.position.set(0,2.65,z);room.add(light);
   }
+  for(const z of [-.25,1.3])fixture(-.1,z,.98,.075);
 
   const desk = group('ReceptionDesk', [1.30, 0, -1.80]);
   roundedSlab(1.6, .8, .055, .045, [0, .7225, 0], white, desk);
@@ -578,5 +608,5 @@ export function createClinicRoom(scene) {
     for(const mat of materials) mat.dispose();
     for(const texture of textures) texture.dispose();
   }
-  return {anchors,objects,setActivity,dispose};
+  return {anchors,objects,setActivity,setOccupied,dispose};
 }

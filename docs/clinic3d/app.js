@@ -14,7 +14,7 @@ import {addPractice} from '../learning/case-items.js';
 import {openArchObservation} from './arch-observation.js?v=68';
 import {openArchBones} from './arch-bones.js';
 import {voiceRole,replies,spokenCommunicationChoices} from './clinic-dialogue.js?v=69';
-import {openInversionStudy} from './inversion-study.js?v=74';
+import {openInversionStudy} from './inversion-study.js?v=75';
 import {startBedside} from './bedside-player.js?v=70';
 import {differentialPanel} from './differential.js';
 import {reactionFor,repairLabel,repairSpoken} from './communication-v26.js?v=73';
@@ -25,7 +25,7 @@ import { SOAP_STAGES } from './soap-route-v20.js?v=72';
 import { createDialogueAudio } from './dialogue-audio.js?v=74';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { createClinicRoom } from './scene-room.js?v=74';
+import { createClinicRoom } from './scene-room.js?v=75';
 import { createActors,seatOnExamBed } from './actors.js?v=74';
 import { samplePlantarScan, sampleStanding, sampleWalking, renderPressureDiagram } from './pressure-engine.js';
 import { createPressureStage } from './pressure-stage.js';
@@ -167,13 +167,31 @@ function leaveMechanism(){
  $('taskSurface').querySelector('[data-open-mechanism]')?.focus();
 }
 function enterMechanism(){
- if(mechanism||activeNode?.id!=='injury_mechanism')return;
+ const afterDeparture=activeNode?.id==='history_closed'&&state.withdrawal?.phase==='closed';
+ if(mechanism||(!afterDeparture&&activeNode?.id!=='injury_mechanism'))return;
+ const readOnly=afterDeparture&&!!state.completedAt;
+ function returnToRecord(){
+  leaveMechanism();
+  if(afterDeparture){
+   delete state.withdrawal.modelOpen;persist();
+   $('continueAfterDeparture')?.focus();
+  }
+ }
+ if(afterDeparture&&!state.withdrawal.modelOpen){
+  state.withdrawal.modelOpen=true;
+  if(!readOnly&&!state.withdrawal.reflectedAt){
+   state.withdrawal.reflectedAt=now();
+   record('clinic3d_departure_reflection',{nodeId:'history_closed',nextActivity:'injury_mechanism',reason:state.withdrawal.reason});
+  }
+  persist();
+ }
  state.autoDialogueNext=null;dialogueAudio.cancel();
  mechanism=openInversionStudy({narrate:text=>speak('教学旁白',text),stopNarration:()=>dialogueAudio.cancel(),host:$('clinic'),review:!!REVIEW_NODE,draft:state.mechanismDraft,
-  onBack:previousStep,onSave:draft=>{state.mechanismDraft=draft;if(!REVIEW_NODE)persist();},
-  onDone:result=>{const receipt={at:now(),...result,scope:'anatomical-model-reasoning'};
+  afterDeparture,onBack:afterDeparture?returnToRecord:previousStep,onSave:draft=>{if(readOnly)return;state.mechanismDraft=draft;if(!REVIEW_NODE)persist();},
+  onDone:result=>{if(readOnly||state.taskReceipts.injury_mechanism?.scope==='anatomical-model-reasoning')return;
+   const receipt={at:now(),...result,scope:'anatomical-model-reasoning'};
    state.taskReceipts.injury_mechanism=receipt;record('clinic3d_task_completed',{nodeId:'injury_mechanism',...receipt});},
-  onSkip:skipCurrentStep,onClose:leaveMechanism,onContinue:()=>{leaveMechanism();if(REVIEW_NODE)location.assign(reviewExit);else goto('safety');}});
+  onSkip:afterDeparture?null:skipCurrentStep,onClose:returnToRecord,onContinue:()=>{returnToRecord();if(afterDeparture)return;if(REVIEW_NODE)location.assign(reviewExit);else goto('safety');}});
 }
 function nextAfterBedside(){
  const target=state.afterBedside||'local_intro';delete state.afterBedside;
@@ -472,7 +490,7 @@ function goto(id,{restoring=false,navigation=false,back=false}={}) {
  const conversationTurns=node.turns;
  const presentedText=conversationTurns?conversationTurns[0].text:typeof displayNodeText==='undefined'?node.text||'':displayNodeText(node);
  $('line').textContent=presentedText;$('progressText').textContent='已走过 '+state.visited.length+' 个对话与操作';
- actors.patient.root.visible=id!=='history_closed';room.objects.door.rotation.y=-Math.PI*.43;
+ actors.patient.root.visible=id!=='history_closed';room.setOccupied(actors.patient.root.visible);room.objects.door.rotation.y=actors.patient.root.visible?-Math.PI*.43:0;
  setVisual(node);updateComposition();lessonUI.presentNode(node);immersion?.enterNode(node);if(restoring){actors.patient.setPose(actors.patient.getState().pose,true);actors.therapist.setPose(actors.therapist.getState().pose,true);}drawRail();addEvidence([]);
  if(!restoring){
   if(conversationTurns){for(const turn of conversationTurns)appendLine(turn.speaker==='patient'?'陈女士':'林治疗师',turn.text,node.kind);}
@@ -507,6 +525,12 @@ function goto(id,{restoring=false,navigation=false,back=false}={}) {
    document.body.dataset.departure='closed';
    const message='陈女士已离开诊室。本次问诊提前结束。离开原因：'+state.withdrawal.reason+'。';
    dialoguePlayer.showPrompt(message,id);
+   const reflection=button('对每一个患者都应做到工作细致入微，一丝不苟。',enterMechanism);
+   reflection.id='continueAfterDeparture';reflection.dataset.number='01';
+   reflection.setAttribute('aria-describedby','departureDestination');
+   const destination=nodeEl('small','','下一项：右踝扭伤机制模型练习');destination.id='departureDestination';
+   $('options').replaceChildren(reflection,destination);
+   if(restoring&&state.withdrawal.modelOpen)queueMicrotask(enterMechanism);
    $('next').textContent=state.completedAt?'查看完成情况':'提交本次学习';
   }else{
    $('next').hidden=true;movement=null;
@@ -712,11 +736,11 @@ function intro(){
  const a=room.anchors,seat=a.patientSeat,outside=[-1.63,0,-3.44];
  const points=[outside,[-1.63,0,-3.05],a.entrance,[-.85,0,-1.45],[seat[0],0,seat[2]+.50],seat];
  $('welcome').hidden=true;$('conversation').hidden=true;
- document.body.dataset.arrival='knock';room.objects.door.rotation.y=0;
+ document.body.dataset.arrival='knock';room.setOccupied(false);room.objects.door.rotation.y=0;
  actors.patient.root.visible=true;actors.therapist.root.visible=true;
  actorPose(actors.patient,'standing',outside,0,true);actorPose(actors.therapist,'seated',a.therapistSeat,0,true);
  movement={time:0,taps:0,phase:'knock',path:new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)))};
- state.view='third';arrivalCamera([-.52,1.67,-4.82],[-1.62,1.25,-3.20]);
+ state.view='third';arrivalCamera([-.68,1.75,-5.40],[-1.63,1.74,-3.12]);
 }
 function advanceArrival(dt){
  const m=movement;m.time+=dt;
@@ -745,6 +769,7 @@ function finishIntro(){
 function walkRoute(actor,curve,travel){
  const point=curve.getPointAt(travel),direction=curve.getTangentAt(travel);
  actor.setPosition(point).face(Math.atan2(direction.x,direction.z));
+ if(actor===actors.patient)room.setOccupied(point.z>=-3);
 }
 let departureWalk=null;
 function startDeparture(){
