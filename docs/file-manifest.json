@@ -1554,7 +1554,7 @@
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
       "bytes": 55807,
-      "sha256": "11bcc073439cb5e6c11b3e60d1ea46e54db5da05cb0dde88baed2bfe4ab1a338"
+      "sha256": "2aafa25b6dbb17e6b46bb9bbcdce64d532a9f8e7bd56e526dffc29c37b8f2020"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -1578,8 +1578,8 @@
     },
     {
       "path": "clinic3d/app.js",
-      "bytes": 102738,
-      "sha256": "3cc57bfdbfa1aecceefb50627991eafe7f46e7d0d3691562c515388f9d679271"
+      "bytes": 103510,
+      "sha256": "8160b626e1ca8a909f3e377ccbd4e3f29b0a1484be92f822906e2773e3277e8d"
     },
     {
       "path": "clinic3d/appearance.js",
@@ -4582,6 +4582,11 @@
       "sha256": "1f47fbcfbdfd8b186511ba162ee9b75b426f1665e0fb347390b33e71bffa41c3"
     },
     {
+      "path": "clinic3d/assets/dialogue-v20/clinical77-screen.mp3",
+      "bytes": 55316,
+      "sha256": "70d3b6e38924e8e300b147524f3b02a2c1bd812c9433e9d4d0f244797a5bc097"
+    },
+    {
       "path": "clinic3d/assets/dialogue-v20/consent-ankle-feiref-v47.mp3",
       "bytes": 33740,
       "sha256": "a4a6ad7430dc5fe0cef8c8c29630f2f4c3a70c9aeecb389f9799e461f8bfedb2"
@@ -5813,8 +5818,8 @@
     },
     {
       "path": "clinic3d/assets/dialogue-v20/manifest.json",
-      "bytes": 502249,
-      "sha256": "fbcf796e341bfd927670754c4f58e3e909b733061001c47de8d5610bc56def45"
+      "bytes": 502972,
+      "sha256": "c092d37faa7bde2808f6a052c1119218e31ae5e6cf246d7b09ca19097f717d7d"
     },
     {
       "path": "clinic3d/assets/dialogue-v20/r33-000b12b72b24ffa0.mp3",
@@ -8023,18 +8028,18 @@
     },
     {
       "path": "clinic3d/bedside-motion.js",
-      "bytes": 30871,
-      "sha256": "146a12d62a36c8634c016b47f2cdb9f76baeed5d7fbe8a2eee84efbfad347d9f"
+      "bytes": 30968,
+      "sha256": "5b6b2af7afdb5ba165a141efb979b6453fd32bc1974177e8d36e97bad58ce1b0"
     },
     {
       "path": "clinic3d/bedside-player.js",
-      "bytes": 6438,
-      "sha256": "a808812cc74909b19ac019c1178be3129f8f763211c9097c2a8b657a2e517fd3"
+      "bytes": 7036,
+      "sha256": "ea36a9156e895ee256030fdf75a3577234a609d596e73c7a788d6f0c4dd625bc"
     },
     {
       "path": "clinic3d/bedside-practice.js",
-      "bytes": 26635,
-      "sha256": "f7104a5597a17edd113ed99b238bb96eb91dc9d1c19a6bc4b33283c9d9956218"
+      "bytes": 26741,
+      "sha256": "914ddff6ace4080eaf3fe278caa03229ab01be320b8bff25605e5eb3033386c8"
     },
     {
       "path": "clinic3d/bedside-preview.js",
@@ -8078,8 +8083,8 @@
     },
     {
       "path": "clinic3d/clinic-dialogue.js",
-      "bytes": 12714,
-      "sha256": "8dce6fe263cb59f90d7746b6ed50ca338013e9498770eb6521f28bf068716725"
+      "bytes": 12747,
+      "sha256": "7ba5ecdeeccb25fb8d8169370a7c37e7c57351013a1b98629aa42064eaf54f7f"
     },
     {
       "path": "clinic3d/clinic.css",
@@ -8098,8 +8103,8 @@
     },
     {
       "path": "clinic3d/conversation.css",
-      "bytes": 7277,
-      "sha256": "a01107764bc2a875082db61ee174ea199728ec22b55d542ebe27b24f5861cef9"
+      "bytes": 7955,
+      "sha256": "64e7098c3f1d6dc88ff4ca633527c603cb6aae911f9438f44b673ca5054b2c9c"
     },
     {
       "path": "clinic3d/dialogue-audio.js",
@@ -8948,8 +8953,8 @@
     },
     {
       "path": "clinic3d/index.html",
-      "bytes": 14599,
-      "sha256": "c53ad5efc8c6130ecc24daa8a5241f12a3b394883790f849fc48d51a6bda2fbe"
+      "bytes": 14601,
+      "sha256": "06aaf8637911deeaa0120557061e1edfe00aed42607939c7bda68b7b9c8a9917"
     },
     {
       "path": "clinic3d/inversion-lesson.js",
@@ -9115,6 +9120,11 @@
       "path": "clinic3d/soap-tasks-v20.js",
       "bytes": 2131,
       "sha256": "6ec87067861d55300982af0e0761832ac1afb8a13ccc57eecae89b52ae044c85"
+    },
+    {
+      "path": "clinic3d/speaker-shot.js",
+      "bytes": 1090,
+      "sha256": "54a43a4aefeca1840a72045d2a8749ac33a15bd5c885b05f34431beac2e0a4a6"
     },
     {
       "path": "clinic3d/strength-bed.js",

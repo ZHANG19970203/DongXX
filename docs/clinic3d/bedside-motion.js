@@ -488,9 +488,10 @@ export function createBedsideMotion(actors,room,{seatedStart=false,barefoot=true
       look=V(-1.58,1.0-.17*settle,.30);
       eye=V(2.05,1.35,1.35).add(look);
     }else{
-      const angle=view==='auto'?(t>=10.9?'tilt':'side'):view;
+      const angle=view==='auto'?'both':view;
       look=pose.neutral.clone().add(V(0,.030,angle==='side'?-.084:-.023));
-      const offsets={side:V(-.55,.104,-.122),tilt:V(-.52,.34,.07),end:V(-.54,.17,.46),above:V(-.20,.82,-.22),wide:V(-1.68,.83,.92)};
+      if(angle==='both')look=pose.neutral.clone().lerp(pose.left,.32).add(V(0,.045,-.07));
+      const offsets={both:V(-.39,.72,-.33),side:V(-.55,.104,-.122),tilt:V(-.52,.34,.07),end:V(-.54,.17,.46),above:V(-.20,.82,-.22),wide:V(-1.68,.83,.92)};
       if(angle==='wide')look.add(V(0,.045,-.43));
       eye=look.clone().add(offsets[angle]);
     }

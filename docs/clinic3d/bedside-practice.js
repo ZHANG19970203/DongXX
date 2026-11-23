@@ -13,7 +13,7 @@ export const PRACTICE_LINES={
  fast:'有点疼，请先停一下。',
  finish:'两项床旁查体已完成，结果已记录。'
 };
-export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelector('[data-back]')?.click(),onComplete=()=>{},onContinue,checkpoint,saveCheckpoint=()=>{},agreed=false,prepared=false,beginBedPrep,stepBedPrep,onPrepared,record=()=>{},voiceEnabled=()=>true,patientExpression=()=>{}}){
+export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelector('[data-back]')?.click(),onComplete=()=>{},onContinue,checkpoint,saveCheckpoint=()=>{},agreed=false,prepared=false,beginBedPrep,stepBedPrep,onPrepared,record=()=>{},voiceEnabled=()=>true,onSpeaker=()=>{},patientExpression=()=>{}}){
  const bottom=ui.querySelector('.bedside-bottom'),line=ui.querySelector('.bedside-line');
  ui.classList.add('bedside-practice');ui.querySelector('.bedside-controls').hidden=true;
  const actions=document.createElement('div');actions.className='practice-actions';
@@ -47,7 +47,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
  const label=()=>test===0?'前抽屉试验':'内翻加压试验';
  const emit=(type,payload={})=>record('clinic3d_bedside_'+type,{test:label(),stage,...payload,teachingSimulation:true,measuredForce:false});
  async function say(role,text){
-  stopExplanation();
+  onSpeaker(role);stopExplanation();
   patientExpression(role==='patient'&&text===PRACTICE_LINES.fast?'pain':'neutral');
   const start=performance.now(),source=stage;
   while(active&&stage===source){
@@ -59,7 +59,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
     observer.observe(ui,{childList:true,subtree:true});
    });
   }
-  const remaining=Math.max(1500,Math.min(6000,text.length*65))-(performance.now()-start);if(active&&remaining>0)await new Promise(resolve=>setTimeout(resolve,remaining));};
+  const remaining=Math.max(1500,Math.min(6000,text.length*65))-(performance.now()-start);if(active&&remaining>0)await new Promise(resolve=>setTimeout(resolve,remaining));if(active&&stage===source)onSpeaker(null);};
  function button(text,fn,attr){const b=document.createElement('button');b.type='button';b.textContent=text;if(attr)b.dataset.practice=attr;b.onclick=fn;actions.append(b);return b;}
  function clear(){actions.replaceChildren();markers.replaceChildren();status.textContent='';drag=null;}
  function draw(value){currentSample=value;if(lastAspect!==camera.aspect){path=null;drag=null;}lastAspect=camera.aspect;pose=seek(value,{...grips,showForces:stage==='demo'||stage==='pressing',conversation:stage==='consent'?'initial':stage==='retry'&&retryNeedsConsent?'retry':null});lastAspect=camera.aspect;positionMarkers();}
@@ -70,7 +70,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   grips={fixedWeight:0,heelWeight:0};setStage('demo');draw(baseline());
  }
  function endDemo(){if(!demo)return;const previous=demo;demo=null;grips=previous.grips;setStage(previous.from,true);}
- function setStage(next,resuming=false){
+ function setStage(next,resuming=false){onSpeaker(null);
   const revision=++stageRevision;
   if(!['move','settle','return','pressure','pressing','next','interpret'].includes(next))stopExplanation();
   patientExpression('neutral');audio.cancel();stage=next;ui.dataset.practiceStage=next;ui.dataset.practiceTest=String(test);clear();
@@ -199,7 +199,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   }else if(next==='positioning'){
    line.textContent='将右脚摆正，足底与小腿约呈直角。';draw(10.2);
   }else if(next==='interpret'){draw(15);
-   line.textContent='病例资料提示右侧前移、内翻倾斜较对侧略大。怎样解释这一发现？';
+   line.textContent='本病例右踝前抽屉和内翻应力试验阳性，左踝为阴性对照。怎样解释这一发现？';
    const notes=document.createElement('details');notes.className='stress-notes';
    const heading=document.createElement('summary');heading.textContent='怎样理解两项手法？';notes.append(heading);
    for(const text of ['前抽屉比较足跟向前的移动及终末阻力，主要关注距腓前韧带。中立位内翻加压比较倾斜幅度及终末阻力，主要关注跟腓韧带。','若另有足部外旋受伤、踝上方疼痛等线索，可另行评估下胫腓联合。外旋应力试验关注是否诱发熟悉的联合区疼痛，并结合压痛、损伤机制及其他检查判断。']){

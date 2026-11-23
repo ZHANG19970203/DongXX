@@ -148,3 +148,9 @@ body[data-departure] :is(#skipStep,#coach,#previousStep,.learning-bubble-v25),
 body[data-departure="walking"] :is(#conversation,#views,.view-switch,.assessment-dock){display:none!important}
 
 body[data-arrival] :is(#conversation,#previousStep,#coach,#views,#caseProgress,#skipStep,#taskDock,.learning-bubble-v25,.assessment-dock){display:none!important}
+
+/* Reserve the upper part of the scene for the speaking actor. */
+body[data-speaker-shot]:not(:has(#clinic[data-bedside-active])) #clinic #conversation:not([hidden]){inset:auto auto 7px 50%!important;transform:translateX(-50%)!important;max-height:42dvh;width:min(760px,96vw);overflow:auto}
+.ankle-side-tag{position:absolute;z-index:2;pointer-events:none;transform:translate(-50%,-50%);border-radius:12px;padding:3px 8px;background:#fffdf5eb;color:#195253;font:bold 12px/1.35 sans-serif;white-space:nowrap}
+.ankle-side-tag[data-side=right]{color:#823916;background:#fff3d8f5}
+body[data-speaker-shot] .ankle-side-tag,body[data-speaker-shot] .practice-markers{visibility:hidden}

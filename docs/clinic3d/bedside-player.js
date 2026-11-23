@@ -1,5 +1,5 @@
-import {createBedsideMotion,chapters,duration,instruction,preparationDuration} from './bedside-motion.js?v=69';
-import {createBedsidePractice} from './bedside-practice.js?v=70';
+import {createBedsideMotion,chapters,duration,instruction,preparationDuration} from './bedside-motion.js?v=771';
+import {createBedsidePractice} from './bedside-practice.js?v=771';
 
 import {seatOnExamBed} from './actors.js?v=69';
 
@@ -12,7 +12,7 @@ export function startBedside({host,actors,room,camera,renderer,onClose,backLabel
   host.append(ui);host.dataset.bedsideActive='true';
   if(film)ui.classList.add('bedside-film');
   const btn=ui.querySelector('[data-play]'), back=ui.querySelector('[data-back]'),line=ui.querySelector('p'),slider=ui.querySelector('input');
-  let time=0,playing=!film,previous=-1,lastAspect=0;
+  let speaker=null;let time=0,playing=!film,previous=-1,lastAspect=0;
   for(const [position,label] of chapters){
     const item=document.createElement('button');item.type='button';item.textContent=label;
     item.onclick=()=>{playing=true;seek(position);};ui.querySelector('.bedside-chapters').append(item);
@@ -30,6 +30,7 @@ export function startBedside({host,actors,room,camera,renderer,onClose,backLabel
   let frameWidth=0,frameHeight=0;
   const canvas=renderer.domElement,home=canvas.parentNode,after=canvas.nextSibling;
   const frame=document.createElement('div');frame.className='exam-detail-frame';frame.hidden=true;
+  const tags=['右踝 · 患侧','左踝 · 健侧'].map((s,i)=>{const el=document.createElement('span');el.className='ankle-side-tag';el.dataset.side=i?'left':'right';el.textContent=s;frame.append(el);return el;});
   ui.insertBefore(frame,ui.querySelector('.bedside-bottom'));ui.insertBefore(views,frame);
   function layout(detail){
     if(detail!==(ui.dataset.detail==='true')){
@@ -54,6 +55,10 @@ export function startBedside({host,actors,room,camera,renderer,onClose,backLabel
     camera.clearViewOffset();camera.updateProjectionMatrix();
     views.hidden=film||time<6.2||Boolean(grips?.conversation);
     motion.cameraAt(camera,time,pose,view,grips?.conversation);camera.updateMatrixWorld(true);
+    for(const [i,v] of [pose.neutral,pose.left].entries()){
+       const pt=v.clone().project(camera),el=tags[i];el.hidden=Math.abs(pt.x)>.97||Math.abs(pt.y)>.96||Math.abs(pt.z)>1;
+       el.style.left=Math.max(11,Math.min(89,50+50*pt.x))+'%';el.style.top=Math.max(10,Math.min(85,50-50*pt.y+(i?-12:13)))+'%';
+    }
     slider.value=time;btn.textContent=playing?'暂停':time>=duration?'重看':'播放';
     const message=instruction(time);if(film&&line.textContent!==message)line.textContent=message;
     const index=time<0?0:time<6.2?1:time<10.9?2:3;
@@ -80,7 +85,7 @@ export function startBedside({host,actors,room,camera,renderer,onClose,backLabel
     actors.patient.update(dt,dt);
     return actors.patient.getState().footwearRemoval.completed;
   }
-  const practice=film?null:createBedsidePractice({ui,camera,seek,onComplete,onContinue,onSkip,checkpoint,saveCheckpoint,agreed,prepared:barefoot,beginBedPrep,stepBedPrep,onPrepared,record,voiceEnabled,patientExpression:value=>actors.patient.setEmotion(value)});
-  return {seek,getPracticeState:()=>practice?.getState(),tick(dt){actors.patient.updateFace(dt);if(practice){if(ui.dataset.detail==='true'&&(frame.clientWidth!==frameWidth||frame.clientHeight!==frameHeight||camera.aspect!==frameWidth/frameHeight))practice.changeView();practice.tick(dt);}else if(playing||camera.aspect!==lastAspect)seek(time+(playing?dt:0));},
+  const practice=film?null:createBedsidePractice({ui,camera,seek,onComplete,onContinue,onSkip,checkpoint,saveCheckpoint,agreed,prepared:barefoot,beginBedPrep,stepBedPrep,onPrepared,record,voiceEnabled,onSpeaker:r=>speaker=r,patientExpression:value=>actors.patient.setEmotion(value)});
+  return {seek,speaker:()=>speaker,getPracticeState:()=>practice?.getState(),tick(dt){actors.patient.updateFace(dt);if(practice){if(ui.dataset.detail==='true'&&(frame.clientWidth!==frameWidth||frame.clientHeight!==frameHeight||camera.aspect!==frameWidth/frameHeight))practice.changeView();practice.tick(dt);}else if(playing||camera.aspect!==lastAspect)seek(time+(playing?dt:0));},
     close(){practice?.close();actors.patient.setEmotion('neutral');layout(false);motion.release();ui.remove();delete host.dataset.bedsideActive;camera.fov=originalFov;camera.updateProjectionMatrix();}};
 }

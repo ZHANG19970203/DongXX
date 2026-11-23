@@ -10565,6 +10565,15 @@
       "voice": "Microsoft Kangkang (zh-CN)",
       "duration": 12.7760625,
       "sha256": "afcbb4e5a8837e9f20f4279834863167de2befdb05b8950e58bf638321d669c8"
+    },
+    "therapist|您最近又扭过脚吗？脚踝有没有比以前更肿、更疼？有没有脚发麻，或者不敢踩地面的情况？": {
+      "role": "therapist",
+      "text": "您最近又扭过脚吗？脚踝有没有比以前更肿、更疼？有没有脚发麻，或者不敢踩地面的情况？",
+      "src": "./assets/dialogue-v20/clinical77-screen.mp3",
+      "sha256": "70d3b6e38924e8e300b147524f3b02a2c1bd812c9433e9d4d0f244797a5bc097",
+      "duration": 5.9744375,
+      "source": "Local synthesis using the existing Fei 1508 role reference",
+      "transcriptCheck": "您最近又扭过脚吗？脚踝有没有比以前更重更疼，有没有脚发麻或者不敢踩地面的情况。"
     }
   },
   "revision": "v26 respectful dialogue and patient reactions"

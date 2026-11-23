@@ -2,7 +2,7 @@
 export const voiceRole=name=>({'林治疗师':'therapist','治疗师':'therapist','陈女士':'patient','患者':'patient','教学旁白':'narrator'})[name]??null;
 export const replies={
  ask_trigger:'您第一次是怎么崴的脚？',
- ask_screening:'最近又扭过吗？有没有比以前更肿、更疼，或者脚发麻、不敢踩地？',
+ ask_screening:'您最近又扭过脚吗？脚踝有没有比以前更肿、更疼？有没有脚发麻，或者不敢踩地面的情况？',
  ask_goal:'当时去医院看过吗？现在您最想恢复什么？',
  ask_fear:'走到不平的地方，是脚踝突然使不上劲，还是怕再崴，就不敢往前走？',
  explain_consent:'我需要给您检查一下，看看您的踝关节韧带有没有松弛的情况。如果您感觉有点疼痛，您可以跟我说具体是哪里有点疼。不要强忍着。',

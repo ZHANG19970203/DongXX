@@ -506,8 +506,8 @@
     {
       "id": "local-dialogue-v20",
       "path": "assets/dialogue-v20/manifest.json",
-      "bytes": 502249,
-      "sha256": "fbcf796e341bfd927670754c4f58e3e909b733061001c47de8d5610bc56def45",
+      "bytes": 502972,
+      "sha256": "c092d37faa7bde2808f6a052c1119218e31ae5e6cf246d7b09ca19097f717d7d",
       "source": "Course recordings and generated Mandarin dialogue. The voice and source fields identify individually credited clips.",
       "license": "Course dialogue assets. Speech engines and model weights are not distributed."
     },
@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 102738,
-      "sha256": "3cc57bfdbfa1aecceefb50627991eafe7f46e7d0d3691562c515388f9d679271"
+      "bytes": 103510,
+      "sha256": "8160b626e1ca8a909f3e377ccbd4e3f29b0a1484be92f822906e2773e3277e8d"
     },
     {
       "id": "walking-pose-v27",
