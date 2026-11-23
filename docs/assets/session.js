@@ -5,7 +5,7 @@
   const n=x=>String(x??'').normalize('NFKC').trim();name=n(name);id=n(id);teacher=n(teacher);
   if(!name||name.length>60||/[<>\u0000-\u001f]/.test(name))return '请填写有效姓名（1—60个字符）。';
   if(!/^[A-Za-z0-9_-]{1,32}$/.test(id))return '请填写学号（最多32位字母、数字、下划线或短横线，保留前导零）。';
-  if(teacher!=='张积众')return '任课教师姓名不匹配，请核对后再进入。';
+  if(teacher.length>60||/[<>\u0000-\u001f]/.test(teacher))return '教师姓名最多60个字符，请使用普通文字。';
   return {name,studentId:id,teacher};
  }
  function profile(){try{const p=JSON.parse(sessionStorage.getItem(SESSION)||'null');if(!p)return transient;const v=validate(p.name,p.studentId,p.teacher);return typeof v==='string'?null:v;}catch{return transient;}}

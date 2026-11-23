@@ -1,6 +1,6 @@
 import * as T from 'three';
 
-export async function loadFootAtlas(signal){
+export async function loadFootAtlas(signal,includeLeg=false){
   const assets=new URL('./assets/',import.meta.url);
   async function read(name,format){
     const response=await fetch(new URL(name,assets),{signal});
@@ -9,7 +9,10 @@ export async function loadFootAtlas(signal){
   }
   const [metadata,buffer]=await Promise.all([read('ankle-study.json','json'),read('ankle-study.bin','arrayBuffer')]);
   signal.throwIfAborted();
-  return {parts:metadata.parts,buffer};
+  if(!includeLeg)return {parts:metadata.parts,buffer};
+  const [leg,legBuffer]=await Promise.all([read('leg-context.json','json'),read('leg-context.bin','arrayBuffer')]);
+  signal.throwIfAborted();
+  return {parts:metadata.parts,buffer,leg:leg.parts,legBuffer};
 }
 
 export function atlasGeometry(part,buffer){

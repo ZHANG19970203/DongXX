@@ -10541,6 +10541,30 @@
       "rate": 1,
       "duration": 8.0525625,
       "sha256": "f3b6766a842b94abbda8c9f49d79a662b1d49e41f287a369cfe7790e6bacd7ec"
+    },
+    "narrator|腓骨长肌起于腓骨头和腓骨外侧面上部。肌腱绕过外踝后方，经骰骨沟斜穿足底，止于内侧楔骨和第一跖骨底。": {
+      "src": "./assets/dialogue-v20/clinical74-fibLong.mp3",
+      "role": "narrator",
+      "text": "腓骨长肌起于腓骨头和腓骨外侧面上部。肌腱绕过外踝后方，经骰骨沟斜穿足底，止于内侧楔骨和第一跖骨底。",
+      "voice": "Microsoft Kangkang (zh-CN)",
+      "duration": 11.5345625,
+      "sha256": "1f47fbcfbdfd8b186511ba162ee9b75b426f1665e0fb347390b33e71bffa41c3"
+    },
+    "narrator|腓骨短肌位于长肌深面，起于腓骨外侧面下三分之二。肌腱从外踝后方绕过，止于第五跖骨底粗隆。": {
+      "src": "./assets/dialogue-v20/clinical74-fibBrevis.mp3",
+      "role": "narrator",
+      "text": "腓骨短肌位于长肌深面，起于腓骨外侧面下三分之二。肌腱从外踝后方绕过，止于第五跖骨底粗隆。",
+      "voice": "Microsoft Kangkang (zh-CN)",
+      "duration": 10.6175,
+      "sha256": "eb6d177307a832b147c17047931793d7c9d88a30411ff2cd1b6cebb880b0244c"
+    },
+    "narrator|小腿固定时，肌腱沿箭头方向牵拉足部，使足底朝外侧转动。落脚时，这两块肌肉也能通过离心收缩，减缓足继续内翻。": {
+      "src": "./assets/dialogue-v20/clinical74-evert.mp3",
+      "role": "narrator",
+      "text": "小腿固定时，肌腱沿箭头方向牵拉足部，使足底朝外侧转动。落脚时，这两块肌肉也能通过离心收缩，减缓足继续内翻。",
+      "voice": "Microsoft Kangkang (zh-CN)",
+      "duration": 12.7760625,
+      "sha256": "afcbb4e5a8837e9f20f4279834863167de2befdb05b8950e58bf638321d669c8"
     }
   },
   "revision": "v26 respectful dialogue and patient reactions"

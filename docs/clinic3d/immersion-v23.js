@@ -31,8 +31,8 @@ export function installImmersion(ctx){
    if(rows.length){const section=el('section'),list=el('ul');section.append(el('h3','',key+' · '+names[key]),list);for(const line of rows)list.append(el('li','',line));doc.append(section);}
   }
   if(!Object.values(sections).some(rows=>rows.length))doc.append(el('p','','本次尚无可填写的病例资料。'));
-  function proceed(){if(next){s.soapReviewPassed=true;afterPaper=next.go;}ctx.persist();dialog.close();}
-  const ack=btn(next?'已核对，进行分析与计划':'已核对，返回诊室',()=>{ctx.record('clinic3d_evidence_review',{evidenceIds:[...s.evidence],reviewedHandouts:[...reviewed],completedTasks:Object.keys(s.taskReceipts||{}),destination:next?.id||'review',notClinicalDiagnosis:true});proceed();});ack.className='paper-continue';doc.append(ack);if(next){const skip=btn('跳过此步骤',()=>{ctx.record('clinic3d_evidence_review_skipped',{destination:next.id,assessmentCredit:false});proceed();});skip.className='skip-step';doc.append(skip);}show('SOAP 病历核对',doc);
+  function proceed(confirmed){if(next){if(confirmed)s.soapReviewPassed=true;afterPaper=next.go;}ctx.persist();dialog.close();}
+  const ack=btn(next?'已核对，进行分析与计划':'已核对，返回诊室',()=>{ctx.record('clinic3d_evidence_review',{evidenceIds:[...s.evidence],reviewedHandouts:[...reviewed],completedTasks:Object.keys(s.taskReceipts||{}),destination:next?.id||'review',notClinicalDiagnosis:true});proceed(true);});ack.className='paper-continue';doc.append(ack);if(next){const skip=btn('跳过此步骤',()=>{ctx.record('clinic3d_evidence_review_skipped',{destination:next.id,assessmentCredit:false});proceed(false);});skip.className='skip-step';doc.append(skip);}show('SOAP 病历核对',doc);
  }
  let bypass=null;return{enterNode(node){const concept=concepts[node.pressureStation?'act6':node.act];prompt.hidden=!concept;label.textContent=concept?'动小助 · '+concept[0]:'';},beforeNode(id,go){if(!['plan_intro','plan'].includes(id)||ctx.state.soapReviewPassed||bypass===id){bypass=null;return false;}paper({id,go:()=>{bypass=id;go();}});return true;},openConcept,paper};
 }

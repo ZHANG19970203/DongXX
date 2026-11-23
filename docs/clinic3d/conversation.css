@@ -146,3 +146,5 @@ body:has(#clinic[data-bedside-active=true]) .dxx-assistant-launch{inset:70px 14p
 
 body[data-departure] :is(#skipStep,#coach,#previousStep,.learning-bubble-v25),
 body[data-departure="walking"] :is(#conversation,#views,.view-switch,.assessment-dock){display:none!important}
+
+body[data-arrival] :is(#conversation,#previousStep,#coach,#views,#caseProgress,#skipStep,#taskDock,.learning-bubble-v25,.assessment-dock){display:none!important}

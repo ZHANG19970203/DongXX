@@ -157,7 +157,11 @@ export function createClinicRoom(scene) {
     for (let i = 0; i < 5; i++) box([.015, .008, .42], [-.006, -.045 + i * .022, 0], steel, vent);
   }
 
-  // Door leaf is held open inside the northwest corner; reference layout is fixed.
+  // The short corridor is visible from the exterior camera during arrival.
+  box([4.5,.045,2.25],[0,-.028,-4.1],material('corridor-floor',0xd1d4c8));
+  box([.15,2.8,.04],[-2.175,1.4,-3.04],wallMat);
+  box([3.45,2.8,.04],[.525,1.4,-3.04],wallMat);
+  box([.90,.65,.04],[-1.65,2.475,-3.04],wallMat);
   const doorFrame = group('NorthDoor');
   for (const x of [-2.12, -1.18]) box([.045, 2.17, .07], [x, 1.085, -2.98], edge, doorFrame);
   box([.985, .055, .07], [-1.65, 2.16, -2.98], edge, doorFrame);

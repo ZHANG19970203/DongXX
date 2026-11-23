@@ -269,7 +269,7 @@ class LearningService:
                 else:
                     connection.execute('INSERT INTO sessions VALUES (?,?,?,?,?,?)', (session['id'], session['caseId'], session['startedAt'], identity, received, received))
                 access = secrets.token_urlsafe(32)
-                kind = 'registered' if session['student'] and all(session['student'][k].strip() for k in ('name', 'studentId', 'teacher')) else 'guest'
+                kind = 'registered' if session['student'] and all(session['student'][k].strip() for k in ('name', 'studentId')) else 'guest'
                 data_kind = 'test' if self.testing else 'classroom'
                 connection.execute('INSERT INTO learning_sessions VALUES (?,?,?,?,?,?)', (session['id'], self.token_hash(access), identity, kind, data_kind, received))
                 record = {'identity_kind': kind, 'data_kind': data_kind}
@@ -726,7 +726,7 @@ class LearningService:
                     'firstReceivedAt': min(times) if times else None, 'lastReceivedAt': max(times) if times else None,
                     'scope': '服务端实际收到的事件与学习请求；首末记录间隔不是活跃学习时长。'}
         return {'session': session, 'sessionId': sid, 'identityKind': enrollment['identity_kind'] if enrollment else
-                'registered' if student and all(str(student.get(k, '')).strip() for k in ('name', 'studentId', 'teacher')) else 'guest',
+                'registered' if student and all(str(student.get(k, '')).strip() for k in ('name', 'studentId')) else 'guest',
             'dataKind': enrollment['data_kind'] if enrollment else 'test' if self.testing else 'classroom',
             'learningEnabled': bool(enrollment), 'assessments': assessments, 'assessmentSummary': self.assessment_summary(assessments),
             'conversations': conversations, 'feedback': feedback, 'usage': self.usage(conversations), 'soap': self.soap.detail(sid),

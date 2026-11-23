@@ -1,5 +1,5 @@
-import {encounterProgress} from './encounter-progress.js?v=72';
-export function installTaskDesk(snapshot){
+import {encounterProgress} from './encounter-progress.js?v=74';
+export function installTaskDesk(snapshot,studyStep,canStudy){
   const desk=document.getElementById('taskDesk'), content=desk.querySelector('[data-content]');
   const buttons=[...desk.querySelectorAll('[data-section]')];
   const hud=document.getElementById('caseProgress'), meter=hud.querySelector('progress'), number=hud.querySelector('output');
@@ -21,7 +21,12 @@ export function installTaskDesk(snapshot){
     if(tab==='steps'){
       const list=add('ol','');
       for(const [i,row] of p.rows.entries()){
-        const li=document.createElement('li'),status=document.createElement('span');li.append((i+1)+'. '+row.title,status);status.textContent=row.status;li.dataset.status=row.status;list.append(li);
+        const li=document.createElement('li'),title=document.createElement('strong'),status=document.createElement('span'),action=document.createElement('button');
+        title.textContent=(i+1)+'. '+row.title;status.textContent=row.status;li.dataset.status=row.status;
+        action.type='button';action.textContent='进行此环节学习';action.dataset.studyStep=row.id;
+        action.setAttribute('aria-label','进行此环节学习：'+row.title);
+        action.disabled=!canStudy();action.onclick=()=>{desk.close();studyStep(row.id);};
+        li.append(title,status,action);list.append(li);
       }
     }else{
       const a=add('a','查看个人学习反馈');a.href='../index.html#finish';
@@ -30,7 +35,7 @@ export function installTaskDesk(snapshot){
   }
   function refresh(){
     const state=snapshot(),p=encounterProgress(state||{});
-    const signature=p.rows.map(row=>row.status).join('|');
+    const signature=canStudy()+'|'+p.rows.map(row=>row.status).join('|');
     if(last===signature)return;
     last=signature;meter.max=p.total;meter.value=p.completed;
     number.textContent=p.completed+' / '+p.total+' · '+p.percent+'%';

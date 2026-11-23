@@ -198,7 +198,7 @@ export async function createActor(scene, role, url) {
   let emotion="neutral", emotionWeight=0;
   let heelAction = null, heelElapsed = 0, heelStart = null;
   const face=role==='patient'?root.getObjectByName('Reference_face_patient'):null;
-  let scratchTime=null;
+  let scratchTime=null,knockBeat=null;
   let plateX=0,plateY=0;
   const faceWeights=face?.morphTargetInfluences;
   function updateFace(dt){
@@ -546,6 +546,12 @@ export async function createActor(scene, role, url) {
         reach=smooth(scratchTime/.70)*(1-smooth((scratchTime-1.42)/.68));
         scratchRotation=scratchHand(wristTarget,elbowPole,reach,scratchTime);
       }
+      if(side==='R'&&knockBeat!==null){
+        const lift=smooth(Math.min(knockBeat/.34,1))*(1-smooth(Math.max(0,(knockBeat-1.36)/.34)));
+        const tap=Math.max(0,1-Math.abs(knockBeat-.62)/.15,1-Math.abs(knockBeat-1.14)/.15);
+        wristTarget.lerp(position(-.20,1.39,.28+.10*tap),lift);
+        elbowPole.lerp(position(-.38,1.20,.11),lift);
+      }
       if(wall)wristTarget=position(sign*.20,1.20-.38*kneeling,.485);
       if(clinicalPose==='guard'&&side==='L')wristTarget=position(.16,1.03,.38);
       if(railWeight>.001)wristTarget.lerp(position(sign*.447,.85,.045),railWeight);
@@ -610,6 +616,7 @@ export async function createActor(scene, role, url) {
     setPlateFrame(vision,sample){plateX=sample?.[1]||0;plateY=sample?.[2]||0;if(face?.userData.lids)face.userData.lids.value=vision==='closed'?1:0;},
     scratchTemple(){if(face&&pose==='seated'&&!clinicalPose&&scratchTime===null)scratchTime=0;},
     endGesture(){scratchTime=null;},
+    setKnock(t){knockBeat=t;},
     setPose,
     bindDocumentation(props={}) {
       if(role!=='therapist')return actor;

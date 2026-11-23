@@ -1,6 +1,8 @@
 import * as T from 'three';
-import {loadFootAtlas,atlasGeometry} from './foot-atlas.js';
+import {loadFootAtlas,atlasGeometry} from './foot-atlas.js?v=74';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+
+import {buildLegLayer} from './fibular-study.js?v=74';
 
 const v=(x,y,z)=>new T.Vector3(x,y,z);
 const hinge=v(-.072,-.009,.071);
@@ -10,11 +12,12 @@ const views={
   front:[[-.077,.005,.085],[0,.015,1],.129],
   ligament:[[-.085,-.011,.078],[-1,.11,.32],.128],
   posterior:[[-.082,-.019,.059],[-.28,.12,-1],.095],
-  muscles:[[-.087,.075,.078],[-1,.10,.48],.338],
-  eversion:[[-.082,-.009,.103],[.06,.09,1],.167]
+  muscles:[[-.089,.188,.090],[-1,.06,.52],.620],
+  sole:[[-.090,-.035,.124],[-.45,-1,.32],.235],
+  eversion:[[-.089,.188,.092],[-.88,.02,.75],.620]
 };
 export async function makeAnkleModel(stage,signal){
-  const {parts,buffer}=await loadFootAtlas(signal);
+  const {parts,buffer,leg,legBuffer}=await loadFootAtlas(signal,true);
   const gl=new T.WebGLRenderer({antialias:true,alpha:false});
   gl.setPixelRatio(Math.min(devicePixelRatio,2));gl.setClearColor(0xeaf2ef);gl.localClippingEnabled=true;
   const canvas=gl.domElement;canvas.setAttribute('aria-label','可旋转的右踝解剖模型');stage.prepend(canvas);
@@ -29,8 +32,11 @@ export async function makeAnkleModel(stage,signal){
   const hindPivot=v(-.073,-.026,.069);
   const rear=new T.Group();rear.position.copy(hindPivot).sub(hinge);foot.add(rear);
   const clip=new T.Plane(v(0,-1,0),.103);
+  const legLayer=buildLegLayer(scene,stage);
+  for(const p of leg)legLayer.add(p,atlasGeometry(p,legBuffer));
   for(const p of parts){
     const geo=atlasGeometry(p,buffer);
+    if(['fibLong','fibBrevis'].includes(p.key)){legLayer.add(p,geo);continue;}
     const onLeg=['tibia','fibula','fibLong','fibBrevis'].includes(p.key);
     const mat=new T.MeshStandardMaterial({color:0xe5d6b8,roughness:.82,side:T.DoubleSide,clippingPlanes:onLeg?[clip]:[]});
     const mesh=new T.Mesh(geo,mat);mesh.name=p.key;
@@ -92,7 +98,7 @@ export async function makeAnkleModel(stage,signal){
     const post=moved(ptInsertion);setEnds(ptfl,ptOrigin,post);
     lp.copy(ptOrigin).lerp(post,.5).add(v(.001,.010,-.014));
     lt.copy(a).add(v(-.005,.009,.017));lc.copy(b).add(v(-.005,-.004,-.016));
-    gl.render(scene,camera);
+    legLayer.update(rear,hindPivot,camera);gl.render(scene,camera);
     for(const {group,point,n} of pins){
       const proj=point.clone().project(camera);
       n.hidden=!group.visible||Math.abs(proj.x)>.91||Math.abs(proj.y)>.88;
@@ -110,7 +116,7 @@ export async function makeAnkleModel(stage,signal){
     const top=action==='dome',tipsOn=action==='tips',muscle=action==='muscles',stress=action==='strain',ev=action==='evert';
     const view=top?'dome':step===1?'front':step===2?(action==='posterior'?'posterior':'ligament'):step===3?(ev?'eversion':'muscles'):'ankle';
     malleoli.visible=tipsOn;widths.visible=top;ligaments.visible=step===2;
-    clip.constant=muscle ? .24 : .105;
+    legLayer.visible(step===3);clip.constant=step===3?.51:.105;
     for(const [key,m] of bones){
       const isMuscle=key==='fibLong'||key==='fibBrevis';
       m.visible=top?key==='talus':isMuscle?muscle:true;
@@ -130,8 +136,8 @@ export async function makeAnkleModel(stage,signal){
   }
   malleoli.traverse(n=>{if(n.material){n.material.depthTest=false;n.renderOrder=6;}});
   const ro=new ResizeObserver(size);ro.observe(stage);controls.addEventListener('change',draw);
-  return {select,posteriorView:()=>frame('posterior'),resetView:()=>frame(currentView), rotate:angle=>{const pos=camera.position.clone().sub(controls.target);
+  return {select,focusMuscle(key){legLayer.select(key);draw();},showContext(value){legLayer.context(value);draw();},soleView:()=>frame('sole'),posteriorView:()=>frame('posterior'),resetView:()=>frame(currentView), rotate:angle=>{const pos=camera.position.clone().sub(controls.target);
     pos.applyAxisAngle(v(0,1,0),angle);camera.position.copy(controls.target).add(pos);controls.update();draw();},
-    dispose(){dead=true;cancelAnimationFrame(anim);ro.disconnect();controls.dispose();
+    dispose(){dead=true;cancelAnimationFrame(anim);ro.disconnect();controls.dispose();legLayer.dispose();
       scene.traverse(obj=>{obj.geometry?.dispose();obj.material?.dispose();});gl.dispose();gl.forceContextLoss();canvas.remove();pins.forEach(p=>p.n.remove());}};
 }

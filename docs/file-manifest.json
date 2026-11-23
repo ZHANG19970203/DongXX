@@ -1188,8 +1188,8 @@
     },
     {
       "path": "assembly/index.html",
-      "bytes": 10590,
-      "sha256": "27356423efd94e7467135ce4584cf90bd7beca2fa57884dc28e7966fab090021"
+      "bytes": 10595,
+      "sha256": "7619b7731ca24598e38045da268ca18e0382c972a82c8bb4569fab46bf2d5c86"
     },
     {
       "path": "assembly/licenses/ASSET_PROVENANCE.json",
@@ -1273,8 +1273,8 @@
     },
     {
       "path": "assembly/muscles.html",
-      "bytes": 2625,
-      "sha256": "bc2c6a78a23bb2a36ad4d6a554679d07f85453fbf33516382e893644d7961c27"
+      "bytes": 2630,
+      "sha256": "5e5d05e37b7cf9b9173223e1bde0e1353b05e1ecafc3e09acc2297885c2bcddd"
     },
     {
       "path": "assembly/tools/CATALOG_TEMPLATE.json",
@@ -1418,8 +1418,8 @@
     },
     {
       "path": "assets/session.js",
-      "bytes": 2596,
-      "sha256": "79199f49e38477b000c209cee7e1444e4853046306b6bdd4d9ed09b92a61eed0"
+      "bytes": 2629,
+      "sha256": "3338ba877210d873056c625dbd8c51e7ebdeb5ce3a85a9bf59bd6a872748c7a3"
     },
     {
       "path": "assets/study-modes.css",
@@ -1468,8 +1468,8 @@
     },
     {
       "path": "certificate/index.html",
-      "bytes": 3509,
-      "sha256": "1e53928f06b6df101894be75761c4ab79ed06999f591ff09b62b06a6b4c07087"
+      "bytes": 3514,
+      "sha256": "57a021f3e537f06e38d7f959cd2ab51de3543e2b7799186530165c4b96f567e6"
     },
     {
       "path": "clinic/ASSET_INVENTORY.csv",
@@ -1543,8 +1543,8 @@
     },
     {
       "path": "clinic/index.html",
-      "bytes": 13096,
-      "sha256": "d61d9a62ca1f1629a961baf2161d6fb7bebc424044f02a4ac8b61775500b5281"
+      "bytes": 13101,
+      "sha256": "f3c018cf0a3e0b4c76288ed19acae6463eb16b9ba23ebdcc40033785448d7afd"
     },
     {
       "path": "clinic/scene-director.js",
@@ -1553,8 +1553,8 @@
     },
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
-      "bytes": 55806,
-      "sha256": "fff66b490563cc8345ff569d7682a057f340bd6378b2dec6553711218c6a3b8c"
+      "bytes": 55807,
+      "sha256": "39e12fc7a10aaa857125df8c162eaba2fda5edae82f70e7ef2234204efdeef69"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -1563,8 +1563,8 @@
     },
     {
       "path": "clinic3d/actors.js",
-      "bytes": 47754,
-      "sha256": "8d2fb89deb5ac4d70d69615b758104023ea72a892e602024faeac5c799713448"
+      "bytes": 48164,
+      "sha256": "99925c12cebe42522f6178e2aa2a15def211145235928e8e845df4fb193778bd"
     },
     {
       "path": "clinic3d/anatomy-viewer.js",
@@ -1578,8 +1578,8 @@
     },
     {
       "path": "clinic3d/app.js",
-      "bytes": 98210,
-      "sha256": "fc0843156f9a4a649d878d16dc474b4ae6d56700eb203102898c1707d28cdb70"
+      "bytes": 101202,
+      "sha256": "0989d8d5360b61290b4d11365b6d565e6218c176d7d8b2c1c1e35f645171c4d2"
     },
     {
       "path": "clinic3d/appearance.js",
@@ -4567,6 +4567,21 @@
       "sha256": "f3b6766a842b94abbda8c9f49d79a662b1d49e41f287a369cfe7790e6bacd7ec"
     },
     {
+      "path": "clinic3d/assets/dialogue-v20/clinical74-evert.mp3",
+      "bytes": 100045,
+      "sha256": "afcbb4e5a8837e9f20f4279834863167de2befdb05b8950e58bf638321d669c8"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical74-fibBrevis.mp3",
+      "bytes": 83745,
+      "sha256": "eb6d177307a832b147c17047931793d7c9d88a30411ff2cd1b6cebb880b0244c"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical74-fibLong.mp3",
+      "bytes": 90165,
+      "sha256": "1f47fbcfbdfd8b186511ba162ee9b75b426f1665e0fb347390b33e71bffa41c3"
+    },
+    {
       "path": "clinic3d/assets/dialogue-v20/consent-ankle-feiref-v47.mp3",
       "bytes": 33740,
       "sha256": "a4a6ad7430dc5fe0cef8c8c29630f2f4c3a70c9aeecb389f9799e461f8bfedb2"
@@ -5798,8 +5813,8 @@
     },
     {
       "path": "clinic3d/assets/dialogue-v20/manifest.json",
-      "bytes": 500485,
-      "sha256": "0e384ea5e738abc53d603aecc940b0d0dba508219afe63629030eef0cf7dcfb3"
+      "bytes": 502249,
+      "sha256": "fbcf796e341bfd927670754c4f58e3e909b733061001c47de8d5610bc56def45"
     },
     {
       "path": "clinic3d/assets/dialogue-v20/r33-000b12b72b24ffa0.mp3",
@@ -7827,6 +7842,11 @@
       "sha256": "d2d7bcee9e7d99e7305b70b524d96983c0824d0c896eff8d3e4a2be1ed6729c8"
     },
     {
+      "path": "clinic3d/assets/door-knock.wav",
+      "bytes": 9244,
+      "sha256": "6f3c3e25c69264193ed8b56d2eff3a1078a72ec62d5638aa918612247bd7a6f5"
+    },
+    {
       "path": "clinic3d/assets/gait-review-landing.mp4",
       "bytes": 112001,
       "sha256": "119d8383908d3def27a782e27956d3fcc0980e783074a7c3478902b508f2fbc9"
@@ -7860,6 +7880,16 @@
       "path": "clinic3d/assets/gonio-rear.webp",
       "bytes": 61172,
       "sha256": "02750989cff028c6e3210d4ae6e773f9265483d46ffe7ac2981cc7cbe5b8cc0a"
+    },
+    {
+      "path": "clinic3d/assets/leg-context.bin",
+      "bytes": 1278324,
+      "sha256": "40d3c444b3b427e9f69bab59b7128bd32a0ad714f79bb39103da024f56045e78"
+    },
+    {
+      "path": "clinic3d/assets/leg-context.json",
+      "bytes": 3970,
+      "sha256": "0d0cb38cae9235140f784b3dac04252bdf305d823dc276b77b20f72f72b890dc"
     },
     {
       "path": "clinic3d/assets/mmt-direction-foot.webp",
@@ -8068,18 +8098,18 @@
     },
     {
       "path": "clinic3d/conversation.css",
-      "bytes": 7114,
-      "sha256": "9a9e4d20c4bab31020b2c8260d43f00e0eb99ac4c8b139638725f470ece2abd0"
+      "bytes": 7277,
+      "sha256": "a01107764bc2a875082db61ee174ea199728ec22b55d542ebe27b24f5861cef9"
     },
     {
       "path": "clinic3d/dialogue-audio.js",
-      "bytes": 3232,
-      "sha256": "37c718edd5ef836ed51d44cc2ca717f031ebc6c27e28e5cc18993e904bda6319"
+      "bytes": 3499,
+      "sha256": "45f407a90a8c2f611421c8c3d4cf47d678c3e3978b9dbf3e6f30080fb7fd69cf"
     },
     {
       "path": "clinic3d/dialogue-player.js",
-      "bytes": 4717,
-      "sha256": "2c945fd9910f81bf55975f48428e06f10738f500a504d861f2f132850527cad4"
+      "bytes": 4828,
+      "sha256": "9c69b7ae25408a570de7a871c4715fab13d526331bba911fda435ed9440c3dac"
     },
     {
       "path": "clinic3d/dialogue-revision33.js",
@@ -8813,8 +8843,8 @@
     },
     {
       "path": "clinic3d/encounter-progress.js",
-      "bytes": 5190,
-      "sha256": "9591f3e2b8d3ac347ca4cc7256c7ef335195cee352b87f36f96769fa94852966"
+      "bytes": 5257,
+      "sha256": "d187739e6c10dfa7b6b820f30f0a8d6118612faae02103194b6c26b44bb11e18"
     },
     {
       "path": "clinic3d/evidence-archive.css",
@@ -8835,6 +8865,11 @@
       "path": "clinic3d/exam-sightline.js",
       "bytes": 2730,
       "sha256": "36df07a03b78e78ed8a674f81466e37997d0bde4b85ef482eb8ab95189bcb006"
+    },
+    {
+      "path": "clinic3d/fibular-study.js",
+      "bytes": 6414,
+      "sha256": "95c02b5a538f437331bd98a042e40583b2625c55a323e5b4995445630953bb5e"
     },
     {
       "path": "clinic3d/film-media-v18.json",
@@ -8863,8 +8898,8 @@
     },
     {
       "path": "clinic3d/foot-atlas.js",
-      "sha256": "f3cd6ea0b438994def55645d5145ffad6c8489c601b73428945e71af6668dfd1",
-      "bytes": 939
+      "sha256": "537cbd916b6944d9ff76eb82ca4317a8af542930a5574f236e5ff7a300e2987e",
+      "bytes": 1178
     },
     {
       "path": "clinic3d/functional-assessment.js",
@@ -8893,8 +8928,8 @@
     },
     {
       "path": "clinic3d/goniometry.js",
-      "bytes": 16063,
-      "sha256": "48c45cb00a55358b0431f4926bc5e9b8a871a04f7a9dfedc42fd301a8331bce4"
+      "bytes": 16282,
+      "sha256": "798a1a2a55a4a45ae4c35de836412fb5e5a2193b36051c72d79478414202cc80"
     },
     {
       "path": "clinic3d/head-fit.js",
@@ -8908,13 +8943,13 @@
     },
     {
       "path": "clinic3d/immersion-v23.js",
-      "bytes": 5993,
-      "sha256": "03425acc821be716ab82690310f80d5689b2e876c5f8cb1abbaa4f50d8e6985c"
+      "bytes": 6024,
+      "sha256": "c67a437691f5789bdabd94ce67b9a1aafd701d28f920945e6b657605c4183056"
     },
     {
       "path": "clinic3d/index.html",
-      "bytes": 14589,
-      "sha256": "5c06ca421b15e8833458ee08cce68bbe41800d9aa9137ad19598d64523338e02"
+      "bytes": 14599,
+      "sha256": "b4806e8962b3960aa956610527f50694f87404558792a11a256421e000086d18"
     },
     {
       "path": "clinic3d/inversion-lesson.js",
@@ -8923,18 +8958,18 @@
     },
     {
       "path": "clinic3d/inversion-model.js",
-      "bytes": 8917,
-      "sha256": "99f9aabf94849c428c03b49dc673ee6d961c957cbd1719a32a7eea94b50881cc"
+      "bytes": 9451,
+      "sha256": "9be09bb5a7742a89b6e70304907612c7517936c62a177ed004b23dc977a579e6"
     },
     {
       "path": "clinic3d/inversion-study.css",
-      "bytes": 4009,
-      "sha256": "9e941c38f06ff4b472245648e69a3a6cf4e769cfd651bee262c86c1a76f03bed"
+      "bytes": 4973,
+      "sha256": "186c46ca1feced46209e49fbf2dfb7a0bc5f6c6538dd13b6d6f6f2f367aeb7c4"
     },
     {
       "path": "clinic3d/inversion-study.js",
-      "bytes": 10748,
-      "sha256": "bcc551ffca15bb928cca7c9e947167889121d2abc2a83339d5ca1308cd289122"
+      "bytes": 12402,
+      "sha256": "8921af73c0e41ccc725e14c99e9528adc73bc83206b8e88e8583702d73729fce"
     },
     {
       "path": "clinic3d/learning-bubbles-v25.css",
@@ -9058,8 +9093,8 @@
     },
     {
       "path": "clinic3d/scene-room.js",
-      "bytes": 32859,
-      "sha256": "0939e5517a5f7eee64a2c7b9392a527bc48971b2e0d8117ec6531efcbaf41691"
+      "bytes": 33077,
+      "sha256": "3d9cb6711a6acec27a11b2f3876792331b8e8a9c4406b9e012d84e6ff2644151"
     },
     {
       "path": "clinic3d/skip-step.css",
@@ -9093,13 +9128,13 @@
     },
     {
       "path": "clinic3d/task-desk.css",
-      "bytes": 8100,
-      "sha256": "3df5f7d27ebdf478ca03a30a554ce84c42227bc708b5c0a8306d5088c8db5fdd"
+      "bytes": 8648,
+      "sha256": "ded5024d3ae40234a866b8c4557f0efa40e790012ece8eac8763bc0aaf86fa77"
     },
     {
       "path": "clinic3d/task-desk.js",
-      "bytes": 2625,
-      "sha256": "bfea26d6edab789a538d9741d98c6aa92029e5dcb9e0222338e28474459dfb1e"
+      "bytes": 3062,
+      "sha256": "00129b164f3e8e96df51de97330ea78e3d8df5f078edc8f53b4186c90d7e5adb"
     },
     {
       "path": "clinic3d/test-film-sequence-v18.mjs",
@@ -9403,8 +9438,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 15195,
-      "sha256": "fff5fcc56b1021d7a4776b6ee8d6c67c06bbc3324ab4147d2c367bb6e67416ef"
+      "bytes": 15227,
+      "sha256": "c99bf0cc610b92e8f80b70ea11128e0121bfe26acc39ceee03df3e68e38253bc"
     },
     {
       "path": "knowledge_exam.py",
@@ -9418,8 +9453,8 @@
     },
     {
       "path": "lab/assets/app.js",
-      "bytes": 270040,
-      "sha256": "95845a319efb5b5313f10ede631ea34629b6ca6a64cf1f5d1c47e1523552c999"
+      "bytes": 270134,
+      "sha256": "065d46b82e56bae9a48672a4a70dbe16a18834702ffcd336db13ab2ef08ea2fd"
     },
     {
       "path": "lab/assets/bridge-v24.js",
@@ -9463,8 +9498,8 @@
     },
     {
       "path": "lab/atlas.html",
-      "bytes": 8392,
-      "sha256": "7902ef0db6f000a0a35b1f8d2620b2697c7314e44d8b2fada05219abea3bbbe0"
+      "bytes": 8397,
+      "sha256": "2084eac1b4ecce0e773346594bdf7fa33dcd3e312f1ad42b5caccd72b81708c9"
     },
     {
       "path": "lab/courses.json",
@@ -9473,8 +9508,8 @@
     },
     {
       "path": "lab/index.html",
-      "bytes": 62251,
-      "sha256": "08136e900df117417439987781e9129d7362dd11c391135b143356af73ff0777"
+      "bytes": 62271,
+      "sha256": "a6b22cb22115e1a67b91bd2134e3e202082dbdec863a069b9e18bd84edd74a77"
     },
     {
       "path": "lab/lab.css",
@@ -9518,8 +9553,8 @@
     },
     {
       "path": "learning/index.html",
-      "bytes": 359,
-      "sha256": "9a1c371016aad7c94e798a488a407e7c172bda8d1718948ad07d41ac58306f42"
+      "bytes": 364,
+      "sha256": "45ad56d6bb41676ca4a6f38059d2f7bb0027316c391862fae39ce6795731fd2e"
     },
     {
       "path": "learning/learning-hub.js",
@@ -9568,8 +9603,8 @@
     },
     {
       "path": "learning_service.py",
-      "bytes": 58296,
-      "sha256": "251f1347c6dbb5e8e9daf17177a611964a33814136bdb459e82a63805f543632"
+      "bytes": 58274,
+      "sha256": "cae5fe454955919c2a44fd9d4290b4ff78a3c63fc70cb5c86e44c360c2f9d640"
     },
     {
       "path": "licenses/LICENSE_SCOPE.txt",
@@ -9663,8 +9698,8 @@
     },
     {
       "path": "painting/index.html",
-      "bytes": 4566,
-      "sha256": "bf9a8563f198b865f2ea14d6c30722d025d0e8c43c56ecd0f60b82e7b2364c26"
+      "bytes": 4571,
+      "sha256": "8f8089ee56c7c20341524b36e8f70aaa3f838cbb1c5b932808ae55c8cbc9dd8b"
     },
     {
       "path": "painting/model.js",
@@ -9708,8 +9743,8 @@
     },
     {
       "path": "posture/index.html",
-      "bytes": 5693,
-      "sha256": "c8c9ab2a52dbebfe33c788cc6ad9082e9187312a6777a642126eb50cd86f41db"
+      "bytes": 5698,
+      "sha256": "cb279eee5f0dd71fab1095126505fb2149efca07798075200056d6806eb921b8"
     },
     {
       "path": "posture/mpfb-scene.js",
@@ -9773,8 +9808,8 @@
     },
     {
       "path": "pressure/index.html",
-      "bytes": 24098,
-      "sha256": "0f5c1bde4d3c616d8b6f8a1ff857a551ed7e4817eaa250c0b920685651c0623e"
+      "bytes": 24103,
+      "sha256": "302a2c5f674e5491d4ffb5ade3c60c33a4004ff65b7b7f0da3e546862055cc92"
     },
     {
       "path": "pressure/licenses/ASSET_INVENTORY.csv",
@@ -9953,8 +9988,8 @@
     },
     {
       "path": "soap/index.html",
-      "bytes": 2900,
-      "sha256": "1b993a3a0376e52925b4859b654abdeccc52d78f7b69ae86c5ec6a93ba1d468e"
+      "bytes": 2905,
+      "sha256": "944d1c9d14e04d61d1e45f40d49415fa2893a7f2dc6d6d1f0571365e6df08a5f"
     },
     {
       "path": "soap/interview-dialogue.json",
@@ -10348,8 +10383,8 @@
     },
     {
       "path": "topics/index.html",
-      "bytes": 10059,
-      "sha256": "9dde635df9c59f545a3de7bdbf9bb4c33f798af35dc6bcbd8e0deb1935364369"
+      "bytes": 10064,
+      "sha256": "ce3bf76097bd8680ad19fb5c6937d8c004ac20edc4e3431aaafc13899380cc90"
     },
     {
       "path": "usage.html",

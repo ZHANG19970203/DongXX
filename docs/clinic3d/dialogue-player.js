@@ -1,5 +1,5 @@
 export function splitDialogue(text){return (String(text||'').match(/[^。！？\n]+[。！？]?/gu)||[]).map(x=>x.trim()).filter(Boolean);}
-export function createDialoguePlayer({$,speak,cancelSpeech=()=>{},record,onChange,onUtterance,onComplete,isPaused=()=>false}){
+export function createDialoguePlayer({$,speak,cancelSpeech=()=>{},record,recordedSegments=(name,text,segments)=>segments,onChange,onUtterance,onComplete,isPaused=()=>false}){
  let lines=[],index=0,speaker='',nodeId=null,sequence=false,busy=false,run=0,timer=null,interrupted=false,needsReplay=false;
  let afterVideoIntro=null;
  const previous=$('linePrevious'),next=$('lineNext');
@@ -35,8 +35,8 @@ export function createDialoguePlayer({$,speak,cancelSpeech=()=>{},record,onChang
  next.addEventListener('click',()=>{if(needsReplay){paint();return;}if(index<lines.length-1){index++;paint();}});
  return{
   showPrompt(text,id){afterVideoIntro=null;invalidate();sequence=false;lines=[text];index=0;speaker='';nodeId=id;busy=false;interrupted=false;paint(false);},
-  load(text,name,id){afterVideoIntro=null;sequence=false;lines=splitDialogue(text);index=0;speaker=name;nodeId=id;interrupted=false;paint();},
-  loadSequence(turns,id,{startIndex=0,announce=true,wholeTurns=false}={}){afterVideoIntro=null;sequence=true;lines=wholeTurns?turns:turns.flatMap(t=>splitDialogue(t.text).map(text=>({speaker:t.speaker,text})));index=Math.max(0,Math.min(startIndex,lines.length-1));nodeId=id;interrupted=false;paint(announce);},
+  load(text,name,id){afterVideoIntro=null;sequence=false;lines=recordedSegments(name,text,splitDialogue(text));index=0;speaker=name;nodeId=id;interrupted=false;paint();},
+  loadSequence(turns,id,{startIndex=0,announce=true,wholeTurns=false}={}){afterVideoIntro=null;sequence=true;lines=wholeTurns?turns:turns.flatMap(t=>recordedSegments(t.speaker,t.text,splitDialogue(t.text)).map(text=>({speaker:t.speaker,text})));index=Math.max(0,Math.min(startIndex,lines.length-1));nodeId=id;interrupted=false;paint(announce);},
   finishSequence(){afterVideoIntro=null;invalidate();busy=false;interrupted=false;index=Math.max(0,lines.length-1);emit();onComplete?.({nodeId,sequence});},
   advance(){if(index<lines.length-1){index++;paint();return true;}return false;},replay(){interrupted=false;paint(sequence||!!speaker);},getState:state,
   beforeVideo(turn,id,open){

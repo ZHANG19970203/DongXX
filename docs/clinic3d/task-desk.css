@@ -44,3 +44,10 @@ body[data-node=rom_measure] #conversation .conversation-foot{padding:0!important
 .gonio-actions button+button{background:white;color:#215747}.gonio-panel table,#romReportTable{margin:.4em 0;width:100%;border-collapse:collapse;font:normal 14px/1.4 system-ui;color:#23493d;text-align:center}
 .gonio-panel :is(td,th),#romReportTable :is(td,th){padding:6px 3px;border-bottom:1px solid #cddbd4}.gonio-panel thead,#romReportTable thead{background:#e6efea}
 @media(max-width:600px){body[data-node=rom_measure] #clinic #taskDock:not([hidden]){top:55%!important;max-height:72dvh!important}.gonio-panel canvas{max-height:31dvh}}
+
+#taskDesk li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}
+#taskDesk li strong{font-weight:500;overflow-wrap:anywhere}
+#taskDesk li button{font:inherit;font-size:13px;color:#155848;background:#f3f9f5;border:1px solid #a9c8b8;border-radius:8px;padding:6px 9px;cursor:pointer}
+#taskDesk li button:hover,#taskDesk li button:focus-visible{background:#dcefe4}
+#taskDesk li button:disabled{opacity:.55;cursor:default}
+@media(max-width:480px){#taskDesk{padding:12px}#taskDesk li{gap:5px}#taskDesk li button{padding:7px 5px}}

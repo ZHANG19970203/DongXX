@@ -1199,7 +1199,7 @@ g.Revision88Views={device,cardio,metabolic};
 (function(g){'use strict';const $=id=>document.getElementById(id),E=Sim.esc;let service=false,csrf='',access=false,sessionStart=0,activeView='login',popping=false;
 const blank=()=>({format:'kinesiology-observation-8.8',version:'8.8.0',profile:null,observations:[],explanations:[],events:[]});
 const norm=s=>s.normalize('NFKC').trim();
-function validate(name,id,teacher){name=norm(name);id=norm(id);teacher=norm(teacher);if(!name||name.length>60||/[<>\u0000-\u001f]/.test(name))return '请填写有效姓名（1—60个字符）。';if(!/^[A-Za-z0-9_-]{1,32}$/.test(id))return '请填写有效学号（字母、数字、下划线或短横线，最多32位）。';if(teacher!=='张积众')return '任课教师姓名不匹配，请核对后重新填写。';return {name,studentId:id,teacher};}
+function validate(name,id,teacher){if(window.DXXHub)return window.DXXHub.validate(name,id,teacher);name=norm(name);id=norm(id);teacher=norm(teacher);if(!name||name.length>60||/[<>\u0000-\u001f]/.test(name))return '请填写有效姓名（1—60个字符）。';if(!/^[A-Za-z0-9_-]{1,32}$/.test(id))return '请填写有效学号（字母、数字、下划线或短横线，最多32位）。';if(teacher.length>60||/[<>\u0000-\u001f]/.test(teacher))return '教师姓名最多60个字符，请使用普通文字。';return {name,studentId:id,teacher};}
 function key(){const p=App.state.profile;return p?'kine_restored_v24_student_'+encodeURIComponent(p.teacher+'|'+p.studentId):null;}
 function push(view){if(popping)return;const hs={kine:true,view,module:App.state.module?.id,action:App.state.action?.id};const s=history.state;if(s?.view===view&&s?.module===hs.module)return;history.pushState(hs,'','#'+view);}
 function hidePortal(){['loginPage','welcomePage','finishPage'].forEach(id=>$(id).hidden=true);}

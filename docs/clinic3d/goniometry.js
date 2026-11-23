@@ -175,9 +175,10 @@ const placementCues={
   ]
 };
 
-export function mountGoniometer({host,receipt,onRead,onSave,voice,isPaused,onDone,skip}){
+export function mountGoniometer({host,receipt,initialKey,onTrial,onRead,onSave,voice,isPaused,onDone,skip}){
   const panel=element('section');panel.className='gonio-panel';host.replaceChildren(panel);
-  let i=romTrials.findIndex(t=>!validReading(receipt,t));if(i<0)i=0;
+  let i=romTrials.findIndex(t=>t.key===initialKey);
+  if(i<0)i=Math.max(0,romTrials.findIndex(t=>!validReading(receipt,t)));
   let stage='position',angle=0,placement=0,disposed=false,frame=0;
   const heading=element('h3'),count=element('small'),canvas=element('canvas');
   canvas.setAttribute('role','img');
@@ -188,6 +189,7 @@ export function mountGoniometer({host,receipt,onRead,onSave,voice,isPaused,onDon
   function draw(){const t=romTrials[i];figure(canvas,t,stage,angle,placement);canvas.setAttribute('aria-label',sideLabel(t.side)+'踝'+t.mode+t.move.name+'，从中立位起 '+Math.round(angle)+' 度');}
   function view(){
     const t=romTrials[i],s=t.move.sagittal;
+    if(panel.dataset.trial!==t.key){panel.dataset.trial=t.key;onTrial?.(t.key);}
     panel.dataset.stage=stage;panel.dataset.view=s?'lateral':'rear';
     count.textContent='病例模拟 · 已记录 '+romTrials.filter(t=>validReading(receipt,t)).length+' / 16';
     heading.textContent=sideLabel(t.side)+(s?'踝 · ':'后足 · ')+t.move.name+' · '+t.mode;
@@ -206,9 +208,9 @@ export function mountGoniometer({host,receipt,onRead,onSave,voice,isPaused,onDon
       cue.textContent=(t.mode==='主动'?'患者自己活动。':'治疗师固定小腿，轻托'+(s?'足部':'跟骨')+'带动。')+(s?'固定臂留在小腿，移动臂跟着第五跖骨转动。':'固定臂留在小腿，移动臂与跟骨后面中线一起倾斜。');
     }else{
       cue.textContent='从中立位到终末位的角度变化，记为'+t.move.name+' '+t.angle+'°。';
-      btn(i<15?'记录，测下一项':'记录并听治疗师报告',()=>{
+      btn(romTrials.every(other=>other===t||validReading(receipt,other))?'记录并听治疗师报告':'记录，测下一项',()=>{
         if(!validReading(receipt,t)){receipt.readings[t.key]=t.angle;onRead(t,receipt);}
-        if(i===15 && romComplete(receipt)){onDone();return;}
+        if(romComplete(receipt)){onDone();return;}
         i=romTrials.findIndex(trial=>!validReading(receipt,trial));if(i<0)i=0;
         stage='aligned';if(t.side!==romTrials[i].side||!!t.move.sagittal!==!!romTrials[i].move.sagittal||(!t.move.sagittal&&t.move!==romTrials[i].move))stage='position';
         angle=0;view();
@@ -248,7 +250,7 @@ export function mountGoniometer({host,receipt,onRead,onSave,voice,isPaused,onDon
   const method=element('details');method.append(element('summary','测量方法与依据'),element('p','内翻和外翻采用俯卧后方测量，观察跟骨相对小腿的倾斜。坐位从前方对线时，还会包含前足的复合运动。两种方法的角度应分别记录。'));
   const reference=element('a','查看两种测量体位的原始研究');reference.href='https://doi.org/10.1186/1471-2474-7-60';reference.target='_blank';reference.rel='noopener';method.append(reference);
   panel.append(count,heading,canvas,cue,readout,controls,summary,method);
-  if(romComplete(receipt)){stage='read';i=15;angle=romTrials[15].angle;}
+  if(!initialKey&&romComplete(receipt)){stage='read';i=15;angle=romTrials[15].angle;}
   view();
   for(const viewName of ['lateral','rear'])loadFoot(viewName).ready.then(()=>{if(!disposed)draw();});
   return ()=>{disposed=true;cancelAnimationFrame(frame);};

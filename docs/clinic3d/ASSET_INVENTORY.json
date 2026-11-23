@@ -122,8 +122,8 @@
     {
       "id": "original-room",
       "path": "scene-room.js",
-      "bytes": 32859,
-      "sha256": "0939e5517a5f7eee64a2c7b9392a527bc48971b2e0d8117ec6531efcbaf41691",
+      "bytes": 33077,
+      "sha256": "3d9cb6711a6acec27a11b2f3876792331b8e8a9c4406b9e012d84e6ff2644151",
       "source": "Project original room/rig procedures; includes portable clinical notes and pen. No separate stationery tray; existing medical trolley only holds clinical tools.",
       "license": "Room/application code follows the complete-site MIT scope; anatomical poster data derivatives retain CC BY 4.0 with attribution, modification notes and source IDs in docs/v12-anatomy-posters.json.",
       "includes": [
@@ -147,8 +147,8 @@
     {
       "id": "original-actor-procedures",
       "path": "actors.js",
-      "bytes": 47754,
-      "sha256": "8d2fb89deb5ac4d70d69615b758104023ea72a892e602024faeac5c799713448",
+      "bytes": 48164,
+      "sha256": "99925c12cebe42522f6178e2aa2a15def211145235928e8e845df4fb193778bd",
       "source": "Project original room/rig procedures; includes portable clinical notes and pen. No separate stationery tray; existing medical trolley only holds clinical tools.",
       "license": "Original application code follows licenses/ORIGINAL_CODE_LICENSE.txt MIT scope; the source core mesh and skin weights remain attributed to MPFB CC0.",
       "includes": [
@@ -224,8 +224,8 @@
       "limits": [
         "Authored teaching case and presentation; not clinical validation"
       ],
-      "bytes": 4717,
-      "sha256": "2c945fd9910f81bf55975f48428e06f10738f500a504d861f2f132850527cad4"
+      "bytes": 4828,
+      "sha256": "9c69b7ae25408a570de7a871c4715fab13d526331bba911fda435ed9440c3dac"
     },
     {
       "id": "original-learning-ui",
@@ -465,8 +465,8 @@
         "Knowledge/reasoning only, not clinical skills or validated exam",
         "Real DeepSeek connection requires user configuration; no external media copied"
       ],
-      "bytes": 58296,
-      "sha256": "251f1347c6dbb5e8e9daf17177a611964a33814136bdb459e82a63805f543632"
+      "bytes": 58274,
+      "sha256": "cae5fe454955919c2a44fd9d4290b4ff78a3c63fc70cb5c86e44c360c2f9d640"
     },
     {
       "id": "original-teacher-v15",
@@ -506,8 +506,8 @@
     {
       "id": "local-dialogue-v20",
       "path": "assets/dialogue-v20/manifest.json",
-      "bytes": 500485,
-      "sha256": "0e384ea5e738abc53d603aecc940b0d0dba508219afe63629030eef0cf7dcfb3",
+      "bytes": 502249,
+      "sha256": "fbcf796e341bfd927670754c4f58e3e909b733061001c47de8d5610bc56def45",
       "source": "Course recordings and generated Mandarin dialogue. The voice and source fields identify individually credited clips.",
       "license": "Course dialogue assets. Speech engines and model weights are not distributed."
     },
@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 98210,
-      "sha256": "fc0843156f9a4a649d878d16dc474b4ae6d56700eb203102898c1707d28cdb70"
+      "bytes": 101202,
+      "sha256": "0989d8d5360b61290b4d11365b6d565e6218c176d7d8b2c1c1e35f645171c4d2"
     },
     {
       "id": "walking-pose-v27",

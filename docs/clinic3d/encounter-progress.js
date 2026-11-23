@@ -1,4 +1,4 @@
-import {romTrials,validReading,sideLabel} from './goniometry.js?v=71';
+import {romTrials,validReading,sideLabel} from './goniometry.js?v=74';
 // The regular patient encounter has one fixed denominator. Optional conversations and
 // the alternative safety exit do not add extra steps to the main case.
 const lessons = [
@@ -62,7 +62,7 @@ export function encounterProgress(state={}){
     if(id==='exam_close') done=done || !!state.examShoesOn && !state.skippedSteps?.exam_close && state.visited?.includes('exam_close');
     if(id==='exam_findings') done=done || !!state.examFeedbackDone;
     if(id==='finish') done=!!state.completedAt && !state.exitLock;
-    const status=done?'已完成':(state.skippedSteps?.[id] || typeof scope==='object'&&state.skippedSteps?.rom_measure)?'已跳过':state.node===id?'进行中':'待学习';
+    const status=done?'已完成':(state.skippedSteps?.[id] || typeof scope==='object'&&state.skippedSteps?.rom_measure)?'已跳过':(state.node===id || state.node==='rom_measure' && id==='rom:'+state.currentRomKey)?'进行中':'待学习';
     return {id,title,status};
   });
   const total=rows.length, completed=rows.filter(row=>row.status==='已完成').length;

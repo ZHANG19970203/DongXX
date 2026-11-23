@@ -5,12 +5,12 @@ export function createDialogueAudio({enabled,onTalking,onStatus}){
  if(!document.getElementById('dialogueVoice'))audio.id='dialogueVoice';
  audio.hidden=true;audio.preload='auto';document.body.append(audio);
  const manifestUrl=new URL('./assets/dialogue-v20/manifest.json',import.meta.url);
- let catalog=null,revision=0,stopCurrent=null;
+ let entries=null,catalog=null,revision=0,stopCurrent=null;
  function fetchCatalog(){
   if(!catalog)catalog=fetch(manifestUrl,{cache:'no-cache'}).then(r=>{
    if(!r.ok)throw Error('录音目录加载失败');
    return r.json();
-  }).catch(()=>{catalog=null;return null;});
+  }).then(table=>{entries=table.clips;return table;}).catch(()=>{catalog=null;return null;});
   return catalog;
  }
  function cancel(){
@@ -66,5 +66,9 @@ export function createDialogueAudio({enabled,onTalking,onStatus}){
   });
  }
  document.addEventListener('pointerdown',unlock,{once:true,capture:true});
- return {speak,cancel,unlock,dispose(){cancel();document.removeEventListener('pointerdown',unlock,true);audio.removeAttribute('src');audio.load();audio.remove();}};
+ return {speak,cancel,unlock,prepare:fetchCatalog,
+   recordedSegments(name,text,segments){
+     const role=voiceRole(name)||name;
+     return entries?.[role+'|'+text]&&segments.some(s=>!entries[role+'|'+s])?[text]:segments;
+   },dispose(){cancel();document.removeEventListener('pointerdown',unlock,true);audio.removeAttribute('src');audio.load();audio.remove();}};
 }
