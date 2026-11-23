@@ -1,27 +1,30 @@
-export function mountAssessment({host, state, observations, save, submit}) {
+export function mountAssessment({host, state, summary, save, submit}) {
   const form = document.createElement('form');
   form.className = 'functional-assessment';
-  const evidence = document.createElement('details');
-  const title = document.createElement('summary');
-  title.textContent = '查看本轮已取得的客观证据';
-  evidence.append(title);
-  for (const text of observations.length ? observations : ['本轮尚无客观记录。请说明还需要补查什么。']) {
-    const p = document.createElement('p');
-    p.textContent = text;
-    evidence.append(p);
+  for (const [heading, entries] of [['已知病情', summary.S], ['本轮检查结果', summary.O]]) {
+    const section = document.createElement('section'), title = document.createElement('h3');
+    title.textContent = heading;
+    section.append(title);
+    const list = document.createElement('ul');
+    for (const text of entries.length ? entries : ['尚未记录检查结果。']) {
+      const item = document.createElement('li');
+      item.textContent = text;
+      list.append(item);
+    }
+    section.append(list);
+    form.append(section);
   }
-  form.append(evidence);
   const draft = {...state.assessmentDraft};
   const fields = [
-    ['diagnosis', '用运动学语言描述右侧功能问题。哪些发现支持机械性松弛？哪些提示力量或姿势控制不足？'],
-    ['reasoning', '足弓承重降低可能怎样改变力线？结合足印或步态，写出一个解释、一项尚未测得的量，以及验证办法。']
+    ['diagnosis', summary.O.length ? '看上面的结果，陈女士的右脚做哪件事比较困难？写出一点就可以。' : '目前知道陈女士有哪些困难，或您还想为她检查什么？写出一点就可以。'],
+    ['reasoning', '哪一条记录让您这么想？（选填）']
   ];
   for (const [key, prompt] of fields) {
     const label = document.createElement('label'), input = document.createElement('textarea');
     label.textContent = prompt;
     input.name = key;
     input.rows = 3;
-    input.required = true;
+    input.required = key === 'diagnosis';
     input.value = draft[key] || '';
     input.addEventListener('input', () => {
       draft[key] = input.value;
@@ -39,7 +42,7 @@ export function mountAssessment({host, state, observations, save, submit}) {
   form.onsubmit = event => {
     event.preventDefault();
     for (const [key] of fields) {
-      if (!form.elements[key].value.trim()) {
+      if (form.elements[key].required && !form.elements[key].value.trim()) {
         form.elements[key].setCustomValidity('请写下您的判断或需补查的信息。');
         form.reportValidity();
         return;

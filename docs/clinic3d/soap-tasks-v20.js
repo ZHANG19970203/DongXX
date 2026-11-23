@@ -23,23 +23,35 @@ export function renderSOAPTask(task,{wrap,nodeEl,button,stepBook,record,refresh,
   const cop=staticCOPPanel({caseResults:true,onCue,onObserve(condition){
    if(!stepBook.get('cop71_'+condition)){stepBook.set('cop71_'+condition,true);if(stepBook.get('cop71_open')&&stepBook.get('cop71_closed'))stepBook.set('cop54_full',true);record('clinic3d_static_cop_observed',{condition,seconds:30,synthetic:true});refresh();ask();}
   }});
-  const stance=nodeEl('section','clinical-quiz'),summary=nodeEl('p',''),timer=nodeEl('output','');
-  const controls=nodeEl('div','clinical-nav');
+  const stance=nodeEl('section','single-stance'),summary=nodeEl('p',''),timer=nodeEl('output','');
+  const controls=nodeEl('div','single-stance-results');
+  const sides=[['L','左脚 · 健侧',28],['R','右脚 · 患侧',12]];
+  const outputs=new Map();
   let running=false;
-  stance.append(nodeEl('h4','','单腿闭眼站立计时'),nodeEl('p','','治疗师在旁保护。先睁眼站稳，抬起另一脚，再闭眼计时。睁眼、扶栏或抬起的脚触地即停止，每侧最多 30 秒。'),controls,timer,summary);
-  const display=()=>{const left=stepBook.get('stance77_L'),right=stepBook.get('stance77_R');
-   summary.textContent=[left&&('左 '+left+' 秒'),right&&('右 '+right+' 秒')].filter(Boolean).join('　')+(left&&right?'。本例右侧较短，提示闭眼时右侧单腿姿势控制较困难。本体感觉是影响因素之一。':'');};
+  stance.append(nodeEl('h4','','单足闭眼站立'),nodeEl('p','','睁眼站稳后抬起另一脚，再闭眼计时。扶栏、睁眼或另一脚触地即停止，每侧最多 30 秒。'),controls,timer,summary);
+  const display=()=>{
+    for(const [side] of sides){
+      const seconds=stepBook.get('stance77_'+side),{value,bar}=outputs.get(side);
+      value.textContent=Number.isFinite(seconds)?seconds+' 秒':'待观察';
+      bar.hidden=!Number.isFinite(seconds);bar.value=Number.isFinite(seconds)?seconds:0;
+    }
+    const left=stepBook.get('stance77_L'),right=stepBook.get('stance77_R');
+    summary.textContent=Number.isFinite(left)&&Number.isFinite(right)?'本例右脚比左脚少坚持 '+(left-right)+' 秒。':'';
+  };
   const pose=(side,t=0)=>document.dispatchEvent(new CustomEvent('clinic-single-stance',{detail:{side,t}}));
-  for(const [side,name,duration] of [['L','左',28],['R','右',12]]){
-   controls.append(button('观察'+name+'脚支撑',()=>{
+  for(const [side,label,duration] of sides){
+   const name=label[0],card=nodeEl('div','stance-side'),value=nodeEl('strong',''),bar=document.createElement('progress');
+   bar.max=30;bar.setAttribute('aria-label',label+'站立时间，满刻度30秒');outputs.set(side,{value,bar});
+   card.append(nodeEl('b','',label),value,bar);controls.append(card);
+   card.append(button('观察'+name+'脚支撑',()=>{
     if(running)return;running=true;
-    for(const b of controls.children)b.disabled=true;
+    for(const b of controls.querySelectorAll('button'))b.disabled=true;
     // Stop a COP replay before changing the stance used by the scene.
     const play=cop.querySelector('.timeline-controls button');
     if(play?.textContent==='暂停')play.click();
     cop.inert=true;
     let elapsed=0,last=performance.now();
-    function end(){running=false;cop.inert=false;for(const b of controls.children)b.disabled=false;pose(null);}
+    function end(){running=false;cop.inert=false;for(const b of controls.querySelectorAll('button'))b.disabled=false;pose(null);}
     function frame(now){
      if(!stance.isConnected||document.hidden){end();return;}
      elapsed=Math.min(duration,elapsed+Math.min(.1,(now-last)/1000)*4);last=now;
@@ -52,5 +64,11 @@ export function renderSOAPTask(task,{wrap,nodeEl,button,stepBook,record,refresh,
     requestAnimationFrame(frame);
    }));
   }
-  wrap.append(cop,stance,judgment);display();ask();return true;
+  const help=button('动小助 · 操作提示',()=>{
+    const open=document.body.toggleAttribute('data-balance-help');
+    help.setAttribute('aria-expanded',String(open));
+  });
+  document.body.removeAttribute('data-balance-help');
+  help.setAttribute('aria-expanded','false');help.setAttribute('aria-controls','conversation');
+  wrap.append(help,cop,stance,judgment);display();ask();return true;
 }

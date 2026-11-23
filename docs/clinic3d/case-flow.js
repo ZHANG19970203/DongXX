@@ -5,7 +5,7 @@ export const START_NODE = 'welcome';
 export const CASE_DATA = {
   id: 'chen-right-ankle-v12',
   title: '再次安心走上不平的路',
-  patient: '陈女士', patientGender: 'female', age: 22,
+  patient: '陈女士', patientGender: 'female', age: 28,
   therapist: '林治疗师', therapistGender: 'male',
   label: '虚构教学病例',
   intakeSummary: '因反复崴脚和不稳感就诊；具体病史在询问后逐步展开。',
@@ -507,3 +507,18 @@ FLOW.leave_stance=N('leave_stance','act1','dialogue','陈女士','我还没跟�
   withdrawal:'尚未听取病史就要求闭眼单脚站',next:'history_closed'
 });
 FLOW.history_closed=N('history_closed','act1','summary','本次接诊结束','陈女士已离开诊室。',{terminal:true});
+
+import {caseWorkshops} from './case-workshops.js?v=79';
+const workshopRoutes=[
+ ['goal_answer','case_cardio','fear_check'],['local_intro','case_bones','alignment'],
+ ['muscle_intro','case_paint','case_place'],[null,'case_place','muscle_match'],
+ ['muscle_match','case_contractions','arch_intro'],['rom_report','case_chain','trial'],
+ ['static_cop','case_posture','gait_intro'],['gait_events','case_transfer','gait_interpret']
+];
+for(const [previous,id,next] of workshopRoutes){
+ const lesson=caseWorkshops[id];
+ FLOW[id]=N(id,lesson.act,'task',lesson.title,lesson.title,{next});
+ if(!previous)continue;
+ const upstream=FLOW[previous],action=upstream.options?.find(o=>o.requiresTask);
+ if(action)action.next=id;else upstream.next=id;
+}

@@ -9,6 +9,14 @@ export function speakerShot(){
   face.localToWorld(eye.set(role==='patient'?.10:-.10,1.69,1.02));face.localToWorld(up.set(0,1.78,.055)).sub(center).normalize();
   cam.aspect=base.aspect;cam.position.copy(eye);cam.up.copy(up);
   if(high)center.addScaledVector(up,-.105);cam.lookAt(center);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);
-  const visible=actor.root.visible;actor.root.visible=true;try{render(cam);}finally{actor.root.visible=visible;}return true;
+  const other=actors[role==='patient'?'therapist':'patient']?.root;
+  const visible=actor.root.visible,otherVisible=other?.visible;
+  actor.root.visible=true;
+  if(other)other.visible=false;
+  try{render(cam);}finally{
+   actor.root.visible=visible;
+   if(other)other.visible=otherVisible;
+  }
+  return true;
  };
 }

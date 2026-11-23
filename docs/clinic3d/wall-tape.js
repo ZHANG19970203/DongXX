@@ -11,7 +11,7 @@ function tapeMaterial(){
  for(let mm=0;mm<120;mm++){const x=mm*6;g.fillRect(x,0,mm%10===0?3:2,mm%10===0?42:mm%5===0?31:18);if(mm%10===0)g.fillText(String(mm/10),x+3,78);}
  const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;return new T.MeshBasicMaterial({map,side:T.DoubleSide});
 }
-export function wallTapeStudy({scene,room,actors,camera,controls,onPhase,onDone}){
+export function wallTapeStudy({scene,room,actors,camera,controls,followTape=()=>true,onPhase,onDone}){
  const p=actors.patient,d=actors.therapist,wallZ=room.objects.wallLungeMarker.position.z;
  const group=new T.Group(),strip=new T.Mesh(new T.PlaneGeometry(.12,.024),tapeMaterial());
  strip.rotation.order='YXZ';strip.rotation.y=-Math.PI/2;strip.rotation.x=-Math.PI/2;
@@ -64,13 +64,15 @@ export function wallTapeStudy({scene,room,actors,camera,controls,onPhase,onDone}
   const zero=v(x+.012,.020,wallZ+.005);
   zero.addScaledVector(v(.09,.12,.015),ease((t-.70)/.42));
   placeHand(d,'L',leftPalm,zero,towards,down,1,zero.clone().add(v(.22,.20,.08)),leftPalm.fingerPad);
-  const eye=v(x-.25,.36,wallZ+.25),target=v(x+.016,.031,wallZ+.072);
-  camera.position.copy(eye);controls.target.copy(target);camera.lookAt(target);camera.updateMatrixWorld();controls.enabled=false;
+  if(followTape()){
+   const eye=v(x-.25,.36,wallZ+.25),target=v(x+.016,.031,wallZ+.072);
+   camera.position.copy(eye);controls.target.copy(target);camera.lookAt(target);camera.updateMatrixWorld();controls.enabled=false;
+  }
   if(elapsed>=rowTime*6){
    ended=true;
    const mean=values=>Number((values.reduce((sum,n)=>sum+n,0)/values.length).toFixed(1));
    onDone({rightCm:mean(readings.R),leftCm:mean(readings.L),trialsPerSide:readings.R.length,readings});
   }
  }
- return {tick,close(){scene.remove(group);strip.material.map.dispose();for(const mesh of [strip,roll,marker]){mesh.geometry.dispose();mesh.material.dispose();}d.bedsideRig.reset();}};
+ return {tick,get tracking(){return followTape();},close(){scene.remove(group);strip.material.map.dispose();for(const mesh of [strip,roll,marker]){mesh.geometry.dispose();mesh.material.dispose();}d.bedsideRig.reset();}};
 }

@@ -1,4 +1,4 @@
-import {samplePlantarScan, renderPlantarScan, regionOf} from './pressure-engine.js?v=72';
+import {samplePlantarScan, renderPlantarScan, regionOf} from './pressure-engine.js?v=79';
 
 const example = samplePlantarScan();
 export function pressureLegend(){
@@ -12,15 +12,24 @@ export function pressureLegend(){
   return legend;
 }
 
-export function plantarFigure({highlightRight=false,comparison=null}={}){
+export function plantarFigure({highlightRight=false,comparison=null,reference=false}={}){
   const figure=document.createElement('figure');
   figure.className='plantar-scan';
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  renderPlantarScan(svg,example,{highlightRight,comparison});
+  renderPlantarScan(svg,example,{highlightRight,comparison,reference});
   const caption=document.createElement('figcaption');
-  caption.textContent=comparison?'双足站立教学模拟 · 圈出'+comparison.label+'分区的峰值位置':highlightRight?'双足站立压力示例 · 圆圈标出右足高压区':'双足站立 · 同一相对压力色标 · 教学模拟';
+  caption.textContent=reference?'教学示例 · 圆圈标出右足高压区':comparison?'双足站立教学模拟 · 圈出'+comparison.label+'分区的峰值位置':highlightRight?'双足站立压力示例 · 圆圈标出右足高压区':'双足站立 · 同一相对压力色标 · 教学模拟';
   figure.append(svg,pressureLegend(),caption);
   return figure;
+}
+
+export function showSpokenPressureMap(holder,state){
+  const source=state.taskReceipts?.pressure_compare?.scope==='case-plantar-scan'?'case':'reference';
+  if(holder.dataset.source!==source){
+    holder.replaceChildren(plantarFigure({highlightRight:true,reference:source==='reference'}));
+    holder.dataset.source=source;
+  }
+  holder.hidden=false;
 }
 
 const regions = new Map([

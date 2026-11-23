@@ -35,7 +35,10 @@
 
   window.DXX_BRIDGE_READY=true;
  }
- function openRequestedLesson(){const requested=Number(new URL(location.href).searchParams.get('lesson'));if(requested>=1&&requested<=13){App.openLesson(requested);return;}const params=new URL(location.href).searchParams,id=Number(params.get('experiment'));if(params.get('topic')==='muscles'){App.openLesson(201);return;}if(Number.isInteger(id)&&id>=1&&id<=13){App.openLesson(id);if(params.get('dynamic')==='1'){const a=App.state.module?.actions.find(a=>a.kind==='embedded');if(a)App.selectAction(a.id);}return;}App.home();}
+ function openRequestedLesson(){const requested=Number(new URL(location.href).searchParams.get('lesson'));if(requested>=1&&requested<=13){App.openLesson(requested);
+   const chosen=new URL(location.href).searchParams.get('action'),items=App.state.module?.actions||[];
+   const action=chosen==='dynamic'?items.find(a=>a.kind==='embedded'):items.find(a=>a.id===chosen);
+   if(action)App.selectAction(action.id);return;}const params=new URL(location.href).searchParams,id=Number(params.get('experiment'));if(params.get('topic')==='muscles'){App.openLesson(201);return;}if(Number.isInteger(id)&&id>=1&&id<=13){App.openLesson(id);if(params.get('dynamic')==='1'){const a=App.state.module?.actions.find(a=>a.kind==='embedded');if(a)App.selectAction(a.id);}return;}App.home();}
  init();window.addEventListener('dxx:lab-ready',init);
  if(!active){const interval=setInterval(()=>{init();if(active||window.DXX_DEPLOY_DIAGNOSTICS?.state==='error')clearInterval(interval);},250);setTimeout(()=>clearInterval(interval),300000);}
 })();

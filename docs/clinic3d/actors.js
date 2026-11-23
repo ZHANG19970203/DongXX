@@ -260,10 +260,33 @@ export async function createActor(scene, role, url) {
       const y=along.clone().normalize(),z=new THREE.Vector3().crossVectors(side,y).normalize();
       return new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(new THREE.Vector3().crossVectors(y,z),y,z));
     }
-    const aim=frame(position(.22,1,-.22),position(0,0,1)).multiply(frame(finger,across).invert());
+    // With fingers pointing up, the thumb side points back and the palm faces the hair.
+    const aim=frame(position(.46,1,-.26),position(0,0,-1)).multiply(frame(finger,across).invert());
     wrist.lerp(tip.sub(finger.applyQuaternion(aim)),weight);
-    pole.lerp(getPoint('upperarm01.R').add(position(-.38,-.10,.26)),weight);
+    pole.lerp(getPoint('upperarm01.R').add(position(-.12,-.28,.17)),weight);
     return aim.multiply(rest.get('wrist.R').world);
+  }
+  function poseScratchingWrist(rotation,weight,t){
+    const localWorld=name=>root.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(bones.get(name).getWorldQuaternion(new THREE.Quaternion()));
+    const wrist='wrist.R',forearm='lowerarm01.R';
+    const forearmAxis=getPoint(wrist).sub(getPoint(forearm)).normalize();
+    const across=rest.get('finger2-1.R').point.clone().sub(rest.get('finger5-1.R').point).normalize();
+    const wristRotation=localWorld(wrist).slerp(rotation,weight);
+    const desiredAcross=across.clone().applyQuaternion(rest.get(wrist).world.clone().invert()).applyQuaternion(wristRotation);
+    const from=getPoint('finger2-1.R').sub(getPoint('finger5-1.R')).projectOnPlane(forearmAxis).normalize();
+    const to=desiredAcross.projectOnPlane(forearmAxis).normalize();
+    const roll=Math.atan2(forearmAxis.dot(from.clone().cross(to)),from.dot(to));
+    setWorldQuaternion(forearm,new THREE.Quaternion().setFromAxisAngle(forearmAxis,roll).multiply(localWorld(forearm)));
+    setWorldQuaternion(wrist,wristRotation);
+    // Flex the fingers toward the palm. The index and middle fingertips brush the hair.
+    const stroke=.5+.5*Math.cos(2*Math.PI*clamp((t-.67)/.70,0,1));
+    for(const [digit,angle] of [[2,.12+.12*stroke],[3,.24+.10*stroke],[4,.52],[5,.65]]){
+      for(const joint of [2,3]){
+        const name='finger'+digit+'-'+joint+'.R',r=rest.get(name);
+        const axis=across.clone().applyQuaternion(r.world.clone().invert());
+        bones.get(name).quaternion.copy(r.quaternion).multiply(new THREE.Quaternion().setFromAxisAngle(axis,angle*weight));
+      }
+    }
   }
   function resetFootwearObjects(value) {
     if(trousers)trousers.morphTargetInfluences[0]=value==='shoes'?1:0;
@@ -290,24 +313,30 @@ export async function createActor(scene, role, url) {
     sock.captured=true;sock.worn.visible=false;sock.loose.visible=true;
   }
   function dressingFrame(){
-    const fraction=clamp(removal.elapsed/removal.duration,0,.99999)*2;
-    const side=fraction<1?'L':'R',u=fraction%1;
-    const lift=smooth(u/.23)*(1-smooth((u-.70)/.27));
-    return {side,u,lift,lean:lift,time:u*7,stage:'put_on_shoe'};
+    const progress=clamp(removal.elapsed/removal.duration,0,.99999)*2;
+    const side=progress<1?'L':'R',u=progress%1;
+    const lift=smooth(u/.30)*(1-smooth((u-.55)/.28));
+    return {side,u,lift,lean:lift,stage:u<.30?'lift_foot':u<.55?'insert_toes':u<.83?'seat_heel':'plant_foot'};
+  }
+  function dressingLeg(frame,side,foot){
+    const finished=frame.side==='R'&&side==='L';
+    if(finished)return 0;
+    if(frame.side!==side)return 0;
+    const u=frame.u,lead=smooth((u-.23)/.33);
+    // Lift the toes clear of the collar before sliding the forefoot forward.
+    // Then lower the heel into the opening while the sole rests on the floor.
+    foot.y+=.17*frame.lift;
+    const placed=smooth((u-.83)/.17);
+    foot.z+=(-.105*smooth(u/.18)*(1-lead)+.102*lead)*(1-placed);
+    foot.x+=(side==='L'?1:-1)*.077*lead*(1-placed);
+    return .43*smooth((u-.13)/.20)*(1-smooth((u-.52)/.30));
   }
   function dressShoe(frame){
-    const home=shoeHomes.find(h=>h.side===frame.side),sock=socks.find(s=>s.side===frame.side);
-    if(!home)return;
-    const k=smooth((frame.u-.11)/.52);
-    if(k>=1){
-      home.parent.add(home.shoe);home.shoe.position.copy(home.position);home.shoe.quaternion.copy(home.quaternion);home.shoe.scale.copy(home.scale);
-      if(sock)sock.worn.visible=true;
-    }else{
-      const end=root.worldToLocal(home.parent.localToWorld(home.position.clone()));
-      const toesFirst=position(0,.035,.18*Math.sin(k*Math.PI));
-      home.shoe.position.copy(home.floor).lerp(end,k).add(toesFirst);
-      const rotation=root.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(home.parent.getWorldQuaternion(new THREE.Quaternion())).multiply(home.quaternion);
-      home.shoe.quaternion.copy(rotation);
+    for(const home of shoeHomes){
+      const fitted=home.side==='L'&&frame.side==='R'||home.side===frame.side&&frame.u>=.83;
+      if(!fitted||home.shoe.parent===home.parent)continue;
+      home.parent.add(home.shoe);home.shoe.position.copy(home.position);
+      home.shoe.quaternion.copy(home.quaternion);home.shoe.scale.copy(home.scale);
     }
   }
   function removalFrame() {
@@ -322,10 +351,10 @@ export async function createActor(scene, role, url) {
     return {side,time:local,lift,lean,stage};
   }
   function removalHand(frame,side,normalTarget,activeFoot) {
-    if(removal.dressing&&frame.side===side){
-      const k=smooth((frame.u-.11)/.52),sign=side==='L'?1:-1;
-      const pick=position(sign*.25,.10,.37),toe=activeFoot.clone().add(position(sign*.015,.045,.08+.12*Math.sin(Math.PI*k)));
-      return normalTarget.clone().lerp(pick.lerp(toe,k),smooth(frame.u/.18)*(1-smooth((frame.u-.70)/.26)));
+    if(removal.dressing){
+      if(frame.side!==side)return normalTarget;
+      const shin=activeFoot.clone().add(position(side==='L'?.025:-.025,.23,-.02));
+      return normalTarget.clone().lerp(shin,.85*frame.lift);
     }
     if(frame.side!==side || frame.time<.35 || frame.time>=7.1)return normalTarget;
     const sign=side==='L'?1:-1,t=frame.time;
@@ -511,7 +540,8 @@ export async function createActor(scene, role, url) {
       }
       if(support&&support!==side){footTarget.y+=.15;footTarget.z-=.10;}
       if(eversionSide===side)footTarget.y+=.055;
-      if(removing?.side===side) {
+      const dressingPitch=removal.dressing?dressingLeg(removing,side,footTarget):0;
+      if(!removal.dressing&&removing?.side===side) {
         footTarget.y+=.38*removing.lift;
         footTarget.z-=.24*removing.lift;
         footTarget.x+=sign*.025*removing.lift;
@@ -519,6 +549,9 @@ export async function createActor(scene, role, url) {
       solveTwoLinks(`upperleg01${suffix}`, `lowerleg01${suffix}`, `foot${suffix}`,
         footTarget, kneeGuide);
       offset(`foot${suffix}`, X, foot ? -foot.pitch*walkWeight : wall&&side!==lead?2.86*kneeling:heelRaised&&side===lead?.19*lungeLoad:0);
+      if(removal.dressing){
+        setWorldQuaternion('foot'+suffix,new THREE.Quaternion().setFromAxisAngle(X,dressingPitch).multiply(rest.get('foot'+suffix).world));
+      }
       if(eversionSide===side){
         if(strengthMotion==='dorsiflexion')offset('foot'+suffix,X,-eversionAngle);
         else offset('foot'+suffix,position(0,0,1),sign*eversionAngle);
@@ -561,11 +594,7 @@ export async function createActor(scene, role, url) {
       if(removing)wristTarget=removalHand(removing,side,wristTarget,footTarget);
       solveTwoLinks(`upperarm01${suffix}`, `lowerarm01${suffix}`, `wrist${suffix}`,
         wristTarget, elbowPole);
-      if(scratchRotation&&reach>0){
-        const wrist='wrist'+suffix;
-        const current=root.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(bones.get(wrist).getWorldQuaternion(new THREE.Quaternion()));
-        setWorldQuaternion(wrist,current.slerp(scratchRotation,reach));
-      }
+      if(scratchRotation&&reach>0)poseScratchingWrist(scratchRotation,reach,scratchTime);
       // Keep the rest LOCAL wrist rotation inherited from the forearm. The
       // previous world-rest reset made the hand bend independently of the arm.
       // Talking never adds arm, wrist, or finger tapping motions.
@@ -578,7 +607,7 @@ export async function createActor(scene, role, url) {
     updateDocumentationProps();
     if(removing) {
       if(removal.dressing){
-        dressShoe(removing);removal.side=removing.side;
+        dressShoe(removing);removal.side=removing.side;removal.phase=removing.stage;removal.progress=removal.elapsed/removal.duration;
         if(removal.elapsed>=removal.duration){removal.active=false;removal.dressing=false;removal.completed=false;removal.phase='shod';footwear='shoes';resetFootwearObjects('shoes');}
         return;
       }
@@ -658,9 +687,12 @@ export async function createActor(scene, role, url) {
       if(role!=='patient'||footwear==='shoes'||removal.dressing)return;
       resetFootwearObjects('barefoot');setPose('seated',true);manualGaitPhase=null;walking=false;walkWeight=0;halted=false;
       for(const home of shoeHomes){
-        root.attach(home.shoe);home.shoe.visible=true;home.floor=position(home.side==='L'?.25:-.25,.036,.37);
-        home.shoe.position.copy(home.floor);
+        const restFoot=rest.get('foot.'+home.side).point,sign=home.side==='L'?1:-1;
+        root.attach(home.shoe);home.shoe.visible=true;
+        home.shoe.position.set(restFoot.x+sign*.077,.004,.462);
+        home.shoe.quaternion.identity();
       }
+      for(const sock of socks)sock.worn.visible=true;
       Object.assign(removal,{dressing:true,active:true,completed:false,elapsed:0,phase:'dressing',side:'L',progress:0});
       footwear='dressing';
     },

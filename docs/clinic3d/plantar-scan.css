@@ -1,4 +1,4 @@
-.plantar-scan{margin:8px 0;padding:10px 8px;border:1px solid #d4e2df;background:#f6faf8;border-radius:12px;text-align:center}.plantar-scan svg{display:block;width:100%;max-height:min(43vh,330px);height:auto}.plantar-scan[data-state=waiting] .scan-reveal{visibility:hidden}.plantar-scan figcaption{margin:7px 0 2px;color:#526b64;font-size:12px}.scan-legend{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;font-size:13px;color:#294b41}.scan-legend span{display:inline-flex;align-items:center;gap:3px}.scan-legend i{width:12px;height:12px;border-radius:3px;border:1px solid #0002}#scanExplanation{margin-top:12px}#scanExplanation .plantar-scan svg{max-height:28dvh}body[data-split-practice][data-node=cop_explain] #conversation:not([hidden]){display:flex!important}body:is([data-node=pressure_compare],[data-node=cop_explain]) .learning-bubble-v25{display:none!important}body[data-node=pressure_compare] #taskStatus:empty{display:none}.cop-single-chart{display:block;width:100%;height:auto;max-height:50vh;object-fit:contain}.cop-reference-option{display:flex;align-items:center;gap:6px;margin:8px 0}.cop-reference-option input{accent-color:#17635a}.cop-legend{font-size:13px;color:#435e56}
+.plantar-scan{margin:8px 0;padding:10px 8px;border:1px solid #d4e2df;background:#f6faf8;border-radius:12px;text-align:center}.plantar-scan svg{display:block;width:100%;max-height:min(43vh,330px);height:auto}.plantar-scan[data-state=waiting] .scan-reveal{visibility:hidden}.plantar-scan figcaption{margin:7px 0 2px;color:#526b64;font-size:12px}.scan-legend{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;font-size:13px;color:#294b41}.scan-legend span{display:inline-flex;align-items:center;gap:3px}.scan-legend i{width:12px;height:12px;border-radius:3px;border:1px solid #0002}body[data-split-practice][data-node=cop_explain] #conversation:not([hidden]){display:flex!important}body:is([data-node=pressure_compare],[data-node=cop_explain]) .learning-bubble-v25{display:none!important}body[data-node=pressure_compare] #taskStatus:empty{display:none}.cop-single-chart{display:block;width:100%;height:auto;max-height:50vh;object-fit:contain}.cop-reference-option{display:flex;align-items:center;gap:6px;margin:8px 0}.cop-reference-option input{accent-color:#17635a}.cop-legend{font-size:13px;color:#435e56}
 
 body[data-split-practice][data-node=gait_interpret] #conversation:not([hidden]){display:flex!important}#gaitLoadPrint{display:none}body[data-gait-print=true] #gaitLoadPrint{display:block}#gaitLoadPrint svg{max-height:165px}body[data-node=gait_interpret][data-dialogue-pending=true] #options{display:none!important}
 
@@ -72,3 +72,36 @@ body[data-node=muscle_match] #clinic #coach{display:none!important}
 .functional-assessment{display:grid;gap:.7rem}.functional-assessment label{display:grid;gap:.3rem;font-weight:600}.functional-assessment textarea{width:100%;box-sizing:border-box;padding:.6rem;font:inherit;border:1px solid #93afa7;border-radius:.5rem}.functional-assessment button{justify-self:end}
 
 .heel-film{margin:.7rem 0 0;padding:.6rem;border:1px solid #baccc6}.heel-film input{width:100%}.heel-closeups{display:flex;gap:.35rem}.heel-closeups figure{width:50%;margin:0}.heel-closeups canvas{width:100%;height:auto}.heel-closeups figcaption{font-size:.8rem}
+
+/* Keep the full paired footprints, their scale and the dialogue controls in view. */
+body #clinic #conversation:has(#spokenPressureMap:not([hidden])):not([hidden]) {
+  inset:50% auto auto 50%!important; transform:translate(-50%,-50%)!important;
+  width:min(780px,calc(100vw - 20px))!important; max-height:calc(100dvh - 20px)!important;
+  overflow:hidden; --gutter:clamp(12px,2vw,22px);
+}
+#spokenPressureMap:not([hidden]) .plantar-scan { margin:6px auto; padding:6px; }
+#spokenPressureMap:not([hidden]) svg { height:clamp(125px,28dvh,224px); max-width:100%; }
+#spokenPressureMap figcaption { margin:3px 0 0; }
+@media (min-width:580px) and (max-height:600px) {
+  #conversationBody:has(#spokenPressureMap:not([hidden])) { padding-block:6px; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); align-content:start; align-items:start; column-gap:12px; }
+  #conversationBody:has(#spokenPressureMap:not([hidden])) > :not(#spokenPressureMap) { grid-column:1; max-width:none; }
+  #conversationBody #spokenPressureMap:not([hidden]) { grid-column:2; grid-row:1 / span 16; }
+  #spokenPressureMap:not([hidden]) .plantar-scan { margin:0; }
+  #spokenPressureMap:not([hidden]) svg { height:clamp(92px,calc(100dvh - 190px),200px); }
+}
+
+.single-stance-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.stance-side{display:grid;align-content:start;gap:5px;padding:8px;border:1px solid #cee1dc;border-radius:9px}
+.stance-side strong{font-size:1.15rem;color:#195e50}.stance-side progress{width:100%;height:8px;accent-color:#267976}
+.stance-side button{min-width:0;padding:5px}.single-stance output{display:block;margin-top:8px}
+body[data-node=static_cop] #clinic #coach{display:none!important}
+body[data-node=static_cop]:not([data-balance-help]) #clinic #conversation:not([hidden]){display:none!important}
+body[data-node=static_cop][data-balance-help] #clinic #conversation:not([hidden]){max-width:350px!important;max-height:42dvh}
+.functional-assessment section h3{font-size:1rem;margin:0 0 .3rem}.functional-assessment section ul{margin:0;padding-left:1.3em}
+
+.clinic-workshop{display:grid;gap:.7rem}.clinic-workshop>p,.clinic-workshop fieldset p{margin:0}
+.clinic-workshop fieldset{min-width:0;margin:0;padding:8px;border:1px solid #c3d6cd;border-radius:9px}.clinic-workshop legend{font-weight:600}
+.clinic-workshop fieldset button{margin:3px}.clinic-workshop-window{padding:10px;width:min(1200px,96vw);height:90dvh;border:1px solid #89aba2;border-radius:12px}
+.clinic-workshop-window[open]{display:flex;flex-direction:column}.clinic-workshop-window::backdrop{background:#1a3439ac}
+.clinic-workshop-window header{display:flex;align-items:center;gap:12px}.clinic-workshop-window header button{margin-left:auto}
+.clinic-workshop-window p{margin:6px}.clinic-workshop-window iframe{flex:1;min-height:0;border:1px solid #dae2dc;width:100%}

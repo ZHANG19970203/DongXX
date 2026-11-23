@@ -9,11 +9,12 @@ const movementItems=[
  ['把足底转向内侧或外侧，后足主要在哪个关节发生这个动作？',['距跟关节','距小腿关节','第一跖趾关节'],0,'距跟关节属于距下关节，其斜轴运动有明显的内翻、外翻分量。'],
  ['坐位、足相对小腿运动。哪一组是常见的伴随方向？',['背伸伴内收，跖屈伴外展','背伸和跖屈都伴内收','背伸伴外展，跖屈伴内收'],2,'以足相对小腿为参照，抬起时可伴外展，下压时可伴内收。伴随幅度会随个体和任务而变。'],
  ['足整体旋前时，哪三个方向组合在一起？',['跖屈、内收、内翻','背伸、外展、外翻','背伸、内收、外翻'],1,'开链旋前包括背伸、外展和外翻，距下关节参与三平面的联动。'],
- ['把动作反过来，足整体旋后时会看到什么？',['跖屈、内收、内翻','跖屈、外展、内翻','背伸、外展、外翻'],0,'开链旋后包括跖屈、内收和内翻。']
+ ['把动作反过来，足整体旋后时会看到什么？',['跖屈、内收、内翻','跖屈、外展、内翻','背伸、外展、外翻'],0,'开链旋后包括跖屈、内收和内翻。'],
+ ['从正后方观察内外翻，要描述其额状面分量，用哪条参考轴？',['前后轴','内外轴','垂直轴'],0,'额状面与前后轴垂直。距下关节实际绕斜轴活动，不能用这一分量代表全部运动。']
 ];
 const motionLessons=[
- {id:'sagittal',name:'距小腿关节 · 跖屈和背伸',description:'从右踝外侧看。小腿保持不动，距骨在踝穴中随足转动。脚尖先向下压，再向上勾。'},
- {id:'subtalar',name:'距下关节 · 内翻和外翻',description:'从右足后方看橙色的跟骨。跟骨相对距骨转动，足底先朝内侧，再朝外侧。'}
+ {id:'sagittal',name:'距小腿关节 · 跖屈和背伸',description:'从右踝外侧看。小腿保持不动，距骨在踝穴中随足转动。脚尖先向下压，再向上勾。主要运动面是矢状面，近似绕穿过内外踝的内外轴转动。'},
+ {id:'subtalar',name:'距下关节 · 内翻和外翻',description:'从右足后方看橙色的跟骨。跟骨相对距骨转动，足底先朝内侧，再朝外侧。内外翻的额状面分量可用前后轴描述，真实距下关节绕斜轴转动，还伴有水平面和矢状面分量。'}
 ];
 function hasSeenMotion(book,lesson){return book.get('motionVideo_'+lesson.id)===true;}
 export function motionComplete(book){return motionLessons.every(lesson=>hasSeenMotion(book,lesson))&&movementItems.every((_,i)=>book.get('motion54_'+i)===true);}
@@ -71,7 +72,16 @@ export function showMotion(ctx){
   const nav=el('div');nav.className='clinical-nav';
   if(index>0)nav.append(action('重看跖屈和背伸',()=>{video.pause();watch(0);}));
   nav.append(next);
-  content.replaceChildren(el('h3',lesson.name),video,el('p',lesson.description),nav);
+  const planes=el('dl');planes.className='motion-landmarks';
+  const sagittal=lesson.id==='sagittal';
+  for(const [label,value] of [
+   ['观察面',sagittal?'矢状面 · 从外侧看':'额状面分量 · 从后方看'],
+   ['运动轴',sagittal?'近似内外轴 · 经过内外踝附近':'实际为斜轴 · 从跟骨后外下方指向前内上方'],
+   ['运动骨段',sagittal?'足与距骨相对小腿上勾、下压':'开链时，跟骨相对距骨内翻、外翻']
+  ])planes.append(el('dt',label),el('dd',value));
+  const explore=el('a','在三维模型上拖动观察轴和面 ↗');
+  explore.href='../lab/index.html?lesson=1&action='+(sagittal?'01-13':'01-14');explore.target='_blank';explore.rel='noopener';
+  content.replaceChildren(el('h3',lesson.name),video,planes,el('p',lesson.description),explore,nav);
   video.addEventListener('ended',()=>{
    if(!video.isConnected||!content.contains(video))return;
    if(!hasSeenMotion(book,lesson)){

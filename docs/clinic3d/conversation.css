@@ -154,3 +154,16 @@ body[data-speaker-shot]:not(:has(#clinic[data-bedside-active])) #clinic #convers
 .ankle-side-tag{position:absolute;z-index:2;pointer-events:none;transform:translate(-50%,-50%);border-radius:12px;padding:3px 8px;background:#fffdf5eb;color:#195253;font:bold 12px/1.35 sans-serif;white-space:nowrap}
 .ankle-side-tag[data-side=right]{color:#823916;background:#fff3d8f5}
 body[data-speaker-shot] .ankle-side-tag,body[data-speaker-shot] .practice-markers{visibility:hidden}
+
+body[data-wall-study] #coach { display:none!important }
+@media(min-width:721px), (orientation:landscape) and (max-height:520px) {
+ body[data-wall-study] #clinic { --wall-panel:clamp(275px,34vw,450px) }
+ body[data-wall-study] #clinic #scene { position:absolute;inset:64px auto auto 0!important;width:calc(100% - var(--wall-panel) - 18px)!important;height:calc(100% - 72px)!important }
+ body[data-wall-study] #clinic #conversation:not([hidden]) { inset:auto 10px 44px auto!important;transform:none!important;width:var(--wall-panel)!important;max-height:calc(100% - 120px)!important;overflow:auto }
+}
+@media(max-width:720px) and (min-height:521px), (max-width:720px) and (orientation:portrait) {
+ body[data-wall-study] #clinic #scene { position:absolute;inset:74px 0 auto!important;width:100%!important;height:calc(56% - 74px)!important }
+ body[data-wall-study] #clinic #conversation:not([hidden]) { inset:auto 8px 42px 8px!important;transform:none!important;width:auto!important;max-height:calc(44% - 45px)!important;overflow:auto }
+}
+
+.motion-landmarks{display:grid;grid-template-columns:auto 1fr;gap:.35rem .75rem;margin:.6rem 0;padding:.6rem;border-radius:.5rem;background:#eef5f2;font-size:.92em}.motion-landmarks dt{font-weight:700}.motion-landmarks dd{margin:0}

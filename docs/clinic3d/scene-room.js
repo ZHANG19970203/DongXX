@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 // Original procedural scene props. All coordinates are metres, Y up.
-// Room coordinates: x = plan x - 2.25, z = plan y - 3; support surfaces Y = 0.
+// Nine by eight metres, with separate consultation, gait and balance areas.
 import {createBalanceStation} from './balance-station.js';
 export function createClinicRoom(scene) {
   const room = new THREE.Group();
@@ -112,25 +112,26 @@ export function createClinicRoom(scene) {
   }
 
   // All five pressure teaching plates share the floor support plane (Y=0).
+  const laneX=4.55,stationZ=3.60;
   const floorShape = new THREE.Shape();
-  floorShape.moveTo(-2.25, -3); floorShape.lineTo(2.25, -3);
-  floorShape.lineTo(2.25, 3); floorShape.lineTo(-2.25, 3); floorShape.closePath();
+  floorShape.moveTo(-2.25, -5); floorShape.lineTo(6.75, -5);
+  floorShape.lineTo(6.75, 3); floorShape.lineTo(-2.25, 3); floorShape.closePath();
   const hole = new THREE.Path();
-  hole.moveTo(-.5, -2.025); hole.lineTo(-.5, .725); hole.lineTo(.3, .725); hole.lineTo(.3, -2.025); hole.closePath();
+  hole.moveTo(laneX-.4, -2.025); hole.lineTo(laneX-.4, .725); hole.lineTo(laneX+.4, .725); hole.lineTo(laneX+.4, -2.025); hole.closePath();
   floorShape.holes.push(hole);
   const floorGeo = new THREE.ShapeGeometry(floorShape); floorGeo.rotateX(-Math.PI / 2);
   mesh(floorGeo, material('pvc-floor', 0xcbd2d0, { roughness: .93 }), [0, 0, 0], room, 'FloorY0');
-  box([4.52, .10, 6.02], [0, -.06, 0], material('floor-plinth', 0xb5bfbd));
+  box([9.02, .10, 8.02], [2.25, -.06, 1], material('floor-plinth', 0xb5bfbd));
   const pressure = group('FlushPressureWalkway');
   objects.pressureWalkSurfaces = [];
   const pressureSurface = material('pressure-surface', 0x293d45, { roughness: .88 });
   [1.75, 1.20, .65, .10, -.45].forEach((z, index) => {
-    box([.80, .018, .55], [-.1, -.009, z], steel, pressure, `PressurePlateFrame${index+1}`);
+    box([.80, .018, .55], [laneX, -.009, z], steel, pressure, `PressurePlateFrame${index+1}`);
     // A horizontal plane can receive the host's pressure texture without a raised obstacle.
     const surfaceMat = pressureSurface.clone(); materials.add(surfaceMat);
-    const surface = mesh(new THREE.PlaneGeometry(.784, .55), surfaceMat, [-.1, .00035, z], pressure, `PressureWalkSurface${index+1}`);
+    const surface = mesh(new THREE.PlaneGeometry(.784, .55), surfaceMat, [laneX, .00035, z], pressure, `PressureWalkSurface${index+1}`);
     surface.rotation.x = -Math.PI / 2; surface.castShadow = false;
-    objects.pressureWalkSurfaces.push({mesh:surface, center:[-.1, .00035, z], width:.784, length:.55});
+    objects.pressureWalkSurfaces.push({mesh:surface, center:[laneX, .00035, z], width:.784, length:.55});
   });
   objects.pressurePlate = pressure;
 
@@ -141,18 +142,19 @@ export function createClinicRoom(scene) {
     value.rotation.y = yaw; value.castShadow = false; return value;
   }
   wall(.15, 2.8, [-2.175, 1.4, -3]);
-  wall(3.45, 2.8, [.525, 1.4, -3]);
+  wall(7.95, 2.8, [2.775, 1.4, -3]);
   wall(.9, .65, [-1.65, 2.475, -3]);
-  wall(6, 2.8, [-2.25, 1.4, 0], Math.PI / 2);
-  wall(6, 2.8, [2.25, 1.4, 0], -Math.PI / 2);
-  box([.018, .08, 6], [-2.24, .04, 0], steel);
-  box([.018, .08, 6], [2.24, .04, 0], steel);
-  box([3.45, .08, .018], [.525, .04, -2.99], steel);
+  wall(8, 2.8, [-2.25, 1.4, 1], Math.PI / 2);
+  wall(8, 2.8, [6.75, 1.4, 1], -Math.PI / 2);
+  wall(9, 2.8, [2.25,1.4,5], Math.PI);
+  box([.018, .08, 8], [-2.24, .04, 1], steel);
+  box([.018, .08, 8], [6.74, .04, 1], steel);
+  box([7.95, .08, .018], [2.775, .04, -2.99], steel);
   box([.15, .08, .018], [-2.175, .04, -2.99], steel);
   // Minimal seams and high ventilation grilles keep walls calm.
   for (const x of [-.9, .55, 2]) box([.004, 2.65, .002], [x, 1.44, -2.994], material('seam', 0xe1e0d8));
   for (const z of [-1.7, .05, 1.8]) {
-    const vent = group('VentilationGrille', [2.235, 2.52, z]);
+    const vent = group('VentilationGrille', [6.735, 2.52, z]);
     box([.012, .13, .48], [0, 0, 0], edge, vent);
     for (let i = 0; i < 5; i++) box([.015, .008, .42], [-.006, -.045 + i * .022, 0], steel, vent);
   }
@@ -160,7 +162,7 @@ export function createClinicRoom(scene) {
   // The short corridor is visible from the exterior camera during arrival.
   box([4.5,.045,2.25],[0,-.028,-4.1],material('corridor-floor',0xd1d4c8));
   box([.15,2.8,.04],[-2.175,1.4,-3.04],wallMat);
-  box([3.45,2.8,.04],[.525,1.4,-3.04],wallMat);
+  box([7.95,2.8,.04],[2.775,1.4,-3.04],wallMat);
   box([.90,.65,.04],[-1.65,2.475,-3.04],wallMat);
   const doorFrame = group('NorthDoor');
   for (const x of [-2.12, -1.18]) box([.045, 2.17, .07], [x, 1.085, -2.98], edge, doorFrame);
@@ -169,7 +171,8 @@ export function createClinicRoom(scene) {
   leaf.rotation.y = -Math.PI * .43;
   box([.87, 2.10, .035], [.435, 1.05, 0], white, leaf);
   box([.29, 1.12, .039], [.25, 1.38, 0], glass, leaf);
-  box([.13, .028, .06], [.75, .96, .035], steel, leaf);
+  objects.doorHandle=box([.13,.028,.06],[.75,.96,.055],steel,leaf);
+  box([.13,.028,.06],[.75,.96,-.055],steel,leaf);
   // The illuminated status is visible from both the corridor and the consultation room.
   const statusPanel = group('DoorOccupancy', [-1.65, 2.36, -3.02], doorFrame);
   const casing = material('door-sign-housing', 0x2b4144, {roughness: .5});
@@ -212,7 +215,10 @@ export function createClinicRoom(scene) {
     const light=new THREE.PointLight(0xfffaec,2.2,4.2,2);
     light.position.set(0,2.65,z);room.add(light);
   }
-  for(const z of [-.25,1.3])fixture(-.1,z,.98,.075);
+  for(const z of [-1.3,1.0,3.4])fixture(laneX,z,1.20,.18);
+  for(const x of [-1.05,1.05])fixture(x,3.55,.58,.58);
+  label('步态评估区',1.35,.28,[laneX,2.08,-2.987]);
+  label('静态平衡测试区',1.25,.24,[-2.239,2.10,stationZ],Math.PI/2);
 
   const desk = group('ReceptionDesk', [1.30, 0, -1.80]);
   roundedSlab(1.6, .8, .055, .045, [0, .7225, 0], white, desk);
@@ -304,7 +310,8 @@ export function createClinicRoom(scene) {
   }
   objects.patientStool = stool('PatientStool', .80, -.79);
   objects.spareStool = stool('SpareStoolAtEastWall', 1.87, -.50);
-  objects.examStool = stool('BedsideExaminationStool', -1.03, .05);
+  objects.examStool = stool('BedsideExaminationStool', .18, 1.22);
+  const examX=objects.examStool.position.x, examZ=objects.examStool.position.z;
   const chair = group('ClinicianChair', [1.30, 0, -2.72]);
   cyl(.036, .31, [0, .255, 0], steel, chair);
   roundedSlab(.46, .43, .075, .07, [0, .4125, 0], dark, chair);
@@ -384,22 +391,22 @@ export function createClinicRoom(scene) {
   }
 
   // Short observation line: 2.5 m; the instrument occupies part of this line.
-  const line = group('ShortObservationLine');
+  const line = group('GaitObservationLine',[laneX,0,0]);
   const marking = material('guide-marking', 0x4e6368);
-  box([.05,.0006,1.75],[-.1,.0003,.025],marking,line);
+  for(const z of [-1.55,2.82])box([.80,.001,.025],[0,.001,z],marking,line);
   const yellow = material('safety-marking',0xbfa65d);
-  for(const x of [-.60,.40]) for(let i=0;i<12;i++) box([.022,.0006,.105],[x,.0003,-.79+i*.215],yellow,line);
+  for(const x of [-.58,.58]) for(let i=0;i<25;i++) box([.026,.001,.12],[x,.001,-1.9+i*.215],yellow,line);
   for(const z of [-.85,.40,1.65]) {
-    const point=mesh(new THREE.CircleGeometry(.015,20),red,[-.1,.0007,z],line);point.rotation.x=-Math.PI/2;
+    const point=mesh(new THREE.CircleGeometry(.015,20),red,[0,.0007,z],line);point.rotation.x=-Math.PI/2;
   }
   objects.observationLine=line;
-  const sign = group('NaturalWalkingPrompt',[1.00,0,1.74]);
+  const sign = group('NaturalWalkingPrompt',[laneX+.87,0,2.35]);
   box([.22,.012,.17],[0,.006,0],steel,sign);barBetween([0,.014,0],[0,.88,0],.012,steel,sign);
   label('自然行走 · 不凑步踩板',.32,.20,[0,1.0,0],0,sign,'#f4f6f1');
   objects.pressurePrompt=sign;
   // Wall-mounted observation cameras do not obstruct the floor activity band.
   for(const side of [-1,1]) {
-    const camera=group('WallObservationCamera',[side*2.20,1.40,.10]);
+    const camera=group('WallObservationCamera',[side<0?-2.20:6.70,1.40,.10]);
     barBetween([0,0,0],[-side*.11,0,0],.013,steel,camera);
     const cameraBody=box([.10,.075,.13],[-side*.15,0,0],white,camera);cameraBody.rotation.y=side*Math.PI/2;
     const lens=cyl(.023,.025,[-side*.21,0,0],dark,camera,20);lens.rotation.z=Math.PI/2;
@@ -510,7 +517,7 @@ export function createClinicRoom(scene) {
     ctx.textAlign='left';ctx.fillStyle='#3c6e76';ctx.font='35px "Microsoft YaHei",sans-serif';
     ['足弓：观察负重变化','足压：分布与时间','稳定：结构与运动控制','判断：结合症状和功能'].forEach((t,i)=>ctx.fillText(t,65,290+i*128,w-110));
   },768,900);
-  picture(whiteboardTexture,.64,.80,[2.237,1.83,1.12],-Math.PI/2);
+  picture(whiteboardTexture,.64,.80,[6.737,1.83,1.12],-Math.PI/2);
   label('运动康复 · 足踝生物力学',1.50,.23,[.75,2.38,-2.987]);
 
   // Optional support props are only present in the selected activity.
@@ -539,9 +546,9 @@ export function createClinicRoom(scene) {
   }
   const markers={
     reception:zoneMarker('ReceptionActivity',.80,-.85,.54,.54),
-    static:zoneMarker('ExaminationActivity',-1.03,.05,.63,1.62),
-    gait:zoneMarker('ObservationActivity',-.1,.40,.83,2.60),
-    pressure:zoneMarker('PressureActivity',-.1,.65,.83,2.75),
+    static:zoneMarker('ExaminationActivity',examX,examZ,.63,1.62),
+    gait:zoneMarker('ObservationActivity',laneX,.40,.83,2.60),
+    pressure:zoneMarker('PressureActivity',laneX,.65,.83,2.75),
     balance:zoneMarker('BalanceActivity',-.1,-.20,.73,.73),
     teaching:zoneMarker('TeachingActivity',1.0,1.93,.72,.82),
     wall:zoneMarker('WallLungeActivity',-.25,-2.25,.65,.70)
@@ -551,26 +558,28 @@ export function createClinicRoom(scene) {
   objects.storedBalancePad=padStored;
 
   const balanceStation=createBalanceStation(room);
-  balanceStation.root.position.set(-1.03,0,1.95);
+  balanceStation.root.position.set(-1.03,0,stationZ);
   balanceStation.root.rotation.y=Math.PI;
-  balanceStation.root.visible=false;
   objects.balanceStation=balanceStation;
   const anchors={
-    forcePlate:[-1.03,balanceStation.plateHeight,1.95-balanceStation.plateZ],
-    balanceGuard:[-1.66,0,2.47],
+    forcePlate:[-1.03,balanceStation.plateHeight,stationZ-balanceStation.plateZ],
+    balanceGuard:[-1.66,0,stationZ+.52],
+    balanceApproach:[-1.03,0,stationZ+.99],
+    gait:[laneX,0,.2], gaitObserver:[laneX-1.15,0,.15],
+    pressureObserver:[laneX-1.15,0,1.25],
     patientStand:[-.1,0,-.5],
     patientSeat:[.80,0,-.85],
     therapistSeat:[1.30,0,-2.66],
     entrance:[-1.65,0,-2.0],
     wallLunge:[-.25,0,-2.46],
     balance:[-.1,0,-.20],
-    pressure:[-.1,0,1.1],
-    pressureStand:[-.1,0,1.1],
-    pressureWalkStart:[-.1,0,1.45],
-    pressureWalkEnd:[-.1,0,-.31],
-    staticExam:[-1.03,0,.05],
-    examSeat:[-.97,0,.05],
-    examTherapist:[.15,0,.05],
+    pressure:[laneX,0,1.1],
+    pressureStand:[laneX,0,1.1],
+    pressureWalkStart:[laneX,0,1.45],
+    pressureWalkEnd:[laneX,0,-.31],
+    staticExam:[examX,0,examZ],
+    examSeat:[examX+.06,0,examZ],
+    examTherapist:[examX+1.18,0,examZ],
     teaching:[1.0,0,1.93],
     therapistProtection:[.65,0,-.025],
     documentationDesk:{notes:[1.34,.76,-1.76],pen:[1.48,.771,-1.755]},
@@ -581,10 +590,7 @@ export function createClinicRoom(scene) {
     const key=String(config.zone||config.id||config.activity||'').toLowerCase();
     for(const value of Object.values(markers)) value.visible=false;
     balanceMat.visible=false;supportRail.visible=false;wallMarker.visible=false;padStored.visible=true;
-    balanceStation.root.visible=key==='posturography';
-    shelf.visible=!balanceStation.root.visible;
-    trolley.position.set(...(balanceStation.root.visible?[-1.71,0,-1.29]:[-1.075,0,1.45]));
-    if(balanceStation.root.visible)balanceStation.sample();
+    if(key==='posturography')balanceStation.sample();
     let selected='';
     if(/reception|intake|interview|act1|幕1|接诊/.test(key)) selected='reception';
     else if(/lunge|wall|膝触/.test(key)) selected='wall';

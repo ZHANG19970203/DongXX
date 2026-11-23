@@ -1554,7 +1554,7 @@
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
       "bytes": 55807,
-      "sha256": "54bede08c16db6529d080c81c9bb042cacbec00cd301ce546fa5d69a2733b242"
+      "sha256": "5a8e8affefc07eaff583f0557b2d0894cd87b90e5238959a0bb71e624148114e"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -1563,8 +1563,8 @@
     },
     {
       "path": "clinic3d/actors.js",
-      "bytes": 48433,
-      "sha256": "d938949aa242818c2f4bfc027f4a234556eb5f1003c13e461a6a32b8a2585777"
+      "bytes": 50524,
+      "sha256": "31e61bc1208561da30b8e391caa0555f8d82090d608e81fac4a995b28920af22"
     },
     {
       "path": "clinic3d/anatomy-viewer.js",
@@ -1578,8 +1578,8 @@
     },
     {
       "path": "clinic3d/app.js",
-      "bytes": 103899,
-      "sha256": "b6485e9ea6afb7aad9f62ca30d3189edeee1efd271a76989508230ab60ec9689"
+      "bytes": 109831,
+      "sha256": "d4ae76484431c14458002efb6a0831682325b5f0df4222b31fd3663831a2af32"
     },
     {
       "path": "clinic3d/appearance.js",
@@ -8428,13 +8428,13 @@
     },
     {
       "path": "clinic3d/bedside-player.js",
-      "bytes": 7036,
-      "sha256": "ea36a9156e895ee256030fdf75a3577234a609d596e73c7a788d6f0c4dd625bc"
+      "bytes": 7002,
+      "sha256": "243c7fcac123bc424714531994bcfb1b76b9f75ba9b474c4b44c9969747fc65c"
     },
     {
       "path": "clinic3d/bedside-practice.js",
       "bytes": 26741,
-      "sha256": "914ddff6ace4080eaf3fe278caa03229ab01be320b8bff25605e5eb3033386c8"
+      "sha256": "d66f153d306a2bc4ebd29e9d3d9a0113cf8b6d705cbdd3003586941bc6a2a6cb"
     },
     {
       "path": "clinic3d/bedside-preview.js",
@@ -8458,8 +8458,8 @@
     },
     {
       "path": "clinic3d/case-flow.js",
-      "bytes": 68287,
-      "sha256": "5b475949e30cf46430092aeaa464b1346b4ebed1cd3f843f7c916518d3a33958"
+      "bytes": 69038,
+      "sha256": "79a79d28f0d2d72a1dfd857e3326c99f1f962cc15b41f3db5f8c6e50b7c13621"
     },
     {
       "path": "clinic3d/case-lesson-v14.js",
@@ -8470,6 +8470,11 @@
       "path": "clinic3d/case-muscle-v14.js",
       "bytes": 5784,
       "sha256": "a577251a1e852a689ba2d1863de1e4056f4c7891d4398863f06d041aa3db5808"
+    },
+    {
+      "path": "clinic3d/case-workshops.js",
+      "bytes": 9735,
+      "sha256": "05288bce376b7459ecc1493bae872cb76b8071bbc6664a9c043116c1c24a1759"
     },
     {
       "path": "clinic3d/characters.html",
@@ -8488,8 +8493,8 @@
     },
     {
       "path": "clinic3d/clinical-exams.js",
-      "bytes": 13655,
-      "sha256": "dfa3748da90243a3faba4f4c5a0a29fb4ef723f4e338eeabb662e9b10defa757"
+      "bytes": 14840,
+      "sha256": "f0ed27ca1287a13b2be1c10222a0a6f0b563eea48459ca9a0544fba00ef42b58"
     },
     {
       "path": "clinic3d/communication-v26.js",
@@ -8498,8 +8503,8 @@
     },
     {
       "path": "clinic3d/conversation.css",
-      "bytes": 7955,
-      "sha256": "64e7098c3f1d6dc88ff4ca633527c603cb6aae911f9438f44b673ca5054b2c9c"
+      "bytes": 9222,
+      "sha256": "4f5ce494903046a9ec118f76a3233d10a1f37be65496805e6e55494b0e1e3947"
     },
     {
       "path": "clinic3d/dialogue-audio.js",
@@ -9243,8 +9248,8 @@
     },
     {
       "path": "clinic3d/encounter-progress.js",
-      "bytes": 5257,
-      "sha256": "d187739e6c10dfa7b6b820f30f0a8d6118612faae02103194b6c26b44bb11e18"
+      "bytes": 5698,
+      "sha256": "cd9e1f533f13c2506946d4896e10e8a214cfd7cad414199ae29bb5a389e500a4"
     },
     {
       "path": "clinic3d/evidence-archive.css",
@@ -9283,8 +9288,8 @@
     },
     {
       "path": "clinic3d/film-sequence.js",
-      "bytes": 10829,
-      "sha256": "6cc43e811b4c0e6c918f9212287f574412e49f830d4d4030120710560690d7c4"
+      "bytes": 11958,
+      "sha256": "f45e2a81ea4075e61c21653b36c60d6bf75d0860b9f84419012ad45b78a22e11"
     },
     {
       "path": "clinic3d/finish-encounter.js",
@@ -9303,8 +9308,8 @@
     },
     {
       "path": "clinic3d/functional-assessment.js",
-      "bytes": 2045,
-      "sha256": "92b9945a1314ddffc789cebe546754f1040362504756e9056f4d118fdda2f914"
+      "bytes": 2194,
+      "sha256": "b2c251265039a3f27737b4efdee0b1e0683dbe36f1931742f001c56b7b095556"
     },
     {
       "path": "clinic3d/gait-lesson.js",
@@ -9348,8 +9353,8 @@
     },
     {
       "path": "clinic3d/index.html",
-      "bytes": 14601,
-      "sha256": "ed910e4d28fb72ad63fc9f5ecbec85e18d9a382ad2dfb2bcf073f4be021411ec"
+      "bytes": 14748,
+      "sha256": "ba9ebda0afcacbe199f055ed67e5c0616153836e87fbbedb3b2d6ec750b40d74"
     },
     {
       "path": "clinic3d/inversion-lesson.js",
@@ -9388,8 +9393,8 @@
     },
     {
       "path": "clinic3d/learning-ui.js",
-      "bytes": 17396,
-      "sha256": "10b329c2f1b786668653b6e10c9496824c9df4f499e534409077787a54cba0f0"
+      "bytes": 17156,
+      "sha256": "428b32ffb12804e89701fccf593a8afbd70e31d4431294ce735cce67732fdc01"
     },
     {
       "path": "clinic3d/lesson-coach.js",
@@ -9433,13 +9438,13 @@
     },
     {
       "path": "clinic3d/plantar-scan.css",
-      "bytes": 9170,
-      "sha256": "7c97109751d8157e0fbfd57490e1a2f3205cc59e02407caadd26642d2612c7a0"
+      "bytes": 11980,
+      "sha256": "76a7de64ba2add8303ebeed72a8bc8ec03e837023a6ea3309294215586ee7db6"
     },
     {
       "path": "clinic3d/plantar-scan.js",
-      "bytes": 6002,
-      "sha256": "c66b0f5694453069611d2dd4ea1a620ca5242d6613ba717980e4f83e36da0e19"
+      "bytes": 6446,
+      "sha256": "a47fd9214a0bebf08a813d6d7759482846879796c872748af00083451672b271"
     },
     {
       "path": "clinic3d/portraits-v21.js",
@@ -9453,8 +9458,8 @@
     },
     {
       "path": "clinic3d/pressure-engine.js",
-      "bytes": 29406,
-      "sha256": "9d945e79eb415aaca5da8779851d50df9f7109b2c5cf2f275456bbaaacbb93ff"
+      "bytes": 29460,
+      "sha256": "9d2ea2e5e7eb35e27de2dc8f7e7d211f854b6e37a94e14a834330ca8cb9b8246"
     },
     {
       "path": "clinic3d/pressure-stage.js",
@@ -9493,8 +9498,8 @@
     },
     {
       "path": "clinic3d/scene-room.js",
-      "bytes": 34574,
-      "sha256": "740628bdc49a67998e1c280fe7a2e861033155edc5da31a7cfd3939c387afb31"
+      "bytes": 35011,
+      "sha256": "44afce80380088e85f2c98bda95b62941643899f2c34880758d0efb536c665f2"
     },
     {
       "path": "clinic3d/skip-step.css",
@@ -9508,18 +9513,18 @@
     },
     {
       "path": "clinic3d/soap-summary.js",
-      "bytes": 6697,
-      "sha256": "2a64a12886dc724c4387614edc4d8830b7155cdc78f490edd8dadf7e228e52e0"
+      "bytes": 6815,
+      "sha256": "73c65a7d212372a04b548357818289a2f717b23d76a77136b3616b1606d6df60"
     },
     {
       "path": "clinic3d/soap-tasks-v20.js",
-      "bytes": 4275,
-      "sha256": "d9ca55014ed6b135d973e6c591097490d857475a28ea0aae71de1a3214089786"
+      "bytes": 5198,
+      "sha256": "6518390eb2c68386283f4084f7cbbc0da78e558d1222472c9428ef4366a32bd2"
     },
     {
       "path": "clinic3d/speaker-shot.js",
-      "bytes": 1090,
-      "sha256": "54a43a4aefeca1840a72045d2a8749ac33a15bd5c885b05f34431beac2e0a4a6"
+      "bytes": 1282,
+      "sha256": "bee56efb50d8ca2a15fe4c3e12913eb43735741423511b15ffc1bce1b88efdcc"
     },
     {
       "path": "clinic3d/strength-bed.js",
@@ -9628,8 +9633,8 @@
     },
     {
       "path": "clinic3d/wall-tape.js",
-      "bytes": 4747,
-      "sha256": "ed4f504e0b813dd93ff8e3fb0f6fd22690460042227c18c9234e30873f075e9e"
+      "bytes": 4832,
+      "sha256": "bc57e2975a9620994ff4cbb750334e0ef821e23e6c449fd3b80a69ef4cb67288"
     },
     {
       "path": "docs/README_CLINIC_V4_HISTORY.md",
@@ -9863,8 +9868,8 @@
     },
     {
       "path": "lab/assets/bridge-v24.js",
-      "bytes": 3947,
-      "sha256": "48f29da2b3f8dbefab6451b18743dc92f25b5f13c18485192122b462933ae1e7"
+      "bytes": 4195,
+      "sha256": "b8f4ce590c40764f0bd5a0bef7adb8c03a1529a0085f9d4ad6394a800b9d7947"
     },
     {
       "path": "lab/assets/connective.bin",
@@ -9929,7 +9934,7 @@
     {
       "path": "lab/index.html",
       "bytes": 59426,
-      "sha256": "5518bed8951779ea036a1be5586de2c669547f0d0e394231c0d6bb5c1f8fb3c2"
+      "sha256": "da9a2b47d4abeb274fef6d8178ca5f4545862a436142989f06ca926cf1117569"
     },
     {
       "path": "lab/lab.css",
@@ -10118,8 +10123,8 @@
     },
     {
       "path": "painting/index.html",
-      "bytes": 4602,
-      "sha256": "65c41223099ba8786c17069bc033d60b1e86d36de052b8e5252724756a4af737"
+      "bytes": 4607,
+      "sha256": "d2934976028a3742af937edcd6369f07c741455e59d3ea9729f677ea59700100"
     },
     {
       "path": "painting/model.js",
@@ -10128,13 +10133,13 @@
     },
     {
       "path": "painting/painting.css",
-      "bytes": 6824,
-      "sha256": "e189f0976dfe97e97d4ef9730fe33734e316a6f68b8cceac2a7e11e124292d3e"
+      "bytes": 7107,
+      "sha256": "e4eb815812df90c8f9eb8f365331f009c409991e30cd985783a467521b097f93"
     },
     {
       "path": "painting/painting.js",
-      "bytes": 19833,
-      "sha256": "15f36ae15f0bde490918704bdb46bb016117c035b218a16afae4b4f9bb123b7a"
+      "bytes": 20213,
+      "sha256": "4bf5df9a8a33348964a364539913ead9236959bac3cc39e9dff0cfd92edf5df4"
     },
     {
       "path": "painting/review.html",
@@ -10564,7 +10569,7 @@
     {
       "path": "soap/review-v19.html",
       "bytes": 6188,
-      "sha256": "0b37c7a50478d7bce98e4739b749362e69fa145825c96578b1cbbf8f534cf09f"
+      "sha256": "4268198b255a9524b2e9dfc95409f1e3d331fb50f03fdc06c55c5209446734ee"
     },
     {
       "path": "soap/soap.css",

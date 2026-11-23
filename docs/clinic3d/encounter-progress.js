@@ -1,3 +1,4 @@
+import {caseWorkshops} from './case-workshops.js?v=79';
 import {romTrials,validReading,sideLabel} from './goniometry.js?v=74';
 // The regular patient encounter has one fixed denominator. Optional conversations and
 // the alternative safety exit do not add extra steps to the main case.
@@ -22,6 +23,9 @@ const lessons = [
   ['plan','书写近期与远期计划','written-plan'], ['plan_discussion','听取医患商定的计划与复评安排'], ['debrief','复盘病例证据'], ['uncertainty','辨别尚待验证的判断'],
   ['transfer','选择复评方法'], ['finish','保存本次学习']
 ];
+for(const [after,id] of [['goal_answer','case_cardio'],['local_intro','case_bones'],['rom_report','case_chain'],['muscle_intro','case_paint'],['case_paint','case_place'],['muscle_match','case_contractions'],['static_cop','case_posture'],['gait_events','case_transfer']]){
+  lessons.splice(lessons.findIndex(row=>row[0]===after)+1,0,[id,caseWorkshops[id].title,'case-workshop']);
+}
 const tracked = new Set(lessons.map(([id])=>id));
 
 export function markLearningStep(state,id){

@@ -19,7 +19,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
  const actions=document.createElement('div');actions.className='practice-actions';
  const status=document.createElement('p');status.className='practice-feedback';status.setAttribute('role','status');
  const markers=document.createElement('div');markers.className='practice-markers';ui.append(markers);bottom.append(status,actions);
- const audio=createDialogueAudio({enabled:voiceEnabled,onTalking:()=>{},onStatus:message=>{status.textContent=message;}});
+ const audio=createDialogueAudio({enabled:voiceEnabled,onTalking:role=>onSpeaker(stage==='consent'||stage==='retry'&&retryNeedsConsent?role:null),onStatus:message=>{status.textContent=message;}});
  let preparationHeard=false,painReported=Boolean(checkpoint?.painReported),stageRevision=0;
  const explained=new Set(checkpoint?.explained||[]);
  const explanation=createDialogueAudio({enabled:voiceEnabled,onTalking:()=>{},onStatus:()=>{}});
@@ -47,7 +47,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
  const label=()=>test===0?'前抽屉试验':'内翻加压试验';
  const emit=(type,payload={})=>record('clinic3d_bedside_'+type,{test:label(),stage,...payload,teachingSimulation:true,measuredForce:false});
  async function say(role,text){
-  onSpeaker(role);stopExplanation();
+  stopExplanation();
   patientExpression(role==='patient'&&text===PRACTICE_LINES.fast?'pain':'neutral');
   const start=performance.now(),source=stage;
   while(active&&stage===source){
@@ -59,7 +59,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
     observer.observe(ui,{childList:true,subtree:true});
    });
   }
-  const remaining=Math.max(1500,Math.min(6000,text.length*65))-(performance.now()-start);if(active&&remaining>0)await new Promise(resolve=>setTimeout(resolve,remaining));if(active&&stage===source)onSpeaker(null);};
+  const remaining=Math.max(1500,Math.min(6000,text.length*65))-(performance.now()-start);if(active&&remaining>0)await new Promise(resolve=>setTimeout(resolve,remaining));};
  function button(text,fn,attr){const b=document.createElement('button');b.type='button';b.textContent=text;if(attr)b.dataset.practice=attr;b.onclick=fn;actions.append(b);return b;}
  function clear(){actions.replaceChildren();markers.replaceChildren();status.textContent='';drag=null;}
  function draw(value){currentSample=value;if(lastAspect!==camera.aspect){path=null;drag=null;}lastAspect=camera.aspect;pose=seek(value,{...grips,showForces:stage==='demo'||stage==='pressing',conversation:stage==='consent'?'initial':stage==='retry'&&retryNeedsConsent?'retry':null});lastAspect=camera.aspect;positionMarkers();}
@@ -70,7 +70,7 @@ export function createBedsidePractice({ui,camera,seek,onSkip=()=>ui.querySelecto
   grips={fixedWeight:0,heelWeight:0};setStage('demo');draw(baseline());
  }
  function endDemo(){if(!demo)return;const previous=demo;demo=null;grips=previous.grips;setStage(previous.from,true);}
- function setStage(next,resuming=false){onSpeaker(null);
+ function setStage(next,resuming=false){
   const revision=++stageRevision;
   if(!['move','settle','return','pressure','pressing','next','interpret'].includes(next))stopExplanation();
   patientExpression('neutral');audio.cancel();stage=next;ui.dataset.practiceStage=next;ui.dataset.practiceTest=String(test);clear();

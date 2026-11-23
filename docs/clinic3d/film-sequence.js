@@ -45,14 +45,14 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
   let introducing=false;
   const originalScenes=new Set(['01A','04A','05A','06A']);
   const cue=$('filmCue'),name=$('filmSegmentName'),handoff=$('filmHandoff'),replay=$('filmReplay'),watch=$('filmWatch'),overlay=$('filmOverlay'),video=$('filmVideo');
-  const media=()=>active&&approvedFilmMedia(active.clip.id,active.branch.condition,manifest,location.href);
+  const media=()=>active&&approvedFilmMedia(active.clip.id,active.example?'normal':active.branch.condition,manifest,location.href);
   fetch('film-media-v18.json?v=68',{cache:'no-cache'}).then(response=>response.ok?response.json():{clips:{}}).catch(()=>({clips:{}})).then(value=>{
     manifest=value;manifestReady=true;watch.hidden=!media();if(waiting&&waiting===active)playPrimary();
   });
   function playPrimary(){
     waiting=null;
     if(media())openVideo(true);
-    else player.replay();
+    else if(!active?.taskPreview)player.replay();
   }
   function clear(){if(introducing){player.stop();introducing=false;watch.disabled=false;}waiting=null;if(!overlay.hidden)closeVideo('node_changed');active=null;cue.hidden=true;handoff.hidden=true;watch.hidden=true;document.body.dataset.filmSegment='';}
   function present(node,{trigger='entry',restoring=false,force=false}={}){
@@ -60,7 +60,7 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     const clip=FILM_CLIPS.find(item=>item.anchorNode===node.id&&item.trigger===trigger);
     if(!clip)return false;
     const branch=selectFilmBranch(clip,state);
-    if(branch.condition==='arch_comparison_skipped')return false;
+    if(branch.condition==='arch_comparison_skipped'&&state.exitLock)return false;
     const key=clip.id+':'+branch.condition+(clip.id==='05B'?':protective-gait':'');
     const chosen=state.choiceLock;
     const spoken=trigger==='choice'&&branch.normal&&chosen?.nodeId===node.id&&replies[chosen.optionId];
@@ -68,13 +68,13 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     state.filmProgress=state.filmProgress||{};
     const prior=state.filmProgress[key];
     const actionLabel=branch.condition==='consent_missing'?'观察踝关节运动':state.exitLock?'结束体能任务，讨论下一步':clip.actionLabel;
-    active={clip,branch,key,actionLabel};cue.hidden=false;name.textContent=clip.title;
+    active={clip,branch,key,actionLabel,example:originalScenes.has(clip.id)&&!state.exitLock&&!branch.normal};cue.hidden=false;name.textContent=clip.title;
     replay.hidden=false;watch.hidden=!media();watch.textContent='播放病例视频';document.body.dataset.filmSegment=clip.id;
     handoff.textContent='接下来 · '+actionLabel;
     handoff.hidden=false;
     if(prior?.completed&&!force){refreshCoach?.();return false;}
     const startIndex=restoring&&!force?prior?.index||0:0;
-    const firstFilm=!force&&branch.normal&&originalScenes.has(clip.id);
+    const firstFilm=!force&&!state.exitLock&&originalScenes.has(clip.id)&&!state.caseVideoSeen?.[clip.id];
     record(force?'clinic3d_film_segment_replay':'clinic3d_film_segment_open',{clipId:clip.id,nodeId:node.id,condition:branch.condition,mode:firstFilm?'case_video':'live_scene_dialogue',assessmentCredit:false});
     if(firstFilm&&clip.videoIntro&&!restoring)appendLine(roles[clip.videoIntro.speaker],clip.videoIntro.text,'film-introduction');
     if(!restoring||force)for(const turn of branch.lines)appendLine(roles[turn.speaker],turn.text,'film-dialogue');
@@ -82,6 +82,18 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     player.loadSequence(branch.lines,node.id+':film:'+clip.id,{startIndex,announce:!firstFilm});
     if(firstFilm&&manifestReady)playPrimary();
     return true;
+  }
+  function offerGaitTask(node,host){
+    clear();
+    const clip=FILM_CLIPS.find(item=>item.id==='05A');
+    active={clip,branch:{condition:'normal',normal:true},taskPreview:true};
+    player.showPrompt(node.text,node.id);
+    const b=document.createElement('button');b.type='button';b.textContent='观看步行病例视频';
+    b.onclick=()=>{if(manifestReady)openVideo();else waiting=active;};
+    host.prepend(b);
+    if(!state.caseVideoSeen?.[clip.id]){
+      if(manifestReady)openVideo(true);else waiting=active;
+    }
   }
   function onUtterance(info){
     if(introducing||waiting||playback||!active||!info.sequence||!info.nodeId.endsWith(':film:'+active.clip.id))return;
@@ -104,10 +116,11 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     record('clinic3d_film_return',{clipId:active?.clip.id,reason,assessmentCredit:false});
     resumeScene(videoPause);videoPause=null;
     if(reason==='node_changed')return;
+    if(active?.taskPreview){if(reason==='media_load_error')$('filmVideoStatus').textContent='请重新播放步行病例视频。';return;}
     if(!watch.hidden)watch.focus();
     if(active?.clip.videoIntro)handoff.hidden=!!previous?.resumeDialogue;
     if(previous?.isPrimary&&reason==='ended'){
-      if(active?.clip.id==='06A')player.replay();
+      if(active?.clip.id==='06A'||active?.example)player.replay();
       else player.finishSequence();
     }
     else if(previous?.resumeDialogue)player.replay();
@@ -133,17 +146,19 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     const {isPrimary}=session;
     playback=session;player.stop();
     videoPause=pauseScene();overlay.hidden=false;document.body.dataset.filmPlaying='true';
-    $('filmVideoTitle').textContent=active.clip.title;$('filmVideoContinue').textContent=isPrimary?'切换到诊室对白':'返回接诊';
+    $('filmVideoTitle').textContent=(active.example?'教学示例 · ':'')+active.clip.title;$('filmVideoContinue').textContent=isPrimary?'切换到诊室对白':'返回接诊';
     $('filmVideoStatus').textContent=isPrimary?'播完返回本步操作。':'病例视频回看';
     video.src=entry.src;video.controls=true;video.focus();
+    if(active.taskPreview)$('filmVideoContinue').textContent='返回步态观察';
     record('clinic3d_film_video_open',{clipId:active.clip.id,condition:active.branch.condition,sha256:entry.sha256,assessmentCredit:false});
     video.play().catch(()=>{if(playback===session)$('filmVideoStatus').textContent='点击画面中的播放键观看。';});
   }
   watch.addEventListener('click',()=>openVideo(false));
+  video.addEventListener('playing',()=>{if(active&&playback){(state.caseVideoSeen||={})[active.clip.id]=true;persist();}});
   video.addEventListener('ended',()=>{if(!playback||!active)return;record('clinic3d_film_video_ended',{clipId:active.clip.id,assessmentCredit:false});closeVideo('ended');});
   video.addEventListener('error',()=>{if(playback&&video.error)closeVideo('media_load_error');});
   $('filmVideoContinue').addEventListener('click',()=>closeVideo());
   $('filmVideoClose').addEventListener('click',()=>closeVideo('closed_early'));
   overlay.addEventListener('keydown',event=>{if(event.key==='Escape'){event.stopPropagation();closeVideo('closed_early');}else if(event.key==='Tab'){const stops=[$('filmVideoClose'),video,$('filmVideoContinue')],first=stops[0],last=stops.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}});
-  return {present,onUtterance,needsBriefing,clear,closeVideo,pauseVideo,getActive:()=>active};
+  return {present,offerGaitTask,onUtterance,needsBriefing,clear,closeVideo,pauseVideo,getActive:()=>active};
 }

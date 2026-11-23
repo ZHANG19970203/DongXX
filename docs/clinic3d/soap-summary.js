@@ -9,6 +9,7 @@ export function soapSummary(state,handouts=[]){
   if(evidence.has('injury_history'))S.push('约一年前下楼时右踝向内扭伤，外踝疼痛。此后又崴两次，最近一次在跑步转弯时。');
   if(evidence.has('triggers'))S.push('走不平路时右脚会发软，担心再崴。');
   if(evidence.has('screening'))S.push('久站或走多后酸胀、发紧，坐下休息后减轻。近期无新伤或麻木，能步行。');
+  if(state.visited?.includes('case_cardio'))S.push('陈女士 28 岁，喜欢爬山，希望能安心走山路。');
   if(evidence.has('goal'))S.push('希望先走稳不平路，再逐步恢复慢跑。');
   if(evidence.has('declined'))S.push('患者选择暂停进一步检查。');
   const stress=receipts.ankle_stress?.completed||[];

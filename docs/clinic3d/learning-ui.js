@@ -1,12 +1,12 @@
 import {archCaseText,archOutlines} from './arch-bones.js';
-import {mountPlantarScan,plantarFigure,pressureLegend} from './plantar-scan.js?v=72';
-import {renderSOAPTask} from './soap-tasks-v20.js?v=77';
+import {mountPlantarScan,showSpokenPressureMap} from './plantar-scan.js?v=79';
+import {renderSOAPTask} from './soap-tasks-v20.js?v=79';
 import { createLessonCoach } from './lesson-coach.js';
 import { createArchComparison } from './arch-comparison.js';
 import { createAnatomyViewer } from './anatomy-viewer.js';
 import {sampleWalking,renderPlantarScan} from "./pressure-engine.js";
 import { GAIT_CASE } from './gait-lesson.js';
-import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js?v=71';
+import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js?v=79';
 
 import {mountGaitQuestion,paintGaitQuestion} from './gait-phase-task.js?v=72';
 
@@ -79,12 +79,7 @@ export function createLearningUI(ctx) {
       renderPlantarScan(svg,{kind:'gait',feet});figure.append(svg,nodeEl('figcaption','','各足承重早期 · 按单足负荷归一化 · 暖色表示较集中'));
       $('spokenGait').before(figure);
     }
-    $('scanExplanation')?.remove();
-    if(node.id==='cop_explain'){
-      const explanation=nodeEl('div','');explanation.id='scanExplanation';
-      explanation.append(state.taskReceipts?.pressure_compare?.scope==='case-plantar-scan'?plantarFigure():pressureLegend());
-      $('line').after(explanation);
-    }
+    if(node.id==='cop_explain')showSpokenPressureMap($('spokenPressureMap'),state);
     text('dockTitle',({plantarScan:'足底扫描',gait:'步态周期',goniometer:'踝足运动辨认',trial:'负重弓箭步测试（WBLT）',muscle:'踝足肌力检查',arch:'静态足弓',staticCOP:'扭伤后的静态平衡',pressure:'足底负荷',balance:'平衡准备',plan:'共同计划'})[node.task?.type]||'观察与操作');
     text('whyTitle','为什么要做这一步');text('whyText',edu.why||node.purpose);
     text('knowledgeText',[edu.concept,...(edu.knowledge||[]),edu.patientMeaning].filter(Boolean).join(' '));
