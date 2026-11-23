@@ -1554,7 +1554,7 @@
     {
       "path": "clinic3d/ASSET_INVENTORY.json",
       "bytes": 55806,
-      "sha256": "c15a9330f86cbf2e28271bf681eba2291f960db0e77b53857f237241cadd98b4"
+      "sha256": "fff66b490563cc8345ff569d7682a057f340bd6378b2dec6553711218c6a3b8c"
     },
     {
       "path": "clinic3d/actor-implementation.json",
@@ -1578,8 +1578,8 @@
     },
     {
       "path": "clinic3d/app.js",
-      "bytes": 94773,
-      "sha256": "a0efff28a757989d193fbe7d5c3a7e24ba7b2b3908b437217ccc8fc8b67de6d7"
+      "bytes": 98210,
+      "sha256": "fc0843156f9a4a649d878d16dc474b4ae6d56700eb203102898c1707d28cdb70"
     },
     {
       "path": "clinic3d/appearance.js",
@@ -4557,6 +4557,16 @@
       "sha256": "fdf16bbda320dfad7dad95de7cb085a7de196278d7c357c4ba959f03cc11e54a"
     },
     {
+      "path": "clinic3d/assets/dialogue-v20/clinical73-depart-arch.mp3",
+      "bytes": 42408,
+      "sha256": "38c19f2f71385a456e99de771eed10c14d432e2480f6f5823bf1bec7fe875d5b"
+    },
+    {
+      "path": "clinic3d/assets/dialogue-v20/clinical73-depart-stance.mp3",
+      "bytes": 58565,
+      "sha256": "f3b6766a842b94abbda8c9f49d79a662b1d49e41f287a369cfe7790e6bacd7ec"
+    },
+    {
       "path": "clinic3d/assets/dialogue-v20/consent-ankle-feiref-v47.mp3",
       "bytes": 33740,
       "sha256": "a4a6ad7430dc5fe0cef8c8c29630f2f4c3a70c9aeecb389f9799e461f8bfedb2"
@@ -5788,8 +5798,8 @@
     },
     {
       "path": "clinic3d/assets/dialogue-v20/manifest.json",
-      "bytes": 499504,
-      "sha256": "699dc2cc69be9df1982925090f0d2fa80d9dc34874c842a492acd2924404c907"
+      "bytes": 500485,
+      "sha256": "0e384ea5e738abc53d603aecc940b0d0dba508219afe63629030eef0cf7dcfb3"
     },
     {
       "path": "clinic3d/assets/dialogue-v20/r33-000b12b72b24ffa0.mp3",
@@ -8018,8 +8028,8 @@
     },
     {
       "path": "clinic3d/case-flow.js",
-      "bytes": 67721,
-      "sha256": "f193c0a7c95fdc0610d3d3ebe731d7f2c5d7519c654ec2f8907ddfe74f6cde58"
+      "bytes": 68287,
+      "sha256": "5b475949e30cf46430092aeaa464b1346b4ebed1cd3f843f7c916518d3a33958"
     },
     {
       "path": "clinic3d/case-lesson-v14.js",
@@ -8053,13 +8063,13 @@
     },
     {
       "path": "clinic3d/communication-v26.js",
-      "bytes": 6209,
-      "sha256": "664b746fe0a31906ade2e3c749b7986bf4faf2d4754242dcd50ddde16578543d"
+      "bytes": 5819,
+      "sha256": "88df266d78d51bc5e1e24f775a49cd2151a00b2116e659f8a0d281d66a53f4f8"
     },
     {
       "path": "clinic3d/conversation.css",
-      "bytes": 6923,
-      "sha256": "e76b562cf34924c7ff78977ea3376483de1473608d7349b77c47ea810f128f69"
+      "bytes": 7114,
+      "sha256": "9a9e4d20c4bab31020b2c8260d43f00e0eb99ac4c8b139638725f470ece2abd0"
     },
     {
       "path": "clinic3d/dialogue-audio.js",
@@ -8843,8 +8853,8 @@
     },
     {
       "path": "clinic3d/finish-encounter.js",
-      "bytes": 2915,
-      "sha256": "751fc98aa0d45a39d3bece0d020255056573b4823e87b5d0f1f1362e017f1ad2"
+      "bytes": 3077,
+      "sha256": "e925c6b225e1f848ac447cf9ff21d4cf3fe02ad4cff52db775760442786ae4a4"
     },
     {
       "path": "clinic3d/focus-v21.css",
@@ -8904,7 +8914,7 @@
     {
       "path": "clinic3d/index.html",
       "bytes": 14589,
-      "sha256": "c1ee30f78e0e06faf55e4e6949486633a666f5993b6cfdd1a0fdfdf3ed14351c"
+      "sha256": "5c06ca421b15e8833458ee08cce68bbe41800d9aa9137ad19598d64523338e02"
     },
     {
       "path": "clinic3d/inversion-lesson.js",

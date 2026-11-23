@@ -72,8 +72,8 @@ export const FLOW = {
   welcome: N('welcome', 'act1', 'dialogue', '林治疗师', '陈女士，你好，我是林治疗师。请坐。先说说脚踝的困扰，我们再商量检查。', {next: 'history', visualMode: 'arrival', patientCue: '面向患者点头示意，留出通道；患者停稳后落座，治疗师待其坐稳再交流'}),
   history: N('history', 'act1', 'choice', '邀请她说一说', '什么时候容易不稳？请先听她描述。', {task: {type: 'history', instructions: '先听患者怎么描述，再追问受伤经过和具体情境。'}, options: [
     O('ask_trigger', '什么情况下不稳？受伤经过怎样？', 'trigger_answer', '用开放提问了解她的经历；听完再追问，不急着给病因标签。'),
-    retry('assume_arch', '先认定低足弓就是病因。', 'history', '尚未检查足形，更不能把它认作唯一原因。请先听病史。'),
-    retry('challenge_first', '直接闭眼单脚站。', 'history', '还不了解症状、安全和意愿，不能直接增加体能挑战。', {safe: false})
+    O('assume_arch', '先认定低足弓就是病因。', 'leave_arch', '', {good:false}),
+    O('challenge_first', '直接闭眼单脚站。', 'leave_stance', '', {good:false,safe:false})
   ]}),
   trigger_answer: N('trigger_answer', 'act1', 'dialogue', '陈女士', '快一年前下楼梯时右脚向里崴了，后来又崴过两次，最近是一个月前跑步变向。走不平路时，总怕撑不住。', {next: 'safety', patientCue: '看向治疗师，说到再次扭伤时略显担心', evidence: ['triggers', 'injury_history']}),
   safety: N('safety', 'act1', 'choice', '回应担心，先问安全', '先问近期变化，判断是否适合活动。', {task: {type: 'history'}, options: [
@@ -498,3 +498,12 @@ Object.assign(FLOW.arch_compare,{act:'act6',next:'arch_view'});
 Object.assign(FLOW.arch_view,{act:'act6',next:'arch_concern'});
 Object.assign(FLOW.synthesis,{kind:'task',speaker:'你',text:'根据骨科转诊和本轮证据，写出陈女士的功能评定。',options:[],next:'plan'});
 delete FLOW.synthesis.task;
+
+// A refusal during initial history ends this encounter before examination.
+FLOW.leave_arch=N('leave_arch','act1','dialogue','陈女士','您这医生，还没给我检查就断定是足弓低？太不负责了！',{
+  withdrawal:'尚未检查就认定低足弓是病因',next:'history_closed'
+});
+FLOW.leave_stance=N('leave_stance','act1','dialogue','陈女士','我还没跟您说的情况呢！算了，我还是换一家医院吧，这里看起来不太专业。',{
+  withdrawal:'尚未听取病史就要求闭眼单脚站',next:'history_closed'
+});
+FLOW.history_closed=N('history_closed','act1','summary','本次接诊结束','陈女士已离开诊室。',{terminal:true});

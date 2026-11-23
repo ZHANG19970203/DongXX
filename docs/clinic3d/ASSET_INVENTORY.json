@@ -286,8 +286,8 @@
     {
       "id": "original-concise-case-v12",
       "path": "case-flow.js",
-      "bytes": 67721,
-      "sha256": "f193c0a7c95fdc0610d3d3ebe731d7f2c5d7519c654ec2f8907ddfe74f6cde58",
+      "bytes": 68287,
+      "sha256": "5b475949e30cf46430092aeaa464b1346b4ebed1cd3f843f7c916518d3a33958",
       "source": "Original fictional case and teaching choices; 41 nodes shortened without replacing evidence/safety paths",
       "license": "Application logic follows complete-site MIT scope; fictional case prose remains separate project teaching content",
       "limits": [
@@ -506,8 +506,8 @@
     {
       "id": "local-dialogue-v20",
       "path": "assets/dialogue-v20/manifest.json",
-      "bytes": 499504,
-      "sha256": "699dc2cc69be9df1982925090f0d2fa80d9dc34874c842a492acd2924404c907",
+      "bytes": 500485,
+      "sha256": "0e384ea5e738abc53d603aecc940b0d0dba508219afe63629030eef0cf7dcfb3",
       "source": "Course recordings and generated Mandarin dialogue. The voice and source fields identify individually credited clips.",
       "license": "Course dialogue assets. Speech engines and model weights are not distributed."
     },
@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 94773,
-      "sha256": "a0efff28a757989d193fbe7d5c3a7e24ba7b2b3908b437217ccc8fc8b67de6d7"
+      "bytes": 98210,
+      "sha256": "fc0843156f9a4a649d878d16dc474b4ae6d56700eb203102898c1707d28cdb70"
     },
     {
       "id": "walking-pose-v27",

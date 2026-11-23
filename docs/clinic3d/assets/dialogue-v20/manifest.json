@@ -10523,6 +10523,24 @@
       "duration": 8.728875,
       "source": "Local synthesis using the existing Fei 1508 role reference",
       "transcriptCheck": "刚才右脚往外用力时没能像左脚那样稳住。我们再看看承重有没有影响，先认一认足弓的位置，再比较您坐着和站桌时的变化。"
+    },
+    "patient|您这医生，还没给我检查就断定是足弓低？太不负责了！": {
+      "src": "./assets/dialogue-v20/clinical73-depart-arch.mp3",
+      "role": "patient",
+      "text": "您这医生，还没给我检查就断定是足弓低？太不负责了！",
+      "voice": "Microsoft Huihui (zh-CN)",
+      "rate": 1,
+      "duration": 6.0275,
+      "sha256": "38c19f2f71385a456e99de771eed10c14d432e2480f6f5823bf1bec7fe875d5b"
+    },
+    "patient|我还没跟您说的情况呢！算了，我还是换一家医院吧，这里看起来不太专业。": {
+      "src": "./assets/dialogue-v20/clinical73-depart-stance.mp3",
+      "role": "patient",
+      "text": "我还没跟您说的情况呢！算了，我还是换一家医院吧，这里看起来不太专业。",
+      "voice": "Microsoft Huihui (zh-CN)",
+      "rate": 1,
+      "duration": 8.0525625,
+      "sha256": "f3b6766a842b94abbda8c9f49d79a662b1d49e41f287a369cfe7790e6bacd7ec"
     }
   },
   "revision": "v26 respectful dialogue and patient reactions"

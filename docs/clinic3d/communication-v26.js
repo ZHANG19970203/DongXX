@@ -1,8 +1,6 @@
 import {replies} from './clinic-dialogue.js';
 // Authored teaching responses, not AI sentiment scoring or clinical findings.
 export const REACTIONS = {
- assume_arch:["premature","您还没看我的脚，怎么知道是脚弓的问题？"],
- challenge_first:["safety","睁着眼我都怕站不稳，能先不闭眼吗？"],
  skip_screening:["safety","我能走，可一拐弯脚就发软。这样站不会摔吗？"],
  cosmetic_goal:["goal","我倒不在乎脚好不好看，就是想走稳点。"],
  command_only:["consent","先跟我说说要怎么查，行吗？"],
@@ -36,7 +34,7 @@ export function reactionFor(optionId,attempt=1){
  return {kind,text,emotion:repeated&&serious?'upset':repeated?'concerned':'questioning',attempt};
 }
 const corrections={"conditions_match":"红不红不能直接说明伤得重不重，得先看这两张图的颜色各代表什么。","request_conditions":"两张图是怎么测的，我得先确认一下。","distribution":"脚心贴地，本身不说明有病，还得看您哪儿不舒服。","arch_observed":"站起来脚弓低了些，只凭这一点看不出崴脚的原因。","alignment_checked":"屏幕上的角度只是示范，不能当成您脚踝的角度。","evidence_problem_plan":"光凭脚弓的样子，看不出是哪儿出了问题。","continue_consent":"我先说一下要怎么查，您有顾虑可以告诉我。","valid_pair":"刚才脚跟抬起来的那一下不算。两只脚都用同一个姿势量。"};
-const byConcern={"assume_arch":{"ask_trigger":"您说得对，我还不知道是不是脚弓的问题。您第一次是怎么崴的脚？"},"challenge_first":{"ask_trigger":"不用站，坐着说就行。您第一次是怎么崴的脚？"},"skip_screening":{"ask_screening":"先不做单脚站。上次崴脚以后，有没有更疼、更肿，或者脚发麻？"},"cosmetic_goal":{"ask_goal":"那就先看走路稳不稳。上回崴脚之后，您做过什么治疗？"},"command_only":{"explain_consent":"我先看您自己能把脚抬多高，再轻轻动一下脚踝，看看稳不稳。可以吗？"},"different_method":{"valid_pair":"不能这么比。刚才一边站着、一边坐着，得换成一样的姿势再量。"},"power_from_picture":{"observe_only":"看不出来是哪块肌肉没劲，只能看出右脚踩地的时间短些。"},"arch_to_sprain":{"observe_only":"光看走路，看不出韧带受了多大的力。刚才看见的是两只脚步子不一样。"},"push_through":{"shared_stop":"好，现在就停，先扶稳。以后练的时候也是，越练越疼就别硬撑。"},"arch_cure":{"arch_not_cause":"不能保证。鞋垫合不合适，要看您走路的情况，不能只看脚弓。"},"test_anyway":{"medical_evaluation":"不用站，先坐着。我请医生看看需不需要拍片。"},"return_today":{"graded_control":"先不急着跑，咱们从能站稳的动作练起。","mobility_recheck":"先不跑，看看脚踝活动能不能好一些，下次再量。","load_support_trial":"先不跑。您站久了会酸，先试试中间坐下来歇会儿。","complete_missing":"先不跑，等剩下几项查完再定。"},"guaranteed_orthosis":{"graded_control":"鞋垫不能保证不再崴。脚踝用力和站稳也得练，下次来看看走路有没有好些。","mobility_recheck":"鞋垫不能保证不再崴。先练脚踝往上抬，下次来再量一量。","load_support_trial":"单靠鞋垫说不准。您先把站的时间分开，中间歇会儿，下次看看还酸不酸。","complete_missing":"光用鞋垫不一定够。下次查完脚踝怎么用力，再定怎么练。"}};
+const byConcern={"skip_screening":{"ask_screening":"先不做单脚站。上次崴脚以后，有没有更疼、更肿，或者脚发麻？"},"cosmetic_goal":{"ask_goal":"那就先看走路稳不稳。上回崴脚之后，您做过什么治疗？"},"command_only":{"explain_consent":"我先看您自己能把脚抬多高，再轻轻动一下脚踝，看看稳不稳。可以吗？"},"different_method":{"valid_pair":"不能这么比。刚才一边站着、一边坐着，得换成一样的姿势再量。"},"power_from_picture":{"observe_only":"看不出来是哪块肌肉没劲，只能看出右脚踩地的时间短些。"},"arch_to_sprain":{"observe_only":"光看走路，看不出韧带受了多大的力。刚才看见的是两只脚步子不一样。"},"push_through":{"shared_stop":"好，现在就停，先扶稳。以后练的时候也是，越练越疼就别硬撑。"},"arch_cure":{"arch_not_cause":"不能保证。鞋垫合不合适，要看您走路的情况，不能只看脚弓。"},"test_anyway":{"medical_evaluation":"不用站，先坐着。我请医生看看需不需要拍片。"},"return_today":{"graded_control":"先不急着跑，咱们从能站稳的动作练起。","mobility_recheck":"先不跑，看看脚踝活动能不能好一些，下次再量。","load_support_trial":"先不跑。您站久了会酸，先试试中间坐下来歇会儿。","complete_missing":"先不跑，等剩下几项查完再定。"},"guaranteed_orthosis":{"graded_control":"鞋垫不能保证不再崴。脚踝用力和站稳也得练，下次来看看走路有没有好些。","mobility_recheck":"鞋垫不能保证不再崴。先练脚踝往上抬，下次来再量一量。","load_support_trial":"单靠鞋垫说不准。您先把站的时间分开，中间歇会儿，下次看看还酸不酸。","complete_missing":"光用鞋垫不一定够。下次查完脚踝怎么用力，再定怎么练。"}};
 export const repairSpoken=(o,concern)=>byConcern[concern]?.[o.id]||corrections[o.id]||replies[o.id]||null;
 export function repairLabel(o,concern){return o.good===false||o.retry?(o.shortLabel||o.label):(repairSpoken(o,concern)||o.shortLabel||o.label);}
 export const REPAIR_ACK="好。";

@@ -17,7 +17,7 @@ import {voiceRole,replies,spokenCommunicationChoices} from './clinic-dialogue.js
 import {openInversionStudy} from './inversion-study.js?v=67';
 import {startBedside} from './bedside-player.js?v=70';
 import {differentialPanel} from './differential.js';
-import {reactionFor,repairLabel,repairSpoken} from './communication-v26.js';
+import {reactionFor,repairLabel,repairSpoken} from './communication-v26.js?v=73';
 import {installImmersion} from './immersion-v23.js?v=71';
 import {installLearningBubbles} from './learning-bubbles-v25.js?v=68';
 import {createUsageTracker} from '../assets/usage-v23.js';
@@ -35,14 +35,14 @@ import { createDialoguePlayer } from './dialogue-player.js';
 import { createFilmSequence } from './film-sequence.js?v=71';
 import {trainingFilm} from './training-film.js';
 import {presentPlan} from './plan-writing.js';
-import {submitEncounter} from './finish-encounter.js';
+import {submitEncounter} from './finish-encounter.js?v=73';
 import {planTurns,selectedPlan} from './plan-discussion.js';
 import {mountGoniometer,romComplete,romReport,romTable} from './goniometry.js?v=71';
 import { createLearningHub } from '../learning/learning-hub.js';
 import {strengthComplete,motionComplete} from './clinical-exams.js?v=71';
 import { migrateProgress, updateAssessmentOrder, legacyBedsideCheckpoint } from './progress-migration.js?v=72';
 import { GAIT_CASE, sampleGait } from './gait-lesson.js';
-import { CASE_DATA, FLOW, START_NODE, TEACHER_LIMITATIONS, EVIDENCE_CATALOG } from './case-flow.js?v=72';
+import { CASE_DATA, FLOW, START_NODE, TEACHER_LIMITATIONS, EVIDENCE_CATALOG } from './case-flow.js?v=73';
 
 const $=id=>document.getElementById(id), profile=window.DXXHub?.profile?.()||null;
 const uid=()=>crypto.randomUUID(), now=()=>new Date().toISOString();
@@ -361,6 +361,13 @@ function previousStep(){
 $('previousStep').onclick=previousStep;
 const afterExams=new Set(['plan_intro','synthesis','plan','plan_discussion','debrief','uncertainty','transfer','finish']);
 function goto(id,{restoring=false,navigation=false,back=false}={}) {
+ if(restoring&&state.withdrawal?.phase==='closed')id='history_closed';
+ if(restoring&&id==='history'&&state.communicationRepairs?.history?.pending){
+  const old=state.communicationRepairs.history;
+  const next=flow.history.options.find(o=>o.id===old.optionId)?.next;
+  if(flow[next]?.withdrawal){delete state.communicationRepairs.history;id=next;}
+ }
+ if(state.withdrawal && id!==state.exitReason && id!=='history_closed')return;
  if(id==='rom_report'&&!romComplete(state.taskReceipts?.rom_measure))id='trial';
  if(afterExams.has(id)&&!REVIEW_NODE&&!state.exitLock&&!state.completedAt){
   if(!state.examShoesOn){state.afterExamClose=id;id='exam_close';}
@@ -402,8 +409,12 @@ function goto(id,{restoring=false,navigation=false,back=false}={}) {
  const node=flow[id];
  const restoredTask=restoring&&state.taskState?.nodeId===id?state.taskState:null;
  if(!node){toast('当前环节已结束，可查看本次 SOAP 病历。');return;}
- if(state.completedAt){const finalId=state.exitLock?'safe_finish':'finish';if(restoring&&id!==finalId)return goto(finalId,{restoring:true});if(!node.terminal){toast('本次学习已保存。');openDrawer('notes');return;}}
- const safetyNodes=['medical_stop','symptom_stop','decline_stop','safe_finish'];
+ if(state.completedAt){const finalId=state.withdrawal?'history_closed':state.exitLock?'safe_finish':'finish';if(restoring&&id!==finalId)return goto(finalId,{restoring:true});if(!node.terminal){toast('本次学习已保存。');openDrawer('notes');return;}}
+ const safetyNodes=['medical_stop','symptom_stop','decline_stop','safe_finish','history_closed','leave_arch','leave_stance'];
+ if(node.withdrawal){
+  state.exitLock=true;state.exitReason=id;
+  state.withdrawal||={reason:node.withdrawal,phase:'reply'};
+ }
  const retiredArchChoices=(id==='gait_interpret'&&['observe_only','power_from_picture','arch_to_sprain'].includes(state.choiceLock?.optionId))||['arch_compare','arch_concern','trial','local_explain','pressure_compare','cop_explain'].includes(id);
  const restoredChoice=restoring&&!retiredArchChoices&&state.choiceLock?.nodeId===id?state.choiceLock:null;
  if(restoring&&retiredArchChoices&&state.communicationRepairs?.[id]?.pending){
@@ -474,6 +485,21 @@ function goto(id,{restoring=false,navigation=false,back=false}={}) {
  else selectedNext=node.next;
  if(['plantarScan','gait'].includes(node.task?.type))paintTask();
  if(node.terminal||(!node.next&&!node.options?.length)){$('next').hidden=false;$('next').textContent='保存本次学习 →';selectedNext='__complete';}
+ if(node.withdrawal||id==='history_closed'){
+  filmSequence.clear();learningBubbles?.hide();$('coach').hidden=true;$('taskDock').hidden=true;$('skipStep').hidden=true;
+  if(id==='history_closed'){
+   actors.patient.root.visible=false;
+   document.body.dataset.departure='closed';
+   const message='陈女士已离开诊室。本次问诊提前结束。离开原因：'+state.withdrawal.reason+'。';
+   dialoguePlayer.showPrompt(message,id);
+   $('next').textContent=state.completedAt?'查看完成情况':'提交本次学习';
+  }else{
+   $('next').hidden=true;movement=null;
+   if(state.withdrawal.phase==='walking')startDeparture();
+   else{document.body.dataset.departure='reply';dialoguePlayer.loadSequence([{speaker:'patient',text:node.text}],id,{wholeTurns:true});}
+  }
+  persist();return;
+ }
  if(state.communicationRepairs?.[id]?.pending){state.choiceLock=null;selectedNext=null;playPatientReaction(state.communicationRepairs[id],true);persist();return;}
  if(id==='ankle_stress'){
   activeNode.revisitingBedside=back;
@@ -564,6 +590,10 @@ function choose(option,b) {
  document.querySelectorAll('#options button').forEach(x=>{x.classList.toggle('selected',x===b);x.disabled=true;});
  appendLine('我的选择',option.label,'choice');
  record('clinic3d_choice',{nodeId:activeNode.id,optionId:option.id,label:option.label,good:option.good??null,safe:option.safe??null,record:option.record||null});
+ if(flow[option.next]?.withdrawal){
+  delete state.communicationRepairs?.history;
+  goto(option.next);return;
+ }
  if(reaction){
   state.communicationRepairs||={};
   const repair={nodeId:activeNode.id,optionId:option.id,attempts:priorCount+1,pending:true,phase:'reaction',reaction,selectedText:option.shortLabel||option.label};
@@ -646,7 +676,7 @@ function complete(){
  void submitEncounter({state,profile,save:saveFinalEncounter});
 }
 function saveFinalEncounter(partial){
- if(state.completedAt)return;state.completedAt=now();$('skipStep').hidden=true;$('previousStep').disabled=true;$('next').textContent='查看完成情况';const skipped=Object.keys(state.skippedSteps||{});record(partial?'clinic3d_partial_review_saved':'clinic3d_learning_complete',{skipped,caseId:'cai',completedAt:state.completedAt,visited:state.visited,evidence:state.evidence,reflection:state.reflection,notClinicalSkillAssessment:true});try{const list=JSON.parse(localStorage.getItem('dxx_encounter_completed_v1')||'[]');list.push({partial,progress:encounterProgress(state).percent,id:state.sessionId,caseId:'cai',student:profile,source:'clinic3d-v14',completedAt:state.completedAt,summary:{visited:state.visited,evidence:state.evidence,reflection:state.reflection,notClinicalSkillAssessment:true}});localStorage.setItem('dxx_encounter_completed_v1',JSON.stringify(list.filter((x,i,arr)=>arr.findIndex(y=>y.id===x.id)===i)));}catch{}toast('本次学习已保存。');}
+ if(state.completedAt)return;state.completedAt=now();$('skipStep').hidden=true;$('previousStep').disabled=true;$('next').textContent='查看完成情况';const skipped=Object.keys(state.skippedSteps||{});record(partial?'clinic3d_partial_review_saved':'clinic3d_learning_complete',{skipped,caseId:'cai',completedAt:state.completedAt,visited:state.visited,evidence:state.evidence,reflection:state.reflection,notClinicalSkillAssessment:true});try{const list=JSON.parse(localStorage.getItem('dxx_encounter_completed_v1')||'[]');list.push({partial,progress:encounterProgress(state).percent,id:state.sessionId,caseId:'cai',student:profile,source:'clinic3d-v14',completedAt:state.completedAt,summary:{...(state.withdrawal?{withdrawal:state.withdrawal.reason}:{}),visited:state.visited,evidence:state.evidence,reflection:state.reflection,notClinicalSkillAssessment:true}});localStorage.setItem('dxx_encounter_completed_v1',JSON.stringify(list.filter((x,i,arr)=>arr.findIndex(y=>y.id===x.id)===i)));}catch{}toast('本次学习已保存。');}
 function intro(){
  hasStarted=true;
  record('clinic3d_reception_started');
@@ -667,6 +697,35 @@ function walkRoute(actor,curve,travel){
  const point=curve.getPointAt(travel),direction=curve.getTangentAt(travel);
  actor.setPosition(point).face(Math.atan2(direction.x,direction.z));
 }
+let departureWalk=null;
+function startDeparture(){
+ if(departureWalk||!activeNode?.withdrawal)return;
+ state.withdrawal.phase='walking';
+ document.body.dataset.departure='walking';document.body.removeAttribute('data-interview');
+ $('conversation').hidden=true;actors.setTalking(null);
+ const patient=actors.patient,seat=room.anchors.patientSeat,door=room.anchors.entrance;
+ const path=[seat,[seat[0],0,seat[2]+.5],[-.35,0,-.67],[-1.4,0,-1.65],door,[door[0],0,-3.55]];
+ departureWalk={time:0,stepping:false,curve:new THREE.CatmullRomCurve3(path.map(x=>new THREE.Vector3(...x)))};
+ actorPose(patient,'standing',seat,null);patient.setEmotion('upset');
+ setView('third',true);cameraMove=null;camera.clearViewOffset();
+ camera.position.set(1.15,1.85,2.85);controls.target.set(-.62,.94,-1.48);camera.lookAt(controls.target);controls.update();
+ persist();
+}
+function updateDeparture(dt){
+ if(!departureWalk)return;
+ const walk=departureWalk;
+ if(actors.patient.getState().sitting>.01)return;
+ walk.time+=dt;
+ if(!walk.stepping){actors.patient.setLocomotion(true,true);walk.stepping=true;}
+ const travel=Math.min(1,walk.time/4.6);
+ walkRoute(actors.patient,walk.curve,travel);
+ if(travel<1)return;
+ actors.patient.setLocomotion(false);actors.patient.root.visible=false;departureWalk=null;
+ state.withdrawal.phase='closed';
+ state.records.push({nodeId:activeNode.id,completion:'patient_withdrew',reason:state.withdrawal.reason,physicalTasks:'not_performed'});
+ record('clinic3d_patient_departed',{nodeId:activeNode.id,reason:state.withdrawal.reason});
+ goto('history_closed');
+}
 function approachPlatform(dt){
  if(!platformEntry||visualZone!=='posturography')return;
  const plate=room.anchors.forcePlate;
@@ -685,7 +744,7 @@ function animate(t){requestAnimationFrame(animate);if(mechanism||footArches){las
  cameraMove=null;strengthCamera.aim(state.view,strengthBed.aim(state.view));strengthBed.showHands(camera);
  document.body.dataset.strengthPosture=info.posture;document.body.dataset.strengthHands=info.fixedHand+','+info.resistHand;document.body.dataset.strengthContact=[info.fixedGap,info.contactGap].map(n=>n.toFixed(3)).join(',');document.body.dataset.strengthMuscles=info.projection.join(',');
  if(!lessonUI.anatomyIsOpen()&&!learningHub.isOpen())renderer.render(scene,camera);return;
- }if(bedside){bedside.tick(Math.min(realDelta,.5));renderer.render(scene,camera);return;}if(!state.paused){elapsed+=dt;if(actors&&elapsed>talkUntil)actors.setTalking(null);if(movement){movement.time+=dt;const travel=Math.min(movement.time/5.2,1);if(!movement.done){walkRoute(actors.patient,movement.patientPath,travel);walkRoute(actors.therapist,movement.doctorPath,travel);}if(travel>=1&&!movement.done){movement.done=true;actorPose(actors.patient,'seated',room.anchors.patientSeat,Math.PI);actorPose(actors.therapist,'seated',room.anchors.therapistSeat,0);}if(movement.time>=movement.duration)finishIntro();}approachPlatform(Math.min(realDelta,.12));actors?.update(dt,Math.min(realDelta,.5));archObservation?.tick();
+ }if(bedside){bedside.tick(Math.min(realDelta,.5));renderer.render(scene,camera);return;}if(!state.paused){elapsed+=dt;if(actors&&elapsed>talkUntil)actors.setTalking(null);if(movement){movement.time+=dt;const travel=Math.min(movement.time/5.2,1);if(!movement.done){walkRoute(actors.patient,movement.patientPath,travel);walkRoute(actors.therapist,movement.doctorPath,travel);}if(travel>=1&&!movement.done){movement.done=true;actorPose(actors.patient,'seated',room.anchors.patientSeat,Math.PI);actorPose(actors.therapist,'seated',room.anchors.therapistSeat,0);}if(movement.time>=movement.duration)finishIntro();}updateDeparture(Math.min(realDelta,.35));approachPlatform(Math.min(realDelta,.12));actors?.update(departureWalk?Math.min(realDelta,.1):dt,Math.min(realDelta,.5));archObservation?.tick();
  if(wallTape){wallTape.tick(Math.min(realDelta,.15));}
  if(gaitDemo){advanceGaitPhase(Math.min(realDelta,.18));}
  if(taskRunning){const rate=pressureMode==='static'?1/8:.25/(2*GAIT_CASE.cycleSeconds);taskPhase=Math.min(1,taskPhase+dt*rate);if(taskPhase>=1)taskRunning=false;stepBook.set('observed',true);const slider=$('taskPhase');if(slider)slider.value=String(taskPhase);if(t-lastPressurePaint>100||!taskRunning){paintTask();lastPressurePaint=t;}}syncGaitVisual();updatePreparation();
@@ -818,7 +877,7 @@ const dialoguePlayer=createDialoguePlayer({$,speak,cancelSpeech:()=>dialogueAudi
   if(actors&&!bedside){
     const patient=info.speaker==='陈女士';
     const repair=info.nodeId?.endsWith(':patient-reaction')?state.communicationRepairs?.[activeNode?.id]?.reaction?.emotion:null;
-    actors.patient.setEmotion(patient?(repair||expressionForPatientLine(info.text,info.nodeId)):'neutral');
+    actors.patient.setEmotion(patient?(activeNode?.withdrawal?'upset':repair||expressionForPatientLine(info.text,info.nodeId)):'neutral');
     if(patient&&info.nodeId==='injury_question'&&info.index===0&&!state.mechanismGestureSeen){
       actors.patient.scratchTemple();state.mechanismGestureSeen=true;
     }
@@ -833,8 +892,8 @@ const dialoguePlayer=createDialoguePlayer({$,speak,cancelSpeech:()=>dialogueAudi
   if(showMap&&!holder.firstChild)holder.append(plantarFigure({highlightRight:true}));
   gaitReview.turn(info,film?.branch);
   document.body.dataset.gaitPrint=String(info.nodeId?.endsWith(':film:05B')&&info.text.includes('脚印图'));
-  filmSequence.onUtterance(info);if(!bedside&&activeNode?.id!=='ankle_stress')learningBubbles?.utterance(info);},
- onComplete:()=>{if(activeNode?.id==='exam_findings'){state.examFeedbackDone=true;markLearningStep(state,'exam_findings');persist();}
+  filmSequence.onUtterance(info);if(!state.withdrawal&&!bedside&&activeNode?.id!=='ankle_stress')learningBubbles?.utterance(info);},
+ onComplete:()=>{if(activeNode?.withdrawal){startDeparture();return;}if(activeNode?.id==='exam_findings'){state.examFeedbackDone=true;markLearningStep(state,'exam_findings');persist();}
  if(activeNode?.id==='exam_close'){
   if(actors.patient.getState().footwear==='shoes'){markLearningStep(state,'exam_close');state.examShoesOn=true;goto('exam_findings');return;}
   actors.patient.startFootwearDressing();$('next').disabled=true;$('line').textContent='陈女士坐稳，穿上鞋。';return;
@@ -932,6 +991,7 @@ function ensurePreparation(){
  return false;
 }
 function continueEncounter(){
+ if(activeNode?.withdrawal)return;
  if(['exam_close','synthesis'].includes(activeNode?.id))return;
  if(activeNode?.id==='rom_measure'&&!romComplete(state.taskReceipts?.rom_measure))return;
  if(activeNode?.id==='wall_measure'&&!state.taskReceipts?.wall_measure)return;
@@ -959,6 +1019,7 @@ const skipBranches={
  plan:'plan_discussion',synthesis:'plan',medical_stop:'safe_finish'
 };
 function skipCurrentStep(){
+ if(state.withdrawal)return;
  const node=activeNode;if(!node||state.completedAt)return;
  if(node.terminal){complete();return;}
  if(node.id==='exam_close'){if(actors.patient.getState().footwearRemoval?.dressing)return;dialoguePlayer.stop();dialogueAudio.cancel();actors.patient.setFootwear('shoes');state.examShoesOn=true;goto('exam_findings');return;}
