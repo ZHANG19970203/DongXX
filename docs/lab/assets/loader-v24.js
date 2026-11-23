@@ -8,10 +8,10 @@
   }
   try {
     const [data, manifest, connective, supplement] = await Promise.all([
-      fetchAsset('assets/app-data.json', 'json'),
+      fetchAsset('assets/app-data.json?v=76', 'json'),
       fetchAsset('../assembly/assets/geometry-manifest.json', 'json'),
-      fetchAsset('assets/connective.json?v=72', 'json'),
-      fetchAsset('assets/connective.bin?v=72', 'arrayBuffer')
+      fetchAsset('assets/connective.json?v=76', 'json'),
+      fetchAsset('assets/connective.bin?v=76', 'arrayBuffer')
     ]);
     if (supplement.byteLength !== connective.bytes) throw Error('结缔组织模型不完整');
     const raw = new Uint8Array(manifest.bytes + connective.bytes);
@@ -27,10 +27,10 @@
     data.native.raw = data.actor.raw = new ArrayBuffer(0);
     window.__DXX_DATA__ = data;
     window.DXX_ENABLE_CLASSROOM_SERVICE = false;
-    for (const file of ['joint-landmarks-v30.js', 'joint-rig-v30.js', 'app.js']) {
+    for (const file of ['joint-landmarks-v30.js', 'joint-rig-v30.js', 'motion-muscles-v76.js', 'app.js']) {
       await new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = 'assets/' + file + '?v=72';
+        script.src = 'assets/' + file + '?v=76';
         script.onload = resolve;
         script.onerror = () => reject(Error(file));
         document.body.append(script);

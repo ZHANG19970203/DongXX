@@ -113,8 +113,8 @@
     },
     {
       "path": "assembly/assets/catalog.js",
-      "bytes": 933067,
-      "sha256": "1eb18dda4670335749876be93b0334404756c2a01bb23e8504de9d4160790c93"
+      "bytes": 933059,
+      "sha256": "52227d710195c75e4c6186f1b814fb1794e96c1783f7d770cda213ad86430026"
     },
     {
       "path": "assembly/assets/game.css",
@@ -123,8 +123,8 @@
     },
     {
       "path": "assembly/assets/game.js",
-      "bytes": 53654,
-      "sha256": "30b346797ba91656b86d74cd152ebd36439dfc17e884dd881784d45d509aa1fe"
+      "bytes": 53605,
+      "sha256": "18e802a98e80fb5d83be7bef82160cd75e9c3b775fc4d79100885f2a97133807"
     },
     {
       "path": "assembly/assets/geometry-loader.js",
@@ -1188,8 +1188,8 @@
     },
     {
       "path": "assembly/index.html",
-      "bytes": 10595,
-      "sha256": "7619b7731ca24598e38045da268ca18e0382c972a82c8bb4569fab46bf2d5c86"
+      "bytes": 10553,
+      "sha256": "b52c1a897762dfd075417e96c8e20dec48cc95aa99c0f11f4e971c6ca503c558"
     },
     {
       "path": "assembly/licenses/ASSET_PROVENANCE.json",
@@ -1278,8 +1278,8 @@
     },
     {
       "path": "assembly/tools/CATALOG_TEMPLATE.json",
-      "bytes": 203064,
-      "sha256": "62fc0abd233667eb090699f50322007dd22af26e86df41802c25ab40f8806642"
+      "bytes": 210980,
+      "sha256": "6092a3bded20163dde435ff65b5ba732098835fa724141b53113900e5a359367"
     },
     {
       "path": "assembly/tools/OBJ_ELEMENT_IDS.json",
@@ -1373,8 +1373,8 @@
     },
     {
       "path": "assets/hub.js",
-      "bytes": 9931,
-      "sha256": "5ab67e5564b7895b61ec8d934232a06171d6c4e23a997d25672156e7dfa91011"
+      "bytes": 9907,
+      "sha256": "8d18084c54525d0c434581e3f486b18d66b2139db1d9a5bb4da70dab92a34446"
     },
     {
       "path": "assets/immersion-v23.css",
@@ -8163,8 +8163,8 @@
     },
     {
       "path": "clinic3d/docs/README_v5_historical.md",
-      "bytes": 11055,
-      "sha256": "439e1981b188856aceefd669fc91834777366cb039593e37122e9ec47b32bac6"
+      "bytes": 11013,
+      "sha256": "ac719889588fb5a34ced69d29ad073666e531d2e2fd4b50a04b358a0febe785e"
     },
     {
       "path": "clinic3d/docs/README_v8_historical.md",
@@ -9228,13 +9228,13 @@
     },
     {
       "path": "docs/README_CLINIC_V4_HISTORY.md",
-      "bytes": 8316,
-      "sha256": "da47b846add3e8c081a4752e33ef859db34d0906718f2ee6c337567e052964cc"
+      "bytes": 8274,
+      "sha256": "3c20f7d72127c420162a11e087fc4fc0c43301ab6077d1ea4263ec608b9f830d"
     },
     {
       "path": "docs/README_PRESSURE_V3_HISTORY.md",
-      "bytes": 9559,
-      "sha256": "45b2f774db60d75128af6d5111ee2200de225de4764c955bc06a25977f423061"
+      "bytes": 9517,
+      "sha256": "e4957c97a2112906dc329b2b2210e51ef7bbdbcf5228b2c719f89b3787b1728a"
     },
     {
       "path": "docs/TASK_MIGRATION_REVIEW.csv",
@@ -9448,13 +9448,13 @@
     },
     {
       "path": "lab/assets/app-data.json",
-      "bytes": 1250651,
-      "sha256": "551eabcd4e7b02d6722b531a4618eba6db5e9bba9c6dcf110b003b22e166a3e8"
+      "bytes": 802666,
+      "sha256": "4d5b26ab2bcc6d9434e14e76da43fc76cf08e85e906b33f093007b00128800e2"
     },
     {
       "path": "lab/assets/app.js",
-      "bytes": 270134,
-      "sha256": "065d46b82e56bae9a48672a4a70dbe16a18834702ffcd336db13ab2ef08ea2fd"
+      "bytes": 270313,
+      "sha256": "672d0b4ce14470110ea9ceb713ac85e1b2485cbae71c1b3f4743acc102425c2c"
     },
     {
       "path": "lab/assets/bridge-v24.js",
@@ -9463,13 +9463,13 @@
     },
     {
       "path": "lab/assets/connective.bin",
-      "bytes": 776064,
-      "sha256": "ccdd33a50a789262bb4cc8a5a68f09ecfcca0d55036a805c49775932dabb7d8a"
+      "bytes": 1102080,
+      "sha256": "d3bd7cea6a248dad27056ba2f2aeeab6dba23640ed18de636e579077e46a207d"
     },
     {
       "path": "lab/assets/connective.json",
-      "bytes": 21016,
-      "sha256": "526a3cb7d3d415a686be66d1b160f606258ffe08988c35c61ffb2d6447e0fc74"
+      "bytes": 23607,
+      "sha256": "83a9855d70c78b02215e4a1ceaeebef0291607f4bd823209a53c09e40ffe4f6b"
     },
     {
       "path": "lab/assets/joint-landmarks-v30.js",
@@ -9478,8 +9478,8 @@
     },
     {
       "path": "lab/assets/joint-rig-v30.js",
-      "bytes": 9482,
-      "sha256": "7133b7565d99bcea3c36871d7f7fa680fbd72742228db91b3768ea96d66e8420"
+      "bytes": 9586,
+      "sha256": "1c7c11af6feca734edf7a1f1ecaf711c98ac0bd847a7d4808834a327cb34f886"
     },
     {
       "path": "lab/assets/lab-support-v24.css",
@@ -9492,14 +9492,29 @@
       "sha256": "53d87e7eb2e6f2e012c1dc4682ca4e56921b2dbe1bcac1048806e0a944e6ca36"
     },
     {
+      "path": "lab/assets/lever-head-v76.png",
+      "bytes": 111231,
+      "sha256": "36c29f3a106745aa80699d862473b8a4b0a117299bac954c486096cb236adc5a"
+    },
+    {
+      "path": "lab/assets/lever-neck-v76.png",
+      "bytes": 38189,
+      "sha256": "7596ff2b6772160135442c4eed772d73d9cfda8c3ac1d61c10482665bf62e059"
+    },
+    {
       "path": "lab/assets/loader-v24.js",
-      "bytes": 2490,
-      "sha256": "e5d1d3f3b5d8736b652100b997f41671689889f9128b00c8b4b8740b46c64a9a"
+      "bytes": 2575,
+      "sha256": "624f432803669e20fcaebc9078a92ca7692580652197e25ff54e9cb18da6b1d7"
+    },
+    {
+      "path": "lab/assets/motion-muscles-v76.js",
+      "bytes": 6473,
+      "sha256": "17788423560c00b06d3f167a7190f937e0c1e1acb818fcec286336dc43bff385"
     },
     {
       "path": "lab/atlas.html",
-      "bytes": 8397,
-      "sha256": "2084eac1b4ecce0e773346594bdf7fa33dcd3e312f1ad42b5caccd72b81708c9"
+      "bytes": 8376,
+      "sha256": "853d4807fd98a39a7a1156d1fe6f0dada23985948d5f7b472b79c56688ddc8f2"
     },
     {
       "path": "lab/courses.json",
@@ -9508,8 +9523,8 @@
     },
     {
       "path": "lab/index.html",
-      "bytes": 62063,
-      "sha256": "c55ccdf383953b6c2cb37c8b65d23e9cb33f3efdcc1c0f107b0a7afff4842e86"
+      "bytes": 59421,
+      "sha256": "4ffe4967282bb886d88621b224c056bf19357921ef203ed2a30858c38edb657e"
     },
     {
       "path": "lab/lab.css",
@@ -9733,8 +9748,8 @@
     },
     {
       "path": "posture/TEACHER_GUIDE.html",
-      "bytes": 5995,
-      "sha256": "788505d17d3dfe424c4e9ae6aa92de57a0ed3a1b198af967b54b30ac58b0990b"
+      "bytes": 5975,
+      "sha256": "e1a785d3f05ee23351849e3d197e2615b1db8b0e9dd0693417daae02a6c600d6"
     },
     {
       "path": "posture/app.js",

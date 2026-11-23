@@ -40,7 +40,7 @@ class JointRig {
     const E=R([1,0,0],-90,elbow);apply(forearm,M.matmul(T,E));anchor(elbow,'radius','humerus');
    }
   }else if(m==='elbow'){
-   center=elbow;angle=span(0,-85);apply(forearm,R(axis,angle,center));anchor(center,'ulna','humerus');
+   center=elbow;angle=action.kind==='contraction'?-g.LabMath.contraction(action.contractionMode,t,action.simParams||{}).angle:span(0,-85);apply(forearm,R(axis,angle,center));anchor(center,'ulna','humerus');
   }else if(m==='forearm'){
    // Radius rotates around radial-head to distal-ulnar-head axis. Elbow setup
    // is then applied to BOTH forearm bones and the hand in the same frame.

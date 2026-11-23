@@ -76,7 +76,7 @@ class ModelStage {
  constructor(canvas,assets,onPick){this.canvas=canvas;this.assets=assets;this.anatomy=assets.anatomy.model;this.rig=new g.DXXJointRig(this.anatomy.parts);this.native=this.anatomy;this.action=null;this.layer='both';this.showGuides=true;this.t=0;this.mode='native';this.viewer=createLabViewer(canvas,{pick:i=>onPick?.(this.anatomy.parts[i]),error:console.warn});this.viewer.addDataset('clean',this.anatomy,assets.anatomy.raw);this.motions=Object.fromEntries(assets.motions.map(x=>[x.id,x]));}
  supportsAnatomy(){return true;} supportsSide(){return true;}
  region(a){return a.kind==='pelvis3d'?'pelvis':a.region||this.motions[a.motion]?.region||'trunk';}
- set(a,t=0,mode='native'){this.action=a;this.t=t;this.mode=mode;this.viewer.use('clean',[]);this.viewer.yaw=a.motion==='ankle'||['gastrocnemius','soleus'].includes(a.muscleID)?2.55:-.45;this.viewer.pitch=.08;this.entry=a.kind==='muscleAtlas'?g.MuscleCatalogue.find(e=>e.id===a.muscleID):null;this.update(t);this.fullMask=this.viewer.visible.slice();this.fitAll();requestAnimationFrame(()=>{if(this.action===a)this.fitAll();});}
+ set(a,t=0,mode='native'){this.action=a;this.t=t;this.mode=mode;this.viewer.use('clean',[]);this.viewer.yaw=a.motion==='ankle'||['gastrocnemius','soleus'].includes(a.muscleID)?2.55:-.45;if(a.kind==='contraction')this.viewer.yaw=a.side==='left'?1.24:-1.24;this.viewer.pitch=.08;this.entry=a.kind==='muscleAtlas'?g.MuscleCatalogue.find(e=>e.id===a.muscleID):null;this.update(t);this.fullMask=this.viewer.visible.slice();this.fitAll();requestAnimationFrame(()=>{if(this.action===a)this.fitAll();});}
  allowed(p){const a=this.action,r=this.region(a),right=a.side!=='left';if(a.kind==='pelvis3d')return p.type==='bone'&&['hip','sacrum','femur'].includes(p.key);if(!['trunk','thorax','spine'].includes(r)&&p.side!=='bilateral'&&p.side!==(right?'right':'left'))return false;
   if(this.entry){if(p.key==='achilles')return ['gastrocnemius','soleus'].includes(this.entry.id);
    if(p.type==='cartilage')return ['trunk','thorax','spine'].includes(this.entry.boneRegion||r);
@@ -88,8 +88,8 @@ class ModelStage {
    return belongs||p.type==='bone'&&this.regionMatch(p,this.entry.boneRegion||r);}
   if(a.kind==='fsu')return p.type==='bone'&&['L3','L4'].includes(p.key);
   if(p.type==='cartilage')return ['trunk','thorax','spine'].includes(r)&&(this.mode!=='anatomy'||this.layer!=='muscle');
-  if(p.key==='achilles')return ['ankle','foot','lower','knee'].includes(r)&&(this.mode!=='anatomy'||this.layer!=='bone');
-  if(this.mode==='native'&&a.motion==='ankle'&&['gastrocnemius','soleus'].includes(p.key))return true;
+  if(this.mode==='native'&&g.MotionMuscles.part(a,p))return true;
+  if(p.key==='achilles')return this.mode==='anatomy'&&['ankle','foot','lower','knee'].includes(r)&&this.layer!=='bone';
   const ok=this.regionMatch(p,r);return ok&&(this.mode==='anatomy'?(this.layer==='both'||this.layer==='muscle'?this.layer==='muscle'?p.type==='muscle':true:p.type==='bone'):p.type==='bone');
  }
  regionMatch(p,r){
@@ -111,8 +111,8 @@ class ModelStage {
  point(key,at=.5){const p=this.anatomy.parts.find(p=>p.key===key&&p.side===(this.action.side==='left'?'left':'right'))||this.anatomy.parts.find(p=>p.key===key);if(!p)return[0,1,0];const c=p.bounds[0].map((v,j)=>(v+p.bounds[1][j])/2);c[1]=p.bounds[0][1]+(p.bounds[1][1]-p.bounds[0][1])*at;return c;}
  policy(){const p=this.rig.pose(this.action,this.t);return {c:p.center,axis:p.axis,angle:p.angle,matrices:p.matrices};}
 
- update(t){this.t=t;if(!this.action)return;const v=this.viewer,a=this.action,pol=this.policy();if(a.kind==='pelvis3d')this.pelvisState={angle:pol.angle,side:a.supportSide||'right',support:a.motion==='pelvisSupport',label:a.motion==='pelvisSupport'?'骨盆相对水平线变化':'骨盆相对倾斜'};v.visible=this.anatomy.parts.map(p=>this.allowed(p));v.transforms=this.mode==='anatomy'||this.entry?this.anatomy.parts.map(I):pol.matrices;v.axes=[];v.planes=[];v.paths=[];
-  if(this.showGuides&&this.mode!=='anatomy'&&!this.entry){const r=.12,n=SM.norm(pol.axis),u=SM.norm(SM.cross(n,Math.abs(n[1])<.8?[0,1,0]:[1,0,0])),w=SM.cross(n,u),at=(x,y)=>SM.add(pol.c,SM.add(SM.mul(u,x),SM.mul(w,y))),ps=[at(-r,-r),at(r,-r),at(r,r),at(-r,r)];v.axes=[{points:[SM.sub(pol.c,SM.mul(n,r)),SM.add(pol.c,SM.mul(n,r))],color:[.1,.45,.7],overlay:true}];v.planes=[{points:ps,color:[.15,.55,.65],alpha:.12}];}
+ update(t){this.t=t;if(!this.action)return;const v=this.viewer,a=this.action,pol=this.policy();if(a.kind==='pelvis3d')this.pelvisState={angle:pol.angle,side:a.supportSide||'right',support:a.motion==='pelvisSupport',label:a.motion==='pelvisSupport'?'骨盆相对水平线变化':'骨盆相对倾斜'};v.visible=this.anatomy.parts.map(p=>this.allowed(p));v.transforms=this.mode==='anatomy'||this.entry?this.anatomy.parts.map(I):pol.matrices;v.axes=[];v.planes=[];v.paths=[];g.MotionMuscles.skin(this,pol.matrices);
+  if(this.showGuides&&a.kind!=='contraction'&&this.mode!=='anatomy'&&!this.entry){const r=.12,n=SM.norm(pol.axis),u=SM.norm(SM.cross(n,Math.abs(n[1])<.8?[0,1,0]:[1,0,0])),w=SM.cross(n,u),at=(x,y)=>SM.add(pol.c,SM.add(SM.mul(u,x),SM.mul(w,y))),ps=[at(-r,-r),at(r,-r),at(r,r),at(-r,r)];v.axes=[{points:[SM.sub(pol.c,SM.mul(n,r)),SM.add(pol.c,SM.mul(n,r))],color:[.1,.45,.7],overlay:true}];v.planes=[{points:ps,color:[.15,.55,.65],alpha:.12}];}
   v.invalidate();
  }
  fitAll(){
@@ -575,7 +575,7 @@ function rightAngle(F,H,U,color){const n=M.sub(F,H),nlen=Math.hypot(...n);if(nle
 function lever(a,t,s){
  const d=M.lever(a.motion,t,s),heel=a.motion==='heel',head=a.motion==='head';
  const o=head?[310,336]:heel?[478,504]:[240,309],sc=head?1450:heel?1370:690,P=p=>[o[0]+sc*p[0],o[1]-sc*p[1]];
- let b=txt(28,42,a.title,27)+txt(28,74,'先动关节，再比较垂直力臂；骨骼、作用点和数值使用同一坐标。',18,C.muted);
+ let b=txt(28,42,a.title,27)+txt(28,74,'拖动观察支点 F、动力 E 和阻力 R 的相对位置。',18,C.muted);
  let art='';
  if(heel){
   art+=line([140,529],[589,529],C.line,4)+txt(35,557,'足底接触参考 · 未显示软组织',16,C.muted);
@@ -595,18 +595,11 @@ function lever(a,t,s){
  art+=line(E,O,'#c99381',5)+line(P(M.add(d.E,M.mul(d.u,-.04))),P(M.add(d.E,M.mul(d.u,.13))),C.green,1.4,'5 5');
  art+=line([R[0],R[1]-90],[R[0],R[1]+80],C.red,1.4,'5 5');
  art+=arrow(E,M.add(E,M.mul(u,67)),C.green,4)+arrow(R,[R[0],R[1]+65],C.red,4);
- art+=line(F,FE,C.green,3,'6 4')+line(F,FR,C.red,3,'6 4')+rightAngle(F,FE,u,C.green)+rightAngle(F,FR,[0,1],C.red);
+ 
  art+=dot(F,C.blue,7)+dot(E,C.green,5)+dot(R,C.red,5)+txt(F[0]+11,F[1]+25,'F',19,C.blue)+txt(E[0]-22,E[1]-12,'E',19,C.green)+txt(R[0]+14,R[1]-12,'R',19,C.red);
  b+=`<defs><clipPath id="leverSceneClip"><rect x="16" y="92" width="605" height="468"/></clipPath></defs><g data-scene="lever" clip-path="url(#leverSceneClip)">${art}</g>`;
- b+=box(650,111,440,407)+txt(676,146,'同一姿态的力臂与平衡',23);
- b+=txt(677,191,'动力臂 dE',18,C.green)+txt(901,191,'阻力臂 dR',18,C.red)+txt(677,225,(d.effortArm*1000).toFixed(1)+' mm',28,C.green)+txt(901,225,(d.resistanceArm*1000).toFixed(1)+' mm',28,C.red);
- b+=txt(677,271,'机械优势 dE / dR',17,C.muted)+txt(905,271,'理想平衡动力',17,C.muted)+txt(677,306,d.advantage.toFixed(2),28,C.blue)+txt(905,306,d.effort.toFixed(1)+' N',28);
- const data=Array.from({length:81},(_,i)=>M.lever(a.motion,i/80,s)),max=Math.max(...data.flatMap(q=>[q.effortArm,q.resistanceArm]))*1.1,at=(i,v)=>[680+i*4.75,470-122*v/max];
- b+=line([680,472],[1060,472],C.line,2)+poly(data.map((q,i)=>at(i,q.effortArm)),C.green,3)+poly(data.map((q,i)=>at(i,q.resistanceArm)),C.red,3)+dot(at(t*80,d.effortArm),C.green,5)+dot(at(t*80,d.resistanceArm),C.red,5)+line([680+380*t,337],[680+380*t,476],C.blue,1,'4 4');
- b+=txt(680,499,'动作开始',16,C.muted)+txt(1060,499,'动作终末',16,C.muted,'end');
- b+=wrap(656,550,heel?'R为小腿传给足的阻力；F为跖趾区等效支承轴，不把R直接当作体重。':'反向拖动仅回看姿态。虚线是垂直力臂，不是骨长。',26,17);
- b+=txt(30,590,`教学角 ${d.angle.toFixed(1)}° · 准静态二维模型；不是人体实测肌力臂。`,17,C.muted);
- return svg(a.title,b,1120,628);
+ const desc=head?['第一类杠杆','支点在动力与阻力之间','支点：寰枕关节附近','动力：颈后伸肌群的牵拉','阻力：头部所受重力']:heel?['第二类杠杆','阻力在支点与动力之间','支点：前足着地处','动力：小腿三头肌经跟腱牵拉跟骨','阻力：小腿传至足部的负荷']:['第三类杠杆','动力在支点与阻力之间','支点：肘关节附近','动力：屈肘肌群对前臂的牵拉','阻力：前臂与手部负荷'];
+ b+=box(643,125,450,355)+desc.map((x,i)=>txt(665,176+i*57,x,i===0?27:20,i===0?C.green:C.muted)).join('');return svg(a.title,b,1120,565);
 }
 function muscleRibbon(P,Q,width,col,id){
  const dx=Q[0]-P[0],dy=Q[1]-P[1],len=Math.hypot(dx,dy),nx=-dy/len,ny=dx/len;
@@ -1238,7 +1231,7 @@ const dynamicTopics={3:{key:'muscle',title:'动态观察 · 肌肉收缩',comman
 for(const [id,d]of Object.entries(dynamicTopics)){const m=course.modules.find(x=>x.id===Number(id));if(m&&!m.actions.some(a=>a.kind==='embedded'))m.actions.push({id:String(id).padStart(2,'0')+'-dynamic',title:d.title,kind:'embedded',topic:d.key,motion:d.key,position:'使用动态观察面板调整条件、暂停和比较。',command:d.command,observe:d.observe,teach:'先观察变化，再用自己的话解释原因；保存一个有代表性的时刻。',pitfall:'',refs:[],default:0,caption:'互动教学观察'});}
 course.modules.sort((a,b)=>a.id-b.id);if(course.provenance)course.provenance.adaptation='13个课程实验；肌肉资料归入实验03；无考试或自动临床评分。';course.global_limit='13个课程实验及肌肉学习资料。教学模型用于观察和解释，不替代真实测量与临床技能考核。';
 const curriculumModules=()=>Array.from({length:13},(_,i)=>course.modules.find(m=>m.id===i+1)||{id:i+1,title:'课程资料待补充',disabled:true,actions:[],question:'原版课程暂不开放；等待任课教师提供资料。'});
-const lessonHints={1:'先说清参考骨段，再描述动作的方向、轴与面。',2:'改变负荷或几何条件，比较力臂与力矩。',3:'对照收缩形式，说明长度变化与发力的关系。',4:'按基线、运动、恢复的顺序观察，并先核对安全准备。',5:'观察胸腹配合，再分别比较吹气距离和持续时间。',6:'留意肩带、肩与肘如何共同完成动作。',7:'先固定参考段，再区分腕、手指与拇指的运动。',8:'先观察整体躯干，再区分节段的旋转与移动。',9:'保持参考方向一致，观察骨盆与髋膝的联动。',10:'区分踝背伸、跖屈与足内翻、外翻。',11:'观察足弓的负重与回弹，并解释足印与COP。',12:'先区分COM与COP，再比较支撑条件与姿势策略。',13:'用关键事件串起步态周期，解释单支撑与双支撑。',201:'从肌肉位置和骨性附着，解释动作与功能。'};
+const lessonHints={1:'先说清参考骨段，再描述动作的方向、轴与面。',2:'比较支点、动力和阻力在三类杠杆中的位置。',3:'对照收缩形式，说明长度变化与发力的关系。',4:'按基线、运动、恢复的顺序观察，并先核对安全准备。',5:'观察胸腹配合，再分别比较吹气距离和持续时间。',6:'留意肩带、肩与肘如何共同完成动作。',7:'先固定参考段，再区分腕、手指与拇指的运动。',8:'先观察整体躯干，再区分节段的旋转与移动。',9:'保持参考方向一致，观察骨盆与髋膝的联动。',10:'区分踝背伸、跖屈与足内翻、外翻。',11:'观察足弓的负重与回弹，并解释足印与COP。',12:'先区分COM与COP，再比较支撑条件与姿势策略。',13:'用关键事件串起步态周期，解释单支撑与双支撑。',201:'从肌肉位置和骨性附着，解释动作与功能。'};
 window.LabImages=payload.images||{};window.LabRegistration=payload.registration||{};
 window.MuscleCatalogue=payload.muscleCatalogue;
 const state={atlasQuery:'',atlasGroup:'all',atlasEmpty:false,profile:null,module:null,action:null,mode:'main',side:'right',t:0,playing:false,dir:1,lastTime:0,raf:0,model:null,clinic:null,role:'therapist',clinicPhase:'intro',consented:false,record:{format:'kinesiology-observation-8.8',version:'8.8.0',observations:[],explanations:[],events:[]},params:{deviceStarted:false,deviceStopped:false,deviceChecks:[false,false,false],deviceEffort:.7,deviceProfile:'rise',deviceSide:'right',mvcEffort:'max',supportSide:'right',caseAge:22,caseRestHR:72,targetPct:65,caseIntensity:.60,showAtlasMarkers:true,showAtlasPull:true,isoSpeed:60,isoDirection:'concentric',effort:.6,failureMode:'loading',muscleSide:'right',archView:'medial',showPaths:false,load:30,distance:.32,material:'A',loadCycle:false,mass:12,takeoff:2.6,quality:'valid',airDistance:55,airLevel:2,airSeconds:8,chain:'free',stiffness:1,morphology:'typical',scap:'elevation',safety:{checked:[false,false,false],state:'idle',message:'先核对安全准备，再启动运动。'}},saved:false};
@@ -1277,22 +1270,22 @@ function getModel(){if(!state.model){state.model=new ModelStage($('modelCanvas')
 function getClinic(){if(!state.clinic){const a=decode('actor');state.clinic=new TeachingClinic($('clinicCanvas'),a.model,a.raw,{error:toast});}return state.clinic;}
 function roleMotion(a){const mo={shoulderAbd:'shoulder',shoulderFlex:'shoulderFlex',elbow:'elbow',knee:'knee',ankle:'ankle',trunkFlex:'spine'};return a.patient?mo[a.motion]||null:null;}
 function assetSupported(a){return ['native','contraction'].includes(a.kind)&&['upper','shoulder','hand','lower','knee','foot'].includes(a.region||payload.motions.find(m=>m.id===a.motion)?.region);}
-function nativeActive(){return !state.atlasEmpty&&(state.mode==='anatomy'||state.mode==='main'&&['native','fsu','pelvis3d','muscleAtlas'].includes(state.action?.kind)&&!state.action?.referenceOnly);}
-function liveAction(){return {...state.action,side:state.side,supportSide:state.params.supportSide,showMusclePaths:state.params.showPaths,showAtlasMarkers:state.params.showAtlasMarkers,showAtlasPull:state.params.showAtlasPull};}
+function nativeActive(){return !state.atlasEmpty&&(state.mode==='anatomy'||state.mode==='main'&&['native','contraction','fsu','pelvis3d','muscleAtlas'].includes(state.action?.kind)&&!state.action?.referenceOnly);}
+function liveAction(){return {...state.action,side:state.side,simParams:state.params,showMuscles:state.params.showMuscles,groupIndex:state.params.groupIndex,oneMuscle:state.params.oneMuscle,supportSide:state.params.supportSide,showMusclePaths:state.params.showPaths,showAtlasMarkers:state.params.showAtlasMarkers,showAtlasPull:state.params.showAtlasPull};}
 function home(){if(!window.Portal?.onView('projects'))return;pause();closeEmbedded();document.body.classList.remove('focus-mode');$('focusBtn').textContent='放大观察';$('focusBtn').setAttribute('aria-pressed','false');state.clinic&&(state.clinic.active=false);state.module=null;state.action=null;$('lesson').hidden=true;$('home').hidden=false;cards();window.scrollTo(0,0);window.dispatchEvent(new CustomEvent('dxx:guide',{detail:{area:'lab',type:'home'}}));}
 let courseFilter='all';
 const categories={1:'basic',2:'basic',3:'muscles',4:'physio',5:'physio',6:'joints',7:'joints',8:'joints',9:'joints',10:'joints',11:'gait',12:'gait',13:'gait'};
 const categoryLabels={muscles:'肌肉学习',basic:'运动基础',physio:'心肺与呼吸',joints:'关节运动',gait:'足弓与步态'};
 function cards(){const q=$('courseSearch').value.trim().toLowerCase();const list=curriculumModules().filter(m=>(courseFilter==='all'||categories[m.id]===courseFilter)&&(!q||(m.title+' '+m.actions.map(a=>a.title).join(' ')).toLowerCase().includes(q)));
- $('courseGrid').innerHTML=list.map(m=>`<button class="course${m.disabled?' unavailable':''}" data-module="${m.id}" ${m.disabled?'disabled':''}><span class="n">${String(m.id).padStart(2,'0')}</span><span class="course-tag">${m.disabled?'暂不开放':categoryLabels[categories[m.id]]}</span><h2>${E(m.title)}</h2><p>${E(({1:'部位 · 动作 · 轴面方向 · 开闭链',2:'动态力臂 · 骨受载与形变',3:'收缩形式 · 测力任务 · 肌肉能力',4:'跑步机 · 主导供能 · 安全观察',5:'胸腹运动 · 虚拟火焰对照',6:'肩带 · 肩 · 肘 · 前臂',7:'腕部与手指的精细运动',8:'整体运动 · FSU六自由度',9:'骨盆定向 · 髋膝联动',10:'踝背伸与跖屈 · 足内外翻',11:'弹性承重 · 动态足印与COP',12:'COM与COP · 支撑条件 · 姿势策略',13:'左右支撑 · 质心 · 步态特征'})[m.id])}</p><span class="small">${m.disabled?'保留课程编号，内容待提供':m.actions.length+'项观察'+(state.record.observations.some(o=>o.module===m.id)?' · 已有本地记录':'')}</span><span class="arrow">${m.disabled?'—':'↗'}</span></button>`).join('');$('emptySearch').hidden=!!list.length;
- $('moduleCount').textContent=13;$('actionCount').textContent=curriculumModules().reduce((n,m)=>n+m.actions.length,0);
+ $('courseGrid').innerHTML=list.map(m=>`<button class="course${m.disabled?' unavailable':''}" data-module="${m.id}" ${m.disabled?'disabled':''}><span class="n">${String(m.id).padStart(2,'0')}</span><span class="course-tag">${m.disabled?'暂不开放':categoryLabels[categories[m.id]]}</span><h2>${E(m.title)}</h2><p>${E(({1:'部位 · 动作 · 轴面方向 · 开闭链',2:'杠杆类型 · 骨受载与形变',3:'收缩形式 · 测力任务 · 肌肉能力',4:'跑步机 · 主导供能 · 安全观察',5:'胸腹运动 · 虚拟火焰对照',6:'肩带 · 肩 · 肘 · 前臂',7:'腕部与手指的精细运动',8:'整体运动 · FSU六自由度',9:'骨盆定向 · 髋膝联动',10:'踝背伸与跖屈 · 足内外翻',11:'弹性承重 · 动态足印与COP',12:'COM与COP · 支撑条件 · 姿势策略',13:'左右支撑 · 质心 · 步态特征'})[m.id])}</p><span class="small">${m.disabled?'保留课程编号，内容待提供':m.actions.length+'项观察'+(state.record.observations.some(o=>o.module===m.id)?' · 已有本地记录':'')}</span><span class="arrow">${m.disabled?'—':'↗'}</span></button>`).join('');$('emptySearch').hidden=!!list.length;
+ 
 }
 function continueLast(){try{const last=JSON.parse(localStorage.getItem(Portal.key()+'_last')||'null');if(last?.module){openLesson(last.module);if(state.module?.actions.some(a=>a.id===last.action))selectAction(last.action);}}catch{}}
 function remember(){try{localStorage.setItem(Portal.key()+'_last',JSON.stringify({module:state.module?.id,action:state.action?.id}));$('continueBtn').hidden=false;$('continueBtn').onclick=continueLast;}catch{}}
 
 function openLesson(id){if(!window.Portal?.access)return;pause();closeEmbedded();const n=Number(id)===101?1:Number(id),m=course.modules.find(x=>x.id===n);if(!m){toast('未找到这个课程实验，请返回实验目录选择。');return;}state.module=m;state.atlasQuery='';state.atlasGroup='all';state.atlasEmpty=false;Portal.onView('lesson');$('home').hidden=true;$('lesson').hidden=false;$('lessonNumber').textContent=m.id===201?'实验03 · 肌肉学习资料':`实验 ${String(m.id).padStart(2,'0')} · 操作观察`;$('lessonTitle').textContent=m.title;$('lessonTip').textContent=lessonHints[m.id]||m.question;$('lessonSaved').textContent='';$('dynamicQuick').hidden=!dynamicTopics[m.id];$('dynamicQuick').textContent=dynamicTopics[m.id]?.title||'动态观察';$('muscleResource').hidden=m.id!==3&&m.id!==201;$('muscleResource').textContent=m.id===201?'返回实验03':'肌肉位置与附着资料';
  $('actionSelect').innerHTML=m.id===201?[...new Set(m.actions.map(a=>a.group))].map(group=>`<optgroup label="${E(group)}">${m.actions.filter(a=>a.group===group).map(a=>`<option value="${a.id}">${E(a.title)}</option>`).join('')}</optgroup>`).join(''):m.actions.map(a=>`<option value="${a.id}">${E(a.title)}</option>`).join('');selectAction(m.id===201?(m.actions.find(a=>a.muscleID==='supra')||m.actions[0]).id:m.actions[0].id);window.scrollTo(0,0);}
-function selectAction(id){if(!window.Portal?.access)return;pause();closeEmbedded();if(state.clinic)state.clinic.active=false;const a=state.module?.actions.find(x=>x.id===id);if(!a)return;state.atlasEmpty=false;state.action=a;state.t=a.kind==='fsu'?.5:a.default??0;state.mode='main';state.role='therapist';state.clinicPhase='intro';state.consented=false;state.side='right';state.params.muscleSide='right';selectedName='';$('atlasDetails').hidden=a.kind!=='muscleAtlas';$('atlasLabels').hidden=a.kind!=='muscleAtlas'||atlasEntry()?.markerMode==='none';
+function selectAction(id){if(!window.Portal?.access)return;pause();closeEmbedded();if(state.clinic)state.clinic.active=false;const a=state.module?.actions.find(x=>x.id===id);if(!a)return;state.atlasEmpty=false;state.action=a;state.t=a.kind==='fsu'?.5:a.default??0;state.mode='main';state.role='therapist';state.clinicPhase='intro';state.consented=false;state.side='right';state.params.muscleSide='right';state.params.showMuscles=a.kind==='contraction';state.params.groupIndex=0;state.params.oneMuscle='';selectedName='';$('atlasDetails').hidden=a.kind!=='muscleAtlas';$('atlasLabels').hidden=a.kind!=='muscleAtlas'||atlasEntry()?.markerMode==='none';
  $('actionSelect').disabled=false;$('actionSelect').value=a.id;$('command').textContent=a.command;$('recallBody').hidden=true;$('muscleAnswer').hidden=true;$('answer').value='';$('recall').hidden=!MuscleTeaching[a.motion];
  if(a.kind==='cardio')state.params.safety={checked:[false,false,false],state:'idle',message:'先核对安全准备，再启动运动。'};
  if(a.kind==='failure')state.params.failureMode='loading';
@@ -1305,7 +1298,7 @@ function switchMode(mode){pause();closeEmbedded();state.mode=mode;state.clinic&&
 function configure(){const a=state.action,na=nativeActive();$('diagram').innerHTML='';$('modelCanvas').hidden=!na;$('clinicCanvas').hidden=state.mode!=='clinic';$('diagram').hidden=na||state.mode==='clinic';$('actorLabels').hidden=state.mode!=='clinic';$('viewport').classList.toggle('diagramMode',!na&&state.mode!=='clinic');$('viewButtons').hidden=!na&&state.mode!=='clinic';$('poseLabel').hidden=state.mode!=='clinic'&&a.kind!=='pelvis3d';$('clinicBar').hidden=state.mode!=='clinic';$('dynamicRecordBar').hidden=a.kind!=='embedded';
  if(a.kind==='embedded'){$('transport').hidden=true;$('stageBadge').hidden=true;$('caption').hidden=true;$('motionGuide').hidden=true;$('numbers').hidden=true;$('extras').innerHTML='';mountEmbedded();return;}
  $('transport').hidden=state.mode==='anatomy'||a.static===true||a.kind==='concept';$('roundtrip').disabled=['contraction','cardio','capacity','ssc','gait','airflow','dynamometer','candle','metabolism','footprints','failure'].includes(a.kind);if($('roundtrip').disabled)$('roundtrip').checked=false;
- $('stageBadge').textContent=state.mode==='anatomy'?'来源网格 · 静态定位':state.mode==='clinic'?'双角色 · 给定动作':a.kind==='native'||a.kind==='pelvis3d'?'源骨网格 · 给定运动':a.kind==='fsu'?'独立节段分量示意':a.kind==='muscleAtlas'?(atlasEntry().referenceOnly?'解剖资料 · 无替代模型':atlasSide(atlasEntry())+'源网格 · '+(atlasEntry().dynamic?'附着动作':'结构定位')):a.kind==='contraction'?'肌腹机制示意 · 非肌纤维实测':a.kind==='lever'?'同坐标骨骼投影 · 准静态力学':'教学模型 / 合成案例';
+ $('stageBadge').textContent=state.mode==='anatomy'?'来源网格 · 静态定位':state.mode==='clinic'?'双角色 · 给定动作':a.kind==='native'||a.kind==='pelvis3d'?'源骨网格 · 给定运动':a.kind==='fsu'?'独立节段分量示意':a.kind==='muscleAtlas'?(atlasEntry().referenceOnly?'解剖资料 · 无替代模型':atlasSide(atlasEntry())+'源网格 · '+(atlasEntry().dynamic?'附着动作':'结构定位')):a.kind==='contraction'?'屈肘肌群 · 解剖模型':a.kind==='lever'?'杠杆类型 · 侧面观察':'教学模型 / 合成案例';
  try{if(na){getModel().set(liveAction(),state.t,state.mode==='anatomy'?'anatomy':'native');}
  else if(state.mode==='clinic'){
   const c=getClinic(),motion=roleMotion(a),seated=['elbow','ankle'].includes(motion);c.setCase({motion,seated,side:state.side});c.setPose('therapist','rest',0);c.setPose('patient','rest',0);state.role='therapist';
@@ -1328,8 +1321,8 @@ function renderExtras(){const a=state.action,p=state.params;let h='';
  if(a.kind==='muscleAtlas'){const e=atlasEntry();h=atlasBrowser()+(!e.referenceOnly?`<div class="atlas-toolbar atlas89-controls"><span class="atlas89-controltitle">观察 ${E(e.name)}</span>${e.markerMode!=='none'?`<label><input type="checkbox" data-setting="showAtlasPull" ${p.showAtlasPull?'checked':''}>牵拉方向示意</label><label><input type="checkbox" data-setting="showAtlasMarkers" ${p.showAtlasMarkers?'checked':''}>起止区域示意</label>`:''}<button data-stage="0">起始定位</button>${!a.static?'<button data-stage="1">动作末位</button>':''}<button data-cmd="atlasFocus">聚焦肌肉</button><button data-cmd="atlasAll">看全骨段</button><button data-cmd="atlasRecord">记录结构</button></div>`:'');}
  else if(state.mode==='anatomy'){h='<label>结构层<select data-setting="layer"><option value="both">骨骼＋相关肌群</option><option value="bone">骨骼</option><option value="muscle">肌肉 / 肌腱</option></select></label><button data-cmd="isolate">单独观察所选</button><button data-cmd="restore">恢复局部</button><span class="chapterstatus">先辨认结构位置，再与当前动作联系起来。</span>';}
  else if(state.mode==='clinic'||a.kind==='native'){
-  if(state.mode==='clinic'||a.kind==='native'&&getModel().supportsSide(a))h+=`<label>观察侧<select id="sideSelect"><option value="right" ${state.side==='right'?'selected':''}>右侧</option><option value="left" ${state.side==='left'?'selected':''}>左侧</option></select></label><span class="chapterstatus">模型分别有左右结构；相同条件对照，不预设患侧诊断。</span>`;
-  if(state.mode!=='clinic'&&a.kind==='native')h+='<span class="chapterstatus">拖动滑杆，比较运动方向与轴面。轴位置为教学近似。</span>';
+  if(state.mode==='clinic'||a.kind==='native'&&getModel().supportsSide(a))h+=`<label>观察侧<select id="sideSelect"><option value="right" ${state.side==='right'?'selected':''}>右侧</option><option value="left" ${state.side==='left'?'selected':''}>左侧</option></select></label><span class="chapterstatus"></span>`;
+  if(state.mode!=='clinic'&&a.kind==='native')h+='<span class="chapterstatus"></span>';
  }else if(a.kind==='pelvis3d'){
   h=(a.motion==='pelvisSupport'?`<label>支撑侧<select data-setting="supportSide"><option value="right" ${p.supportSide==='right'?'selected':''}>右侧支撑</option><option value="left" ${p.supportSide==='left'?'selected':''}>左侧支撑</option></select></label>`:'')+[[0,a.motion==='pelvisSupport'?'对侧上提':'后倾'],[.5,'中立参照'],[1,a.motion==='pelvisSupport'?'对侧下降':'前倾']].map(([t,l])=>`<button data-stage="${t}">${l}</button>`).join('');
  }else if(a.kind==='dynamometer'){
@@ -1343,14 +1336,14 @@ function renderExtras(){const a=state.action,p=state.params;let h='';
  }else if(a.kind==='footprints'){h='<span class="chapterstatus">三种假设接触情景同步播放；红点与轨迹由相同的压力权重计算。</span>';
  }else if(a.kind==='metabolism'){h=vitalSettings();
  }else if(a.kind==='contraction'){
-  h=`<label>方向示意<select data-setting="muscleSide"><option value="right" ${p.muscleSide==='right'?'selected':''}>右侧</option><option value="left" ${p.muscleSide==='left'?'selected':''}>左侧（镜像）</option></select></label>`;
+  h=`<label>观察侧<select id="sideSelect"><option value="right" ${state.side==='right'?'selected':''}>右侧</option><option value="left" ${state.side==='left'?'selected':''}>左侧</option></select></label>`;
   if(a.contractionMode==='isokinetic')h+=`<label>恒速工作段<select data-setting="isoSpeed">${[30,60,90,120,180].map(v=>`<option value="${v}" ${p.isoSpeed===v?'selected':''}>${v}°/s</option>`).join('')}</select></label><label>长度变化<select data-setting="isoDirection"><option value="concentric" ${p.isoDirection==='concentric'?'selected':''}>向心阶段</option><option value="eccentric" ${p.isoDirection==='eccentric'?'selected':''}>离心阶段</option></select></label>`+settingInput('effort','相对发力',.2,1,.1,p.effort);
   }else if(a.kind==='breath'){
   h='<span class="chapterstatus">同一呼吸周期：</span>'+[[0,'呼气末'],[.25,'吸气中'],[.5,'吸气末'],[.75,'呼气中'],[1,'回到呼气末']].map(([t,l])=>`<button data-stage="${t}">${l}</button>`).join('');
  }else if(a.kind==='failure'){
   h=`<label>定义材料<select data-setting="material"><option value="A" ${p.material==='A'?'selected':''}>材料A</option><option value="B" ${p.material==='B'?'selected':''}>材料B</option></select></label><label>观察过程<select data-setting="failureMode">${[['loading','持续加载至失效'],['elasticUnload','弹性范围内卸载'],['plasticUnload','塑性区加载后卸载']].map(([k,l])=>`<option value="${k}" ${p.failureMode===k?'selected':''}>${l}</option>`).join('')}</select></label>`+[[0,'起始'],[.5,'过程中央'],[1,'过程终末']].map(([t,l])=>`<button data-stage="${t}">${l}</button>`).join('');
  }else if(a.kind==='archStructure'){h=`<label>观察弓形<select data-setting="archView"><option value="medial">内侧纵弓</option><option value="lateral">外侧纵弓</option><option value="transverse">横弓</option></select></label>`;
- }else if(a.kind==='lever')h=settingInput('load','阻力（N）',5,300,5,p.load)+(a.motion==='elbow'?settingInput('distance','负荷距肘中心（m）',.18,.42,.02,p.distance):'');
+ }else if(a.kind==='lever')h='';
  else if(a.kind==='bone')h=`<label>例题材料<select data-setting="material"><option value="A" ${p.material==='A'?'selected':''}>材料A · E=6000 MPa</option><option value="B" ${p.material==='B'?'selected':''}>材料B · E=12000 MPa</option></select></label><label><input type="checkbox" data-setting="loadCycle" ${p.loadCycle?'checked':''}>同一滑条加载—卸载</label>`;
  else if(a.kind==='capacity'){
   if(a.motion==='rm')h=`<label>案例负荷<select data-setting="mass">${[8,10,12,14].map(x=>`<option value="${x}" ${x===p.mass?'selected':''}>${x} kg</option>`).join('')}</select></label>`;
@@ -1363,7 +1356,12 @@ function renderExtras(){const a=state.action,p=state.params;let h='';
  else if(a.kind==='cop')h='<label class="filebutton">导入COP CSV<input id="copFile" type="file" accept=".csv"></label><button data-cmd="copExample">数据模板</button><button data-cmd="copReset">恢复合成样例</button>';
  else if(a.kind==='scapula')h=`<label>肩胛运动<select data-setting="scap">${[['elevation','上提 / 下降'],['protraction','前伸 / 后缩'],['rotation','上回旋 / 下回旋']].map(([v,l])=>`<option value="${v}" ${p.scap===v?'selected':''}>${l}</option>`).join('')}</select></label>`;
  else if(a.kind==='gait')h=`<span class="chapterstatus">关键事件：</span>${[[0,'右初始接触'],[.10,'左足离地'],[.50,'左初始接触'],[.60,'右足离地'],[1,'下次右初始接触']].map(([t,x])=>`<button data-gait-event="${t}">${x}</button>`).join('')}`;
+ if(state.mode==='main'&&['native','contraction'].includes(a.kind)&&MotionMuscles.list(a).length){
+ const ls=MotionMuscles.list(a),active=liveAction(),ks=MotionMuscles.keys(active),all=payload.anatomy.model.parts,labels=Object.fromEntries(all.filter(b=>b.type==='muscle').map(b=>[b.key,b.label]));
+ h+=`<button id="toggleActionMuscles" type="button" aria-pressed="${!!p.showMuscles}">${p.showMuscles?'隐藏肌肉':'增加肌肉'}</button>`;
+ if(p.showMuscles){h+=`<label>按作用选肌群<select id="actionMuscleGroup">${ls.map(([label],i)=>`<option value="${i}" ${p.groupIndex===i?'selected':''}>${E(label)}</option>`).join('')}</select></label><label>代表肌肉<select id="actionMusclePart"><option value="">一起看</option>${ks.map(k=>`<option value="${k}" ${p.oneMuscle===k?'selected':''}>${E(labels[k]||k)}</option>`).join('')}</select></label><span class="chapterstatus">${ks.map(k=>E(labels[k]||k)).join('、')}</span>`;}}
  $('extras').innerHTML=h;
+ const toggle=$('toggleActionMuscles'),group=$('actionMuscleGroup'),part=$('actionMusclePart');const sync=()=>{const m=getModel();Object.assign(m.action,liveAction());m.update(state.t);m.fullMask=m.viewer.visible.slice();m.fitAll();renderExtras();};if(toggle)toggle.onclick=()=>{p.showMuscles=!p.showMuscles;sync();};if(group)group.onchange=()=>{p.groupIndex=Number(group.value);p.oneMuscle='';sync();};if(part)part.onchange=()=>{p.oneMuscle=part.value;sync();};
  if(a.kind==='gait'&&a.motion==='short')$('extras').innerHTML='<span class="chapterstatus">本特征例：左足离地15% / 左初始接触42% / 右足离地50%。不是正常标准。</span>'+[[0,'右初始接触'],[.15,'左足离地'],[.42,'左初始接触'],[.5,'右足离地']].map(([t,l])=>`<button data-gait-event="${t}">${l}</button>`).join('');
 }
 function vitalSettings(){const p=state.params,locked=state.action?.kind==='cardio'&&p.safety.state!=='idle';let h=settingInput('caseAge','案例年龄',16,80,1,p.caseAge)+settingInput('caseRestHR','案例安静心率',40,110,1,p.caseRestHR)+settingInput('targetPct','计算练习：HRmax比例（%）',40,90,1,p.targetPct);return locked?h.replaceAll('<input ','<input disabled '):h;}
@@ -1435,7 +1433,6 @@ function numbers(){const a=state.action,p=state.params;let ar=[];
   if(a.kind==='pelvis3d'){const d=state.model?.pelvisState;if(d)ar=[d.label,`相对模型角 ${Math.abs(d.angle).toFixed(1)}°`,d.support?`${d.side==='right'?'右':'左'}侧支撑`:'骨盆与骶骨整体观察'];}
   if(a.kind==='dynamometer'){const d=MM.deviceTrial(a.motion,state.t,p);ar=[d.phase,`${d.jointLabel||'肘角'} ${d.angle.toFixed(1)}°`,d.mvc?`已观察峰值 ${d.peak.toFixed(1)} N`:`装置力矩 ${Math.abs(d.deviceTorque).toFixed(1)} N·m`];}
   if(a.kind==='candle'){const d=MM.candleTrial(state.t,p);ar=[`场景时间 ${d.time.toFixed(1)} s`,`目标距离 ${d.distance} cm`,'仅虚拟火焰观察'];}
-  if(a.kind==='lever'){const d=MM.lever(a.motion,state.t,p);ar=[`动力臂 ${d.effortArm.toFixed(4)} m`,`阻力臂 ${d.resistanceArm.toFixed(4)} m`,`机械优势 ${d.advantage.toFixed(2)}`,`理想平衡动力 ${d.effort.toFixed(1)} N`];}
   if(a.kind==='bone'){const d=MM.bone(a.motion,state.t,p);ar=[`相对载荷 ${(100*d.level).toFixed(0)}%`,`${d.xLabel}：${d.x.toExponential(2)}`,`${d.yLabel}：${d.y.toFixed(2)}`];}
   if(a.kind==='capacity'){const d=MM.capacity(a.motion,state.t,p);ar=a.motion==='rm'?[`${d.mass} kg`,d.label]:a.motion==='jump'?[d.phase,`腾空 ${d.flight.toFixed(3)} s`,`质心上升 ${(d.heightMax*100).toFixed(1)} cm`]:a.motion==='plank'?[d.label,`有效时间 ${d.validSeconds.toFixed(1)} s`]:[d.label,`完整 ${d.total} 次 / 有效 ${d.valid} 次`];}
   if(a.kind==='contraction'){const d=MM.contraction(a.contractionMode,state.t,p);ar=[d.type,`肘角 ${d.angle.toFixed(1)}°`,`案例时间 ${d.time.toFixed(2)} s`,d.device?`匀速工作段 ${Math.abs(d.velocity).toFixed(0)}°/s`:d.lengthChange];}
