@@ -1,3 +1,5 @@
+import {contractionDemo} from './contraction-demo.js';
+
 const boneTargets=['tibia','fibula','talus','calcaneus'];
 const footTargets=['talus','calcaneus','navicular','cuboid','cuneiformM','cuneiformI','cuneiformL',
  ...Array.from({length:5},(_,i)=>'mt'+(i+1)),
@@ -13,7 +15,7 @@ export const caseWorkshops={
  ['胫腓骨围成的踝穴与哪块骨相接，构成距小腿关节？',['距骨','跟骨'],0,'距骨滑车与踝穴相接。'],
  ['距下关节位于哪两块骨之间？',['胫骨与腓骨','距骨与跟骨'],1,'在距骨下方找到跟骨，观察两者相接的位置。']]},
  case_paint:{act:'act3',title:'右小腿肌肉彩绘',intro:'触诊前，在右小腿前外侧画出胫骨前肌的大致范围。',activities:[['paint','彩绘胫骨前肌','在右小腿上涂画，再提交彩绘。',['tibAnt']]]},
- case_place:{act:'act3',title:'小腿外侧肌肉安放',intro:'为接下来的抗阻外翻检查定位腓骨长肌和腓骨短肌。',activities:[['fibLong','安放腓骨长肌','放到二维图谱对应的位置，选出其功能。',['fibLong']],['fibBrevis','安放腓骨短肌','在另一层图谱中安放并辨认功能。',['fibBrevis']]]},
+ case_place:{act:'act3',title:'小腿外侧肌肉安放',intro:'为接下来的抗阻外翻检查定位腓骨长肌和腓骨短肌。',activities:[['fibLong','安放腓骨长肌和腓骨短肌','在右小腿外侧定位两块肌肉，再从足底面比较肌腱止点。',['fibLong','fibBrevis']]]},
  case_contractions:{act:'act3',title:'抗阻动作中的肌肉收缩',intro:'都在用力，但脚的运动方向不同。以坐位勾脚时工作的胫骨前肌为例。',questions:[
  ['顶着手的阻力主动勾脚，脚尖向上，属于哪种收缩？',['向心收缩','等长收缩','离心收缩'],0,'肌肉在发力中缩短，脚尖上抬。'],
  ['治疗师施加阻力，患者保持脚的位置，关节角度稳定呢？',['离心收缩','向心收缩','等长收缩'],2,'这是徒手抗阻检查中的保持阶段。'],
@@ -32,7 +34,6 @@ export const caseWorkshops={
 const courseActions={
  case_cardio:[[4,'04-2','观察跑步机运动中的心率']],
  case_chain:[[1,'01-15','观察开链与闭链'],[2,'02-2','观察站立提踵的支点、阻力和动力']],
- case_contractions:[[3,'03-1','比较提起、保持与放下']],
  case_posture:[[12,'dynamic','比较双足与单足支撑']],
  case_transfer:[[13,'13-1','从侧面与后面看步态与质心'],[13,'13-5','观察右侧支撑缩短']]
 };
@@ -69,7 +70,12 @@ function openActivity(item,completed,onHit,opener,attempt){
   }else if(kind==='paint'){
    win.addEventListener('dxx:paint-passed',({detail:d})=>{if(d?.side==='R')hit(d.key);});
   }else{
-   win.addEventListener('dxx:guide',({detail:d})=>{if(d.type==='function_answer'&&d.correct&&d.chapter==='ankle')hit(d.key);});
+   win.addEventListener('dxx:guide',({detail:d})=>{
+     if(d.chapter!=='ankle'||d.round!=='ankle-pair')return;
+     if(d.type==='function_answer'&&d.correct)hit(d.key);
+     if(d.type==='saved_placements')d.keys.forEach(hit);
+   });
+   win.dispatchEvent(new Event('dxx:request-placements'));
   }
  });
  const bone=kind==='ankle'||kind==='foot';
@@ -80,8 +86,10 @@ function openActivity(item,completed,onHit,opener,attempt){
 export function mountWorkshop({host,id,state,save,record,finish}){
  const lesson=caseWorkshops[id],draft=(state.workshopDrafts||={})[id]||={};
  const wrap=element('section');wrap.className='clinic-workshop';host.append(wrap);
+ const demo=id==='case_contractions'?contractionDemo():null;
  function render(){
   wrap.replaceChildren(element('p',lesson.intro));
+  if(demo)wrap.append(demo);
   const checks=[];
   for(const activity of lesson.activities||[]){
    const keys=activity[3],done=keys.every(k=>draft[k]);checks.push(done);

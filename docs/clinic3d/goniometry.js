@@ -1,3 +1,5 @@
+import {drawPosture,drawPassiveHands} from './goniometry-figures.js';
+
 // Neutral-zero convention. Angles are authored values for this simulated patient.
 export const ROM = [
   {key:'up',name:'背伸',sagittal:true,sign:-1,L:[18,22],R:[10,14]},
@@ -52,12 +54,12 @@ export const romReport=[
   '两边一比，您的右脚往上勾、往外翻，幅度都比左脚小。我帮您时还能再动一点。我们再看站着时，这个差别对您有没有影响。'
 ];
 
-// Orthographic frames of the patient’s skinned foot, registered at the same landmark.
+// Skin and bone layers share the BodyParts3D anatomy, orthographic camera, pivot and pixels per metre.
 const views=new Map();
 function loadFoot(view){
   if(!views.has(view)){
     const image=new Image();
-    image.src=new URL('./assets/gonio-'+view+'.webp',import.meta.url).href;
+    image.src=new URL('./assets/gonio-'+view+'.webp?v=79.2',import.meta.url).href;
     const ready=image.decode().catch(()=>{});
     views.set(view,{image,ready});
   }
@@ -65,7 +67,7 @@ function loadFoot(view){
 }
 // Projected left-side BodyParts3D meshes share the skin atlas landmark. Mirror both for the right ankle.
 const bones=new Image();
-bones.src=new URL('./assets/gonio-bones.png',import.meta.url).href;
+bones.src=new URL('./assets/gonio-bones.png?v=79.2',import.meta.url).href;
 const cutaway=document.createElement('canvas');cutaway.width=328;cutaway.height=329;
 function drawBones(g,skin,tile,lateral,angle){
   if(!bones.complete||!bones.naturalWidth)return;
@@ -79,7 +81,7 @@ function drawBones(g,skin,tile,lateral,angle){
   }
   c.save();c.globalCompositeOperation='destination-in';
   c.drawImage(skin,(tile%8)*328,Math.floor(tile/8)*329,328,329,0,0,328,329);c.restore();
-  g.save();g.globalAlpha=.58;g.drawImage(cutaway,-188,-162);g.restore();
+  g.save();g.globalAlpha=.88;g.drawImage(cutaway,-188,-162);g.restore();
 }
 function figure(canvas,trial,stage,angle,placement,showBones){
   const g=canvas.getContext('2d'),{move,side,mode}=trial,W=660,H=370;
@@ -106,6 +108,9 @@ function figure(canvas,trial,stage,angle,placement,showBones){
     g.save();g.translate(X,Y);g.scale(mirror*zoom,zoom);
     g.drawImage(image,(tile%8)*328,Math.floor(tile/8)*329,328,329,-188,-162,328,329);
     if(showBones)drawBones(g,image,tile,lateral,physicalAngle);
+    if(mode==='被动'&&['aligned','instruction','moving','read'].includes(stage)){
+      drawPassiveHands(g,{image,tile,angle:physicalAngle,lateral,up:move.key==='up'});
+    }
     g.restore();
     const fade=g.createLinearGradient(0,0,0,36);fade.addColorStop(0,bg);fade.addColorStop(.38,bg);fade.addColorStop(1,'rgba(239,245,242,0)');g.fillStyle=fade;g.fillRect(0,0,W,36);
   }else{text(image?.complete?'足踝模型未载入，请重新打开此环节。':'正在载入足踝模型…',X-90,Y+55);}
@@ -113,7 +118,7 @@ function figure(canvas,trial,stage,angle,placement,showBones){
   const easing=x=>x*x*(3-2*x);
   const p=easing(placement);
   const faceSide=lateral?-mirror:(move.key==='in'?mirror:-mirror);
-  const neutral=lateral?(side==='L'?Math.PI-rad(10):rad(10)):Math.PI/2-mirror*rad(4);
+  const neutral=lateral?(side==='L'?Math.PI-rad(9.33):rad(9.33)):Math.PI/2-mirror*rad(4);
   const fixedAngle=-Math.PI/2+(lateral?rad(2):-rad(6))*mirror;
   const movingAngle=neutral+theta;
   const length=lateral?139:93;
@@ -121,13 +126,7 @@ function figure(canvas,trial,stage,angle,placement,showBones){
   const point=(a,r)=>[Math.cos(a)*r,Math.sin(a)*r];
   text(sideLabel(side)+(rear?'足 · 后方观':'踝 · 外侧观'),19,30,18,ink,true);
   text(rear?'俯卧 · 足伸出床沿':'坐位 · 屈膝 90°',19,55,14);
-  if(rear){
-    line(23,95,96,95,'#a9bcb3',5);line(28,96,28,116,'#a9bcb3',3);
-    disc(28,83,5,'#72968a','#72968a');line(38,86,112,86,'#72968a',7);line(112,87,112,102,'#72968a',5);
-  }else{
-    line(23,85,75,85,'#72968a',8);line(75,85,75,117,'#72968a',7);line(75,117,95,117,'#72968a',6);
-    line(23,93,58,93,'#a9bcb3',3);line(58,94,58,121,'#a9bcb3',3);
-  }
+  drawPosture(g,trial,angle);
   g.save();g.translate(X,Y);g.scale(zoom,zoom);
   if(stage!=='position'){
     // Draw the patient's reference lines first so the approaching tool can be seen aligning with them.
@@ -178,9 +177,15 @@ function figure(canvas,trial,stage,angle,placement,showBones){
   line(17,H-40,W-17,H-40,'#cfddd5',1);
   line(21,H-18,40,H-18,green,3);text('固定臂',49,H-13,14);
   line(113,H-18,132,H-18,orange,3);text('移动臂',141,H-13,14);
-  g.textAlign='right';text(stage==='read'||stage==='moving'?move.name+'  '+Math.round(angle)+'°':({position:'摆好体位',axis:'放置轴心',fixed:'对齐固定臂',mobile:'对齐移动臂',aligned:'中立位  0°'})[stage],W-19,H-12,19,ink,true);g.textAlign='left';
+  g.textAlign='right';text(stage==='read'||stage==='moving'?move.name+'  '+Math.round(angle)+'°':({position:'摆好体位',axis:'放置轴心',fixed:'对齐固定臂',mobile:'对齐移动臂',instruction:'中立位  0°',aligned:'中立位  0°'})[stage],W-19,H-12,19,ink,true);g.textAlign='left';
 }
 
+const directionCue={
+  up:'踝背伸，足尖向上运动，做勾脚动作。',
+  down:'踝跖屈，足尖向下运动。站立时提踵，也会用到踝跖屈。',
+  in:'踝关节内翻，足的外侧缘降低，内侧缘抬高。',
+  out:'踝关节外翻，足的外侧缘抬高，内侧缘降低。'
+};
 const placementCues={
   "lateral": [
     "先把半圆量角器的轴心，对准外踝的中心。",
@@ -225,10 +230,12 @@ export function mountGoniometer({host,receipt,initialKey,onTrial,onRead,onSave,v
       cue.textContent=s?'轴心对准外踝中心。固定臂平行腓骨、指向腓骨头。移动臂平行第五跖骨，随足一起运动。':'轴心对准踝后两踝之间的中点。固定臂平行小腿后侧中线。移动臂平行跟骨后面中线，随足跟倾斜。';
       btn(t.mode==='主动'?'观察患者主动'+t.move.name:'观察治疗师辅助'+t.move.name,run);
       btn('重看量角器放置',()=>place());
+    }else if(stage==='instruction'){
+      cue.textContent=t.mode==='主动'?'请您自己活动脚踝，到舒服的尽头就停。':'现在放松，我托着您的脚慢慢带一下，疼了就告诉我。';
     }else if(stage==='moving'){
-      cue.textContent=(t.mode==='主动'?'患者自己活动。':'治疗师固定小腿，轻托'+(s?'足部':'跟骨')+'带动。')+(s?'固定臂留在小腿，移动臂跟着第五跖骨转动。':'固定臂留在小腿，移动臂与跟骨后面中线一起倾斜。');
+      cue.textContent=directionCue[t.move.key]+(s?'固定臂留在小腿，移动臂跟着第五跖骨转动。':'固定臂留在小腿，移动臂与跟骨后面中线一起倾斜。');
     }else{
-      cue.textContent='从中立位到终末位的角度变化，记为'+t.move.name+' '+t.angle+'°。';
+      cue.textContent=directionCue[t.move.key]+' 本次从中立位量得'+t.move.name+' '+t.angle+'°。';
       btn(romTrials.every(other=>other===t||validReading(receipt,other))?'记录并听治疗师报告':'记录，测下一项',()=>{
         if(!validReading(receipt,t)){receipt.readings[t.key]=t.angle;onRead(t,receipt);}
         if(romComplete(receipt)){onDone();return;}
@@ -236,7 +243,12 @@ export function mountGoniometer({host,receipt,initialKey,onTrial,onRead,onSave,v
         stage='aligned';if(t.side!==romTrials[i].side||!!t.move.sagittal!==!!romTrials[i].move.sagittal||(!t.move.sagittal&&t.move!==romTrials[i].move))stage='position';
         angle=0;view();
       });
+      btn('重听动作讲解',()=>voice(directionCue[t.move.key]));
       btn('重看这次测量',()=>{stage='aligned';angle=0;view();});
+    }
+    if(t.mode==='被动'&&['aligned','moving','read'].includes(stage)){
+      const guide={up:'托住前脚掌的足底，慢慢向小腿方向带动。',down:'扶住前足的足背，慢慢向足底方向带动。',in:'托住足跟，慢慢带动跟骨向内倾斜。',out:'托住足跟，慢慢带动跟骨向外倾斜。'};
+      cue.textContent+=' 治疗师一手固定小腿远端，另一手'+guide[t.move.key];
     }
     draw();
   }
@@ -262,14 +274,21 @@ export function mountGoniometer({host,receipt,initialKey,onTrial,onRead,onSave,v
       else{stage='aligned';placement=1;view();}
     },()=>spoken);
   }
-  function run(){
+  async function run(){
     if(stage!=='aligned')return;
-    const t=romTrials[i];stage='moving';angle=0;view();
-    voice(t.mode==='主动'?'请您自己活动脚踝，到舒服的尽头就停。':'现在放松，我托着您的脚慢慢带一下，疼了就告诉我。');
-    animate(2100,p=>{angle=t.angle*p*p*(3-2*p);},()=>{stage='read';view();});
+    const t=romTrials[i];stage='instruction';angle=0;view();
+    await Promise.resolve(voice(cue.textContent)).catch(()=>{});
+    if(disposed||!panel.isConnected)return;
+    stage='moving';view();
+    let spoken=false;
+    Promise.resolve(voice(directionCue[t.move.key])).catch(()=>{}).finally(()=>{spoken=true;});
+    animate(2100,p=>{angle=t.angle*p*p*(3-2*p);},()=>{stage='read';view();},()=>spoken);
   }
   const method=element('details');method.append(element('summary','测量方法与依据'),element('p','内翻和外翻采用俯卧后方测量，观察跟骨相对小腿的倾斜。坐位从前方对线时，还会包含前足的复合运动。两种方法的角度应分别记录。'));
   const reference=element('a','查看两种测量体位的原始研究');reference.href='https://doi.org/10.1186/1471-2474-7-60';reference.target='_blank';reference.rel='noopener';method.append(reference);
+  const handSource=element('a','被动检查手法参考');
+  handSource.href='https://pmc.ncbi.nlm.nih.gov/articles/PMC5241541/';handSource.target='_blank';handSource.rel='noopener';
+  method.append(' · ',handSource);
   panel.append(count,heading,canvas,label,cue,readout,controls,summary,method);
   if(!initialKey&&romComplete(receipt)){stage='read';i=15;angle=romTrials[15].angle;}
   view();

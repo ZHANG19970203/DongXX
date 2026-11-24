@@ -236,8 +236,8 @@
         "Clinical review pending",
         "Teaching operations are not patient measurements"
       ],
-      "bytes": 17156,
-      "sha256": "428b32ffb12804e89701fccf593a8afbd70e31d4431294ce735cce67732fdc01"
+      "bytes": 17439,
+      "sha256": "cdac8cdaf23eb797f5219cdca53b3debe150f7ea896c344ec152d2f2cf39cb01"
     },
     {
       "id": "original-appearance",
@@ -286,8 +286,8 @@
     {
       "id": "original-concise-case-v12",
       "path": "case-flow.js",
-      "bytes": 69038,
-      "sha256": "79a79d28f0d2d72a1dfd857e3326c99f1f962cc15b41f3db5f8c6e50b7c13621",
+      "bytes": 69040,
+      "sha256": "f31af826a3228085ac3e746e11b7f5a01f7970a29dd84f37d6f9a036a235f181",
       "source": "Original fictional case and teaching choices; 41 nodes shortened without replacing evidence/safety paths",
       "license": "Application logic follows complete-site MIT scope; fictional case prose remains separate project teaching content",
       "limits": [
@@ -506,8 +506,8 @@
     {
       "id": "local-dialogue-v20",
       "path": "assets/dialogue-v20/manifest.json",
-      "bytes": 491885,
-      "sha256": "f280f8b7e87373346f3385de17a6e9323c4c4ea2952d4ae4fb87521247c8536c",
+      "bytes": 494211,
+      "sha256": "787eae980a620cbb17250369302cb927c08f46f29cbc300821cedf3120652e7f",
       "source": "Course recordings and generated Mandarin dialogue. The voice and source fields identify individually credited clips.",
       "license": "Course dialogue assets. Speech engines and model weights are not distributed."
     },
@@ -593,8 +593,8 @@
       "id": "app",
       "path": "app.js",
       "source": "本项目的人物服装或运动鞋三维建模。",
-      "bytes": 109831,
-      "sha256": "d4ae76484431c14458002efb6a0831682325b5f0df4222b31fd3663831a2af32"
+      "bytes": 111279,
+      "sha256": "194d8fd500dea543b6358acf54115b1adebfc6feda61c5adc2ed449b358a8c1a"
     },
     {
       "id": "walking-pose-v27",

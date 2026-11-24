@@ -1488,10 +1488,10 @@ reviseFilm(FILM_SEQUENCE);
 
 // This chapter uses direct explanation and a three-arch bone activity.
 const archIntro=FILM_SEQUENCE.clips.find(clip=>clip.id==='04A');
-archIntro.anchorNode='arch_view';
-archIntro.actionLabel='坐位与站位观察';
+archIntro.anchorNode='arch_intro';
+archIntro.actionLabel='辨认足弓，再比较坐站变化';
 archIntro.handoff.studentAction='在辨认组成骨的基础上，比较坐位和站位的足弓。';
-archIntro.handoff.nextNodeId='arch_view';
+archIntro.handoff.nextNodeId='arch_compare';
 const archSummary=FILM_SEQUENCE.clips.find(clip=>clip.id==='04B');
 archSummary.normal=archSummary.normal.filter(turn=>turn.speaker==='therapist');
 archSummary.actionLabel='开始足底扫描';

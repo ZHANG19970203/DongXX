@@ -1,3 +1,4 @@
+import {createMotionNarration} from './motion-narration.js';
 import {MUSCLE_ITEMS} from './case-muscle-v14.js';
 
 const el=(tag,text)=>{const n=document.createElement(tag);if(text)n.textContent=text;return n;};
@@ -13,8 +14,8 @@ const movementItems=[
  ['从正后方观察内外翻，要描述其额状面分量，用哪条参考轴？',['前后轴','内外轴','垂直轴'],0,'额状面与前后轴垂直。距下关节实际绕斜轴活动，不能用这一分量代表全部运动。']
 ];
 const motionLessons=[
- {id:'sagittal',name:'距小腿关节 · 跖屈和背伸',description:'从右踝外侧看。小腿保持不动，距骨在踝穴中随足转动。脚尖先向下压，再向上勾。主要运动面是矢状面，近似绕穿过内外踝的内外轴转动。'},
- {id:'subtalar',name:'距下关节 · 内翻和外翻',description:'从右足后方看橙色的跟骨。跟骨相对距骨转动，足底先朝内侧，再朝外侧。内外翻的额状面分量可用前后轴描述，真实距下关节绕斜轴转动，还伴有水平面和矢状面分量。'}
+ {id:'sagittal',name:'距小腿关节 · 跖屈和背伸',description:'从右踝外侧看。小腿保持不动，距骨在踝穴中随足转动。跖屈时足尖向下，站立提踵也用到跖屈；背伸时足尖向上，做勾脚动作。主要运动面是矢状面，近似绕穿过内外踝的内外轴转动。'},
+ {id:'subtalar',name:'距下关节 · 内翻和外翻',description:'从右足后方看橙色的跟骨。跟骨相对距骨转动，内翻时足外侧缘降低、内侧缘抬高。外翻时足外侧缘抬高、内侧缘降低。内外翻的额状面分量可用前后轴描述，真实距下关节绕斜轴转动，还伴有水平面和矢状面分量。'}
 ];
 function hasSeenMotion(book,lesson){return book.get('motionVideo_'+lesson.id)===true;}
 export function motionComplete(book){return motionLessons.every(lesson=>hasSeenMotion(book,lesson))&&movementItems.every((_,i)=>book.get('motion54_'+i)===true);}
@@ -53,8 +54,9 @@ function quiz(host,items,book,prefix,onAnswer){
 export function showMotion(ctx){
  const {wrap,book,record,changed}=ctx;
  const content=el('section');content.className='motion-lesson';wrap.append(content);
+ const narration=createMotionNarration(ctx);
  function questions(){
-  content.replaceChildren();
+  narration.setVideo(null);content.replaceChildren();
   content.append(el('p','用通用量角器测背伸和跖屈。轴心对准外踝中心，固定臂沿腓骨外侧指向腓骨头，移动臂沿第五跖骨外侧，随足转动。'));
   const nav=el('div');nav.className='clinical-nav';
   nav.append(action('重看关节动画',()=>watch(0)));ctx.anatomyButton(nav,'ankle');content.append(nav);
@@ -64,14 +66,14 @@ export function showMotion(ctx){
  function watch(index){
   const lesson=motionLessons[index],last=index===motionLessons.length-1;
   const video=el('video');
-  video.src=new URL('./assets/ankle-motion-'+lesson.id+'.mp4',import.meta.url).href;
-  video.controls=true;video.playsInline=true;video.muted=true;video.preload='auto';
+  video.src=new URL('./assets/ankle-motion-'+lesson.id+'.mp4?v=79.2',import.meta.url).href;
+  video.controls=true;video.playsInline=true;video.preload='auto';
   video.setAttribute('aria-label',lesson.name);video.dataset.motion=lesson.id;
   const next=action(last?'进入运动辨认':'看内翻和外翻',()=>{video.pause();if(last)questions();else watch(index+1);});
   next.disabled=!hasSeenMotion(book,lesson);
   const nav=el('div');nav.className='clinical-nav';
   if(index>0)nav.append(action('重看跖屈和背伸',()=>{video.pause();watch(0);}));
-  nav.append(next);
+  nav.append(action('重播本段讲解',()=>narration.replayVideo()),next);
   const planes=el('dl');planes.className='motion-landmarks';
   const sagittal=lesson.id==='sagittal';
   for(const [label,value] of [
@@ -90,10 +92,11 @@ export function showMotion(ctx){
    }
    next.disabled=false;
   });
-  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)video.play().catch(()=>{});
+  narration.setVideo(video);
  }
  const pending=motionLessons.findIndex(lesson=>!hasSeenMotion(book,lesson));
  if(pending===-1)questions();else watch(pending);
+ return narration;
 }
 
 import {toeDirection} from './toe-direction.js';

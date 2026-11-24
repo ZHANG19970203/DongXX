@@ -1,6 +1,6 @@
 import {filmFallback,replies} from './clinic-dialogue.js';
 const fallback=kind=>filmFallback[kind].map(([speaker,text])=>({speaker,text}));
-import { FILM_SEQUENCE } from './film-sequence-data.js?v=72';
+import { FILM_SEQUENCE } from './film-sequence-data.js?v=79.2';
 
 export const FILM_CLIPS=FILM_SEQUENCE.clips;
 const roles={therapist:'林治疗师',patient:'陈女士'};
@@ -68,15 +68,17 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     state.filmProgress=state.filmProgress||{};
     const prior=state.filmProgress[key];
     const actionLabel=branch.condition==='consent_missing'?'观察踝关节运动':state.exitLock?'结束体能任务，讨论下一步':clip.actionLabel;
-    active={clip,branch,key,actionLabel,example:originalScenes.has(clip.id)&&!state.exitLock&&!branch.normal};cue.hidden=false;name.textContent=clip.title;
+    const introTurn=clip.id==='04A'?{speaker:'therapist',text:node.text}:clip.videoIntro;
+    active={clip,branch,key,introTurn,actionLabel,example:originalScenes.has(clip.id)&&!state.exitLock&&!branch.normal};cue.hidden=false;name.textContent=clip.title;
     replay.hidden=false;watch.hidden=!media();watch.textContent='播放病例视频';document.body.dataset.filmSegment=clip.id;
     handoff.textContent='接下来 · '+actionLabel;
     handoff.hidden=false;
-    if(prior?.completed&&!force){refreshCoach?.();return false;}
+    const archEntry=clip.id==='04A'&&!state.exitLock&&(!restoring||!state.caseVideoSeen?.[clip.id]);
+    if(prior?.completed&&!force&&!archEntry){refreshCoach?.();return false;}
     const startIndex=restoring&&!force?prior?.index||0:0;
-    const firstFilm=!force&&!state.exitLock&&originalScenes.has(clip.id)&&!state.caseVideoSeen?.[clip.id];
+    const firstFilm=!force&&!state.exitLock&&originalScenes.has(clip.id)&&(archEntry||!state.caseVideoSeen?.[clip.id]);
     record(force?'clinic3d_film_segment_replay':'clinic3d_film_segment_open',{clipId:clip.id,nodeId:node.id,condition:branch.condition,mode:firstFilm?'case_video':'live_scene_dialogue',assessmentCredit:false});
-    if(firstFilm&&clip.videoIntro&&!restoring)appendLine(roles[clip.videoIntro.speaker],clip.videoIntro.text,'film-introduction');
+    if(firstFilm&&introTurn&&!restoring&&clip.id!=='04A')appendLine(roles[introTurn.speaker],introTurn.text,'film-introduction');
     if(!restoring||force)for(const turn of branch.lines)appendLine(roles[turn.speaker],turn.text,'film-dialogue');
     waiting=firstFilm?active:null;
     player.loadSequence(branch.lines,node.id+':film:'+clip.id,{startIndex,announce:!firstFilm});
@@ -118,7 +120,7 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     if(reason==='node_changed')return;
     if(active?.taskPreview){if(reason==='media_load_error')$('filmVideoStatus').textContent='请重新播放步行病例视频。';return;}
     if(!watch.hidden)watch.focus();
-    if(active?.clip.videoIntro)handoff.hidden=!!previous?.resumeDialogue;
+    if(active?.introTurn||active?.clip.videoIntro)handoff.hidden=!!previous?.resumeDialogue;
     if(previous?.isPrimary&&reason==='ended'){
       if(active?.clip.id==='06A'||active?.example)player.replay();
       else player.finishSequence();
@@ -130,11 +132,11 @@ export function createFilmSequence({$,state,player,record,persist,appendLine,pau
     video.pause();$('filmVideoStatus').textContent='影片已暂停。';
     record('clinic3d_film_video_pause',{clipId:active?.clip.id,reason,assessmentCredit:false});
   }
-  replay.addEventListener('click',()=>{if(active)present({id:active.clip.anchorNode},{trigger:active.clip.trigger,force:true});});
+  replay.addEventListener('click',()=>{if(active)present({id:active.clip.anchorNode,text:active.introTurn?.text},{trigger:active.clip.trigger,force:true});});
   function openVideo(isPrimary=false){
     const entry=media();if(!entry||introducing||!overlay.hidden)return;
     const session={isPrimary,resumeDialogue:isPrimary||!!player.getState?.().pending};
-    const intro=active.clip.videoIntro;
+    const intro=active.introTurn||active.clip.videoIntro;
     if(intro){
       introducing=true;watch.disabled=true;handoff.hidden=true;
       player.beforeVideo(intro,active.clip.anchorNode+':video-intro',()=>{

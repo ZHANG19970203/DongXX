@@ -508,7 +508,7 @@ FLOW.leave_stance=N('leave_stance','act1','dialogue','陈女士','我还没跟�
 });
 FLOW.history_closed=N('history_closed','act1','summary','本次接诊结束','陈女士已离开诊室。',{terminal:true});
 
-import {caseWorkshops} from './case-workshops.js?v=79';
+import {caseWorkshops} from './case-workshops.js?v=79.2';
 const workshopRoutes=[
  ['goal_answer','case_cardio','fear_check'],['local_intro','case_bones','alignment'],
  ['muscle_intro','case_paint','case_place'],[null,'case_place','muscle_match'],

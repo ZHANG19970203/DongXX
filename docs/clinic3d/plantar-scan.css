@@ -105,3 +105,9 @@ body[data-node=static_cop][data-balance-help] #clinic #conversation:not([hidden]
 .clinic-workshop-window[open]{display:flex;flex-direction:column}.clinic-workshop-window::backdrop{background:#1a3439ac}
 .clinic-workshop-window header{display:flex;align-items:center;gap:12px}.clinic-workshop-window header button{margin-left:auto}
 .clinic-workshop-window p{margin:6px}.clinic-workshop-window iframe{flex:1;min-height:0;border:1px solid #dae2dc;width:100%}
+
+.contraction-study{margin:0;padding:10px 14px;border:1px solid #c6dbd2;border-radius:12px;background:#f0f6f2;display:grid;grid-template-columns:minmax(130px,38%) 1fr;column-gap:12px;align-items:center}
+.contraction-study canvas{grid-row:1/4;max-width:100%;width:205px;height:auto;justify-self:center}
+.contraction-study figcaption,.contraction-study>div,.contraction-study p{grid-column:2}
+.contraction-study figcaption{font-weight:700}.contraction-study button{margin:2px}.contraction-study button[aria-pressed=true]{background:#185c50;color:white}
+@media(max-width:520px){.contraction-study{grid-template-columns:minmax(94px,35%) 1fr;padding:7px;column-gap:5px}.contraction-study button{padding:5px}}

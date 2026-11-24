@@ -27,10 +27,10 @@
     data.native.raw = data.actor.raw = new ArrayBuffer(0);
     window.__DXX_DATA__ = data;
     window.DXX_ENABLE_CLASSROOM_SERVICE = false;
-    for (const file of ['joint-landmarks-v30.js', 'joint-rig-v30.js', 'motion-muscles-v76.js', 'app.js']) {
+    for (const file of ['joint-landmarks-v30.js', 'joint-rig-v30.js', 'motion-muscles-v76.js', 'joint-surface.js', 'app.js']) {
       await new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = 'assets/' + file + '?v=76';
+        script.src = 'assets/' + file + '?v=79.2';
         script.onload = resolve;
         script.onerror = () => reject(Error(file));
         document.body.append(script);

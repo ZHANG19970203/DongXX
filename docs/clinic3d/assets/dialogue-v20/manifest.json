@@ -10189,6 +10189,45 @@
       "duration": 5.9744375,
       "source": "Local synthesis using the existing Fei 1508 role reference",
       "transcriptCheck": "您最近又扭过脚吗？脚踝有没有比以前更重更疼，有没有脚发麻或者不敢踩地面的情况。"
+    },
+    "therapist|踝背伸，足尖向上运动，做勾脚动作。": {
+      "role": "therapist",
+      "text": "踝背伸，足尖向上运动，做勾脚动作。",
+      "src": "./assets/dialogue-v20/rom-direction-up.mp3",
+      "sha256": "1217d7fab61c1ae655cd1ed88ef6b05de16e287aaaf5f358a3299f7da854738e",
+      "duration": 2.464,
+      "source": "本机合成，使用诊室既有林治疗师声线。"
+    },
+    "therapist|踝跖屈，足尖向下运动。站立时提踵，也会用到踝跖屈。": {
+      "role": "therapist",
+      "text": "踝跖屈，足尖向下运动。站立时提踵，也会用到踝跖屈。",
+      "src": "./assets/dialogue-v20/rom-direction-down.mp3",
+      "sha256": "1f8538e37f0f9199e29f2ac91a16b509acd2b6dabb00b76d791f9f61e1be210e",
+      "duration": 3.411,
+      "source": "本机合成，使用诊室既有林治疗师声线。"
+    },
+    "therapist|踝关节内翻，足的外侧缘降低，内侧缘抬高。": {
+      "role": "therapist",
+      "text": "踝关节内翻，足的外侧缘降低，内侧缘抬高。",
+      "src": "./assets/dialogue-v20/rom-direction-in.mp3",
+      "sha256": "a3c9bddbd2025026dda2bf5214b3a14cb8c7402ad4272f85c710715c9ab1cf54",
+      "duration": 2.944,
+      "source": "本机合成，使用诊室既有林治疗师声线。"
+    },
+    "therapist|踝关节外翻，足的外侧缘抬高，内侧缘降低。": {
+      "role": "therapist",
+      "text": "踝关节外翻，足的外侧缘抬高，内侧缘降低。",
+      "src": "./assets/dialogue-v20/rom-direction-out.mp3",
+      "sha256": "5b1832c7ef42f480f9b6ee2187b7a97325b624637ab222e523073b80597d0af2",
+      "duration": 2.944,
+      "source": "本机合成，使用诊室既有林治疗师声线。"
+    },
+    "therapist|脚踝除了要能活动、能用力，还要能承重。接下来，我想比较您坐着和站着时的足弓，看看踩到地上会有什么变化。": {
+      "role": "therapist",
+      "text": "脚踝除了要能活动、能用力，还要能承重。接下来，我想比较您坐着和站着时的足弓，看看踩到地上会有什么变化。",
+      "src": "./assets/dialogue-v20/arch-bridge.mp3",
+      "sha256": "1069e23b2da208ab7641bae8479787575b864b6c9ee9756e30261f68300ea3c4",
+      "duration": 7.466
     }
   },
   "revision": "v78.1 · 陈女士主线与分支配音"

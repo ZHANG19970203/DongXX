@@ -6,7 +6,7 @@ import { createArchComparison } from './arch-comparison.js';
 import { createAnatomyViewer } from './anatomy-viewer.js';
 import {sampleWalking,renderPlantarScan} from "./pressure-engine.js";
 import { GAIT_CASE } from './gait-lesson.js';
-import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js?v=79';
+import {showStrength,showMotion,strengthComplete,motionComplete} from './clinical-exams.js?v=79.2';
 
 import {mountGaitQuestion,paintGaitQuestion} from './gait-phase-task.js?v=72';
 
@@ -120,7 +120,12 @@ export function createLearningUI(ctx) {
         if(id==='cycle')$('cyclePhases').querySelector('h3').focus({preventScroll:true});
       }});
     } else if(task.type==='goniometer'){
-      showMotion(exam);
+      const narration=showMotion({...exam,
+        voiceEnabled:()=>$('voice').getAttribute('aria-pressed')==='true',
+        enableVoice:()=>{if($('voice').getAttribute('aria-pressed')!=='true')$('voice').click();},
+        notify:text=>ctx.toast(text)
+      });
+      paintTask();return narration;
     } else if(task.type==='trial'){
       wrap.append(nodeEl('h3','task-card-title','哪一次触墙可以记数？'));
       const compare=nodeEl('div','trial-comparison');
